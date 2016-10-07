@@ -4,6 +4,7 @@ from django.shortcuts import render, render_to_response
 # Create your views here.
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
 
 import sys
 sys.path.append("..")
@@ -38,7 +39,13 @@ def logincheck(request):
             errors.append('enter login yzm')
         if not errors:
             if 'student' in request.POST:
-                return HttpResponse(u"学生界面")
+                username = request.POST.get('login_username')
+                password = request.POST.get('login_password')
+                request.session['user_id'] = 10086
+                request.session['user_name'] = username
+                request.session['password'] = password
+                #return render_to_response('/student')
+                return redirect('/student')
             elif 'teacher' in request.POST:
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
