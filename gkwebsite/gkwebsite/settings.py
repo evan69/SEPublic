@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'database',
 
     'student.apps.StudentConfig',
+
+    'teacher',
 ]
 
 MIDDLEWARE_CLASSES = [

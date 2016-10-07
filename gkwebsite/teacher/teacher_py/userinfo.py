@@ -1,8 +1,12 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader,Context
-from django.shortcuts
 import copy
+
+import sys
+sys.path.append("..")
+import database.teacher_backend as teacher_backend
+
 #from login.login.teacher import userinfo ? for example
 
 keylist = ['account', 'realName', 'password', 'phone', 'email', 'area']
@@ -17,7 +21,7 @@ def getFromDatabase():
 	pre = {}
 	user['account'] = -1 
 	for i in range(1,6):
-		user[keylist[i]] = getData(user['account'], keylist[i])
+		user[keylist[i]] = teacher_backend.getData(user['account'], keylist[i])
 	pre = copy.deepcopy(user)
 
 @csrf_exempt
@@ -47,9 +51,9 @@ def index(request):
 def changeDatabase():
 	global user, pre, keylist
 	for i in range(1,6):
-		if pre[keylist[i] == request.POST(keylist[i]):
+		if pre[keylist[i]] == request.POST(keylist[i]):
 			continue
 		else:
-			user[keylist[i]] == request.POST(keylist[i]):
-			setData(user['account'], keylist[i], user[keylist[i]])
+			if user[keylist[i]] == request.POST(keylist[i]):
+				teacher_backend.setData(user['account'], keylist[i], user[keylist[i]])
 	

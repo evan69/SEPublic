@@ -53,7 +53,7 @@ def logincheck(request):
                     request.session['user_id'] = 10086
                     request.session['user_name'] = username
                     request.session['password'] = password
-                    return HttpResponse(u"教师界面")
+                    return redirect('/teacher')
                 else:
                     return HttpResponse(u"教师界面登录失败")
             elif 'volunteer' in request.POST:

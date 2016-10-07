@@ -23,7 +23,7 @@ from login import views as loginViews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-		url(r'^teacher/', include('teacher.urls')),
+	url(r'^teacher/', include('teacher.urls')),
     #    关联login界面
     #    by byr 161003
     url(r'^login/', loginViews.login),
