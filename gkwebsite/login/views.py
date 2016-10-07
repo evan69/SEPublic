@@ -5,6 +5,11 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+import sys
+sys.path.append("..")
+import database.teacher_backend as teacher_backend
+
+
 '''
     login & register 界面
     by byr 161003
@@ -35,7 +40,15 @@ def logincheck(request):
             if 'student' in request.POST:
                 return HttpResponse(u"学生界面")
             elif 'teacher' in request.POST:
-                return HttpResponse(u"教师界面")
+                username = request.POST.get('login_username')
+                password = request.POST.get('login_password')
+                if teacher_backend.checkPassword(username, password):
+                    request.session['user_id'] = 10086
+                    request.session['user_name'] = username
+                    request.session['password'] = password
+                    return HttpResponse(u"教师界面")
+                else:
+                    return HttpResponse(u"教师界面登录失败")
             elif 'volunteer' in request.POST:
                 return HttpResponse(u"志愿者界面")
             else:

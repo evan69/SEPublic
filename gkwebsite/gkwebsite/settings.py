@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #添加login app
     #by byr 161003
     'login',
+    'database',
 ]
 
 MIDDLEWARE_CLASSES = [
