@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Context
+from django.shortcuts import redirect
 import datetime
 
 # Create your views here.
@@ -32,3 +33,10 @@ def student_admit(request):
 def student_contact(request):
 	t = get_template('student/contact.html')
 	return HttpResponse(t.render({}))
+	
+def student_logout(request):
+	try:
+		del request.session['user_id']
+	except KeyError:
+		pass
+	return redirect('/login')
