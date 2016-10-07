@@ -1,3 +1,4 @@
+# encoding=utf-8
 """gkwebsite URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -14,10 +15,20 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import url, include
+
+from django.conf.urls import include, url
 from django.contrib import admin
+
+from login import views as loginViews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^teacher/', include('teacher.urls')),
+		url(r'^teacher/', include('teacher.urls')),
+    #    关联login界面
+    #    by byr 161003
+    url(r'^login/', loginViews.login),
+    #   login表单检查
+    #   by byr 161006
+    url(r'^logincheck/', loginViews.logincheck),
+    url(r'^student/', include('student.urls')),
 ]
