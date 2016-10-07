@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -62,10 +62,10 @@
 												<a href="/student"><i class="fa fa-dashboard"></i> Dashboard</a>
 										</li>
 										<li>
-												<a class="active-menu" href="/student/score"><i class="fa fa-desktop"></i> 在线估分</a>
+												<a href="/student/score"><i class="fa fa-desktop"></i> 在线估分</a>
 										</li>
 										<li>
-												<a href="/student/rank"><i class="fa fa-bar-chart-o"></i> 查看排名</a>
+												<a class="active-menu" href="/student/rank"><i class="fa fa-bar-chart-o"></i> 查看排名</a>
 										</li>
 										
 										<li>
@@ -88,10 +88,16 @@
 								<div class="row">
 										<div class="col-md-12">
 												<h1 class="page-header">
-														Online Judge <small><span id="username">Welcome, </span></small>
+														Rank 
 												</h1>
 										</div>
 								</div>
+				
+
+
+		 
+				
+				
 				
 				<!--			
 				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
@@ -111,17 +117,13 @@
 		<!-- Metis Menu Js -->
 		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
 
+	
+
+	
+	
 		<!-- Custom Js -->
-		<script>
-			$(document).ready(function(){
-				$('#username').append({{ id }});
-				/*
-				$.post("/backend/get_user_by_id", {'id': {{ id }} }, function(data, status, xhr){
-					$('#username').append(data['username']);
-				})
-				*/
-			});
-		</script>
+		
+
 
 </body>
 

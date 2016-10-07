@@ -9,8 +9,8 @@ import datetime
 
 def student_center(request):
 	t = get_template('student/center.html')
-	c = Context({'id': 2014011425})
-	#request.session['user_id'] = 2014011425
+	id = request.session.get('user_id', -1)
+	c = Context({'id': id})
 	return HttpResponse(t.render(c))
 	
 def student_score(request):
@@ -22,10 +22,13 @@ def student_score(request):
 	return HttpResponse(t.render(c))
 	
 def student_rank(request):
-	return HttpResponse('This is RANK page.')
+	t = get_template('student/rank.html')
+	return HttpResponse(t.render({}))
 	
 def student_admit(request):
-	return HttpResponse('This is ADMIT page.')
+	t = get_template('student/admit.html')
+	return HttpResponse(t.render({}))
 	
 def student_contact(request):
-	return HttpResponse('This is CONTACT page.')
+	t = get_template('student/contact.html')
+	return HttpResponse(t.render({}))
