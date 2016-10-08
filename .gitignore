@@ -1,4 +1,3 @@
-*.pyc
 .idea/*
 
 
@@ -11,7 +10,6 @@ __pycache__/
 *.sqlite3
 
 # file for test
-test.py
 
-tests.py
+
 
