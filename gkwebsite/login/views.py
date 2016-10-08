@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 
 import sys
-sys.path.append("..")
+sys.path.append("../")
 import database.teacher_backend as teacher_backend
 
 
