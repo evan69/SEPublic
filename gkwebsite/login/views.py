@@ -25,7 +25,6 @@ def login(request):
     login 表单检查
     by byr 161006
 '''
-@csrf_exempt
 def logincheck(request):
     errors = []
     if request.method == 'POST':
