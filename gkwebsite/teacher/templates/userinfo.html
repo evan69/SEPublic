@@ -164,6 +164,85 @@
               </div>
              </div>
             </div>
+<<<<<<< HEAD
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+		
+        <div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            用户信息 <small>高考估分系统教师端</small>
+                        </h1>
+                    </div>
+                </div> 
+				<!--row-->
+				
+				<div class = "row">
+					<div class = "col-md-12">
+						<div class= "panel panel-default">
+							<div class = "panel-body">
+								<div class = "row">
+									<div class = "col-md-6">
+										<form class = "form-horizontal" role = "form" method = "POST" action = "/userinfo/formsubmit">
+										{% csrf_token %}
+											<div class = "form-group">
+												<label for = "account" class = "col-sm-2 control-label">用户名: </label>
+												<div class="col-sm-10">
+													<p class = "form-control-static" id= "account" name= "account">{{user.account}}</p>
+												</div>
+											</div>
+											<div class = "form-group">
+												<label for = "realName" class = "col-sm-2 control-label">姓名：</label>
+												<div class = "col-sm-10">
+													<input type = "text" class = "form-control" id = "realName" name = "realName" value = "{{user.realName}}">
+											    </div>
+											</div>
+											<div class = "form-group">
+												<label for = "password" class = "col-sm-2 control-label">密码：</label>
+												<div class = "col-sm-10">
+													<input type = "password" class = "form-control" id = "password" name = "password" value = "{{user.password}}">
+											    </div>
+											</div>
+											<div class = "form-group">
+												<label for = "phone" class = "col-sm-2 control-label">电话：</label>
+												<div class = "col-sm-10">
+													<input type = "text" class = "form-control" name = "phone" id = "phone" value = "{{user.phone}}">
+											    </div>
+											</div>
+											<div class = "form-group">
+												<label for = "email" class = "col-sm-2 control-label">邮箱：</label>
+												<div class = "col-sm-10">
+													<input type = "text" class = "form-control" id = "email" name = "email" value = "{{user.email}}">
+											    </div>
+											</div>
+											<div class = "form-group">
+												<label for = "area" class = "col-sm-2 control-label">地区：</label>
+												<div class = "col-sm-10">
+													<input type = "text" class = "form-control" id = "area" name = "area" value = "{{user.area}}">
+											    </div>
+											</div>
+											<div class = "form-group">
+												<div class="col-sm-offset-2 col-sm-10">
+													<button type = "submit" class = "btn btn-primary" value = "save" >保存</button>
+													<button type = "cancel" style = "margin-left:20px;" class = "btn btn-default" value = "cancel" >取消</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
+			</div>
+             <!-- /. PAGE INNER  -->
+=======
             <button type="button" id="teacher_save" name="teacher_save" class="bouton-contact">保存</button>
            </form>
           </div>
@@ -178,6 +257,7 @@
               <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
              </footer>
           </div>
+>>>>>>> 19d692bd90934eb6f11c61e24aa365d6a8237a5f
         </div>
     </div>
     <!-- /. PAGE INNER  -->

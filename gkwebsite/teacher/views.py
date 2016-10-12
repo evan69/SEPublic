@@ -16,7 +16,23 @@ def search_student(request):
 	if id == -1:
 		return HttpResponse('Access denied')
 	t = get_template('teacher/list_student.html')
-	c = {'id':id}
+	c = {'id': id}
+	return HttpResponse(t.render(c))
+
+def student_info_edit(request):
+	t = get_template('teacher/student_info_edit.html')
+	c = Context({})
+	return  HttpResponse(t.render(c))
+
+
+def student_info_save(request):
+	t = get_template('teacher/student_info.html')
+	c = Context({})
+	return HttpResponse(t.render(c))
+
+def student_info_show(request):
+	t = get_template('teacher/student_info.html')
+	c = Context({})
 	return HttpResponse(t.render(c))
 	
 def add_student(request):

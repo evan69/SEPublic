@@ -1,0 +1,22 @@
+函数名：student_info_show
+功能描述：通过传递student参数将学生信息显示在student_info.html中
+所在文件：teacher/views.py
+参数列表：request
+返回值：HttpResponese
+通过get方法获得id,来以此得到所有的学生信息并将student返回，所需要的学生信息见student_info.html中{{student.xxx}}部分
+
+函数名：student_info_save
+功能描述：保存表单中修改的学生信息并返回显示在student_info.html中
+所在文件：teacher/views.py
+参数列表：request
+返回值：HttpResponse
+方法：post, value = name, 相应的value和name值见student_info_edit.html
+
+函数名：student_info_edit
+功能描述：在student_info_edit.html中显示学生的信息，基本与student_info_show相同，但是增加了两个变量
+所在文件：teacher/views.py
+参数列表：request
+返回值：HttpResponse(需要映射student, province(中国所有省份）,nation(中国所有民族）,major(清华所有专业，以及一项“无”))
+方法：post,可以直接得到学生的accounts等信息
+
+（注：因为使用了单选和下拉框，所以在得到相应的键值之后前端可能需要根据学生信息的返回值改变显示的方式，以及在student_info_show中需要返回的键值都以字符串的方式返回较好，因为student_info.html中的表单基本都是文本输入框型）
