@@ -23,7 +23,7 @@
 
             /* MORRIS BAR CHART
 			-----------------------------------------*/
-            Morris.Bar({
+            /*Morris.Bar({
                 element: 'morris-bar-chart',
                 data: [{
                     y: '2006',
@@ -64,12 +64,12 @@
                 hideHover: 'auto',
                 resize: true
             });
-	 
+	 */
 
 
             /* MORRIS DONUT CHART
 			----------------------------------------*/
-            Morris.Donut({
+           /* Morris.Donut({
                 element: 'morris-donut-chart',
                 data: [{
                     label: "Download Sales",
@@ -87,10 +87,10 @@
   ],
                 resize: true
             });
-
+*/
             /* MORRIS AREA CHART
 			----------------------------------------*/
-
+/*
             Morris.Area({
                 element: 'morris-area-chart',
                 data: [{
@@ -154,10 +154,10 @@
 				  lineColors:['#A6A6A6','#1cc09f'],
                 resize: true
             });
-
+*/
             /* MORRIS LINE CHART
 			----------------------------------------*/
-            Morris.Line({
+          /*  Morris.Line({
                 element: 'morris-line-chart',
                 data: [
 					  { y: '2014', a: 50, b: 90},
@@ -185,7 +185,7 @@
       pointStrokeColors: ['black'],
       lineColors:['gray','#1cc09f']
 	  
-            });
+            });*/
            
      
         },

@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response
 
 # Create your views here.
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.shortcuts import redirect
 import GenerateVerify
 
@@ -17,7 +17,7 @@ import database.teacher_backend as teacher_backend
     by byr 161003
 '''
 
-
+@csrf_exempt
 def login(request):
     return render(request, 'src/login.html')
 
@@ -27,7 +27,7 @@ def login(request):
     by byr 161006
 '''
 
-
+@csrf_exempt
 def logincheck(request):
     errors = []
     if request.method == 'POST':
@@ -50,9 +50,12 @@ def logincheck(request):
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
                 yzmString = request.POST.get('login_yzm').upper()
-                if yzmString == request.session['yzmString']:
-                    if teacher_backend.checkPassword(username, password):
-                        request.session['user_id'] = 10086
+
+                if (yzmString == request.session['yzmString']):
+                    print ' teacher login'
+                    (login,id) = teacher_backend.checkTeacherPassword(username, password)
+                    if login:
+                        request.session['user_id'] = int(id)
                         request.session['user_name'] = username
                         request.session['password'] = password
                         return redirect('/teacher/index')
