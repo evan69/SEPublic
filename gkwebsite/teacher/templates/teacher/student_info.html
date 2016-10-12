@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>用户信息</title>
+    <title>查看学生</title>
 	{% load staticfiles %}
 	<!-- Bootstrap Styles-->
     <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
@@ -24,7 +24,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="tindex.html"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
+                <a class="navbar-brand" href="/teacher"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -67,10 +67,10 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="userinfo.html"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="/teacher/profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/teacher/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -84,125 +84,105 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a href="#"><i class="fa fa-dashboard"></i> 首页</a>
+                        <a href="/teacher"><i class="fa fa-dashboard"></i> 首页</a>
                     </li>
 
                     <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 学生信息<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-sitemap"></i> 管理学生<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="stuinfoin.html">信息录入</a>
+                                <a href="/teacher/add_student">添加学生信息</a>
                             </li>
                             <li>
-                                <a href="stuinfosc.html">信息查询</a>
+                                <a href="/teacher/add_student_loadxls">批量导入学生信息</a>
+                            </li>
+														<li>
+                                <a class="active-menu" href="/teacher/search_student">查看学生信息</a>
                             </li>
                             <li>
-                                <a href="#">发送短信<span class="fa arrow"></span></a>
+                                <a href="#">管理学生组<span class="fa arrow"></span></a>
                                 <ul class="nav nav-third-level">
                                     <li>
-                                        <a href="messsent.html">一对一</a>
+                                        <a href="/teacher/add_group">新建学生组</a>
                                     </li>
                                     <li>
-                                        <a href="messsents.html">一对多</a>
+                                        <a href="/teacher/list_group">查看学生组</a>
+                                    </li>
+																		<li>
+                                        <a href="/teacher/favourite">我关注的学生组</a>
                                     </li>
                                 </ul>
+                            </li>
+														<li>
+                                <a href="/teacher/pushmsg">定向发布消息</a>
                             </li>
                         </ul>
                     </li>
 					<!--student infomation-->
 					<li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 志愿者信息<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-sitemap"></i> 管理志愿者<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="volinfo.html">信息查询</a>
+                                <a href="/teacher/add_volunteer">添加志愿者信息</a>
                             </li>
                             <li>
-                                <a href="voldist.html">志愿者分配</a>
+                                <a href="/teacher/add_volunteer_loadxls">批量导入志愿者信息</a>
+                            </li>
+														<li>
+                                <a href="/teacher/search_volunteer">查看志愿者信息</a>
                             </li>
                         </ul>
                     </li>
 					<!--volunteer infomation-->
-					
+
 					<li>
-                        <a href="papers.html"><i class="fa fa-desktop"></i> 估分发布</a>
+                        <a href="/teacher/release_test"><i class="fa fa-desktop"></i> 发布估分测试</a>
                     </li>
-					
+										<li>
+                        <a href="/teacher/logout"><i class="fa fa-desktop"></i> 退出登录</a>
+                    </li>
+
                 </ul>
 
             </div>
 
         </nav>
         <!-- /. NAV SIDE  -->
-		
+
         <div id="page-wrapper" >
             <div id="page-inner">
 				<div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            用户信息 <small>高考估分系统教师端</small>
+                            学生信息 <small>高考估分系统教师端</small>
                         </h1>
                     </div>
-                </div> 
+                </div>
 				<!--row-->
-				
+
 				<div class = "row">
 					<div class = "col-md-12">
 						<div class= "panel panel-default">
 							<div class = "panel-body">
 								<div class = "row">
 									<div class = "col-md-6">
-										<form class = "form-horizontal" role = "form" method = "POST" action = "/userinfo/formsubmit">
-										{% csrf_token %}
-											<div class = "form-group">
-												<label for = "account" class = "col-sm-2 control-label">用户名: </label>
-												<div class="col-sm-10">
-													<p class = "form-control-static" id= "account" name= "account">{{user.account}}</p>
-												</div>
-											</div>
-											<div class = "form-group">
-												<label for = "realName" class = "col-sm-2 control-label">姓名：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "realName" name = "realName" value = "{{user.realName}}">
-											    </div>
-											</div>
-											<div class = "form-group">
-												<label for = "password" class = "col-sm-2 control-label">密码：</label>
-												<div class = "col-sm-10">
-													<input type = "password" class = "form-control" id = "password" name = "password" value = "{{user.password}}">
-											    </div>
-											</div>
-											<div class = "form-group">
-												<label for = "phone" class = "col-sm-2 control-label">电话：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" name = "phone" id = "phone" value = "{{user.phone}}">
-											    </div>
-											</div>
-											<div class = "form-group">
-												<label for = "email" class = "col-sm-2 control-label">邮箱：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "email" name = "email" value = "{{user.email}}">
-											    </div>
-											</div>
-											<div class = "form-group">
-												<label for = "area" class = "col-sm-2 control-label">地区：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "area" name = "area" value = "{{user.area}}">
-											    </div>
-											</div>
-											<div class = "form-group">
-												<div class="col-sm-offset-2 col-sm-10">
-													<button type = "submit" class = "btn btn-primary" value = "save" >保存</button>
-													<button type = "cancel" style = "margin-left:20px;" class = "btn btn-default" value = "cancel" >取消</button>
-												</div>
-											</div>
-										</form>
+                                        {% csrf_token %}
+										<p>用户名：{{student,account}}</p>
+                                        <p>姓名：{{student.realName}}</p>
+                                        <p>性别：{{student.sex}}</p>
+                                        <p>身份证号：{{student.idNumber}}</p>
+                                        <p>出生年：{{student.birth[0]}}&nbsp;&nbsp;月：{{student.birth[1]}}&nbsp;&nbsp;日：{{student.birth[2]}}</p>
+                                        <p>民族：{{student.nation}}</p>
+                                        <p>文理科：{{student.type}}</p>
+                                        <p>学校：{{student.school}}</p>
+                                        <p></p>
+
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
 
 				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
 			</div>
@@ -232,6 +212,6 @@
     <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
 
 
-   
+
 </body>
 </html>
