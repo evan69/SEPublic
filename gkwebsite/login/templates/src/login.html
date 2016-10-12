@@ -18,6 +18,7 @@
        输入您的注册信息
       <br /> 
       <form name="login" action="#" method="POST" accept-charset="utf-8">
+       {% csrf_token %}
        <input type="text" name="register_username" placeholder="用户名" id="user" class="register user" title="用户名" required="" />
        <input type="email" name="register_email" placeholder="电子邮件" id="email" class="register email" title="电子邮件" required="" />
        <input type="password" name="register_password" id="password" placeholder="密码" class="register password" title="Password" required="" style="width: 90px;margin-right: 3px; display: inline"/>
@@ -37,10 +38,11 @@
        输入您的帐户登录：
       <br /> 
       <form name="login" action="/logincheck/" method="POST" accept-charset="utf-8">
-        <input type="text" placeholder="用户名" name="login_username" id="l_user" class="login user" title="Username" required="" style="float: right" />
+       {% csrf_token %}
+       <input type="text" placeholder="用户名" name="login_username" id="l_user" class="login user" title="Username" required="" style="float: right" />
         <input type="password" name="login_password" placeholder="密码" id="l_password" class="login password" title="Password" required="" style="float: right;margin-right: 10px" />
        
-        <img src="{% static 'assets/img/login/yanzhengma.png' %}" class="yzm" />
+        <img src="/yzm/150/30" class="yzm" />
 
         <input type="text" name="login_yzm" class="login yzm" style="width: 25%;height: 25px; float: right;margin-top: 20px" placeholder="验证码" required="" />
 

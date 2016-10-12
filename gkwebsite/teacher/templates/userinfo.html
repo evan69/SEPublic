@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>用户信息</title>
+	{% load staticfiles %}
 	<!-- Bootstrap Styles-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
      <!-- FontAwesome Styles-->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
         <!-- Custom Styles-->
-    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
@@ -150,47 +151,48 @@
 							<div class = "panel-body">
 								<div class = "row">
 									<div class = "col-md-6">
-										<form class = "form-horizontal" role = "form" method = "POST" action = "/userinfo/">
+										<form class = "form-horizontal" role = "form" method = "POST" action = "/userinfo/formsubmit">
+										{% csrf_token %}
 											<div class = "form-group">
 												<label for = "account" class = "col-sm-2 control-label">用户名: </label>
 												<div class="col-sm-10">
-													<p class = "form-control-static" name = "account">{{user.account}}</p>
+													<p class = "form-control-static" id= "account" name= "account">{{user.account}}</p>
 												</div>
 											</div>
 											<div class = "form-group">
 												<label for = "realName" class = "col-sm-2 control-label">姓名：</label>
 												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" name = "realName" placeholder = {{user.realName}}>
+													<input type = "text" class = "form-control" id = "realName" name = "realName" value = "{{user.realName}}">
 											    </div>
 											</div>
 											<div class = "form-group">
 												<label for = "password" class = "col-sm-2 control-label">密码：</label>
 												<div class = "col-sm-10">
-													<input type = "password" class = "form-control" name = "password" placeholder = {{user.password}}>
+													<input type = "password" class = "form-control" id = "password" name = "password" value = "{{user.password}}">
 											    </div>
 											</div>
 											<div class = "form-group">
 												<label for = "phone" class = "col-sm-2 control-label">电话：</label>
 												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" name = "phone" placeholder = {{user.phone}}>
+													<input type = "text" class = "form-control" name = "phone" id = "phone" value = "{{user.phone}}">
 											    </div>
 											</div>
 											<div class = "form-group">
 												<label for = "email" class = "col-sm-2 control-label">邮箱：</label>
 												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" name = "email" placeholder = {{user.email}}>
+													<input type = "text" class = "form-control" id = "email" name = "email" value = "{{user.email}}">
 											    </div>
 											</div>
 											<div class = "form-group">
 												<label for = "area" class = "col-sm-2 control-label">地区：</label>
 												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" name = "area" placeholder = {{user.area}}>
+													<input type = "text" class = "form-control" id = "area" name = "area" value = "{{user.area}}">
 											    </div>
 											</div>
 											<div class = "form-group">
 												<div class="col-sm-offset-2 col-sm-10">
-													<button type = "submit" class = "btn btn-primary">保存</button>
-													<button type = "cancel" style = "margin-left:20px;" class = "btn btn-default">取消</button>
+													<button type = "submit" class = "btn btn-primary" value = "save" >保存</button>
+													<button type = "cancel" style = "margin-left:20px;" class = "btn btn-default" value = "cancel" >取消</button>
 												</div>
 											</div>
 										</form>
@@ -209,14 +211,25 @@
      <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     <!-- jQuery Js -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-      <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
+    <!-- Bootstrap Js -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
     <!-- Metis Menu Js -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-      <!-- Custom Js -->
-    <script src="assets/js/custom-scripts.js"></script>
-    
+    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
+    <!-- Morris Chart Js -->
+    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+
+
+	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
+	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
+
+
+    <!-- Custom Js -->
+    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+
+
    
 </body>
 </html>

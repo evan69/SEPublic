@@ -23,12 +23,21 @@ from login import views as loginViews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-	url(r'^teacher/', include('teacher.urls')),
+		url(r'^teacher/', include('teacher.urls')),
+
     #    关联login界面
     #    by byr 161003
     url(r'^login/', loginViews.login),
     #   login表单检查
     #   by byr 161006
     url(r'^logincheck/', loginViews.logincheck),
+    #   验证码界面
+    url(r'^yzm/(\d+)/(\d+)/$', loginViews.gnrtyzm),
+
+
     url(r'^student/', include('student.urls')),
+		
+		#	map /backend url
+		#	by dqn14 Oct 12, 2016
+		url(r'^backend/', include('database.urls')),
 ]
