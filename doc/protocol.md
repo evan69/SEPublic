@@ -18,7 +18,7 @@
 		<td>根据姓名查找学生，返回部分信息</td>
 		<td>database/views.py</td>
 		<td>request(.POST['name']: 姓名)</td>
-		<td>类型：JsonResponse 包含匹配的学生的姓名(name)、性别(gender)、生源地(source)、学校(school)、身份证号(school) 注意key必须和括号内的内容相同</td>
+		<td>类型：JsonResponse([{},{},{},...]) 包含匹配的学生的姓名(name)、性别(gender)、生源地(source)、学校(school)、身份证号(school) 注意key必须和括号内的内容相同</td>
 		<td>POST</td>
 		<td>段清楠</td>
 		<td>8</td>
@@ -28,7 +28,7 @@
 		<td>根据ID删除学生</td>
 		<td>database/views.py</td>
 		<td>request(.POST['id']: ID)</td>
-		<td>类型：JsonResponse （空字典）</td>
+		<td>类型：JsonResponse({}) （空字典）</td>
 		<td>POST</td>
 		<td>段清楠</td>
 		<td>8</td>
@@ -38,7 +38,17 @@
 		<td>返回所有学生的部分信息</td>
 		<td>database/views.py</td>
 		<td>request</td>
-		<td>类型：JsonResponse 包含所有学生的姓名(name)、性别(gender)、生源地(source)、学校(school)、身份证号(school) 注意key必须和括号内的内容相同</td>
+		<td>类型：JsonResponse([{},{},{},...]) 包含所有学生的姓名(name)、性别(gender)、生源地(source)、学校(school)、身份证号(school) 注意key必须和括号内的内容相同</td>
+		<td>POST</td>
+		<td>段清楠</td>
+		<td>8</td>
+	</tr>
+	<tr>
+		<td>get_teacher_name_by_id</td>
+		<td>返回指定ID对应的教师姓名</td>
+		<td>database/views.py</td>
+		<td>request(.POST['id']: ID)</td>
+		<td>类型：JsonResponse({'name':姓名})</td>
 		<td>POST</td>
 		<td>段清楠</td>
 		<td>8</td>
