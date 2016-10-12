@@ -1,135 +1,170 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>用户信息</title>
-	{% load staticfiles %}
-	<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-</head>
-<body>
-    <div id="wrapper">
-        <nav class="navbar navbar-default top-navbar" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="tindex.html"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>用户信息</title>
+ </head>
+ <body>
+   {% load staticfiles %}
+  <!-- Bootstrap Styles-->
+  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+  <!-- FontAwesome Styles-->
+  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+  <!-- Custom Styles-->
+  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+   <!-- profile-->
+  <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
+  <div id="wrapper">
+   <nav class="navbar navbar-default top-navbar" role="navigation">
+    <div class="navbar-header">
+     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+     <a class="navbar-brand" href="tindex.html"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
+    </div>
+    <ul class="nav navbar-top-links navbar-right">
+     <!-- /.dropdown -->
+     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i> </a>
+      <ul class="dropdown-menu dropdown-alerts">
+       <li> <a href="#">
+         <div>
+          <i class="fa fa-envelope fa-fw"></i> Message Sent
+          <span class="pull-right text-muted small">4 min</span>
+         </div> </a> </li>
+       <li class="divider"></li>
+       <li> <a href="#">
+         <div>
+          <i class="fa fa-tasks fa-fw"></i> New Task
+          <span class="pull-right text-muted small">4 min</span>
+         </div> </a> </li>
+       <li class="divider"></li>
+       <li> <a class="text-center" href="#"> <strong>See All Alerts</strong> <i class="fa fa-angle-right"></i> </a> </li>
+      </ul>
+      <!-- /.dropdown-alerts --> </li>
+     <!-- /.dropdown -->
+     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i> </a>
+      <ul class="dropdown-menu dropdown-user">
+       <li><a href="userinfo.html"><i class="fa fa-user fa-fw"></i> User Profile</a> </li>
+       <li class="divider"></li>
+       <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a> </li>
+      </ul>
+      <!-- /.dropdown-user --> </li>
+     <!-- /.dropdown -->
+    </ul>
+   </nav>
+   <!--/. NAV TOP  -->
+   <nav class="navbar-default navbar-side" role="navigation">
+    <div class="sidebar-collapse">
+     <ul class="nav" id="main-menu">
+      <li> <a href="/teacher"><i class="fa fa-dashboard"></i> 首页</a> </li>
+      <li> <a href="#"><i class="fa fa-sitemap"></i> 管理学生<span class="fa arrow"></span></a>
+       <ul class="nav nav-second-level">
+        <li> <a href="/teacher/add_student">添加学生信息</a> </li>
+        <li> <a href="/teacher/add_student_loadxls">批量导入学生信息</a> </li>
+        <li> <a class="active-menu" href="/teacher/search_student">查看学生信息</a> </li>
+        <li> <a href="#">管理学生组<span class="fa arrow"></span></a>
+         <ul class="nav nav-third-level">
+          <li> <a href="/teacher/add_group">新建学生组</a> </li>
+          <li> <a href="/teacher/list_group">查看学生组</a> </li>
+          <li> <a href="/teacher/favourite">我关注的学生组</a> </li>
+         </ul> </li>
+        <li> <a href="/teacher/pushmsg">定向发布消息</a> </li>
+       </ul> </li>
+      <!--student infomation-->
+      <li> <a href="#"><i class="fa fa-sitemap"></i> 管理志愿者<span class="fa arrow"></span></a>
+       <ul class="nav nav-second-level">
+        <li> <a href="/teacher/add_volunteer">添加志愿者信息</a> </li>
+        <li> <a href="/teacher/add_volunteer_loadxls">批量导入志愿者信息</a> </li>
+        <li> <a href="/teacher/search_volunteer">查看志愿者信息</a> </li>
+       </ul> </li>
+      <!--volunteer infomation-->
+      <li> <a href="/teacher/release_test"><i class="fa fa-desktop"></i> 发布估分测试</a> </li>
+      <li> <a href="/teacher/logout"><i class="fa fa-desktop"></i> 退出登录</a> </li>
+     </ul>
+    </div>
+   </nav>
+   <!-- /. NAV SIDE  -->
+   <div id="page-wrapper">
+    <div id="page-inner">
+     <!--row-->
+     <div class="row">
+      <div class="col-md-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="row">
+          <div class="col-md-12">
+           <form role = "form" action="profile/" method="post">
+               {% csrf_token %}
+            <h1>我的信息</h1>
+            <div class="contentform">
+             <div class="leftcontact">
+              <div class="form-group">
+               <p>姓名<span>*</span></p>
+               <span class="icon-case"><i class="fa fa-male"></i></span>
+               <input type="text" name="teacher_name" id="teacher_name" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>E-mail <span>*</span></p>
+               <span class="icon-case"><i class="fa fa-envelope-o"></i></span>
+               <input required type="email" name="email" id="email" data-rule="email" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'E-mail' est obligatoire." />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>办公室地址 <span>*</span></p>
+               <span class="icon-case"><i class="fa fa-home"></i></span>
+               <input required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>家庭地址 </p>
+               <span class="icon-case"><i class="fa fa-map-marker"></i></span>
+               <input type="text" name="home_address" id="home_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Code postal' doit &ecirc;tre renseign&eacute;." />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>邮编 </p>
+               <span class="icon-case"><i class="fa fa-location-arrow"></i></span>
+               <input type="text" name="postcode" id="postcode" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Adresse' doit &ecirc;tre renseign&eacute;." />
+               <div class="validation"></div>
+              </div>
+
+             </div>
+             <div class="rightcontact">
+              <div class="form-group">
+               <p>固定电话 </p>
+               <span class="icon-case"><i class="fa fa-phone"></i></span>
+               <input type="text" name="homephone" id="homephone" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Ville' doit &ecirc;tre renseign&eacute;." />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>手机号码 <span>*</span></p>
+               <span class="icon-case"><i class="fa fa-phone"></i></span>
+               <input required  type="text" name="phone" id="phone" data-rule="maxlen:10" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'T&eacute;l&eacute;phone' doit &ecirc;tre renseign&eacute;. Minimum 10 chiffres" />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>QQ </p>
+               <span class="icon-case"><i class="fa fa-info"></i></span>
+               <input type="text" name="qqn" id="qqn" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Fonction' doit &ecirc;tre renseign&eacute;." />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>微信号 </p>
+               <span class="icon-case"><i class="fa fa-comment-o"></i></span>
+               <input type="text" name="weichat" id="weichat" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Sujet' doit &ecirc;tre renseign&eacute;." />
+               <div class="validation"></div>
+              </div>
+              <div class="form-group">
+               <p>个人描述 <span>*</span></p>
+               <span class="icon-case"><i class="fa fa-comments-o"></i></span>
+               <textarea required  name="describe" id="describe" rows="14" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Message' doit &ecirc;tre renseign&eacute;."></textarea>
+               <div class="validation"></div>
+              </div>
+             </div>
             </div>
-
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="userinfo.html"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-        </nav>
-        <!--/. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-
-                    <li>
-                        <a href="#"><i class="fa fa-dashboard"></i> 首页</a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 学生信息<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="stuinfoin.html">信息录入</a>
-                            </li>
-                            <li>
-                                <a href="stuinfosc.html">信息查询</a>
-                            </li>
-                            <li>
-                                <a href="#">发送短信<span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="messsent.html">一对一</a>
-                                    </li>
-                                    <li>
-                                        <a href="messsents.html">一对多</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-					<!--student infomation-->
-					<li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 志愿者信息<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="volinfo.html">信息查询</a>
-                            </li>
-                            <li>
-                                <a href="voldist.html">志愿者分配</a>
-                            </li>
-                        </ul>
-                    </li>
-					<!--volunteer infomation-->
-					
-					<li>
-                        <a href="papers.html"><i class="fa fa-desktop"></i> 估分发布</a>
-                    </li>
-					
-                </ul>
-
-            </div>
+<<<<<<< HEAD
 
         </nav>
         <!-- /. NAV SIDE  -->
@@ -207,31 +242,80 @@
 				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
 			</div>
              <!-- /. PAGE INNER  -->
+=======
+            <button type="button" id="teacher_save" name="teacher_save" class="bouton-contact">保存</button>
+           </form>
+          </div>
+         </div>
         </div>
-         <!-- /. PAGE WRAPPER  -->
+       </div>
+      </div>
+     </div>
+        <div class="row">
+          <div class="col-md-offset-4 col-md-4">
+             <footer>
+              <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
+             </footer>
+          </div>
+>>>>>>> 19d692bd90934eb6f11c61e24aa365d6a8237a5f
+        </div>
     </div>
-     <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
-
-
-	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
-	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
-
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
-
-
-   
-</body>
+    <!-- /. PAGE INNER  -->
+   </div>
+   <!-- /. PAGE WRAPPER  -->
+  </div>
+  <!-- /. WRAPPER  -->
+  <!-- JS Scripts-->
+  <!-- jQuery Js -->
+  <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
+  <!-- Bootstrap Js -->
+  <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+  <!-- Metis Menu Js -->
+  <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
+  <!-- Morris Chart Js -->
+  <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
+  <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+  <script src="{% static 'assets/js/easypiechart.js' %}"></script>
+  <script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
+  <!-- Custom Js -->
+  <!--<script src="{% static 'assets/js/custom-scripts.js' %}"></script>-->
+  <script>
+      console.log("WTF");
+      $(document).ready(function(){
+          console.log("Arrive here");
+          $("#teacher_save").click(function(){
+              console.log("teacher_save");
+            var teacher_name = $("#teacher_name").val();
+            var email = $("#email").val();
+            var work_address = $("#work_address").val();
+            var home_address = $("#home_address").val();
+            var postcode = $("#postcode").val();
+            var homephone = $("#homephone").val();
+            var phone = $("#phone").val();
+            var qqn = $("#qqn").val();
+            var weichat = $("#weichat").val();
+            var describe = $("#describe").val();
+            $.post("profile/",
+                    {
+                        'teacher_name':teacher_name,
+                        'email':email,
+                        'work_address':work_address,
+                        'home_address':home_address,
+                        'postcode':postcode,
+                        'homephone':homephone,
+                        'phone':phone,
+                        'qqn':qqn,
+                        'weichat':weichat,
+                        'describe':describe,
+                    },
+                    function(profileDict){
+                        console.log(profileDict['homephone']);
+                $('#teacher_name').val(profileDict['teacher_name']);
+                $('#phone').val(profileDict['phone']);
+                                        $('#homephone').val(profileDict['homephone']);
+            })
+          });
+      });
+  </script>
+ </body>
 </html>
