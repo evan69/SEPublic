@@ -23,7 +23,7 @@ from login import views as loginViews
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-	url(r'^teacher/', include('teacher.urls')),
+		url(r'^teacher/', include('teacher.urls')),
 
     #    关联login界面
     #    by byr 161003
@@ -36,4 +36,8 @@ urlpatterns = [
 
 
     url(r'^student/', include('student.urls')),
+		
+		#	map /backend url
+		#	by dqn14 Oct 12, 2016
+		url(r'^backend/', include('database.urls')),
 ]
