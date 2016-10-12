@@ -166,17 +166,192 @@
 							<div class = "panel-body">
 								<div class = "row">
 									<div class = "col-md-6">
-                                        {% csrf_token %}
-										<p>用户名：{{student,account}}</p>
-                                        <p>姓名：{{student.realName}}</p>
-                                        <p>性别：{{student.sex}}</p>
-                                        <p>身份证号：{{student.idNumber}}</p>
-                                        <p>出生年：{{student.birth[0]}}&nbsp;&nbsp;月：{{student.birth[1]}}&nbsp;&nbsp;日：{{student.birth[2]}}</p>
-                                        <p>民族：{{student.nation}}</p>
-                                        <p>文理科：{{student.type}}</p>
-                                        <p>学校：{{student.school}}</p>
-                                        <p></p>
-
+                                       <form class = "form-horizontal" role = "form" method = "POST" action = "/teacher/student_info/edit/">
+										{% csrf_token %}
+                                            <fieldset disabled = "">
+                                                <div class = "form-group">
+                                                    <label for = "account" class = "col-sm-2 control-label">用户名: </label>
+                                                    <div class="col-sm-10">
+                                                        <p class = "form-control-static" id= "account" name= "account">{{student.account}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "realName" class = "col-sm-2 control-label">姓名：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "realName" name = "realName" value = "{{student.realName}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "idNumber" class = "col-sm-2 control-label">身份证号：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "idNumber" name = "idNumber" value = "{{student.idNumber}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for = "registerCode" class = "col-sm-2 control-label">注册码：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "registerCode" name = "registerCode" value = "{{student.registerCode}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class = "col-sm-2 control-label" for = "sex">性别：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "sex" name = "sex" value = "{{student.sex}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nation" class="col-sm-2 control-label">民族：</label>
+                                                        <div class="col-sm-10">
+                                                             <input type = "text" class = "form-control" id = "nation" name = "nation" value = "{{student.nation}}">
+                                                        </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "birth" class = "col-sm-2 control-label">出生日期: </label>
+                                                    <div class="col-sm-10">
+                                                        <p class = "date" id= "birth" name= "birth">{{student.birth}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class = "col-sm-2 control-label" for = "type">文理科：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "type" name = "sex" value = "{{student.type}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="province" class="col-sm-2 control-lable">地区：</label>
+                                                    <div class="col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "province" name = "province" value = "{{student.province}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "phone" class = "col-sm-2 control-label">手机：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "tel" class = "form-control" name = "phone" id = "phone" value = "{{student.phone}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "email" class = "col-sm-2 control-label">邮箱：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "email" class = "form-control" id = "email" name = "email" value = "{{student.email}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "address" class = "col-sm-2 control-label">地址：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "address" name = "address" value = "{{student.address}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for = "dadName" class="control-label">父亲姓名：</label>
+                                                    <input type="text" class="form-contol" id="dadName" name="dadName" value="{{student.dadName}}">
+                                                    <label for="dadPhone" class="control-label">父亲电话：</label>
+                                                    <input type="text" class="form-control" id = "dadPhone" name="dadPhone" value="{{student.dadPhone}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for = "momName" class="control-label">母亲姓名：</label>
+                                                    <input type="text" class="form-contol" id="momName" name="momName" value="{{student.momName}}">
+                                                    <label for="momPhone" class="control-label">母亲电话：</label>
+                                                    <input type="text" class="form-control" id = "momPhone" name="momPhone" value="{{student.momPhone}}">
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "school" class = "col-sm-2 control-label">学校：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "school" name = "school" value = "{{student.school}}">
+                                                    </div>
+                                                    <label for = "stu_class" class="control-label">班级：</label>
+                                                    <input type="text" class="form-control" id = "stu_class" name="stu_class" value="{{student.stu_class}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for = "tutorName" class="control-label">班主任姓名：</label>
+                                                    <input type="text" class="form-contol" id="tutorName" name="tutorName" value="{{student.tutorName}}">
+                                                    <label for="tutorPhone" class="control-label">班主任电话：</label>
+                                                    <input type="text" class="form-control" id = "tutorPhone" name="tutorPhone" value="{{student.tutorPhone}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="majorSelect1" class="col-sm-2 control-lable">专业志愿一：</label>
+                                                    <div class="col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "majorSelect1" name = "majorSelect1" value = "{{student.major0}}">
+                                                    </div>
+                                                </div>
+                                               <div class="form-group">
+                                                    <label for="majorSelect2" class="col-sm-2 control-lable">专业志愿二：</label>
+                                                    <div class="col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "majorSelect2" name = "majorSelect2" value = "{{student.major1}}">
+                                                    </div>
+                                                </div>
+                                               <div class="form-group">
+                                                    <label for="majorSelect3" class="col-sm-2 control-lable">专业志愿三：</label>
+                                                    <div class="col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "majorSelect3" name = "majorSelect3" value = "{{student.major2}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "testScore1" class = "control-label">一模成绩：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "testScore1" name = "testScore1" value = "{{student.testSocreList0}}">
+                                                    </div>
+                                                    <label for = "rank1" class="control-label">排名：</label>
+                                                    <input type="text" class="form-control" id = "rank1" name="rank1" value="{{student.rankList0}}">
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "testScore2" class = "control-label">二模成绩：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "testScore2" name = "testScore2" value = "{{student.testSocreList1}}">
+                                                    </div>
+                                                    <label for = "rank2" class="control-label">排名：</label>
+                                                    <input type="text" class="form-control" id = "rank2" name="rank2" value="{{student.rankList1}}">
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "testScore3" class = "control-label">三模成绩：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "testScore3" name = "testScore3" value = "{{student.testSocreList2}}">
+                                                    </div>
+                                                    <label for = "rank3" class="control-label">排名：</label>
+                                                    <input type="text" class="form-control" id = "rank3" name="rank3" value="{{student.rankList2}}">
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "estimateScore" class = "col-sm-2 control-label">估分：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "estimateScore" name = "estimateScore" value = "{{student.estimateScore}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "realScore" class = "col-sm-2 control-label">实考分：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "realScore" name = "realScore" value = "{{student.realScore}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="admissionStatus" class="col-sm-2 control-lable">录取情况：</label>
+                                                    <div class="col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "admissionStatus" name = "estimateScore" value = "{{student.estimateScore}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "relTeacher" class = "col-sm-2 control-label">对应老师：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "relTeacher" name = "relTeacher" value = "{{student.relTeacher}}">
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+                                                    <label for = "relVolunteer" class = "col-sm-2 control-label">对应志愿者：</label>
+                                                    <div class = "col-sm-10">
+                                                        <input type = "text" class = "form-control" id = "relVolunteer" name = "relVolunteer" value = "{{student.relVolunteer}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="comment" class="col_sm_2  control-label">备注：</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class = "form-group">
+												<div class="col-sm-offset-2 col-sm-10">
+													<button type = "submit" class = "btn btn-primary" value = "save" >编辑</button>
+												</div>
+											</div>
+                                            </fieldset>
+										</form>
 									</div>
 								</div>
 							</div>

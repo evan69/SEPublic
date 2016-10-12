@@ -282,16 +282,30 @@
                                                 <label for="tutorPhone" class="control-label">班主任电话：</label>
                                                 <input type="text" class="form-control" id = "tutorPhone" name="tutorPhone" value="{{student.tutorPhone}}">
                                             </div>
-											<div class = "form-group">
-												<div class="col-sm-offset-2 col-sm-10">
-													<button type = "submit" class = "btn btn-primary" value = "save" >保存</button>
-													<button type = "cancel" style = "margin-left:20px;" class = "btn btn-default" value = "cancel" >取消</button>
-												</div>
-											</div>
                                             <div class="form-group">
-                                                <label for="majorSelect" class="col-sm-2 control-lable">专业志愿：</label>
+                                                <label for="majorSelect1" class="col-sm-2 control-lable">专业志愿一：</label>
                                                 <div class="col-sm-10">
-                                                    <select id="majorSelect" name="majorSelect">
+                                                    <select id="majorSelect1" name="majorSelect1">
+                                                        {% for majorOption in major %}
+                                                        <option>{{majorOption}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="majorSelect2" class="col-sm-2 control-lable">专业志愿二：</label>
+                                                <div class="col-sm-10">
+                                                    <select id="majorSelect2" name="majorSelect2">
+                                                        {% for majorOption in major %}
+                                                        <option>{{majorOption}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="majorSelect3" class="col-sm-2 control-lable">专业志愿三：</label>
+                                                <div class="col-sm-10">
+                                                    <select id="majorSelect3" name="majorSelect3">
                                                         {% for majorOption in major %}
                                                         <option>{{majorOption}}</option>
                                                         {% endfor %}
@@ -301,26 +315,26 @@
                                             <div class = "form-group">
 												<label for = "testScore1" class = "control-label">一模成绩：</label>
 												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "testScore1" name = "testScore1" value = "{{student.testSocreList[0]}}">
+													<input type = "text" class = "form-control" id = "testScore1" name = "testScore1" value = "{{student.testSocreList.0}}">
 											    </div>
                                                 <label for = "rank1" class="control-label">排名：</label>
-                                                <input type="text" class="form-control" id = "rank1" name="rank1" value="{{student.rankList[0]}}">
+                                                <input type="text" class="form-control" id = "rank1" name="rank1" value="{{student.rankList.0}}">
 											</div>
                                             <div class = "form-group">
 												<label for = "testScore2" class = "control-label">二模成绩：</label>
 												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "testScore2" name = "testScore2" value = "{{student.testSocreList[1]}}">
+													<input type = "text" class = "form-control" id = "testScore2" name = "testScore2" value = "{{student.testSocreList.1}}">
 											    </div>
                                                 <label for = "rank2" class="control-label">排名：</label>
-                                                <input type="text" class="form-control" id = "rank2" name="rank2" value="{{student.rankList[1]}}">
+                                                <input type="text" class="form-control" id = "rank2" name="rank2" value="{{student.rankList.1}}">
 											</div>
                                             <div class = "form-group">
 												<label for = "testScore3" class = "control-label">三模成绩：</label>
 												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "testScore3" name = "testScore3" value = "{{student.testSocreList[2]}}">
+													<input type = "text" class = "form-control" id = "testScore3" name = "testScore3" value = "{{student.testSocreList.2}}">
 											    </div>
                                                 <label for = "rank3" class="control-label">排名：</label>
-                                                <input type="text" class="form-control" id = "rank3" name="rank3" value="{{student.rankList[2]}}">
+                                                <input type="text" class="form-control" id = "rank3" name="rank3" value="{{student.rankList.2}}">
 											</div>
                                             <div class = "form-group">
 												<label for = "estimateScore" class = "col-sm-2 control-label">估分：</label>
@@ -360,7 +374,7 @@
                                             <div class="form-group">
                                                 <label for="comment" class="col_sm_2  control-label">备注：</label>
                                                 <div class="col-sm-10">
-                                                    <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student}.comment}}</textarea>
+                                                    <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
                                                 </div>
                                             </div>
                                             <div class = "form-group">
