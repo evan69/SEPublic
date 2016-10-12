@@ -94,8 +94,8 @@
         <div class="panel-body">
          <div class="row">
           <div class="col-md-12">
-           <form role = "form" action="profile/" method="post">
-               {% csrf_token %}
+           <form role = "form" action="#">
+              {% csrf_token %}
             <h1>我的信息</h1>
             <div class="contentform">
              <div class="leftcontact">
@@ -215,7 +215,7 @@
             var qqn = $("#qqn").val();
             var weichat = $("#weichat").val();
             var describe = $("#describe").val();
-            $.post("profile/",
+            $.post("",
                     {
                         'teacher_name':teacher_name,
                         'email':email,
@@ -230,9 +230,8 @@
                     },
                     function(profileDict){
                         console.log(profileDict['homephone']);
-                $('#teacher_name').val(profileDict['teacher_name']);
-                $('#phone').val(profileDict['phone']);
-                                        $('#homephone').val(profileDict['homephone']);
+                        for (key_i in profileDict)
+                            $("#"+key_i).val(profileDict[key_i])
             })
           });
       });

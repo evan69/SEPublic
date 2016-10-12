@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, request, JsonResponse
 from django.template.loader import get_template
-from django.template import Context
+from django.template import Context, RequestContext
 
-from django.shortcuts import redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 # Create your views here.
+
 
 @ensure_csrf_cookie
 def search_student(request):
@@ -43,3 +44,20 @@ def teacher_logout(request):
 	except KeyError:
 		pass
 	return redirect('/login')
+
+'''
+    查看和修改教师个人信息
+    by byr 161012
+'''
+#@csrf_protect
+@csrf_exempt
+def profile(request):
+    if request.method == 'POST':
+        print "heheda"
+        teacher_name = request.POST.get('teacher_name', 'byr')
+        phone = request.POST.get('phone', '110')
+        dict = {'teacher_name': teacher_name, 'email': '1', 'work_address': '2', 'home_address': '10', 'postcode': '3',
+                'homephone': '4', 'phone': phone, 'qqn': '5', 'weichat': '6', 'describe': '7', }
+        return JsonResponse(dict)
+    else:
+        return render_to_response('userinfo.html',context_instance=RequestContext(request))
