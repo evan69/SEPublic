@@ -21,7 +21,7 @@ def getFromDatabase():
     pre = {}
     user['account'] = -1
     for i in range(1,6):
-        user[keylist[i]] = teacher_backend.getData(user['account'], keylist[i])
+        user[keylist[i]] = teacher_backend.getTeacher(user['account'], keylist[i])
     pre = copy.deepcopy(user)
 
 @csrf_exempt
@@ -60,4 +60,4 @@ def changeDatabase():
             continue
         else:
             if user[keylist[i]] == request.POST(keylist[i]):
-                teacher_backend.setData(user['account'], keylist[i], user[keylist[i]])
+                teacher_backend.setTeacher(user['account'], keylist[i], user[keylist[i]])
