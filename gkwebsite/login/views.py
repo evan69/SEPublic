@@ -50,9 +50,11 @@ def logincheck(request):
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
                 yzmString = request.POST.get('login_yzm').upper()
-                if yzmString == request.session['yzmString']:
-                    if teacher_backend.checkPassword(username, password):
-                        request.session['user_id'] = 10086
+                if (yzmString == request.session['yzmString']):
+                    print ' teacher login'
+                    (login,id) = teacher_backend.checkTeacherPassword(username, password)
+                    if login:
+                        request.session['user_id'] = int(id)
                         request.session['user_name'] = username
                         request.session['password'] = password
                         return redirect('/teacher/index')
