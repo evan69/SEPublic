@@ -102,31 +102,31 @@
               <div class="form-group">
                <p>姓名<span>*</span></p>
                <span class="icon-case"><i class="fa fa-male"></i></span>
-               <input type="text" name="teacher_name" id="teacher_name" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.teacher_name}}" type="text" name="teacher_name" id="teacher_name" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>E-mail <span>*</span></p>
                <span class="icon-case"><i class="fa fa-envelope-o"></i></span>
-               <input required type="email" name="email" id="email" data-rule="email" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'E-mail' est obligatoire." />
+               <input value="{{dict.email}}" required type="email" name="email" id="email" data-rule="email" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'E-mail' est obligatoire." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>办公室地址 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-home"></i></span>
-               <input required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.work_address}}" required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>家庭地址 </p>
                <span class="icon-case"><i class="fa fa-map-marker"></i></span>
-               <input type="text" name="home_address" id="home_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Code postal' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.home_address}}" type="text" name="home_address" id="home_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Code postal' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>邮编 </p>
                <span class="icon-case"><i class="fa fa-location-arrow"></i></span>
-               <input type="text" name="postcode" id="postcode" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Adresse' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.postcode}}" type="text" name="postcode" id="postcode" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Adresse' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
 
@@ -135,31 +135,33 @@
               <div class="form-group">
                <p>固定电话 </p>
                <span class="icon-case"><i class="fa fa-phone"></i></span>
-               <input type="text" name="homephone" id="homephone" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Ville' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.homephone}}" type="text" name="homephone" id="homephone" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Ville' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>手机号码 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-phone"></i></span>
-               <input required  type="text" name="phone" id="phone" data-rule="maxlen:10" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'T&eacute;l&eacute;phone' doit &ecirc;tre renseign&eacute;. Minimum 10 chiffres" />
+               <input value="{{dict.phone}}" required  type="text" name="phone" id="phone" data-rule="maxlen:10" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'T&eacute;l&eacute;phone' doit &ecirc;tre renseign&eacute;. Minimum 10 chiffres" />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>QQ </p>
                <span class="icon-case"><i class="fa fa-info"></i></span>
-               <input type="text" name="qqn" id="qqn" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Fonction' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.qqn}}" type="text" name="qqn" id="qqn" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Fonction' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>微信号 </p>
                <span class="icon-case"><i class="fa fa-comment-o"></i></span>
-               <input type="text" name="weichat" id="weichat" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Sujet' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.weichat}}" type="text" name="weichat" id="weichat" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Sujet' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>个人描述 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-comments-o"></i></span>
-               <textarea required  name="describe" id="describe" rows="14" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Message' doit &ecirc;tre renseign&eacute;."></textarea>
+               <textarea required  name="describe" id="describe" rows="14" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Message' doit &ecirc;tre renseign&eacute;.">
+                {{dict.describe}}
+               </textarea>
                <div class="validation"></div>
               </div>
              </div>
