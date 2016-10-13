@@ -2,15 +2,163 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f3cb162e-3578-4e31-a76a-19952702713d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/prj8_sewe.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/student.docx" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/fonts/glyphicons-halflings-regular.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/fonts/glyphicons-halflings-regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/fonts/glyphicons-halflings-regular.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/fonts/glyphicons-halflings-regular.woff2" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/img/login/bg.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/img/login/icons/email.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/img/login/icons/password.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/img/login/icons/user.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/img/login/yanzhengma.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.woff2" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/font-awesome/fonts/fontawesome-webfontba72.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/font-awesome/fonts/fontawesome-webfontba72.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/font-awesome/fonts/fontawesome-webfontba72.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/font-awesome/fonts/fontawesome-webfontd41d.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/fonts/glyphicons-halflings-regular.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/fonts/glyphicons-halflings-regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/fonts/glyphicons-halflings-regular.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/fonts/glyphicons-halflings-regulard41d.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/font-awesome/fonts/fontawesome-webfontba72.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/font-awesome/fonts/fontawesome-webfontba72.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/font-awesome/fonts/fontawesome-webfontba72.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/font-awesome/fonts/fontawesome-webfontd41d.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/fonts/glyphicons-halflings-regular.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/fonts/glyphicons-halflings-regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/fonts/glyphicons-halflings-regular.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/fonts/glyphicons-halflings-regulard41d.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/admin.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/apps.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/migrations/0001_initial.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/migrations/0002_teacher_volunteerlist.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/migrations/0003_auto_20161004_2241.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/migrations/0004_auto_20161005_1138.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/migrations/0005_auto_20161006_0032.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/migrations/0006_auto_20161007_1054.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/migrations/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/models.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/my_field.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/teacher_backend.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/teacher_readme.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/tests.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/database/views.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/admin.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/apps.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/migrations/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/models.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap-theme.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap-theme.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap-theme.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap-theme.min.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/bootstrap.min.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/login/avgrund.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/login/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/css/login/yzm.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/fonts/glyphicons-halflings-regular.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/js/bootstrap.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/js/bootstrap.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/js/login/flux.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/js/login/jquery.avgrund.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/static/assets/js/npm.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/templates/src/login.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/tests.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/login/views.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/admin.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/apps.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/migrations/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/models.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap-theme.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/css/bootstrap.min.css.map" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/fonts/glyphicons-halflings-regular.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/js/bootstrap.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/js/bootstrap.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/bootstrap-3.3.7-dist/js/npm.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/css/bootstrap-theme.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/css/bootstrap.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/css/custom-styles.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/css/font-awesome.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/font-awesome/fonts/fontawesome-webfontba72.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/fonts/glyphicons-halflings-regular.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/bootstrap.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/chart-data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/chart.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/custom-scripts.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/custom.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/dataTables/dataTables.bootstrap.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/dataTables/dataTables.bootstrap.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/dataTables/jquery.dataTables.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/easypiechart-data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/easypiechart.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/jquery-1.10.2.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/jquery-3.1.1.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/jquery.metisMenu.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/morris/morris-0.4.3.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/morris/morris.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/static/js/morris/raphael-2.1.0.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/templates/student/admit.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/templates/student/center.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/templates/student/contact.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/templates/student/rank.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/templates/student/score.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/tests.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/urls.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/student/views.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/admin.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/apps.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/migrations/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/models.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/css/bootstrap-theme.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/css/bootstrap.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/css/custom-styles.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/css/font-awesome.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/font-awesome/fonts/fontawesome-webfontba72.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/fonts/glyphicons-halflings-regular.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/bootstrap.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/chart-data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/chart.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/custom-scripts.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/custom.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/dataTables/dataTables.bootstrap.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/dataTables/dataTables.bootstrap.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/dataTables/jquery.dataTables.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/easypiechart-data.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/easypiechart.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/jquery-1.10.2.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/jquery.metisMenu.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/morris/morris-0.4.3.min.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/morris/morris.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/assets/js/morris/raphael-2.1.0.min.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/messsent.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/stuinfoin.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/stuinfosc.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/tindex.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/templates/userinfo.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/tests.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/urls.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/gkwebsite/teacher/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gkwebsite/db.sqlite3" afterPath="$PROJECT_DIR$/gkwebsite/db.sqlite3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gkwebsite/gkwebsite/settings.py" afterPath="$PROJECT_DIR$/gkwebsite/gkwebsite/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gkwebsite/gkwebsite/urls.py" afterPath="$PROJECT_DIR$/gkwebsite/gkwebsite/urls.py" />
     </list>
     <ignored path="prj8_sewe.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,7 +223,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="952" />
+    <option name="x" value="1145" />
     <option name="width" value="976" />
     <option name="height" value="1038" />
   </component>
@@ -164,11 +312,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="gkwebsite" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gkwebsite" />
+              <option name="myItemId" value="doc" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -419,7 +563,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="952" y="0" width="976" height="1038" extended-state="0" />
+    <frame x="1145" y="0" width="976" height="1038" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36615044" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -583,13 +727,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -790,6 +927,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="550">
           <caret line="186" column="0" selection-start-line="186" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
           <folding />
         </state>
       </provider>
