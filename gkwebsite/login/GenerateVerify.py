@@ -9,7 +9,7 @@ from PIL import ImageFont
 # 导入StringIO模块
 from StringIO import StringIO
 
-
+import os
 
 def gnrtyzm(width, height):
     # 验证码中的字符长度
@@ -36,7 +36,7 @@ def gnrtyzm(width, height):
     # 注意这个是windows系统下默认的字体，其他系统自己找
     '''
     # 导入字体
-    font = ImageFont.truetype('./static/assets/fonts/arial.ttf', size)
+    font = ImageFont.truetype(os.getcwd()+'/login/static/assets/fonts/mnfqh.otf', size)
     '''
     # 用到了`ImageDraw 的 Draw 函数
     # 有且只有一个参数，就是之前创建的画布
@@ -59,7 +59,7 @@ def gnrtyzm(width, height):
         yzmString = yzmString + randAlphabet
         draw.text((left, top), randAlphabet, font=font, fill=textColor)
 
-    for i in range(30):
+    for i in range(15):
          textColor = (255, 255, 255)
          left = randint(0, width)
          top = randint(0, height)
