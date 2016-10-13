@@ -1,8 +1,8 @@
 #encoding=utf-8
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import get_template
-from django.template import Context, RequestContext
+from django.template import Context
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import  csrf_exempt
@@ -70,7 +70,7 @@ def teacher_logout(request):
 def profile(request):
     if request.method == 'POST':
         '''
-        			后端需要在这里改代码，返回正确的dict
+        	后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
         teacher_name = request.POST.get('teacher_name', 'byr')
         phone = request.POST.get('phone', '110')
@@ -78,5 +78,10 @@ def profile(request):
                 'homephone': '4', 'phone': phone, 'qqn': '5', 'weichat': '6', 'describe': '7', }
         return JsonResponse(dict)
     else:
-        return render_to_response('userinfo.html',context_instance=RequestContext(request))
+        '''
+            后端需要在这里改代码，从数据库读取正确的dict，并返回
+        '''
+        dict = {'teacher_name': '骚猴', 'email': '11', 'work_address': '22', 'home_address': '130', 'postcode': '43',
+                'homephone': '49', 'phone': '666', 'qqn': '85', 'weichat': '66', 'describe': '57', }
+        return render(request, 'userinfo.html',{'dict':dict})
 

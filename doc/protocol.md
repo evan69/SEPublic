@@ -25,12 +25,13 @@
 	</tr>
 	<tr>
 		<td>profile</td>
-		<td>返回教师的信息</td>
+		<td>查看、修改教师的信息</td>
 		<td>teacher/views.py</td>
 		<td>request</td>
 		<td>类型：JsonResponse(dict)  dict = {'teacher_name': '', 'email': '', 'work_address': '', 'home_address': '', 'postcode': '',
-                'homephone': '', 'phone': '', 'qqn': '', 'weichat': '', 'describe': '', }</td>
-		<td>POST</td>
+                'homephone': '', 'phone': '', 'qqn': '', 'weichat': '', 'describe': '', }
+                GET直接返回字典 POST返回JSON</td>
+		<td>GET/POST</td>
 		<td>白云仁</td>
 		<td>h</td>
 	</tr>
