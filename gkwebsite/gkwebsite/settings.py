@@ -60,6 +60,11 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'gkwebsite.urls'
+'''
+    session 过期设置
+    by byr 161011
+'''
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 TEMPLATES = [
     {
