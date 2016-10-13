@@ -11,7 +11,7 @@ import datetime
 def student_center(request):
 	t = get_template('student/center.html')
 	id = request.session.get('user_id', -1)
-	c = Context({'id': id})
+	c = {'id':id}
 	return HttpResponse(t.render(c))
 	
 def student_score(request):
@@ -19,7 +19,7 @@ def student_score(request):
 	id = request.session.get('user_id', -1)
 	if id == -1:
 		return HttpResponse('Access denied')
-	c = Context({'id': id})
+	c = {'id':id}
 	return HttpResponse(t.render(c))
 	
 def student_rank(request):
