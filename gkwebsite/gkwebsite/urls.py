@@ -36,4 +36,7 @@ urlpatterns = [
 
 
     url(r'^student/', include('student.urls')),
+	
+	#   关联微信处理
+	url(r'^wechat/', include('wechat.urls')),
 ]
