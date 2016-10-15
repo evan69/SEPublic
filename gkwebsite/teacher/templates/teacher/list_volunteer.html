@@ -100,7 +100,7 @@
                                 <a href="/teacher/add_student_loadxls">批量导入学生信息</a>
                             </li>
 														<li>
-                                <a class="active-menu" href="#">查看学生信息</a>
+                                <a href="/teacher/search_student">查看学生信息</a>
                             </li>
                             <li>
                                 <a href="#">管理学生组<span class="fa arrow"></span></a>
@@ -132,7 +132,7 @@
                                 <a href="/teacher/add_volunteer_loadxls">批量导入志愿者信息</a>
                             </li>
 														<li>
-                                <a href="/teacher/search_volunteer">查看志愿者信息</a>
+                                <a class="active-menu" href="#">查看志愿者信息</a>
                             </li>
                         </ul>
                     </li>
@@ -157,7 +157,7 @@
 				<div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            检索学生信息 <small>高考招生系统教师端  您好，<span id='namefield'></span></small>
+                            检索志愿者信息 <small>高考招生系统教师端  您好，<span id='namefield'></span></small>
                         </h1>
                     </div>
                 </div> 
@@ -184,62 +184,14 @@
 									<thead>
 										<tr>
 											<th>姓名</th>
-											<th>性别</th>
-											<th>生源地</th>
-											<th>学校</th>
-											<th>身份证号</th>
+											<th>院系</th>
+											<th>班级</th>
+											<th>学号</th>
 											<th></th>
 										</tr>
 									</thead>
 									<tbody id="student_list">
-										<tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr>
+										
 									</tbody>
 								</table>
 							</div>
@@ -305,7 +257,7 @@
 					tag1 = String(i)+'_A';
 					tag2 = String(i)+'_B';
 					tag3 = String(i)+'_C';
-					listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['gender']+"</td><td>"+user_array[i]['source']+"</td><td>"+user_array[i]['school']+"</td><td>"+user_array[i]['id_card']+"</td>";
+					listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['department']+"</td><td>"+user_array[i]['class']+"</td><td>"+user_array[i]['student_id']+"</td>";
 					listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">查看</button>\n";
 					listitems+="<button type=\"button\" id=\""+tag2+"\" class = \"btn btn-success btn-xs\">编辑</button>\n";
 					listitems+="<button type=\"button\" id=\""+tag3+"\" class = \"btn btn-danger btn-xs\">删除</button></td></tr>";
@@ -330,21 +282,21 @@
 						*/
 						var abs_pos=list_start_pos+row;
 						//alert("Operation:view at row #"+abs_pos+" ?id="+user_array[abs_pos]['id']);
-						window.location="/teacher/student_info?id="+user_array[abs_pos]['id'];
+						window.location="/teacher/volunteer_info?id="+user_array[abs_pos]['id'];
 					});
 					$('#'+tag2).click(function(){
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						//alert("Operation:edit at row #"+row);
 						var abs_pos=list_start_pos+row;
-						window.location="/teacher/student_info_edit?id="+user_array[abs_pos]['id'];
+						window.location="/teacher/volunteer_info_edit?id="+user_array[abs_pos]['id'];
 					});
 					$('#'+tag3).click(function(){
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						alert("Operation:drop at row #"+row);
 						var abs_pos=list_start_pos+row;
-						$.post("/backend/remove_student_by_id/", {'id':user_array[abs_pos]['id']}, function(ret){
+						$.post("/backend/remove_volunteer_by_id/", {'id':user_array[abs_pos]['id']}, function(ret){
 						//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 							postreq($('#realName').val());
 						})
@@ -357,7 +309,7 @@
 					list_start_pos = 0;
 					$('#student_list').empty();
 					//access server and load matching records
-					$.post("/backend/student_list_all/", {}, function(ret){
+					$.post("/backend/volunteer_list_all/", {}, function(ret){
 					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
@@ -367,7 +319,7 @@
 					list_start_pos = 0;
 					$('#student_list').empty();
 					//access server and load matching records
-					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
+					$.post("/backend/search_volunteer_by_name/", {'name':namestr}, function(ret){
 					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
@@ -397,7 +349,7 @@
 					list_start_pos = 0;
 					$('#student_list').empty();
 					//access server and load matching records
-					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
+					$.post("/backend/search_volunteer_by_name/", {'name':namestr}, function(ret){
 					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
