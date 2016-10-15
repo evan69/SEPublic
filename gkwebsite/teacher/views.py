@@ -48,10 +48,9 @@ def add_student(request):
 	id = request.session.get('user_id', -1)
 	if id == -1:
 		return HttpResponse('Access denied')
-	#t = get_template('teacher/list_student.html')
-	#c = {}
-	#return HttpResponse(t.render(c))
-	return HttpResponse('Add student page.')
+	t = get_template('teacher/add_student.html')	
+	c = {'id': id}
+	return HttpResponse(t.render(c))
 	
 def fake_backend(request):
 	if request.is_ajax() and request.method == 'POST':
