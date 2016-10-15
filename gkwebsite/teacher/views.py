@@ -18,6 +18,15 @@ def search_student(request):
 	t = get_template('teacher/list_student.html')
 	c = {'id': id}
 	return HttpResponse(t.render(c))
+	
+@ensure_csrf_cookie
+def search_volunteer(request):
+	id = request.session.get('user_id', -1)
+	if id == -1:
+		return HttpResponse('Access denied')
+	t = get_template('teacher/list_volunteer.html')
+	c = {'id': id}
+	return HttpResponse(t.render(c))
 
 def student_info_edit(request):
 	t = get_template('teacher/student_info_edit.html')
@@ -39,10 +48,9 @@ def add_student(request):
 	id = request.session.get('user_id', -1)
 	if id == -1:
 		return HttpResponse('Access denied')
-	#t = get_template('teacher/list_student.html')
-	#c = {}
-	#return HttpResponse(t.render(c))
-	return HttpResponse('Add student page.')
+	t = get_template('teacher/add_student.html')	
+	c = {'id': id}
+	return HttpResponse(t.render(c))
 	
 def fake_backend(request):
 	if request.is_ajax() and request.method == 'POST':
@@ -60,6 +68,14 @@ def teacher_logout(request):
 	except KeyError:
 		pass
 	return redirect('/login')
+	
+def dashboard(request):
+	id = request.session.get('user_id', -1)
+	if id == -1:
+		return HttpResponse('Access denied')
+	t = get_template('teacher/dashboard.html')
+	c = {'id': id}
+	return HttpResponse(t.render(c))
 
 '''
     查看和修改教师个人信息
