@@ -11,6 +11,7 @@ import sys
 sys.path.append("..")
 import database.teacher_backend as tch
 import database.student_backend as stu
+import datetime
 from database.models import *
 
 
@@ -81,7 +82,7 @@ def student_info_save(request):
     dic = {
         Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
         Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
-        Student.BIRTH: getattr(student, Student.BIRTH).strftime("%Y-%m-%d"),
+        Student.BIRTH: getattr(student, Student.BIRTH, datetime.datetime.now()).strftime("%Y-%m-%d"),
         Student.ID_NUMBER: getattr(student, Student.ID_NUMBER, 'no'),
 
         Student.TYPE: getattr(student, Student.TYPE, 'no'),
