@@ -83,5 +83,5 @@ def profile(request):
         '''
         dict = {'teacher_name': '骚猴', 'email': '11', 'work_address': '22', 'home_address': '130', 'postcode': '43',
                 'homephone': '49', 'phone': '666', 'qqn': '85', 'weichat': '66', 'describe': '57', }
-        return render(request, 'userinfo.html',{'dict':dict})
+        return render(request, 'teacher/userinfo.html',{'dict':dict})
 

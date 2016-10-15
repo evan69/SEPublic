@@ -18,73 +18,11 @@
    <!-- profile-->
   <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
   <div id="wrapper">
-   <nav class="navbar navbar-default top-navbar" role="navigation">
-    <div class="navbar-header">
-     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-     <a class="navbar-brand" href="/teacher"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
-    </div>
-    <ul class="nav navbar-top-links navbar-right">
-     <!-- /.dropdown -->
-     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i> </a>
-      <ul class="dropdown-menu dropdown-alerts">
-       <li> <a href="#">
-         <div>
-          <i class="fa fa-envelope fa-fw"></i> Message Sent
-          <span class="pull-right text-muted small">4 min</span>
-         </div> </a> </li>
-       <li class="divider"></li>
-       <li> <a href="#">
-         <div>
-          <i class="fa fa-tasks fa-fw"></i> New Task
-          <span class="pull-right text-muted small">4 min</span>
-         </div> </a> </li>
-       <li class="divider"></li>
-       <li> <a class="text-center" href="#"> <strong>See All Alerts</strong> <i class="fa fa-angle-right"></i> </a> </li>
-      </ul>
-      <!-- /.dropdown-alerts --> </li>
-     <!-- /.dropdown -->
-     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i> </a>
-      <ul class="dropdown-menu dropdown-user">
-       <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a> </li>
-       <li class="divider"></li>
-       <li><a href="/teacher/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a> </li>
-      </ul>
-      <!-- /.dropdown-user --> </li>
-     <!-- /.dropdown -->
-    </ul>
-   </nav>
-   <!--/. NAV TOP  -->
-   <nav class="navbar-default navbar-side" role="navigation">
-    <div class="sidebar-collapse">
-     <ul class="nav" id="main-menu">
-      <li> <a href="/teacher"><i class="fa fa-dashboard"></i> 首页</a> </li>
-      <li> <a href="#"><i class="fa fa-sitemap"></i> 管理学生<span class="fa arrow"></span></a>
-       <ul class="nav nav-second-level">
-        <li> <a href="/teacher/add_student">添加学生信息</a> </li>
-        <li> <a href="/teacher/add_student_loadxls">批量导入学生信息</a> </li>
-        <li> <a href="/teacher/search_student">查看学生信息</a> </li>
-        <li> <a href="#">管理学生组<span class="fa arrow"></span></a>
-         <ul class="nav nav-third-level">
-          <li> <a href="/teacher/add_group">新建学生组</a> </li>
-          <li> <a href="/teacher/list_group">查看学生组</a> </li>
-          <li> <a href="/teacher/favourite">我关注的学生组</a> </li>
-         </ul> </li>
-        <li> <a href="/teacher/pushmsg">定向发布消息</a> </li>
-       </ul> </li>
-      <!--student infomation-->
-      <li> <a href="#"><i class="fa fa-sitemap"></i> 管理志愿者<span class="fa arrow"></span></a>
-       <ul class="nav nav-second-level">
-        <li> <a href="/teacher/add_volunteer">添加志愿者信息</a> </li>
-        <li> <a href="/teacher/add_volunteer_loadxls">批量导入志愿者信息</a> </li>
-        <li> <a href="/teacher/search_volunteer">查看志愿者信息</a> </li>
-       </ul> </li>
-      <!--volunteer infomation-->
-      <li> <a href="/teacher/release_test"><i class="fa fa-desktop"></i> 发布估分测试</a> </li>
-      <li> <a href="/teacher/logout"><i class="fa fa-desktop"></i> 退出登录</a> </li>
-     </ul>
-    </div>
-   </nav>
-   <!-- /. NAV SIDE  -->
+  {% include 'teacher/navtop.html' %}
+
+  {% include 'teacher/teachernavside.html' %}
+
+
    <div id="page-wrapper">
     <div id="page-inner">
      <!--row-->
@@ -112,21 +50,21 @@
                <div class="validation"></div>
               </div>
               <div class="form-group">
-               <p>办公室地址 <span>*</span></p>
+               <p>办公地址 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-home"></i></span>
                <input value="{{dict.work_address}}" required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
-               <p>家庭地址 </p>
-               <span class="icon-case"><i class="fa fa-map-marker"></i></span>
-               <input value="{{dict.home_address}}" type="text" name="home_address" id="home_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Code postal' doit &ecirc;tre renseign&eacute;." />
+               <p>密码 </p>
+               <span class="icon-case"><i class="fa fa-info"></i></span>
+               <input type="password" name="password1" id="password1" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Code postal' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
               <div class="form-group">
-               <p>邮编 </p>
-               <span class="icon-case"><i class="fa fa-location-arrow"></i></span>
-               <input value="{{dict.postcode}}" type="text" name="postcode" id="postcode" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Adresse' doit &ecirc;tre renseign&eacute;." />
+               <p>密码确认 </p>
+               <span class="icon-case"><i class="fa fa-info"></i></span>
+               <input type="password" name="password2" id="password2" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Adresse' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
 
@@ -187,20 +125,7 @@
    <!-- /. PAGE WRAPPER  -->
   </div>
   <!-- /. WRAPPER  -->
-  <!-- JS Scripts-->
-  <!-- jQuery Js -->
-  <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
-  <!-- Bootstrap Js -->
-  <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-  <!-- Metis Menu Js -->
-  <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-  <!-- Morris Chart Js -->
-  <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-  <!--<script src="{% static 'assets/js/morris/morris.js' %}"></script>-->
-  <script src="{% static 'assets/js/easypiechart.js' %}"></script>
-  <script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
-  <!-- Custom Js -->
-  <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+{% include 'teacher/jsinclude.html' %}
   <script>
       console.log("WTF");
       $(document).ready(function(){
@@ -210,20 +135,24 @@
             var teacher_name = $("#teacher_name").val();
             var email = $("#email").val();
             var work_address = $("#work_address").val();
-            var home_address = $("#home_address").val();
-            var postcode = $("#postcode").val();
+            var password1 = $("#password1").val();
+            var password2 = $("#password2").val();
             var homephone = $("#homephone").val();
             var phone = $("#phone").val();
             var qqn = $("#qqn").val();
             var weichat = $("#weichat").val();
             var describe = $("#describe").val();
+            if (password1 != password2){
+             alert("两次密码不一致，请重新输入");
+             return;
+            }
             $.post("",
                     {
                         'teacher_name':teacher_name,
                         'email':email,
                         'work_address':work_address,
-                        'home_address':home_address,
-                        'postcode':postcode,
+                        'password1':password1,
+                        'password2':password2,
                         'homephone':homephone,
                         'phone':phone,
                         'qqn':qqn,
@@ -233,7 +162,8 @@
                     function(profileDict){
                         console.log(profileDict['homephone']);
                         for (key_i in profileDict)
-                            $("#"+key_i).val(profileDict[key_i])
+                            $("#"+key_i).val(profileDict[key_i]);
+                        alert("修改成功");
             })
           });
       });
