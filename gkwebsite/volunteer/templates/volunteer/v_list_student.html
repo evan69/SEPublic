@@ -179,7 +179,8 @@
 					//listitems+="<button type=\"button\" id=\""+tag3+"\" class = \"btn btn-danger btn-xs\">删除</button></td></tr>";
 					$('#student_list').append(listitems);
 					$('#'+tag1).click(function(){
-					    console.log('hehe');
+					    console.log('hehe2');
+					    //alert('cao');
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						//No need to examine the suffix since we are dealing with 'tag1'
@@ -199,7 +200,7 @@
 						*/
 						var abs_pos=list_start_pos+row;
 						//alert("Operation:view at row #"+abs_pos+" ?id="+user_array[abs_pos]['id']);
-						window.location="/teacher/student_info?id="+user_array[abs_pos]['id'];
+						window.location="/volunteer/student_info?id="+user_array[abs_pos]['id'];
 					});
 					/*
 					$('#'+tag2).click(function(){
@@ -228,7 +229,7 @@
 					list_start_pos = 0;
 					$('#student_list').empty();
 					//access server and load matching records
-					$.post("/backend/student_list_all/", {}, function(ret){
+					$.post("/volunteer/student_list_all/", {}, function(ret){
 					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
@@ -259,10 +260,10 @@
 				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
-				
+
 				var nameinit=$('#realName').val();
 				postreq(nameinit);
-				
+
 				$('#search').click(function(){
 					var namestr=$('#realName').val();
 					list_start_pos = 0;

@@ -166,6 +166,7 @@
                     },
                     function(profileDict){
                         console.log(profileDict['homephone']);
+                        alert('success');
                         for (key_i in profileDict)
                             $("#"+key_i).val(profileDict[key_i])
             })
