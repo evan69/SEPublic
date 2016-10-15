@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'student.apps.StudentConfig',
 
     'teacher',
+
+    'wechat',
 ]
 
 MIDDLEWARE_CLASSES = [
