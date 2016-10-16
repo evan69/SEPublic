@@ -13,6 +13,7 @@ import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
 from database.models import *
+from database.my_field import *
 
 # Create your views here.
 
@@ -38,8 +39,8 @@ def student_list_all(request):
             item = stu.getStudentAll(account)
             dic = {'id': getattr(item, 'id'),
                    'name': getattr(item, Student.REAL_NAME),
-                   'gender': getattr(item, Student.SEX),
-                   'source': getattr(item, Student.PROVINCE),
+                   'gender': sexIntToString(getattr(item, Student.SEX)),
+                   'source': provinceIntToString(getattr(item, Student.PROVINCE)),
                    'school': getattr(item, Student.SCHOOL),
                    'id_card': getattr(item, Student.ID_NUMBER)}
             t.append(dic)
@@ -55,22 +56,29 @@ def volunteer_search_student_by_name(request):
     if request.is_ajax() and request.method == 'POST':
         name = request.POST.get('name')
         t = []
-        # d = {'id':'151016','name':'张三', 'gender':'男', 'source':'湖北', 'school':'黄冈中学', 'id_card':'520108199808241894'}
-        # search for students in database
-        dic = {'id': '100',
-                'name': '101',
-                'gender': '102',
-                'source': '103',
-                'school': '104',
-                'id_card': '105'}
-        t.append(dic)
-        dic = {'id': '200',
-			   'name': '201',
-			   'gender': '202',
-			   'source': '203',
-			   'school': '204',
-			   'id_card': '205'}
-        t.append(dic)
+        vol_id = request.session.get('user_id')
+        vol_account = vol.idToAccountVolunteer(vol_id)
+        vol_student_account_list = getattr(vol.getVolunteerAll(vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
+        for account in vol_student_account_list:
+            item = stu.getStudentAll(account)
+            dic = {'id': getattr(item, 'id'),
+                   'name': getattr(item, Student.REAL_NAME),
+                   'gender': sexIntToString(getattr(item, Student.SEX)),
+                   'source': provinceIntToString(getattr(item, Student.PROVINCE)),
+                   'school': getattr(item, Student.SCHOOL),
+                   'id_card': getattr(item, Student.ID_NUMBER)}
+            # 在名字为查询的名字或者什么没输的情况下才加
+            if(dic['name'] == name or name == ''):
+                t.append(dic)
+            else:
+                print dic['name'] + " " + name
+        # dic = {'id': '100',
+        #         'name': '101',
+        #         'gender': '102',
+        #         'source': '103',
+        #         'school': '104',
+        #         'id_card': '105'}
+        # t.append(dic)
         return JsonResponse(t, safe=False)  # must use 'safe=False'
     else:
         return HttpResponse('Access denied.')
