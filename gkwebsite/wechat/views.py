@@ -1,16 +1,15 @@
-# coding:utf-8
-from django.http import HttpResponse
-from django.views.generic.base import View
-from django.views.decorators.csrf import csrf_exempt
-import hashlib
 
 # Create your views here.
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 import hashlib
+import urllib
 
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
-Appsecrete = "efe75bfad99903dff1ba7a783a354e71"
+Appsecret = "efe75bfad99903dff1ba7a783a354e71"
+token_dic = {}
+
 
 def wechat_main(request):
     # return HttpResponse("Hello, world. You're at the polls index.")
@@ -29,3 +28,17 @@ def wechat_main(request):
         else:
             return HttpResponse("weixin  index")
 
+
+def get_token():
+    urls = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential"
+    para = {"appid":Appid, "secret":Appsecret}
+    para = urllib.urlencode(para)
+    html = urllib.urlopen(urls, para)
+    result = html.read()
+    print result
+    if result.has_key("access_token"):
+        token_dic["access_token"] = result["access_token"]
+        token_dic["expires_in"] = result["expires_in"]
+    else:
+        print "access_token fail"
+        # get_token()
