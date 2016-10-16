@@ -11,6 +11,7 @@ import sys
 
 sys.path.append("../")
 import database.teacher_backend as teacher_backend
+import database.volunteer_backend as volunteer_backend
 
 '''
     login & register 界面
@@ -65,7 +66,7 @@ def logincheck(request):
                 password = request.POST.get('login_password')
                 yzmString = request.POST.get('login_yzm').upper()
                 if (yzmString == request.session['yzmString']):
-                    (login,id) = (True,10086) # 后端需要在这行语句处的10086修改为正确的志愿者id,True修改为验证密码的结果
+                    (login,id) = volunteer_backend.checkVolunteerPassword(username, password)
                     if login:
                         request.session['user_id'] = id
                         request.session['user_name'] = username
