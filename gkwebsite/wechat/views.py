@@ -1,10 +1,6 @@
-
+#coding=utf-8
 # Create your views here.
 '''from django.http import HttpResponse
-=======
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
->>>>>>> 7d557b336747398e35c5401c77f6c97bf1709038
 import hashlib
 import urllib
 
@@ -84,7 +80,6 @@ def get_token():
         # get_token()
 
 
-# 判断ip是否来自于微信
 def get_ip():
     urls = "https://api.weixin.qq.com/cgi-bin/getcallbackip"
     para = {"access_token": token_dic["access_token"]}
