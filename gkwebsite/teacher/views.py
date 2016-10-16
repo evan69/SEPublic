@@ -1,13 +1,14 @@
-#encoding=utf-8
+# encoding=utf-8
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import get_template
 from django.template import Context
 
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.decorators.csrf import  csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 
 import sys
+
 sys.path.append("..")
 import database.teacher_backend as tch
 import database.student_backend as stu
@@ -23,6 +24,17 @@ def search_student(request):
     t = get_template('teacher/list_student.html')
     c = {'id': id}
     return HttpResponse(t.render(c))
+
+
+@ensure_csrf_cookie
+def search_volunteer(request):
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/list_volunteer.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
 
 def student_info_edit(request):
     t = get_template('teacher/student_info_edit.html')
@@ -65,8 +77,9 @@ def student_info_edit(request):
         Student.VOLUNTEER_ACCOUNT_LIST: getattr(student, Student.VOLUNTEER_ACCOUNT_LIST, 'no'),
         Student.COMMENT: getattr(student, Student.COMMENT, 'no'),
 
-         }
+    }
     return HttpResponse(t.render({'student': dic}))
+
 
 @csrf_exempt
 def student_info_save(request):
@@ -112,8 +125,9 @@ def student_info_save(request):
         Student.TEACHER_LIST: getattr(student, Student.TEACHER_LIST, 'no'),
         Student.VOLUNTEER_ACCOUNT_LIST: getattr(student, Student.VOLUNTEER_ACCOUNT_LIST, 'no'),
         Student.COMMENT: getattr(student, Student.COMMENT, 'no'),
-         }
+    }
     return HttpResponse(t.render({'student': dic}))
+
 
 def student_info_show(request):
     t = get_template('teacher/student_info.html')
@@ -156,27 +170,29 @@ def student_info_show(request):
         Student.VOLUNTEER_ACCOUNT_LIST: getattr(student, Student.VOLUNTEER_ACCOUNT_LIST, 'no'),
         Student.COMMENT: getattr(student, Student.COMMENT, 'no'),
 
-         }
+    }
     return HttpResponse(t.render({'student': dic}))
+
 
 def add_student(request):
     id = request.session.get('user_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
-    #t = get_template('teacher/list_student.html')
-    #c = {}
-    #return HttpResponse(t.render(c))
-    return HttpResponse('Add student page.')
+    t = get_template('teacher/add_student.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
 
 def fake_backend(request):
     if request.is_ajax() and request.method == 'POST':
-        c = {'name':'Alice', 'gender':'男', 'source':'北京', 'school':'人大附中', 'id_card':'11010819980824181X'}
-        c['name']=request.POST.get('name')
+        c = {'name': 'Alice', 'gender': '男', 'source': '北京', 'school': '人大附中', 'id_card': '11010819980824181X'}
+        c['name'] = request.POST.get('name')
         t = []
         t.append(c)
         return JsonResponse(t, safe=False)
     else:
         return HttpResponse('Access denied.')
+
 
 def teacher_logout(request):
     try:
@@ -185,11 +201,23 @@ def teacher_logout(request):
         pass
     return redirect('/login')
 
+
+def dashboard(request):
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/dashboard.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
+
 '''
     查看和修改教师个人信息
     by byr 161012
 '''
-#@csrf_protect
+
+
+# @csrf_protect
 @csrf_exempt
 def profile(request):
     if request.method == 'POST':
@@ -242,19 +270,17 @@ def profile(request):
         teacher = tch.getTeacherAll(account)
         # print 'name' + getattr(teacher, 'realName')
         dict = {
-			'teacher_name': getattr(teacher, Teacher.REAL_NAME,'no such attr. by lihy'),
-			'email': getattr(teacher, Teacher.EMAIL,'no such attr. by lihy'),
-			'work_address': getattr(teacher, Teacher.AREA,'no such attr. by lihy'),
-			'home_address': '130',
-			'postcode': '43',
-			'homephone': '120',
-			'phone': getattr(teacher, Teacher.PHONE,'no such attr. by lihy'),
-			'qqn': '85',
-			'weichat': '66',
-			'describe': '57',
-		}
+            'teacher_name': getattr(teacher, Teacher.REAL_NAME, 'no such attr. by lihy'),
+            'email': getattr(teacher, Teacher.EMAIL, 'no such attr. by lihy'),
+            'work_address': getattr(teacher, Teacher.AREA, 'no such attr. by lihy'),
+            'home_address': '130',
+            'postcode': '43',
+            'homephone': '120',
+            'phone': getattr(teacher, Teacher.PHONE, 'no such attr. by lihy'),
+            'qqn': '85',
+            'weichat': '66',
+            'describe': '57',
+        }
         # dict = {'teacher_name': '骚猴', 'email': '11', 'work_address': '22', 'home_address': '130', 'postcode': '43',
         #         'homephone': '49', 'phone': '666', 'qqn': '85', 'weichat': '66', 'describe': '57', }
-        return render(request, 'userinfo.html',{'dict':dict})
-
-
+        return render(request, 'userinfo.html', {'dict': dict})
