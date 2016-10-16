@@ -47,6 +47,18 @@ def student_list_all(request):
     else:
         return HttpResponse('Access denied.')
 
+def get_volunteer_name_by_id(request):
+    # completed by evan69
+    # use this if-else to block violent access
+    if request.is_ajax() and request.method == 'POST':
+        id = request.POST.get('id')
+        account = vol.idToAccountVolunteer(id)
+        t = {'name': vol.getVolunteer(account, 'realName')}
+        return JsonResponse(t)
+    else:
+        return HttpResponse('Access denied.')
+
+
 
 def student_info_show(request):
     t = get_template('volunteer/student_info.html')
