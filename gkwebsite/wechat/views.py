@@ -1,4 +1,8 @@
-from django.shortcuts import render
+# coding:utf-8
+from django.http import HttpResponse
+from django.views.generic.base import View
+from django.views.decorators.csrf import csrf_exempt
+import hashlib
 
 # Create your views here.
 from django.http import HttpResponse
@@ -24,4 +28,4 @@ def wechat_main(request):
             return HttpResponse(echostr)
         else:
             return HttpResponse("weixin  index")
-    
+
