@@ -1,16 +1,18 @@
-# coding:utf-8
-from django.http import HttpResponse
-from django.views.generic.base import View
-from django.views.decorators.csrf import csrf_exempt
-import hashlib
 
 # Create your views here.
 '''from django.http import HttpResponse
+=======
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+>>>>>>> 7d557b336747398e35c5401c77f6c97bf1709038
 import hashlib
+import urllib
 
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
-Appsecrete = "efe75bfad99903dff1ba7a783a354e71"
+Appsecret = "efe75bfad99903dff1ba7a783a354e71"
+token_dic = {}
+
 
 def wechat_main(request):
     # return HttpResponse("Hello, world. You're at the polls index.")
@@ -120,3 +122,4 @@ def handleEvent(msg):
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', u'感谢关注高考招生辅助系统，目前正在开发中，敬请期待')
     return resultStr
+
