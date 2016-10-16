@@ -256,7 +256,7 @@
 								}
 						}
 				});
-				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+				$.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
 				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
@@ -269,7 +269,7 @@
 					list_start_pos = 0;
 					$('#student_list').empty();
 					//access server and load matching records
-					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
+					$.post("/volunteer/search_student_by_name/", {'name':namestr}, function(ret){
 					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
