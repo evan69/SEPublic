@@ -47,6 +47,34 @@ def student_list_all(request):
     else:
         return HttpResponse('Access denied.')
 
+def volunteer_search_student_by_name(request):
+    '''
+		后端需要在这里改代码，根据姓名搜索学生
+		姓名可以通过request.POST.get('name')获取
+	'''
+    if request.is_ajax() and request.method == 'POST':
+        name = request.POST.get('name')
+        t = []
+        # d = {'id':'151016','name':'张三', 'gender':'男', 'source':'湖北', 'school':'黄冈中学', 'id_card':'520108199808241894'}
+        # search for students in database
+        dic = {'id': '100',
+                'name': '101',
+                'gender': '102',
+                'source': '103',
+                'school': '104',
+                'id_card': '105'}
+        t.append(dic)
+        dic = {'id': '200',
+			   'name': '201',
+			   'gender': '202',
+			   'source': '203',
+			   'school': '204',
+			   'id_card': '205'}
+        t.append(dic)
+        return JsonResponse(t, safe=False)  # must use 'safe=False'
+    else:
+        return HttpResponse('Access denied.')
+
 def get_volunteer_name_by_id(request):
     # completed by evan69
     # use this if-else to block violent access
