@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template.loader import get_template
 from django.template import Context
 
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, requires_csrf_token
 from django.views.decorators.csrf import  csrf_exempt
 
 
@@ -43,7 +43,8 @@ def student_info_show(request):
 	t = get_template('teacher/student_info.html')
 	c = Context({})
 	return HttpResponse(t.render(c))
-	
+
+@ensure_csrf_cookie
 def add_student(request):
 	id = request.session.get('user_id', -1)
 	if id == -1:
@@ -74,6 +75,14 @@ def dashboard(request):
 	if id == -1:
 		return HttpResponse('Access denied')
 	t = get_template('teacher/dashboard.html')
+	c = {'id': id}
+	return HttpResponse(t.render(c))
+	
+def add_volunteer(request):
+	id = request.session.get('user_id', -1)
+	if id == -1:
+		return HttpResponse('Access denied')
+	t = get_template('teacher/add_volunteer.html')
 	c = {'id': id}
 	return HttpResponse(t.render(c))
 

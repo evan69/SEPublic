@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>查看学生</title>
+    <title>添加学生</title>
 		{% load staticfiles %}
 		<!-- Bootstrap Styles-->
     <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
@@ -210,7 +210,7 @@
 						<form class="form-search" id = "form">
 							<label class = "control-label">请输入您想新建的学生账户数量：</label>
 							<input type="text" class="input-medium search-query" id="account_num" name = "account_num" placeholder="不超过9999" digits>
-							<button type="button" class="btn btn-primary" id = "add">Add</button>
+							<button type="submit" class="btn btn-primary" id = "add">Add</button>
 						</form>
 						<div class="row">
 							<div class="col-md-6">
@@ -229,7 +229,7 @@
 						</div>
 						<div class = "row">
 							<div class = "col-md-1">
-							<button type = "submit" class = "btn btn-primary span2" value = "search" id="export">一键导出</button>
+							<button type = "button" class = "btn btn-primary span2" value = "search" id="export">一键导出</button>
 							</div>
 						</div>
 					</div>
@@ -259,11 +259,13 @@
 		<script type="text/javascript">
 		$(document).ready(function() {
 			$("#form").validate({
-				debug:true,
+				submitHandler:formSubmit,
+				debug:false,
 				rules:{
 					account_num:{
 						digits:true,
-						number:true
+						number:true,
+						required:true
 					}
 				}
 			});
@@ -315,22 +317,22 @@
 						}
 				});
 				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
-				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				});
 				$('#account_table').hide();
 				$('#export').hide();
-				$('#add').click(function(){
-					var num = parseInt($('#account_num').val());
-					$.post("/backend/add_student/", {'num':num}, function(ret){
-						codelist = ret;
-						add_to_table();
-						$('#account_table').show();
-						$('#export').show();
-					});
-				});
-				
+				//$('#add').click(formSubmit);
 			});
+			function formSubmit(){
+				alert('submit');
+				var num = parseInt($('#account_num').val());
+				$.post("/backend/add_student/", {'num':num}, function(ret){
+					codelist = ret;
+					add_to_table();
+					$('#account_table').show();
+					$('#export').show();
+				});
+			}
 		</script>
 
 
