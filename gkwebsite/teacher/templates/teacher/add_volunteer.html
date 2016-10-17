@@ -195,7 +195,7 @@
 							<div class="row"><p></div>
 							<div class="row">
 								<div class="col-md-4">
-									<label>*用户名必须是什么什么的</label>
+									<label>*用户名必须由四位以上的字母或数字组成</label>
 								</div>
 								<div class="col-md-1">
 									<button type="submit" class="btn btn-primary" id = "add">Add</button>
@@ -255,10 +255,12 @@
 					username:{
 						required:true,
 						minlength:4
+						maxlength:20
 					},
 					psw:{
 						required:true,
 						minlength:4
+						maxlength:20
 					},
 					psw_confirm:{
 						required:true,
@@ -267,7 +269,7 @@
 				},
 				messages:{
 					psw_confirm:{
-						equalTo:"输入的密码不一致"
+						equalTo:"<span style=\"color:red\">输入的密码不一致</span>"
 					}
 				}
 			});
@@ -320,7 +322,6 @@
 			});
 			
 			function formSubmit(){
-				alert('submit');
 				var username = $('#account_num').val();
 				var password = $('#psw').val();
 				$.post("/backend/add_volunteer/", {'username':username, 'password':password}, function(ret){

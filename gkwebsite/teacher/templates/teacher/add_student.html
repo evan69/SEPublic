@@ -324,8 +324,7 @@
 				//$('#add').click(formSubmit);
 			});
 			function formSubmit(){
-				alert('submit');
-				var num = parseInt($('#account_num').val());
+				var num = $('#account_num').val();
 				$.post("/backend/add_student/", {'num':num}, function(ret){
 					codelist = ret;
 					add_to_table();
