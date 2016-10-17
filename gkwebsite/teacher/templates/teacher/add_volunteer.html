@@ -12,6 +12,8 @@
     <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
         <!-- Custom Styles-->
     <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+		
+		<link href= "{% static 'css/jquery.growl.css' %}" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
@@ -171,7 +173,7 @@
 									<label class = "control-label">预置用户名：</label>
 								</div>
 								<div class="col-md-3">								
-									<input type="text"  id="username" name = "username">
+									<input type="text"  id="username" name = "username"/>
 								</div>
 							</div>
 							<div class="row"><p></div>
@@ -180,7 +182,13 @@
 									<label class = "control-label">预置密码：</label>
 								</div>
 								<div class="col-md-3">								
-									<input type="password" id="psw" name = "psw">
+									<input class="password" type="password" id="psw" name = "psw"/>
+									<div class="password-meter">
+										<div class="password-meter-message"> </div>
+										<div class="password-meter-bg">
+											<div class="password-meter-bar"></div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="row"><p></div>
@@ -189,7 +197,7 @@
 									<label class = "control-label">确认预置密码：</label>
 								</div>
 								<div class="col-md-3">								
-									<input type="password" id="psw_confirm" name = "psw_confirm">
+									<input type="password" id="psw_confirm" name = "psw_confirm"/>
 								</div>
 							</div>
 							<div class="row"><p></div>
@@ -238,6 +246,9 @@
     <!-- Morris Chart Js -->
     <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
     <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+		
+		<!-- jQuery Growl Js -->
+		<script src="{% static 'js/jquery.growl.js' %}"></script>
 
 
 	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
@@ -254,12 +265,12 @@
 				rules:{
 					username:{
 						required:true,
-						minlength:4
+						minlength:4,
 						maxlength:20
 					},
 					psw:{
 						required:true,
-						minlength:4
+						minlength:4,
 						maxlength:20
 					},
 					psw_confirm:{
@@ -322,11 +333,15 @@
 			});
 			
 			function formSubmit(){
-				var username = $('#account_num').val();
+				var username = $('#username').val();
 				var password = $('#psw').val();
 				$.post("/backend/add_volunteer/", {'username':username, 'password':password}, function(ret){
-					$('#info').fadeIn("slow");
-					$('#info').fadeOut(3000);
+					if(ret['success']=='true'){
+						$.growl.notice({ title: "添加成功", message: "用户信息已加入数据库" });
+					}
+					else{
+						$.growl.error({ title: "添加失败", message: "用户名"+ret['username']+"已存在" });
+					}
 				});
 			}
 	</script>
