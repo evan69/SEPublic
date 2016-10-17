@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>查看学生</title>
+    <title>添加志愿者</title>
 		{% load staticfiles %}
 		<!-- Bootstrap Styles-->
     <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
@@ -12,6 +12,8 @@
     <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
         <!-- Custom Styles-->
     <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+		
+		<link href= "{% static 'css/jquery.growl.css' %}" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
@@ -25,7 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
+                <a class="navbar-brand" href="/teacher"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -87,7 +89,7 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" href="#"><i class="fa fa-dashboard"></i> 首页</a>
+                        <a href="/teacher"><i class="fa fa-dashboard"></i> 首页</a>
                     </li>
 
                     <li>
@@ -126,7 +128,7 @@
                         <a href="#"><i class="fa fa-sitemap"></i> 管理志愿者<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/teacher/add_volunteer">添加志愿者信息</a>
+                                <a class="active-menu" href="#">添加志愿者信息</a>
                             </li>
                             <li>
                                 <a href="/teacher/add_volunteer_loadxls">批量导入志愿者信息</a>
@@ -163,7 +165,56 @@
                 </div> 
 				<!--row-->
 				
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
+				<div class= "panel panel-default">
+					<div class = "panel-body">
+						<form class="form-search" id = "form">
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label">预置用户名：</label>
+								</div>
+								<div class="col-md-3">								
+									<input type="text"  id="username" name = "username"/>
+								</div>
+							</div>
+							<div class="row"><p></div>
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label">预置密码：</label>
+								</div>
+								<div class="col-md-3">								
+									<input class="password" type="password" id="psw" name = "psw"/>
+									<div class="password-meter">
+										<div class="password-meter-message"> </div>
+										<div class="password-meter-bg">
+											<div class="password-meter-bar"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row"><p></div>
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label">确认预置密码：</label>
+								</div>
+								<div class="col-md-3">								
+									<input type="password" id="psw_confirm" name = "psw_confirm"/>
+								</div>
+							</div>
+							<div class="row"><p></div>
+							<div class="row">
+								<div class="col-md-4">
+									<label>*用户名必须由四位以上的字母或数字组成</label>
+								</div>
+								<div class="col-md-1">
+									<button type="submit" class="btn btn-primary" id = "add">Add</button>
+								</div>
+							</div>
+							
+						</form>
+					</div>
+				</div>
+				
+				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="/info">早睡早起</a></p></footer>
 			</div>
              <!-- /. PAGE INNER  -->
         </div>
@@ -181,11 +232,46 @@
     <!-- Morris Chart Js -->
     <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
     <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+		
+		<!-- jQuery Growl Js -->
+		<script src="{% static 'js/jquery.growl.js' %}"></script>
 
 
 	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
 	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
 
+		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$("#form").validate({
+				submitHandler:formSubmit,
+				debug:false,
+				rules:{
+					username:{
+						required:true,
+						minlength:4,
+						maxlength:20
+					},
+					psw:{
+						required:true,
+						minlength:4,
+						maxlength:20
+					},
+					psw_confirm:{
+						required:true,
+						equalTo:'#psw'
+					}
+				},
+				messages:{
+					psw_confirm:{
+						equalTo:"<span style=\"color:red\">输入的密码不一致</span>"
+					}
+				}
+			});
+		});
+		</script>
 
     <!-- Custom Js -->
     <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
@@ -227,8 +313,24 @@
 					$('#namefield').append(ret['name']);
 				})
 				
+				$('#info').hide();
+				//$('#add').click(formSubmit);
+				
 			});
-		</script>
+			
+			function formSubmit(){
+				var username = $('#username').val();
+				var password = $('#psw').val();
+				$.post("/backend/add_volunteer/", {'username':username, 'password':password}, function(ret){
+					if(ret['success']=='true'){
+						$.growl.notice({ title: "添加成功", message: "用户信息已加入数据库" });
+					}
+					else{
+						$.growl.error({ title: "添加失败", message: "用户名"+ret['username']+"已存在" });
+					}
+				});
+			}
+	</script>
 
 
 </body>
