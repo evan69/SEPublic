@@ -34,7 +34,7 @@ def student_info_show(request):
 	t = get_template('teacher/student_info.html')
 	c = Context({})
 	return HttpResponse(t.render(c))
-	
+
 def add_student(request):
 	id = request.session.get('user_id', -1)
 	if id == -1:
@@ -43,7 +43,7 @@ def add_student(request):
 	#c = {}
 	#return HttpResponse(t.render(c))
 	return HttpResponse('Add student page.')
-	
+
 def fake_backend(request):
 	if request.is_ajax() and request.method == 'POST':
 		c = {'name':'Alice', 'gender':'男', 'source':'北京', 'school':'人大附中', 'id_card':'11010819980824181X'}
@@ -53,7 +53,7 @@ def fake_backend(request):
 		return JsonResponse(t, safe=False)
 	else:
 		return HttpResponse('Access denied.')
-		
+
 def teacher_logout(request):
 	try:
 		del request.session['user_id']
@@ -99,7 +99,31 @@ def upload(request):
 '''
 @csrf_exempt
 def volunteer_info(request):
-	return render(request, 'teacher/volunteer_info.html')
+	'''
+	后端需要在这里获取数据并返回
+	'''
+
+	dict = {
+		'user_name' : 'lihy96',
+		'realName' : '李三胖',
+		'idNumber' : '1234567890X',
+		'sex' : '女',
+		'nation' : '内蒙古族',
+		'birth_year' : '1996',
+		'birth_month' : '01',
+		'birth_date' : '01',
+		'department' : '计算机系',
+		'class' : '计45',
+		'phone' : '123456789',
+		'email' : 'lihy14@mails.tsinghua.edu.cn',
+		'province' : '内蒙古',
+		'distribute' : '1 | 2 | 3',
+		'qqn' : '123456789',
+		'weichat' : 'fdafs1231',
+		'teacher' : '白老师 | 李老师',
+		'comment' : '大家好，我叫李昊阳，人长得帅，还长得长，更有钱，很会跳街舞',
+	}
+	return render(request, 'teacher/volunteer_info.html', {'dict':dict})
 
 '''
     老师编辑志愿者详情
@@ -107,5 +131,57 @@ def volunteer_info(request):
 '''
 @csrf_exempt
 def volunteer_info_edit(request):
-	return render(request, 'teacher/volunteer_info_edit.html')
+	if request.method == 'POST':
+		'''
+            后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
+        '''
+
+		phone = request.POST.get('phone', '110')
+		email = request.POST.get('email', '110@qq')
+		dict = {
+			'user_name': 'lihy96',
+			'realName': '李三胖',
+			'idNumber': '1234567890X',
+			'sex': '女',
+			'nation': '内蒙古族',
+			'birth_year': '1996',
+			'birth_month': '01',
+			'birth_date': '01',
+			'department': '计算机系',
+			'class': '计45',
+			'phone': phone,
+			'email': email,
+			'province': '内蒙古',
+			'distribute': '1 | 2 | 3',
+			'qqn': '123456789',
+			'weichat': 'fdafs1231',
+			'teacher': '白老师 | 李老师',
+			'comment': '大家好，我叫李昊阳，人长得帅，还长得长，更有钱，很会跳街舞',
+		}
+		return JsonResponse(dict)
+	else:
+		'''
+            后端需要在这里改代码，从数据库读取正确的dict，并返回
+        '''
+		dict = {
+			'user_name': 'lihy96',
+			'realName': '李三胖',
+			'idNumber': '1234567890X',
+			'sex': '女',
+			'nation': '内蒙古族',
+			'birth_year': '1996',
+			'birth_month': '01',
+			'birth_date': '01',
+			'department': '计算机系',
+			'class': '计45',
+			'phone': '123456789',
+			'email': 'lihy14@mails.tsinghua.edu.cn',
+			'province': '内蒙古',
+			'distribute': '1 | 2 | 3',
+			'qqn': '123456789',
+			'weichat': 'fdafs1231',
+			'teacher': '白老师 | 李老师',
+			'comment': '大家好，我叫李昊阳，人长得帅，还长得长，更有钱，很会跳街舞',
+		}
+		return render(request, 'teacher/volunteer_info_edit.html', {'dict': dict})
 

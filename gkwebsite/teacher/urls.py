@@ -19,6 +19,6 @@ urlpatterns = [
 		# teacher 查看志愿者详情
 		url(r'^volunteer_info/$', views.volunteer_info),
 		# techar 编辑志愿者详情
-		url(r'^volunteer_info_edit/$', views.volunteer_info_edit)
+		url(r'^volunteer_info/edit/$', views.volunteer_info_edit)
 
 ]

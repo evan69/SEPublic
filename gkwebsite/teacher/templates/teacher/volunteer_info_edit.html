@@ -16,12 +16,7 @@
   <!-- Google Fonts-->
   <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
   <div id="wrapper">
-    {% include 'teacher/navtop.html' %}
-    {% include 'teacher/teachernavside.html' %}
-
-
-
-
+    {% include 'teacher/navtop.html' %} {% include 'teacher/teachernavside.html' %}
    <div id="page-wrapper">
     <div id="page-inner">
      <div class="row">
@@ -36,104 +31,110 @@
         <div class="panel-body">
          <div class="row">
           <div class="col-md-offset-3 col-md-6">
-           <form class="form-horizontal" role="form" method="POST" action="/teacher/student_info/edit/">
+           <form class="form-horizontal" role="form" action="#">
              {% csrf_token %}
             <fieldset disabled="">
              <div class="form-group">
-              <label for="account" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
+              <label for="volunteer_name" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
               <div class="col-sm-10">
-               <p class="form-control-static" id="account" name="account">{{student.account}}</p>
+               <p class="form-control-static" id="volunteer_name" name="volunteer_name">{{dict.user_name}}</p>
               </div>
              </div>
              <div class="form-group">
               <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="realName" name="realName" value="{{student.realName}}" />
+               <input type="text" class="form-control" id="realName" name="realName" value="{{dict.realName}}" />
               </div>
              </div>
              <div class="form-group">
               <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{student.idNumber}}" />
+               <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{dict.idNumber}}" />
               </div>
              </div>
-
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="sex">性别：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="sex" name="sex" value="{{student.sex}}" />
+               <input type="text" class="form-control" id="sex" name="sex" value="{{dict.sex}}" />
               </div>
              </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="nation" class="col-sm-2 control-label">民族：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="nation" name="nation" value="{{student.nation}}" />
+               <input type="text" class="form-control" id="nation" name="nation" value="{{dict.nation}}" />
               </div>
              </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="birth" class="col-sm-2 control-label">出生日期: </label>
               <div class="col-sm-10">
-               <p class="date" id="birth" name="birth">{{student.birth}}</p>
+               <p class="date" id="birth" name="birth">{{dict.birth_year}}年{{dict.birth_month}}月{{dict.birth_date}}日</p>
               </div>
              </div>
-             </fieldset>
+                     <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">中学所在地：</label>
+             <div class="col-sm-10">
+              <input type="text" class="form-control" id="province" name="province" value="{{dict.province}}" />
+             </div>
+            </div>
+                 <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="school" class="col-sm-2 control-label">院系：</label>
+             <div class="col-sm-4">
+              <input type="text" class="form-control" id="school" name="school" value="{{dict.department}}" />
+             </div>
+             <label style="text-align:left;padding-left: 2em;" for="stu_class" class="col-sm-2 control-label">班级：</label>
+             <div class="col-sm-4">
+              <input type="text" class="form-control" id="stu_class" name="stu_class" value="{{dict.class}}" />
+             </div>
+            </div>
+            </fieldset>
+
             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="school" class="col-sm-2 control-label">院系：</label>
-              <div class="col-sm-4">
-               <input type="text" class="form-control" id="school" name="school" value="{{student.school}}" />
-              </div>
-              <label style="text-align:left;padding-left: 2em;" for="stu_class" class="col-sm-2 control-label">班级：</label>
-              <div class="col-sm-4">
-               <input type="text" class="form-control" id="stu_class" name="stu_class" value="{{student.stu_class}}" />
-              </div>
+             <label style="text-align:left;padding-left: 2em;" for="phone" class="col-sm-2 control-label">手机：</label>
+             <div class="col-sm-10">
+              <input type="number" class="form-control" name="phone" id="phone" value="{{dict.phone}}" />
              </div>
-
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="phone" class="col-sm-2 control-label">手机：</label>
-              <div class="col-sm-10">
-               <input type="tel" class="form-control" name="phone" id="phone" value="{{student.phone}}" />
-              </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="email" class="col-sm-2 control-label">邮箱：</label>
+             <div class="col-sm-10">
+              <input type="email" class="form-control" id="email" name="email" value="{{dict.email}}" />
              </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="email" class="col-sm-2 control-label">邮箱：</label>
-              <div class="col-sm-10">
-               <input type="email" class="form-control" id="email" name="email" value="{{student.email}}" />
-              </div>
+            </div>
+               <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="qqn" class="col-sm-2 control-label">QQ：</label>
+             <div class="col-sm-10">
+              <input type="number" class="form-control" id="qqn" name="qqn" value="{{dict.qqn}}" />
              </div>
-
-    <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">中学所在地：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="province" name="province" value="{{student.province}}" />
-              </div>
+            </div>
+               <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="weichat" class="col-sm-2 control-label">微信：</label>
+             <div class="col-sm-10">
+              <input type="text" class="form-control" id="weichat" name="weichat" value="{{dict.weichat}}" />
              </div>
-
-
-
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="relTeacher" class="col-sm-2 control-label">分管组：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relTeacher" name="relTeacher" value="{{student.relTeacher}}" />
-              </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="distribute" class="col-sm-2 control-label">分管组：</label>
+             <div class="col-sm-10">
+              <input type="text" class="form-control" id="distribute" name="distribute" value="{{dict.distribute}}" />
              </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="relVolunteer" class="col-sm-2 control-label">对应老师：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relVolunteer" name="relVolunteer" value="{{student.relVolunteer}}" />
-              </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="teacher" class="col-sm-2 control-label">对应老师：</label>
+             <div class="col-sm-10">
+              <input type="text" class="form-control" id="teacher" name="teacher" value="{{dict.teacher}}" />
              </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
-              <div class="col-sm-10">
-               <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
-              </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
+             <div class="col-sm-10">
+              <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
              </div>
-             <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
-               <button type="submit" class="btn btn-primary" value="save">编辑</button>
-              </div>
+            </div>
+            <div class="form-group">
+             <div class="col-sm-offset-2 col-sm-10">
+              <button id="volunteer_save" type="button" class="btn btn-primary" value="save">编辑</button>
              </div>
-
+            </div>
            </form>
           </div>
          </div>
@@ -150,19 +151,43 @@
      </div>
     </div>
     <!-- /. PAGE INNER  -->
-
-
-
-
    </div>
    <!-- /. PAGE WRAPPER  -->
-
-
-
   </div>
-  <!-- /. WRAPPER  -->
+  <!-- /. WRAPPER  --> {% include 'teacher/jsinclude.html' %}
+ <script>
+      console.log("WTF");
+      $(document).ready(function(){
+          console.log("Arrive here");
+          $("#volunteer_save").click(function(){
+              console.log("volunteer_save");
 
+            var distribute = $("#distribute").val();
+            var teacher = $("#teacher").val();
+            var email = $("#email").val();
+            var phone = $("#phone").val();
+            var qqn = $("#qqn").val();
+            var weichat = $("#weichat").val();
+            var describe = $("#comment").val();
+            $.post("",
+                    {
 
-{% include 'teacher/jsinclude.html' %}
+                        'email':email,
+                        'distribute': distribute,
+			            'teacher': teacher,
+                        'phone':phone,
+                        'qqn':qqn,
+                        'weichat':weichat,
+                        'comment':describe,
+                    },
+                    function(profileDict){
+
+                        for (key_i in profileDict)
+                            $("#"+key_i).val(profileDict[key_i]);
+                        alert("修改成功");
+            })
+          });
+      });
+  </script>
  </body>
 </html>
