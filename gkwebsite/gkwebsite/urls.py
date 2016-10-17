@@ -40,4 +40,6 @@ urlpatterns = [
     #	map /backend url
     #	by dqn14 Oct 12, 2016
     url(r'^backend/', include('database.urls')),
+
+	url(r'^volunteer/', include('volunteer.urls')),
 ]
