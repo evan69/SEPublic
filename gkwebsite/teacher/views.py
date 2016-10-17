@@ -92,3 +92,20 @@ def profile(request):
 @csrf_exempt
 def upload(request):
 	return render(request, 'teacher/uploadtest.html')
+
+'''
+    老师查看志愿者详情
+    by byr 161017
+'''
+@csrf_exempt
+def volunteer_info(request):
+	return render(request, 'teacher/volunteer_info.html')
+
+'''
+    老师编辑志愿者详情
+    by byr 161017
+'''
+@csrf_exempt
+def volunteer_info_edit(request):
+	return render(request, 'teacher/volunteer_info_edit.html')
+

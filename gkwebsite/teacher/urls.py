@@ -15,6 +15,10 @@ urlpatterns = [
 		url(r'^profile/$', views.profile),
 		url(r'^$', views.profile),
 		# teacher 上传试题
-		url(r'^upload/$', views.upload),
+		url(r'^release_test/$', views.upload),
+		# teacher 查看志愿者详情
+		url(r'^volunteer_info/$', views.volunteer_info),
+		# techar 编辑志愿者详情
+		url(r'^volunteer_info_edit/$', views.volunteer_info_edit)
 
 ]
