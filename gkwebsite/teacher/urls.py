@@ -14,5 +14,7 @@ urlpatterns = [
 		# teacher 查看修改个人信息
 		url(r'^profile/$', views.profile),
 		url(r'^$', views.profile),
+		# teacher 上传试题
+		url(r'^upload/$', views.upload),
 
 ]

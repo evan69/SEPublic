@@ -85,3 +85,10 @@ def profile(request):
                 'homephone': '49', 'phone': '666', 'qqn': '85', 'weichat': '66', 'describe': '57', }
         return render(request, 'teacher/userinfo.html',{'dict':dict})
 
+'''
+    老师上传试题
+    by byr 161016
+'''
+@csrf_exempt
+def upload(request):
+	return render(request, 'teacher/uploadtest.html')
