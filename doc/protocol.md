@@ -20,7 +20,7 @@
 	 <td>类型：JsonResponse 包含匹配的学生的姓名(name)、性别(gender)、生源地(source)、学校(school)、身份证号(school) 注意key必须和括号内的内容相同</td>
 	 <td>POST</td>       
 	 <td>段清楠</td>        
-	 <td>8</td>   
+	 <td>侯禺凡完成</td>
 	 </tr>
 
 	 <tr>
@@ -31,7 +31,7 @@
 	 <td>类型：JsonResponse （空字典）</td>
 	 <td>POST</td>
 	 <td>段清楠</td>
-	 <td>8</td>
+	 <td>侯禺凡完成</td>
 	 </tr>
 
 	 <tr>
@@ -42,7 +42,7 @@
 	 <td>类型：JsonResponse 包含所有学生的姓名(name)、性别(gender)、生源地(source)、学校(school)、身份证号(school) 注意key必须和括号内的内容相同</td>
 	 <td>POST</td>
 	 <td>段清楠</td>
-	 <td>8</td>
+	 <td>侯禺凡完成</td>
     </tr>
 
     <tr>
@@ -53,19 +53,9 @@
  		<td>类型：JsonResponse([{},{},{},...]) 包含所有学生的姓名(name)、性别(gender)、生源地(source)、学校(school)、身份证号(school) 注意key必须和括号内的内容相同</td>
  		<td>POST</td>
  		<td>段清楠</td>
- 		<td>8</td>
+ 		<td>侯禺凡完成</td>
  	</tr>
 
-	<tr>
-		<td>1</td>
-		<td>2</td>
-		<td>3</td>
-		<td>4</td>
-		<td>5</td>
-		<td>6</td>
-		<td>7</td>
-		<td>8</td>
-	</tr>
 	<tr>
 		<td>profile</td>
 		<td>查看、修改教师的信息</td>
@@ -76,7 +66,7 @@
                 GET直接返回字典 POST返回JSON</td>
 		<td>GET/POST</td>
 		<td>白云仁</td>
-		<td>h</td>
+		<td>李昊阳完成，目前有些信息比如邮编等尚未加入数据库，故暂时不能get和set，是否保留此字段后续讨论</td>
 	</tr>
 	<tr>
 		<td>a</td>
