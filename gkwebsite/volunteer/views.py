@@ -18,6 +18,8 @@ from database.models import *
 
 @ensure_csrf_cookie
 def search_student(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
     # for debug here
     id = request.session.get('user_id', -1)
     if id == -1:
@@ -28,6 +30,8 @@ def search_student(request):
 
 
 def student_list_all(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
     vol_id = request.session.get('user_id')
     vol_account = vol.idToAccountVolunteer(vol_id)
     vol_student_account_list = getattr(vol.getVolunteerAll(vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
@@ -48,6 +52,8 @@ def student_list_all(request):
         return HttpResponse('Access denied.')
 
 def volunteer_search_student_by_name(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
     '''
 		后端需要在这里改代码，根据姓名搜索学生
 		姓名可以通过request.POST.get('name')获取
@@ -76,6 +82,8 @@ def volunteer_search_student_by_name(request):
         return HttpResponse('Access denied.')
 
 def get_volunteer_name_by_id(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
     # completed by evan69
     # use this if-else to block violent access
     if request.is_ajax() and request.method == 'POST':
@@ -89,6 +97,8 @@ def get_volunteer_name_by_id(request):
 
 
 def student_info_show(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
     t = get_template('volunteer/student_info.html')
     c = Context({})
     print request.session.get('user_id')
@@ -97,6 +107,8 @@ def student_info_show(request):
 
 @csrf_exempt
 def profile(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
     vol_id = request.session.get('user_id')
     print "vol id" + str(vol_id)
     vol_account = vol.idToAccountVolunteer(str(vol_id))
