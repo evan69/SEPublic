@@ -47,7 +47,6 @@ def student_info_edit(request):
     account = stu.idToAccountStudent(str(id))
     student = stu.getStudentAll(account)
     dic = {
-
         Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
         Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
         Student.BIRTH: getattr(student, Student.BIRTH,datetime.datetime.now()).strftime("%Y-%m-%d"),
@@ -424,41 +423,56 @@ def volunteer_info_edit(request):
 '''
 def distribute_student(request):
     if 'id' not in request.GET:
-        student = {
-            'user_name':'ligoupang',
-            'name':'李狗胖',
-            'id':'233',
-        }
-        team1 = {'teamname': 2,
-                'student1': student,
-                'student2': student,
-                'student3': student,
-                'student4': student,
-                'student5': student,
+        # student = {
+        #     'user_name':'ligoupang',
+        #     'name':'李狗胖',
+        #     'id':'233',
+        # }
+        # team1 = {'teamname': 2,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # team2 = {'teamname': 3,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # team3 = {'teamname': 4,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # team = {'teamname': 1,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # dict = [team, team1, team2, team3]
+        team_list = []
+        vol_all = vol.getAllInVolunteer()
+        for vol_item in vol_all:
+            vol_stu_account_list = getattr(vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
+            team = {}
+            team['teamname'] = getattr(vol_item, Volunteer.REAL_NAME)
+            for i in range(0, len(vol_stu_account_list)):
+                student = stu.getStudentAll(vol_stu_account_list[i])
+                dic = {
+                    'user_name':getattr(student, Student.ACCOUNT,'NO'),
+                    'name': getattr(student, Student.REAL_NAME,'NO'),
+                    'id': getattr(student, Student.ID,'NO'),
                 }
-        team2 = {'teamname': 3,
-                'student1': student,
-                'student2': student,
-                'student3': student,
-                'student4': student,
-                'student5': student,
-                }
-        team3 = {'teamname': 4,
-                'student1': student,
-                'student2': student,
-                'student3': student,
-                'student4': student,
-                'student5': student,
-                }
-        team = {'teamname':1,
-            'student1':student,
-                'student2': student,
-                'student3': student,
-                'student4': student,
-                'student5': student,
-                }
-        dict = [team, team1, team2, team3]
-        return render(request, 'teacher/distribute_student.html', {'dict':dict})
+                team[('student' + str(i))] = dic
+            team_list.append(team)
+        return render(request, 'teacher/distribute_student.html', {'dict': team_list})
     else:
         user_id=request.GET['id']
         return JsonResponse({'success':1})
