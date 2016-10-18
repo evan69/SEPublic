@@ -21,7 +21,7 @@ urlpatterns = [
 		# teacher 编辑志愿者详情
 		url(r'^volunteer_info_edit/$', views.volunteer_info_edit),
 		# teacher 给学生分组
-		url(r'^distribute_student/$', views.distribute_student),
+		url(r'^list_group/$', views.distribute_student),
 		url(r'^$', views.dashboard, name='dashboard'),
 		url(r'^add_volunteer/$', views.add_volunteer, name='add_volunteer')
 ]

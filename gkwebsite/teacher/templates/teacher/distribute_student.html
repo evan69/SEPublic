@@ -1,238 +1,107 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>学生分组</title>
- </head>
- <body>
-   {% load staticfiles %}
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-  <div id="wrapper">
-{% include 'teacher/navtop.html' %}
-{% include 'teacher/teachernavside.html' %}
 
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>学生分组</title></head>
 
+  <body>{% load staticfiles %}
+    <!-- Bootstrap Styles-->
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+    <div id="wrapper">{% include 'teacher/navtop.html' %} {% include 'teacher/teachernavside.html' %}
+      <div id="page-wrapper">
+        <div id="page-inner">
+          <div class="row">
+            <div class="col-md-offset-4 col-md-4">
+              <h1 class="page-header" style="text-align: center">学生分组</h1></div>
+          </div>
+          <!--row-->
+          {% for team in dict %}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamname}}</a></h4>
+                  <div id="team{{team.teamname}}" class="panel-collapse collapse">
+                    <div class="panel-body" id="body{{team.teamname}}">
+                        {% for key, value in team.items %}
+                            {% if key != 'teamname'%}
+                        <div class="row" id="id{{value.id}}">
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}')" type="button">修改</button></div>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{value.id}}','body{{team.teamname}}','id{{value.id}}')" type="button">删除</button></div>
+                        </div>
+                            {% endif %}
 
+                        {% endfor %}
 
-
-   <div id="page-wrapper">
-    <div id="page-inner">
-     <div class="row">
-      <div class="col-md-offset-4 col-md-4">
-       <h1 class="page-header" style="text-align: center"> 学生分组 </h1>
-      </div>
-     </div>
-     <!--row-->
-     <div class="row">
-      <div class="col-md-12">
-       <div class="panel panel-default">
-        <div class="panel-heading">
-			<h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseOne">
-					第1组
-				</a>
-			</h4>
-		</div>
-		<div id="collapseOne" class="panel-collapse collapse in">
-			<div class="panel-body">
-				<form class="form-horizontal" id="kengbi">
-                  <div class="form-group">
-                   <div class="col-sm-4" style="border-right:1px solid #F00">
-               <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-3" style="text-align: center">
-                <button type="button">修改</button>
+                    </div>
+                  </div>
               </div>
-                                      <div class="col-sm-3" style="text-align: center">
-                <button type="button">删除</button>
-              </div></div>
-            <div class="col-sm-4" style="border-right:1px solid #F00">
-               <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
+            </div>
+          </div></div>{% empty %}
+          <li>抱歉，列表为空</li>{% endfor %}
+          <div class="row">
+            <div class="col-md-offset-4 col-md-4">
+              <footer>
+                <p>Copyright &copy; 2016.Company name All rights reserved.
+                  <a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <!-- /. PAGE INNER --></div>
+      <!-- /. PAGE WRAPPER --></div>
+    <!-- /. WRAPPER -->{% include 'teacher/jsinclude.html' %}
+    <script>/*function add(id, id1) {
+        var newNode = document.createElement("div");
+        newNode.setAttribute("id", "a" + toString(newNode.childElementCount + 1));
+        var str = " <div class='form-group'>" + "              <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "              <div class='col-sm-3'>" + " <p class='form-control-static' id='account' name='account'>李三胖</p>" + "   </div>" + "    <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "   <div class='col-sm-3'>" + "   <p class='form-control-static' id='account1' name='account'>李三胖</p>" + "   </div>" + "   <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "    <div class='col-sm-3'>" + "    <p class='form-control-static' id='account2' name='account'>李三胖</p>" + " </div>" +
 
-              <div class="col-sm-3" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-3" style="text-align: center">
-                <button type="button">删除</button>
-              </div></div><div class="col-sm-4">
-               <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
+        "  </div>";
+        newNode.innerHTML = (str);
 
-              <div class="col-sm-3" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-3" style="text-align: center">
-                <button type="button">删除</button>
-              </div></div>
-
-             </div>
-               <div class="form-group">
-                   <div class="col-sm-4" style="border-right:1px solid #F00">
-               <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-3" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-3" style="text-align: center">
-                <button type="button">删除</button>
-              </div></div>
-            <div class="col-sm-4" style="border-right:1px solid #F00">
-               <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-3" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-3" style="text-align: center">
-                <button type="button">删除</button>
-              </div></div><div class="col-sm-4">
-               <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-3" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-3" style="text-align: center">
-                <button type="button">删除</button>
-              </div></div>
-
-             </div>
-
-                </form>
-			</div>
-		</div>
-           <div class="panel-heading">
-			<h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseTwo">
-					第2组
-				</a>
-			</h4>
-		</div>
-		<div id="collapseTwo" class="panel-collapse collapse ">
-			<div class="panel-body">
-				<form class="form-horizontal">
-                    <div class="form-group">
-               <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-1" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-1" style="text-align: center">
-                <button type="button">删除</button>
-              </div>
-                          <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-1" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-1" style="text-align: center">
-                <button type="button">删除</button>
-              </div>
-
-                           <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-1" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-1" style="text-align: center">
-                <button type="button">删除</button>
-              </div>
-
-             </div>
-               <div class="form-group">
-               <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-1" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-1" style="text-align: center">
-                <button type="button">删除</button>
-              </div>
-                          <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-1" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-1" style="text-align: center">
-                <button type="button">删除</button>
-              </div>
-
-                           <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">姓名: </label>
-              <label for="account" class="col-sm-1 control-label" style="text-align:left;padding-left: 2em;">李三胖长 </label>
-
-              <div class="col-sm-1" style="text-align: center">
-                <button type="button">修改</button>
-              </div>
-                                      <div class="col-sm-1" style="text-align: center">
-                <button type="button">删除</button>
-              </div>
-
-             </div>
-                </form>
-			</div>
-		</div>
-       </div>
-      </div>
-     </div>
-     <div class="row">
-      <div class="col-md-offset-4 col-md-4">
-       <footer>
-        <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-       </footer>
-      </div>
-     </div>
-    </div>
-    <!-- /. PAGE INNER  -->
-   </div>
-   <!-- /. PAGE WRAPPER  -->
-
-  </div>
-  <!-- /. WRAPPER  -->
-
-{% include 'teacher/jsinclude.html' %}
-
-  <script>
-function add(id,id1) {
-         var   newNode=document.createElement("div");
-        newNode.setAttribute("id","a"+toString(newNode.childElementCount+1));
-    var str = " <div class='form-group'>"+
-"              <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>"+
-"              <div class='col-sm-3'>"+
-              " <p class='form-control-static' id='account' name='account'>李三胖</p>"+
-           "   </div>"+
-                                  "    <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>"+
-           "   <div class='col-sm-3'>"+
-            "   <p class='form-control-static' id='account1' name='account'>李三胖</p>"+
-           "   </div>"+
-           "   <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>"+
-          "    <div class='col-sm-3'>"+
-           "    <p class='form-control-static' id='account2' name='account'>李三胖</p>"+
-             " </div>"+
-
-           "  </div>";
-       newNode.innerHTML=(str);
-
-document.getElementById(id).insertBefore(newNode,document.getElementById(id1));
-     //   alert(document.getElementById(id).innerHTML);
+        document.getElementById(id).insertBefore(newNode, document.getElementById(id1));
+        //   alert(document.getElementById(id).innerHTML);
+      }*/
+    function modify(user_id) {
+      window.location="/teacher/student_info_edit?id="+user_id;
     }
-  </script>
- </body>
+    function dlt(user_id, parentid, childid) {
+      var parent=document.getElementById(parentid);
+      var child=document.getElementById(childid);
+      parent.removeChild(child);
+      var xmlhttp;
+      if (window.XMLHttpRequest)
+      {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+      }
+      else
+      {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      //  回调函数
+      xmlhttp.onreadystatechange=function()
+      {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+          {
+            alert('删除成功');
+          }
+      }
+      xmlhttp.open("GET","/teacher/list_group?id=" + user_id,true);
+      xmlhttp.send();
+
+    }
+    </script>
+  </body>
+
 </html>

@@ -303,10 +303,12 @@ def profile(request):
 '''
 @csrf_exempt
 def upload(request):
-    print 'hahahahahahah'
-    print request
-    return render(request, 'teacher/uploadtest.html')
-
+    if (request.method == 'GET'):
+        return render(request, 'teacher/uploadtest.html')
+    else:
+        print request.POST.get('problem_upload', 'ooo')
+        dict = {'result':'上传成功'}
+        return JsonResponse(dict)
 
 '''
     老师查看志愿者详情
@@ -421,4 +423,42 @@ def volunteer_info_edit(request):
     by byr 161017
 '''
 def distribute_student(request):
-    return render(request, 'teacher/distribute_student.html')
+    if 'id' not in request.GET:
+        student = {
+            'user_name':'ligoupang',
+            'name':'李狗胖',
+            'id':'233',
+        }
+        team1 = {'teamname': 2,
+                'student1': student,
+                'student2': student,
+                'student3': student,
+                'student4': student,
+                'student5': student,
+                }
+        team2 = {'teamname': 3,
+                'student1': student,
+                'student2': student,
+                'student3': student,
+                'student4': student,
+                'student5': student,
+                }
+        team3 = {'teamname': 4,
+                'student1': student,
+                'student2': student,
+                'student3': student,
+                'student4': student,
+                'student5': student,
+                }
+        team = {'teamname':1,
+            'student1':student,
+                'student2': student,
+                'student3': student,
+                'student4': student,
+                'student5': student,
+                }
+        dict = [team, team1, team2, team3]
+        return render(request, 'teacher/distribute_student.html', {'dict':dict})
+    else:
+        user_id=request.GET['id']
+        return JsonResponse({'success':1})
