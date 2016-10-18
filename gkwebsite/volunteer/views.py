@@ -94,8 +94,7 @@ def get_volunteer_name_by_id(request):
     else:
         return HttpResponse('Access denied.')
 
-
-
+'''
 def student_info_show(request):
     if 'user_id' not in request.session.keys():
         return redirect('/login/')
@@ -103,6 +102,60 @@ def student_info_show(request):
     c = Context({})
     print request.session.get('user_id')
     return HttpResponse(t.render(c))
+
+'''
+
+@csrf_exempt
+def student_info_show(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    t = get_template('volunteer/student_info.html')
+    id = request.GET.get('stu_id', -1)
+    if id == -1:
+        # 后端需要在这里加上一类条件，即另一种情况下的Access denied
+        # 根据request.session.get('user_id')获取志愿者ID，前面代码中的id变量为学生id
+        # 要据此排除学生不是该志愿者权限范围内的情况
+        return HttpResponse('Access denied')
+    account = stu.idToAccountStudent(str(id))
+    student = stu.getStudentAll(account)
+    dic = {
+        Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
+        Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
+        Student.BIRTH: getattr(student, Student.BIRTH).strftime("%Y-%m-%d"),
+        Student.ID_NUMBER: getattr(student, Student.ID_NUMBER, 'no'),
+
+        Student.TYPE: getattr(student, Student.TYPE, 'no'),
+        Student.SEX: getattr(student, Student.SEX, 'no'),
+        Student.NATION: getattr(student, Student.NATION, 'no'),
+        Student.SCHOOL: getattr(student, Student.SCHOOL, 'no'),
+        Student.CLASSROOM: getattr(student, Student.CLASSROOM, 'no'),
+
+        Student.ADDRESS: getattr(student, Student.ADDRESS, 'no'),
+        Student.PHONE: getattr(student, Student.PHONE, 'no'),
+        Student.EMAIL: getattr(student, Student.EMAIL, 'no'),
+        Student.DAD_PHONE: getattr(student, Student.DAD_PHONE, 'no'),
+        Student.MOM_PHONE: getattr(student, Student.MOM_PHONE, 'no'),
+
+        Student.TUTOR_NAME: getattr(student, Student.TUTOR_NAME, 'no'),
+        Student.TUTOR_PHONE: getattr(student, Student.TUTOR_PHONE, 'no'),
+        Student.PROVINCE: getattr(student, Student.PROVINCE, 'no'),
+        Student.MAJOR: getattr(student, Student.MAJOR, 'no'),
+        Student.TEST_SCORE_LIST: getattr(student, Student.TEST_SCORE_LIST, 'no'),
+
+        Student.RANK_LIST: getattr(student, Student.RANK_LIST, 'no'),
+        Student.SUM_NUMBER_LIST: getattr(student, Student.SUM_NUMBER_LIST, 'no'),
+        Student.ESTIMATE_SCORE: getattr(student, Student.ESTIMATE_SCORE, 'no'),
+        Student.REAL_SCORE: getattr(student, Student.REAL_SCORE, 'no'),
+        Student.REGISTER_CODE: getattr(student, Student.REGISTER_CODE, 'no'),
+        Student.ADMISSION_STATUS: getattr(student, Student.ADMISSION_STATUS, 'no'),
+        Student.TEACHER_LIST: getattr(student, Student.TEACHER_LIST, 'no'),
+        Student.VOLUNTEER_ACCOUNT_LIST: getattr(student, Student.VOLUNTEER_ACCOUNT_LIST, 'no'),
+        Student.COMMENT: getattr(student, Student.COMMENT, 'no'),
+
+         }
+    print str(dic)
+    # return JsonResponse(dic)
+    return HttpResponse(t.render({'student':dic}))
 
 
 @csrf_exempt
