@@ -383,6 +383,7 @@ def volunteer_info_edit(request):
         if 'user_id' not in request.session.keys():
             return redirect('/login/')
         print request.GET
+        id = request.GET.get('id')
         account = vol.idToAccountVolunteer(str(id))
         volunteer = vol.getVolunteerAll(account)
         dict = {
