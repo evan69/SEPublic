@@ -32,7 +32,10 @@ def wechat_main(request):
         else:
             return HttpResponse("weixin  index")
     elif request.method == "POST":
-        response = HttpResponse(responseMsg(request.body), content_type="application/xml")
+        #print "post"
+        res_str = responseMsg(request.body)
+        print res_str
+        response = HttpResponse(res_str, content_type="application/xml")
         return response
 
 
@@ -74,10 +77,10 @@ def xml2Dic(xmlContent):
 
 def responseMsg(postContent):
     postStr = smart_str(postContent)
-    resStr = ""
+    resStr = "success"
     if postStr:
         msg = xml2Dic(postStr)
-        # print msg
+        #print msg
         if msg['MsgType']:
             if msg['MsgType'] == 'event':
                 resStr = handleEvent(msg)
@@ -87,8 +90,14 @@ def responseMsg(postContent):
 def handleEvent(msg):
     resultStr = ""
     if msg['Event'] == 'subscribe':
+        # need to add openId in database of opneid openid = msg['FromUserName']
         resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', u'感谢关注高考招生辅助系统，目前正在开发中，敬请期待')
+    elif msg['Event'] == 'unsubscribe':
+        # need to delete openid in database of openid, openid = msg['FromUserName]
+        resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
+        resultStr = resultStr % (
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', 'sorry...waiting to see you again')
     return resultStr
 
