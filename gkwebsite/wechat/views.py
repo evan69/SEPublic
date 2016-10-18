@@ -84,6 +84,8 @@ def responseMsg(postContent):
         if msg['MsgType']:
             if msg['MsgType'] == 'event':
                 resStr = handleEvent(msg)
+            elif msg['MsgType'] == 'text':
+                resStr = handleText(msg)
     return resStr
 
 
@@ -101,3 +103,12 @@ def handleEvent(msg):
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', 'sorry...waiting to see you again')
     return resultStr
 
+
+def handleText(msg):
+    resultStr = ""
+    if msg['Content'] == u'注册':
+        resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
+        login_url = "http://59.66.182.75/login/"
+        resultStr = resultStr % (
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', login_url)
+    return resultStr
