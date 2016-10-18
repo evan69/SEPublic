@@ -6,12 +6,14 @@ from xml.etree import ElementTree as ET
 from django.utils.encoding import smart_str, smart_unicode
 import hashlib
 import urllib
+import urllib2
+import json
 import time
 
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
-token_dic = {}
+token_dic = {'last_time': 0, 'access_token': ""}
 
 
 @csrf_exempt
@@ -33,28 +35,34 @@ def wechat_main(request):
             return HttpResponse("weixin  index")
     elif request.method == "POST":
         #print "post"
+        #get_token()
+        #createMenu()
         res_str = responseMsg(request.body)
-        print res_str
+        #print res_str
         response = HttpResponse(res_str, content_type="application/xml")
         return response
 
 
 def get_token():
-    urls = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential"
-    para = {"appid": Appid, "secret": Appsecret}
-    para = urllib.urlencode(para)
-    html = urllib.urlopen(urls, para)
-    result = html.read()
-    print result
-    if result.has_key("access_token"):
-        token_dic["access_token"] = result["access_token"]
-        token_dic["expires_in"] = result["expires_in"]
-    else:
-        print "access_token fail"
-        # get_token()
+    url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (
+        Appid, Appsecret)
+    result = urllib2.urlopen(url).read()
+    try:
+        token_dic['access_token'] = json.loads(result).get('access_token')
+        token_dic['last_time'] = int(time.time())
+    except KeyError:
+        token_dic['access_token'] = ""
+        print "get access_token failed"
+    #print token_dic['access_token']
 
 
-def get_ip():
+# token() used to update token or use the old token , time limit is 1 hour = 3600s
+def token():
+    delt = int(time.time()) - token_dic['last_time']
+    if delt > 3600:
+        get_token()
+
+'''def get_ip():
     urls = "https://api.weixin.qq.com/cgi-bin/getcallbackip"
     para = {"access_token": token_dic["access_token"]}
     para = urllib.urlencode(para)
@@ -64,7 +72,7 @@ def get_ip():
         if result["ip_list"] == ["127.0.0.1", "127.0.0.1"]:
             return True
     return False
-
+'''
 
 def xml2Dic(xmlContent):
     dic = {}
@@ -83,6 +91,7 @@ def responseMsg(postContent):
         #print msg
         if msg['MsgType']:
             if msg['MsgType'] == 'event':
+                createMenu()
                 resStr = handleEvent(msg)
             elif msg['MsgType'] == 'text':
                 resStr = handleText(msg)
@@ -95,7 +104,7 @@ def handleEvent(msg):
         # need to add openId in database of opneid openid = msg['FromUserName']
         resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', u'感谢关注高考招生辅助系统，目前正在开发中，敬请期待')
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', u'感谢关注高考招生辅助系统，回复关键词查看用法\n目前正在开发中，敬请期待')
     elif msg['Event'] == 'unsubscribe':
         # need to delete openid in database of openid, openid = msg['FromUserName]
         resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
@@ -132,3 +141,44 @@ def handleText(msg):
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     return resultStr
+
+
+def createMenu():
+    print 'createMenu'
+    token()
+    url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s" % token_dic['access_token']
+    data = {
+        "button": [
+            {
+                "name": "basic",
+                "sub_button": [
+                    {
+                        "type": "view",
+                        "name": "login",
+                        "url": "http://59.66.182.75/login/"
+                    },
+                    {
+                        "type": "view",
+                        "name": "register",
+                        "url": "http://59.66.182.75/login/"
+                    }]
+            },
+            {
+                "type": "view",
+                "name": "test",
+                "url": "http://59.66.182.75/login/"
+            },
+            {
+                "type": "view",
+                "name": "profile",
+                "url": "http://59.66.182.75/login/"
+
+            }
+        ]
+    }
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('encoding', 'utf-8')
+    response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
+    # result = response.read()
+    # print result
