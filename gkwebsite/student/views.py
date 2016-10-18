@@ -40,3 +40,6 @@ def student_logout(request):
 	except KeyError:
 		pass
 	return redirect('/login')
+
+def profile(request):
+	return render(request, 'student/userinfo.html')

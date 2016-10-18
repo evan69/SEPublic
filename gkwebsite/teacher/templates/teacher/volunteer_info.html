@@ -31,15 +31,17 @@
         <div class="panel-body">
          <div class="row">
           <div class="col-md-offset-3 col-md-6">
-           <form class="form-horizontal" role="form" method="GET" action="/teacher/volunteer_info/edit/">
+           <form class="form-horizontal" role="form" action="#" ">
              {% csrf_token %}
-            <fieldset disabled="">
+             <fieldset disabled="">
              <div class="form-group">
               <label for="account" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
               <div class="col-sm-10">
                <p class="form-control-static" id="account" name="account">{{dict.user_name}}</p>
               </div>
              </div>
+
+
              <div class="form-group">
               <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
               <div class="col-sm-10">
@@ -131,7 +133,7 @@
             </fieldset>
              <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-               <button type="submit" class="btn btn-primary" value="save">编辑</button>
+               <button type="button" onclick="gourl('{{dict.id}}')" class="btn btn-primary" value="save">编辑</button>
               </div>
              </div>
 
@@ -155,5 +157,10 @@
    <!-- /. PAGE WRAPPER  -->
   </div>
   <!-- /. WRAPPER  --> {% include 'teacher/jsinclude.html' %}
+ <script>
+  function gourl(id) {
+    window.location = "/teacher/volunteer_info_edit?id="+id;
+  }
+ </script>
  </body>
 </html>
