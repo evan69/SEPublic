@@ -125,6 +125,16 @@ def student_info_show(request):
         # 根据request.session.get('user_id')获取志愿者ID，前面代码中的id变量为学生id
         # 要据此排除学生不是该志愿者权限范围内的情况
         return HttpResponse('Access denied')
+
+
+    # 检查这个id是否应该让这个志愿者看到
+    vol_id = request.session.get('user_id')
+    vol_account = vol.idToAccountVolunteer(vol_id)
+    vol_student_account_list = getattr(vol.getVolunteerAll(vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
+    if(stu.idToAccountStudent(str(id)) not in vol_student_account_list):
+        return HttpResponse('Access denied')
+
+
     account = stu.idToAccountStudent(str(id))
     student = stu.getStudentAll(account)
     dic = {
@@ -162,8 +172,6 @@ def student_info_show(request):
         Student.COMMENT: getattr(student, Student.COMMENT, 'no'),
 
          }
-    print str(dic)
-    # return JsonResponse(dic)
     return HttpResponse(t.render({'student':dic}))
 
 

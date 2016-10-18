@@ -142,7 +142,7 @@ def student_info_show(request):
     account = stu.idToAccountStudent(str(id))
     student = stu.getStudentAll(account)
     dic = {
-        'id': 'goupi',
+            Student.ID: getattr(student, Student.ID, 'no'),
             Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
             Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
             Student.BIRTH: getattr(student, Student.BIRTH).strftime("%Y-%m-%d"),
@@ -303,6 +303,8 @@ def profile(request):
 '''
 @csrf_exempt
 def upload(request):
+    print 'hahahahahahah'
+    print request
     return render(request, 'teacher/uploadtest.html')
 
 
