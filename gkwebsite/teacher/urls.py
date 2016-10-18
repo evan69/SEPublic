@@ -18,7 +18,8 @@ urlpatterns = [
 		url(r'^release_test/$', views.upload),
 		# teacher 查看志愿者详情
 		url(r'^volunteer_info/$', views.volunteer_info),
-		# techar 编辑志愿者详情
-		url(r'^volunteer_info/edit/$', views.volunteer_info_edit)
-
+		# teacher 编辑志愿者详情
+		url(r'^volunteer_info/edit/$', views.volunteer_info_edit),
+		# teacher 给学生分组
+		url(r'^distribute_student/$', views.distribute_student),
 ]

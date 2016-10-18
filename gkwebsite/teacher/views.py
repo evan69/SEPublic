@@ -104,6 +104,7 @@ def volunteer_info(request):
 	'''
 
 	dict = {
+		'id' : 'heheda',
 		'user_name' : 'lihy96',
 		'realName' : '李三胖',
 		'idNumber' : '1234567890X',
@@ -163,8 +164,10 @@ def volunteer_info_edit(request):
 		'''
             后端需要在这里改代码，从数据库读取正确的dict，并返回
         '''
+		user_id = request.GET.get('id', 'gou')
+
 		dict = {
-			'user_name': 'lihy96',
+			'user_name': user_id,
 			'realName': '李三胖',
 			'idNumber': '1234567890X',
 			'sex': '女',
@@ -185,3 +188,10 @@ def volunteer_info_edit(request):
 		}
 		return render(request, 'teacher/volunteer_info_edit.html', {'dict': dict})
 
+
+'''
+    老师给学生分组
+    by byr 161017
+'''
+def distribute_student(request):
+	return render(request, 'teacher/distribute_student.html')
