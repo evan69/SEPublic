@@ -1,32 +1,5 @@
 #coding=utf-8
 # Create your views here.
-'''from django.http import HttpResponse
-import hashlib
-import urllib
-
-Token = "zaoshuizaoqi"
-Appid = "wxd1c16a4667e24faf"
-Appsecret = "efe75bfad99903dff1ba7a783a354e71"
-token_dic = {}
-
-
-def wechat_main(request):
-    # return HttpResponse("Hello, world. You're at the polls index.")
-    if request.method == "GET":
-        signature = request.GET.get('signature', None)
-        timestamp = request.GET.get('timestamp', None)
-        nonce = request.GET.get('nonce', None)
-        echostr = request.GET.get('echostr', None)
-        token = "zaoshuizaoqi"
-        tmp_list = [token, timestamp, nonce]
-        tmp_list.sort()
-        tmp_str = "%s%s%s" % tuple(tmp_list)
-        tmp_str = hashlib.sha1(tmp_str).hexdigest()
-        if tmp_str == signature:
-            return HttpResponse(echostr)
-        else:
-            return HttpResponse("weixin  index")
-'''
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from xml.etree import ElementTree as ET
@@ -46,7 +19,6 @@ def wechat_main(request):
     # return HttpResponse("Hello, world. You're at the polls index.")
     if request.method == "GET":
         signature = request.GET.get('signature', None)
-        # print signature
         timestamp = request.GET.get('timestamp', None)
         nonce = request.GET.get('nonce', None)
         echostr = request.GET.get('echostr', None)
@@ -60,7 +32,6 @@ def wechat_main(request):
         else:
             return HttpResponse("weixin  index")
     elif request.method == "POST":
-        print "POST"
         response = HttpResponse(responseMsg(request.body), content_type="application/xml")
         return response
 
@@ -103,15 +74,18 @@ def xml2Dic(xmlContent):
 
 def responseMsg(postContent):
     postStr = smart_str(postContent)
+    resStr = ""
     if postStr:
         msg = xml2Dic(postStr)
-        print msg
+        # print msg
         if msg['MsgType']:
             if msg['MsgType'] == 'event':
                 resStr = handleEvent(msg)
+    return resStr
 
 
 def handleEvent(msg):
+    resultStr = ""
     if msg['Event'] == 'subscribe':
         resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
         resultStr = resultStr % (
