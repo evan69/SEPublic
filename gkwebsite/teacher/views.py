@@ -13,8 +13,10 @@ import sys
 sys.path.append("..")
 import database.teacher_backend as tch
 import database.student_backend as stu
+import database.volunteer_backend as vol
 import datetime
 from database.models import *
+from database.my_field import *
 
 
 @ensure_csrf_cookie
@@ -310,26 +312,31 @@ def volunteer_info(request):
     '''
     后端需要在这里获取数据并返回
     '''
-
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    id = request.GET.get('id')
+    print request.GET
+    account = vol.idToAccountVolunteer(str(id))
+    volunteer = vol.getVolunteerAll(account)
     dict = {
-        'user_name' : 'lihy96',
-        'realName' : '李三胖',
-        'idNumber' : '1234567890X',
-        'sex' : '女',
-        'nation' : '内蒙古族',
-        'birth_year' : '1996',
-        'birth_month' : '01',
-        'birth_date' : '01',
-        'department' : '计算机系',
-        'class' : '计45',
-        'phone' : '123456789',
-        'email' : 'lihy14@mails.tsinghua.edu.cn',
-        'province' : '内蒙古',
-        'distribute' : '1 | 2 | 3',
-        'qqn' : '123456789',
-        'weichat' : 'fdafs1231',
-        'teacher' : '白老师 | 李老师',
-        'comment' : '大家好，我叫李昊阳，人长得帅，还长得长，更有钱，很会跳街舞',
+        'user_name': getattr(volunteer, Volunteer.ACCOUNT, '0'),
+        'realName': getattr(volunteer, Volunteer.REAL_NAME, '0'),
+        'idNumber': getattr(volunteer, Volunteer.ID_NUMBER, '0'),
+        'sex': sexIntToString(getattr(volunteer, Volunteer.SEX, 0)),
+        'nation': nationIntToString(getattr(volunteer, Volunteer.NATION, 0)),
+        'birth_year': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%Y"),
+        'birth_month': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%m"),
+        'birth_date': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%d"),
+        'department': majorIntToString(getattr(volunteer, Volunteer.MAJOR, 0)),
+        'class': getattr(volunteer, Volunteer.CLASSROOM, '0'),
+        'phone': getattr(volunteer, Volunteer.PHONE, '0'),
+        'email': getattr(volunteer, Volunteer.EMAIL, '0'),
+        'province': provinceIntToString(getattr(volunteer, Volunteer.PROVINCE, 0)),
+        'distribute': '1 | 2 | 3',
+        'qqn': '123456789',
+        'weichat': 'fdafs1231',
+        'teacher': '白老师 | 李老师',
+        'comment': getattr(volunteer, Volunteer.COMMENT, 'no such attr. by lihy'),
     }
     return render(request, 'teacher/volunteer_info.html', {'dict':dict})
 
@@ -344,9 +351,10 @@ def volunteer_info_edit(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
-
+        user_name = request.POST.get('user_name', '110')
         phone = request.POST.get('phone', '110')
         email = request.POST.get('email', '110@qq')
+        print request.POST
         dict = {
             'user_name': 'lihy96',
             'realName': '李三胖',
@@ -372,25 +380,30 @@ def volunteer_info_edit(request):
         '''
             后端需要在这里改代码，从数据库读取正确的dict，并返回
         '''
+        if 'user_id' not in request.session.keys():
+            return redirect('/login/')
+        print request.GET
+        account = vol.idToAccountVolunteer(str(id))
+        volunteer = vol.getVolunteerAll(account)
         dict = {
-            'user_name': 'lihy96',
-            'realName': '李三胖',
-            'idNumber': '1234567890X',
-            'sex': '女',
-            'nation': '内蒙古族',
-            'birth_year': '1996',
-            'birth_month': '01',
-            'birth_date': '01',
-            'department': '计算机系',
-            'class': '计45',
-            'phone': '123456789',
-            'email': 'lihy14@mails.tsinghua.edu.cn',
-            'province': '内蒙古',
+            'user_name': getattr(volunteer, Volunteer.ACCOUNT, '0'),
+            'realName': getattr(volunteer, Volunteer.REAL_NAME, '0'),
+            'idNumber': getattr(volunteer, Volunteer.ID_NUMBER, '0'),
+            'sex': sexIntToString(getattr(volunteer, Volunteer.SEX, 0)),
+            'nation': nationIntToString(getattr(volunteer, Volunteer.NATION, 0)),
+            'birth_year': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%Y"),
+            'birth_month': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%m"),
+            'birth_date': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%d"),
+            'department': majorIntToString(getattr(volunteer, Volunteer.MAJOR, 0)),
+            'class': getattr(volunteer, Volunteer.CLASSROOM, '0'),
+            'phone': getattr(volunteer, Volunteer.PHONE, '0'),
+            'email': getattr(volunteer, Volunteer.EMAIL, '0'),
+            'province': provinceIntToString(getattr(volunteer, Volunteer.PROVINCE, 0)),
             'distribute': '1 | 2 | 3',
             'qqn': '123456789',
             'weichat': 'fdafs1231',
             'teacher': '白老师 | 李老师',
-            'comment': '大家好，我叫李昊阳，人长得帅，还长得长，更有钱，很会跳街舞',
+            'comment': getattr(volunteer, Volunteer.COMMENT, 'no such attr. by lihy'),
         }
         return render(request, 'teacher/volunteer_info_edit.html', {'dict': dict})
 
