@@ -105,10 +105,30 @@ def handleEvent(msg):
 
 
 def handleText(msg):
-    resultStr = ""
-    if msg['Content'] == u'注册':
-        resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
+    # resultStr = ""
+    resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
+    if msg['Content'] == u'注册'or msg['Content'] == u'登录':
+        # resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
         login_url = "http://59.66.182.75/login/"
+        tmp = u'点击url进入注册/登录界面' + login_url
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', login_url)
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+    elif msg['Content'] == u'个人信息':
+        login_url = "http://59.66.182.75/login/"
+        tmp = u'点击url查看个人信息'+ login_url
+        resultStr = resultStr % (
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+    elif msg['Content'] == u'估分':
+        login_url = "http://59.66.182.75/login/"
+        tmp = u'点击url进入估分系统'+ login_url
+        resultStr = resultStr % (
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+    elif msg['Content'] == u'关键词':
+        tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统"
+        resultStr = resultStr % (
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+    else:
+        tmp = u'TT暂不支持该项功能，回复关键词试试看'
+        resultStr = resultStr % (
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     return resultStr
