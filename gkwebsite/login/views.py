@@ -11,6 +11,7 @@ import sys
 
 sys.path.append("../")
 import database.teacher_backend as teacher_backend
+import database.volunteer_backend as volunteer_backend
 
 '''
     login & register 界面
@@ -61,7 +62,22 @@ def logincheck(request):
                 else:
                     return HttpResponse(u"教师界面登录失败")
             elif 'volunteer' in request.POST:
-                return HttpResponse(u"志愿者界面")
+                username = request.POST.get('login_username')
+                password = request.POST.get('login_password')
+                yzmString = request.POST.get('login_yzm').upper()
+                if (yzmString == request.session['yzmString']):
+                    (login,id) = volunteer_backend.checkVolunteerPassword(username, password)
+                    if login:
+                        request.session['user_id'] = id
+                        request.session['user_name'] = username
+                        request.session['password'] = password
+                        # return render_to_response('/student')
+                        return redirect('/volunteer')
+                        #return HttpResponse(u"志愿者界面")
+                    else:
+                        return HttpResponse(u"志愿者界面登录失败")
+                else:
+                    return HttpResponse(u'验证码不正确')
             else:
                 return render_to_response('src/login.html');
     else:

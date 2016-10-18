@@ -39,7 +39,7 @@
         <div class="panel-body">
          <div class="row">
           <div class="col-md-offset-3 col-md-6">
-           <form class="form-horizontal" role="form" method="POST" action="/teacher/student_info/edit/">
+           <form class="form-horizontal" role="form" action="#">
              {% csrf_token %}
             <fieldset disabled="">
              <div class="form-group">
@@ -271,12 +271,13 @@
                <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
               </div>
              </div>
+             </fieldset>
              <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-               <button type="submit" class="btn btn-primary" value="save">编辑</button>
+               <button type="button" onclick="gourl('{{student.id}}')" class="btn btn-primary" value="save">编辑</button>
               </div>
              </div>
-            </fieldset>
+
            </form>
           </div>
          </div>
@@ -307,5 +308,11 @@
 
 
 {% include 'teacher/jsinclude.html' %}
+   <!-- /. WRAPPER  --> {% include 'teacher/jsinclude.html' %}
+ <script>
+  function gourl(id) {
+    window.location = "/teacher/student_info_edit?id="+id;
+  }
+ </script>
  </body>
 </html>
