@@ -377,7 +377,8 @@ margin:0px;
 }
 .top-navbar .navbar-brand {
 color: #fff;
-width: 260px;
+/*width: 260px;*/
+width: 200px;
 text-align: left;
 height: 60px;
 font-size: 24px;
@@ -398,7 +399,8 @@ padding: 0px;
 .top-navbar .nav > li > a {
 position: relative;
 display: block;
-padding: 20px;
+/*padding: 20px;*/
+padding: 10px;
 color: #FFFFFF;
 margin: 0px;
 }
@@ -576,7 +578,8 @@ line-height: 1.428571429;
  
  @media(min-width:768px) {
      #page-wrapper{
-               margin: 0 0 0 260px;
+/*               margin: 0 0 0 260px;*/
+                 margin: 0 0 0 200px;
         padding: 15px 30px;
         
                min-height: 1200px;
@@ -586,7 +589,8 @@ line-height: 1.428571429;
 	
     .navbar-side {
         z-index: 1;
-        width: 260px;
+/*        width: 260px;*/
+          width: 200px;
     }
 
    .navbar {
