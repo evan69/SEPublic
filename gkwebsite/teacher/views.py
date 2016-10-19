@@ -428,7 +428,8 @@ def distribute_student(request):
         #     'name':'李狗胖',
         #     'id':'233',
         # }
-        # team1 = {'teamname': 2,
+        # team1 = {'teamleader': 李狗胖,
+        #           'teamname':2,
         #         'student1': student,
         #         'student2': student,
         #         'student3': student,
@@ -462,7 +463,8 @@ def distribute_student(request):
         for vol_item in vol_all:
             vol_stu_account_list = getattr(vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
             team = {}
-            team['teamname'] = getattr(vol_item, Volunteer.REAL_NAME)
+            team['teamleader'] = getattr(vol_item, Volunteer.REAL_NAME)
+            team['teamname'] = getattr(vol_item, Volunteer.ACCOUNT)
             for i in range(0, len(vol_stu_account_list)):
                 student = stu.getStudentAll(vol_stu_account_list[i])
                 dic = {

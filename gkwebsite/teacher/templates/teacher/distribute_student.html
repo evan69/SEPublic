@@ -29,11 +29,11 @@
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamname}}</a></h4>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamleader}}({{team.teamname}})</a></h4>
                   <div id="team{{team.teamname}}" class="panel-collapse collapse">
                     <div class="panel-body" id="body{{team.teamname}}">
                         {% for key, value in team.items %}
-                            {% if key != 'teamname'%}
+                            {% if key != 'teamname' and key != 'teamleader' %}
                         <div class="row" id="id{{value.id}}">
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
