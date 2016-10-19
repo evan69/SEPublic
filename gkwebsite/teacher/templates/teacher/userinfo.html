@@ -3,10 +3,7 @@
  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>用户信息</title>
- </head>
- <body>
-   {% load staticfiles %}
+     {% load staticfiles %}
   <!-- Bootstrap Styles-->
   <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
   <!-- FontAwesome Styles-->
@@ -18,9 +15,13 @@
    <!-- profile-->
   <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
   <div id="wrapper">
-  {% include 'teacher/navtop.html' %}
-
-  {% include 'teacher/teachernavside.html' %}
+  <title>用户信息</title>
+ </head>
+ <body>
+ {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
 
 
    <div id="page-wrapper">
@@ -112,20 +113,14 @@
        </div>
       </div>
      </div>
-        <div class="row">
-          <div class="col-md-offset-4 col-md-4">
-             <footer>
-              <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-             </footer>
-          </div>
-        </div>
+       {% include 'teacher/include/footer.html' %}
     </div>
     <!-- /. PAGE INNER  -->
    </div>
    <!-- /. PAGE WRAPPER  -->
   </div>
   <!-- /. WRAPPER  -->
-{% include 'teacher/jsinclude.html' %}
+{% include 'teacher/include/jsinclude.html' %}
   <script>
       console.log("WTF");
       $(document).ready(function(){

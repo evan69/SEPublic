@@ -3,10 +3,7 @@
  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>查看学生</title>
- </head>
- <body>
-   {% load staticfiles %}
+     {% load staticfiles %}
   <!-- Bootstrap Styles-->
   <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
   <!-- FontAwesome Styles-->
@@ -16,12 +13,16 @@
   <!-- Google Fonts-->
   <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
 
+  <title>查看学生</title>
+ </head>
+ <body>
+
 
   <div id="wrapper">
-{% include 'teacher/navtop.html' %}
-{% include 'teacher/teachernavside.html' %}
-
-
+ {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
 
 
 
@@ -285,13 +286,7 @@
        </div>
       </div>
      </div>
-     <div class="row">
-      <div class="col-md-offset-4 col-md-4">
-       <footer>
-        <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-       </footer>
-      </div>
-     </div>
+{% include 'teacher/include/footer.html' %}
     </div>
     <!-- /. PAGE INNER  -->
 
@@ -307,8 +302,8 @@
 
 
 
-{% include 'teacher/jsinclude.html' %}
-   <!-- /. WRAPPER  --> {% include 'teacher/jsinclude.html' %}
+{% include 'teacher/include/jsinclude.html' %}
+   <!-- /. WRAPPER  -->
  <script>
   function gourl(id) {
     window.location = "/teacher/student_info_edit?id="+id;
