@@ -161,7 +161,7 @@
           console.log("Arrive here");
           $("#volunteer_save").click(function(){
               console.log("volunteer_save");
-
+            var volunteer_name = $("#volunteer_name").val();
             var distribute = $("#distribute").val();
             var teacher = $("#teacher").val();
             var email = $("#email").val();
@@ -171,7 +171,7 @@
             var describe = $("#comment").val();
             $.post("",
                     {
-
+                        'user_name':volunteer_name,
                         'email':email,
                         'distribute': distribute,
 			            'teacher': teacher,
