@@ -297,7 +297,6 @@
 						alert("Operation:drop at row #"+row);
 						var abs_pos=list_start_pos+row;
 						$.post("/backend/remove_volunteer_by_id/", {'id':user_array[abs_pos]['id']}, function(ret){
-						//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 							postreq($('#realName').val());
 						})
 					});
