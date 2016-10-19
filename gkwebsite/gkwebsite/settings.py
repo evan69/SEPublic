@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'student.apps.StudentConfig',
 
     'teacher',
+
+	'volunteer',
 ]
 
 MIDDLEWARE_CLASSES = [
