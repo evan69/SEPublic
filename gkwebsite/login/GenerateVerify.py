@@ -43,7 +43,7 @@ def gnrtyzm(width, height):
     '''
     # 创建画笔
     draw = ImageDraw.Draw(img)
-    text = '1234567890ABCDEFGHIJKLMNPQRSTUVWXYZ'
+    text = '1234567890ABDHKMNSWXYZ'
     yzmString = ''
     for i in range(wordsCount):
         textColor = (randint(0, 160), randint(0, 160), randint(0, 160))

@@ -465,27 +465,31 @@ def volunteer_info(request):
     print request.GET
     account = vol.idToAccountVolunteer(str(id))
     volunteer = vol.getVolunteerAll(account)
+
+    vol_dic = vol.getVolunteerAllDictByAccount(account)
+
     dict = {
-        'id': getattr(volunteer, Volunteer.ID, '0'),
-        'user_name': getattr(volunteer, Volunteer.ACCOUNT, '0'),
-        'realName': getattr(volunteer, Volunteer.REAL_NAME, '0'),
-        'idNumber': getattr(volunteer, Volunteer.ID_NUMBER, '0'),
-        'sex': sexIntToString(getattr(volunteer, Volunteer.SEX, 0)),
-        'nation': nationIntToString(getattr(volunteer, Volunteer.NATION, 0)),
-        'birth_year': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%Y"),
-        'birth_month': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%m"),
-        'birth_date': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%d"),
-        'department': majorIntToString(getattr(volunteer, Volunteer.MAJOR, ['no'])[0]),
-        'class': getattr(volunteer, Volunteer.CLASSROOM, '0'),
-        'phone': getattr(volunteer, Volunteer.PHONE, '0'),
-        'email': getattr(volunteer, Volunteer.EMAIL, '0'),
-        'province': provinceIntToString(getattr(volunteer, Volunteer.PROVINCE, 0)),
+        'id': vol_dic[Volunteer.ID],
+        'user_name': vol_dic[Volunteer.REAL_NAME],
+        'realName': vol_dic[Volunteer.REAL_NAME],
+        'idNumber': vol_dic[Volunteer.ID_NUMBER],
+        'sex': vol_dic[Volunteer.SEX],
+        'nation': vol_dic[Volunteer.NATION],
+        'birth_year': vol_dic[Volunteer.BIRTH].strftime("%Y"),
+        'birth_month': vol_dic[Volunteer.BIRTH].strftime("%m"),
+        'birth_date': vol_dic[Volunteer.BIRTH].strftime("%d"),
+        'department': vol_dic[Volunteer.MAJOR][0],
+        'class': vol_dic[Volunteer.CLASSROOM],
+        'phone': vol_dic[Volunteer.PHONE],
+        'email': vol_dic[Volunteer.EMAIL],
+        'province': vol_dic[Volunteer.PROVINCE],
         'distribute': '1 | 2 | 3',
         'qqn': '123456789',
-        'weichat': getattr(volunteer, Volunteer.WECHAT, '0'),
+        'weichat': vol_dic[Volunteer.WECHAT],
         'teacher': '白老师 | 李老师',
-        'comment': getattr(volunteer, Volunteer.COMMENT, 'no such attr. by lihy'),
+        'comment': vol_dic[Volunteer.COMMENT],
     }
+    print vol_dic[Volunteer.MAJOR][0]
     return render(request, 'teacher/volunteer_info.html', {'dict': dict})
 
 
@@ -527,25 +531,27 @@ def volunteer_info_edit(request):
         id = request.GET.get('id')
         account = vol.idToAccountVolunteer(str(id))
         volunteer = vol.getVolunteerAll(account)
+        vol_dic = vol.getVolunteerAllDictByAccount(account)
         dict = {
-            'user_name': getattr(volunteer, Volunteer.ACCOUNT, '0'),
-            'realName': getattr(volunteer, Volunteer.REAL_NAME, '0'),
-            'idNumber': getattr(volunteer, Volunteer.ID_NUMBER, '0'),
-            'sex': sexIntToString(getattr(volunteer, Volunteer.SEX, 0)),
-            'nation': nationIntToString(getattr(volunteer, Volunteer.NATION, 0)),
-            'birth_year': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%Y"),
-            'birth_month': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%m"),
-            'birth_date': getattr(volunteer, Volunteer.BIRTH, datetime.datetime.now()).strftime("%d"),
-            'department': majorIntToString(getattr(volunteer, Volunteer.MAJOR, ['no'])[0]),
-            'class': getattr(volunteer, Volunteer.CLASSROOM, '0'),
-            'phone': getattr(volunteer, Volunteer.PHONE, '0'),
-            'email': getattr(volunteer, Volunteer.EMAIL, '0'),
-            'province': provinceIntToString(getattr(volunteer, Volunteer.PROVINCE, 0)),
+            'id': vol_dic[Volunteer.ID],
+            'user_name': vol_dic[Volunteer.REAL_NAME],
+            'realName': vol_dic[Volunteer.REAL_NAME],
+            'idNumber': vol_dic[Volunteer.ID_NUMBER],
+            'sex': vol_dic[Volunteer.SEX],
+            'nation': vol_dic[Volunteer.NATION],
+            'birth_year': vol_dic[Volunteer.BIRTH].strftime("%Y"),
+            'birth_month': vol_dic[Volunteer.BIRTH].strftime("%m"),
+            'birth_date': vol_dic[Volunteer.BIRTH].strftime("%d"),
+            'department': vol_dic[Volunteer.MAJOR][0],
+            'class': vol_dic[Volunteer.CLASSROOM],
+            'phone': vol_dic[Volunteer.PHONE],
+            'email': vol_dic[Volunteer.EMAIL],
+            'province': vol_dic[Volunteer.PROVINCE],
             'distribute': '1 | 2 | 3',
-            'qqn': '1234567890',
-            'weichat': getattr(volunteer, Volunteer.WECHAT, '0'),
+            'qqn': '123456789',
+            'weichat': vol_dic[Volunteer.WECHAT],
             'teacher': '白老师 | 李老师',
-            'comment': getattr(volunteer, Volunteer.COMMENT, 'no such attr. by lihy'),
+            'comment': vol_dic[Volunteer.COMMENT],
         }
         return render(request, 'teacher/volunteer_info_edit.html', {'dict': dict})
 
