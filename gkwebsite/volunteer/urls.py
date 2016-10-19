@@ -14,5 +14,5 @@ urlpatterns = [
 		#url(r'^add_student/$', views.add_student, name='add_student'),
 		# teacher 查看修改个人信息
 		url(r'^profile/$', views.profile),
-		url(r'^$', views.profile),
+		url(r'^$', views.dashboard),
 ]

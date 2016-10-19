@@ -47,6 +47,8 @@ def student_info_show(request):
     print request.session.get('user_id')
     return HttpResponse(t.render(c))
 
+def dashboard(request):
+	return HttpResponse('YES')
 @csrf_exempt
 def profile(request):
     print "heh333e"
