@@ -41,5 +41,8 @@ urlpatterns = [
     #	by dqn14 Oct 12, 2016
     url(r'^backend/', include('database.urls')),
 
-	url(r'^volunteer/', include('volunteer.urls')),
+		url(r'^volunteer/', include('volunteer.urls')),
+		
+		#   关联微信处理
+		url(r'^wechat/', include('wechat.urls')),
 ]
