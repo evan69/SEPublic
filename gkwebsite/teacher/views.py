@@ -14,6 +14,7 @@ sys.path.append("..")
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
+import database.image_backend as pic
 import datetime
 from database.models import *
 from database.my_field import *
@@ -296,16 +297,28 @@ def profile(request):
         return render(request, 'teacher/userinfo.html',{'dict':dict})
 
 
+
 '''
     老师上传试题
     by byr 161016
 '''
 @csrf_exempt
 def upload(request):
+    print '-----------'
+    print request.POST
     if (request.method == 'GET'):
         return render(request, 'teacher/uploadtest.html')
     else:
         print request.POST.get('problem_upload', 'ooo')
+
+        form = pic.ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # m = Picture.objects.get(pk=course_id)
+            # m.model_pic = form.cleaned_data['image']
+            # m.save()
+            print pic.createPicture('a', {Picture.IMG: form.cleaned_data['image']})
+        else:
+            print 'hahahahahah'
         dict = {'result':'上传成功'}
         return JsonResponse(dict)
 
