@@ -14,6 +14,7 @@ sys.path.append("..")
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
+import database.image_backend as pic
 import datetime
 from database.models import *
 from database.my_field import *
@@ -296,16 +297,28 @@ def profile(request):
         return render(request, 'teacher/userinfo.html',{'dict':dict})
 
 
+
 '''
     老师上传试题
     by byr 161016
 '''
 @csrf_exempt
 def upload(request):
+    print '-----------'
+    print request.POST
     if (request.method == 'GET'):
         return render(request, 'teacher/uploadtest.html')
     else:
         print request.POST.get('problem_upload', 'ooo')
+
+        form = pic.ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # m = Picture.objects.get(pk=course_id)
+            # m.model_pic = form.cleaned_data['image']
+            # m.save()
+            print pic.createPicture('a', {Picture.IMG: form.cleaned_data['image']})
+        else:
+            print 'hahahahahah'
         dict = {'result':'上传成功'}
         return JsonResponse(dict)
 
@@ -423,40 +436,6 @@ def volunteer_info_edit(request):
 '''
 def distribute_student(request):
     if 'id' not in request.GET:
-        # student = {
-        #     'user_name':'ligoupang',
-        #     'name':'李狗胖',
-        #     'id':'233',
-        # }
-        # team1 = {'teamname': 2,
-        #         'student1': student,
-        #         'student2': student,
-        #         'student3': student,
-        #         'student4': student,
-        #         'student5': student,
-        #         }
-        # team2 = {'teamname': 3,
-        #         'student1': student,
-        #         'student2': student,
-        #         'student3': student,
-        #         'student4': student,
-        #         'student5': student,
-        #         }
-        # team3 = {'teamname': 4,
-        #         'student1': student,
-        #         'student2': student,
-        #         'student3': student,
-        #         'student4': student,
-        #         'student5': student,
-        #         }
-        # team = {'teamname': 1,
-        #         'student1': student,
-        #         'student2': student,
-        #         'student3': student,
-        #         'student4': student,
-        #         'student5': student,
-        #         }
-        # dict = [team, team1, team2, team3]
         team_list = []
         vol_all = vol.getAllInVolunteer()
         for vol_item in vol_all:
