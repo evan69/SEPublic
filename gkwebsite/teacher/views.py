@@ -49,7 +49,7 @@ def student_info_edit(request):
     dic = {
         Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
         Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
-        Student.BIRTH: getattr(student, Student.BIRTH).strftime("%Y-%m-%d"),
+        Student.BIRTH: getattr(student, Student.BIRTH,datetime.datetime.now()).strftime("%Y-%m-%d"),
         Student.ID_NUMBER: getattr(student, Student.ID_NUMBER, 'no'),
 
         Student.TYPE: getattr(student, Student.TYPE, 'no'),
@@ -96,6 +96,7 @@ def student_info_save(request):
     account = stu.idToAccountStudent(str(id))
     student = stu.getStudentAll(account)
     dic = {
+
         Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
         Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
         Student.BIRTH: getattr(student, Student.BIRTH, datetime.datetime.now()).strftime("%Y-%m-%d"),
@@ -133,48 +134,49 @@ def student_info_save(request):
 
 
 def student_info_show(request):
-	t = get_template('teacher/student_info.html')
-	id = request.GET.get('id', -1)
-	if id == -1:
-			return HttpResponse('Access denied')
-	account = stu.idToAccountStudent(str(id))
-	student = stu.getStudentAll(account)
-	dic = {
-			Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
-			Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
-			Student.BIRTH: getattr(student, Student.BIRTH).strftime("%Y-%m-%d"),
-			Student.ID_NUMBER: getattr(student, Student.ID_NUMBER, 'no'),
+    t = get_template('teacher/student_info.html')
+    id = request.GET.get('id', -1)
+    if id == -1:
+            return HttpResponse('Access denied')
+    account = stu.idToAccountStudent(str(id))
+    student = stu.getStudentAll(account)
+    dic = {
+            Student.ID: getattr(student, Student.ID, 'no'),
+            Student.ACCOUNT: getattr(student, Student.ACCOUNT, 'no'),
+            Student.REAL_NAME: getattr(student, Student.REAL_NAME, 'no'),
+            Student.BIRTH: getattr(student, Student.BIRTH).strftime("%Y-%m-%d"),
+            Student.ID_NUMBER: getattr(student, Student.ID_NUMBER, 'no'),
 
-			Student.TYPE: getattr(student, Student.TYPE, 'no'),
-			Student.SEX: getattr(student, Student.SEX, 'no'),
-			Student.NATION: getattr(student, Student.NATION, 'no'),
-			Student.SCHOOL: getattr(student, Student.SCHOOL, 'no'),
-			Student.CLASSROOM: getattr(student, Student.CLASSROOM, 'no'),
+            Student.TYPE: getattr(student, Student.TYPE, 'no'),
+            Student.SEX: getattr(student, Student.SEX, 'no'),
+            Student.NATION: getattr(student, Student.NATION, 'no'),
+            Student.SCHOOL: getattr(student, Student.SCHOOL, 'no'),
+            Student.CLASSROOM: getattr(student, Student.CLASSROOM, 'no'),
 
-			Student.ADDRESS: getattr(student, Student.ADDRESS, 'no'),
-			Student.PHONE: getattr(student, Student.PHONE, 'no'),
-			Student.EMAIL: getattr(student, Student.EMAIL, 'no'),
-			Student.DAD_PHONE: getattr(student, Student.DAD_PHONE, 'no'),
-			Student.MOM_PHONE: getattr(student, Student.MOM_PHONE, 'no'),
+            Student.ADDRESS: getattr(student, Student.ADDRESS, 'no'),
+            Student.PHONE: getattr(student, Student.PHONE, 'no'),
+            Student.EMAIL: getattr(student, Student.EMAIL, 'no'),
+            Student.DAD_PHONE: getattr(student, Student.DAD_PHONE, 'no'),
+            Student.MOM_PHONE: getattr(student, Student.MOM_PHONE, 'no'),
 
-			Student.TUTOR_NAME: getattr(student, Student.TUTOR_NAME, 'no'),
-			Student.TUTOR_PHONE: getattr(student, Student.TUTOR_PHONE, 'no'),
-			Student.PROVINCE: getattr(student, Student.PROVINCE, 'no'),
-			Student.MAJOR: getattr(student, Student.MAJOR, 'no'),
-			Student.TEST_SCORE_LIST: getattr(student, Student.TEST_SCORE_LIST, 'no'),
+            Student.TUTOR_NAME: getattr(student, Student.TUTOR_NAME, 'no'),
+            Student.TUTOR_PHONE: getattr(student, Student.TUTOR_PHONE, 'no'),
+            Student.PROVINCE: getattr(student, Student.PROVINCE, 'no'),
+            Student.MAJOR: getattr(student, Student.MAJOR, 'no'),
+            Student.TEST_SCORE_LIST: getattr(student, Student.TEST_SCORE_LIST, 'no'),
 
-			Student.RANK_LIST: getattr(student, Student.RANK_LIST, 'no'),
-			Student.SUM_NUMBER_LIST: getattr(student, Student.SUM_NUMBER_LIST, 'no'),
-			Student.ESTIMATE_SCORE: getattr(student, Student.ESTIMATE_SCORE, 'no'),
-			Student.REAL_SCORE: getattr(student, Student.REAL_SCORE, 'no'),
-			Student.REGISTER_CODE: getattr(student, Student.REGISTER_CODE, 'no'),
-			Student.ADMISSION_STATUS: getattr(student, Student.ADMISSION_STATUS, 'no'),
-			Student.TEACHER_LIST: getattr(student, Student.TEACHER_LIST, 'no'),
-			Student.VOLUNTEER_ACCOUNT_LIST: getattr(student, Student.VOLUNTEER_ACCOUNT_LIST, 'no'),
-			Student.COMMENT: getattr(student, Student.COMMENT, 'no'),
+            Student.RANK_LIST: getattr(student, Student.RANK_LIST, 'no'),
+            Student.SUM_NUMBER_LIST: getattr(student, Student.SUM_NUMBER_LIST, 'no'),
+            Student.ESTIMATE_SCORE: getattr(student, Student.ESTIMATE_SCORE, 'no'),
+            Student.REAL_SCORE: getattr(student, Student.REAL_SCORE, 'no'),
+            Student.REGISTER_CODE: getattr(student, Student.REGISTER_CODE, 'no'),
+            Student.ADMISSION_STATUS: getattr(student, Student.ADMISSION_STATUS, 'no'),
+            Student.TEACHER_LIST: getattr(student, Student.TEACHER_LIST, 'no'),
+            Student.VOLUNTEER_ACCOUNT_LIST: getattr(student, Student.VOLUNTEER_ACCOUNT_LIST, 'no'),
+            Student.COMMENT: getattr(student, Student.COMMENT, 'no'),
 
-	}
-	return HttpResponse(t.render({'student': dic}))
+    }
+    return HttpResponse(t.render({'student': dic}))
 @ensure_csrf_cookie
 def add_student(request):
     id = request.session.get('user_id', -1)
@@ -205,20 +207,20 @@ def teacher_logout(request):
 
 
 def dashboard(request):
-	id = request.session.get('user_id', -1)
-	if id == -1:
-		return HttpResponse('Access denied')
-	t = get_template('teacher/dashboard.html')
-	c = {'id': id}
-	return HttpResponse(t.render(c))
-	
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/dashboard.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
 def add_volunteer(request):
-	id = request.session.get('user_id', -1)
-	if id == -1:
-		return HttpResponse('Access denied')
-	t = get_template('teacher/add_volunteer.html')
-	c = {'id': id}
-	return HttpResponse(t.render(c))
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/add_volunteer.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
 
 '''
     查看和修改教师个人信息
@@ -300,8 +302,12 @@ def profile(request):
 '''
 @csrf_exempt
 def upload(request):
-    return render(request, 'teacher/uploadtest.html')
-
+    if (request.method == 'GET'):
+        return render(request, 'teacher/uploadtest.html')
+    else:
+        print request.POST.get('problem_upload', 'ooo')
+        dict = {'result':'上传成功'}
+        return JsonResponse(dict)
 
 '''
     老师查看志愿者详情
@@ -309,6 +315,7 @@ def upload(request):
 '''
 @csrf_exempt
 def volunteer_info(request):
+
     '''
     后端需要在这里获取数据并返回
     '''
@@ -319,6 +326,7 @@ def volunteer_info(request):
     account = vol.idToAccountVolunteer(str(id))
     volunteer = vol.getVolunteerAll(account)
     dict = {
+        'id' : getattr(volunteer, Volunteer.ID, '0'),
         'user_name': getattr(volunteer, Volunteer.ACCOUNT, '0'),
         'realName': getattr(volunteer, Volunteer.REAL_NAME, '0'),
         'idNumber': getattr(volunteer, Volunteer.ID_NUMBER, '0'),
@@ -339,7 +347,6 @@ def volunteer_info(request):
         'comment': getattr(volunteer, Volunteer.COMMENT, 'no such attr. by lihy'),
     }
     return render(request, 'teacher/volunteer_info.html', {'dict':dict})
-
 
 '''
     老师编辑志愿者详情
@@ -383,6 +390,7 @@ def volunteer_info_edit(request):
         if 'user_id' not in request.session.keys():
             return redirect('/login/')
         print request.GET
+        id = request.GET.get('id')
         account = vol.idToAccountVolunteer(str(id))
         volunteer = vol.getVolunteerAll(account)
         dict = {
@@ -409,3 +417,62 @@ def volunteer_info_edit(request):
 
 
 
+'''
+    老师给学生分组
+    by byr 161017
+'''
+def distribute_student(request):
+    if 'id' not in request.GET:
+        # student = {
+        #     'user_name':'ligoupang',
+        #     'name':'李狗胖',
+        #     'id':'233',
+        # }
+        # team1 = {'teamname': 2,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # team2 = {'teamname': 3,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # team3 = {'teamname': 4,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # team = {'teamname': 1,
+        #         'student1': student,
+        #         'student2': student,
+        #         'student3': student,
+        #         'student4': student,
+        #         'student5': student,
+        #         }
+        # dict = [team, team1, team2, team3]
+        team_list = []
+        vol_all = vol.getAllInVolunteer()
+        for vol_item in vol_all:
+            vol_stu_account_list = getattr(vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
+            team = {}
+            team['teamname'] = getattr(vol_item, Volunteer.REAL_NAME)
+            for i in range(0, len(vol_stu_account_list)):
+                student = stu.getStudentAll(vol_stu_account_list[i])
+                dic = {
+                    'user_name':getattr(student, Student.ACCOUNT,'NO'),
+                    'name': getattr(student, Student.REAL_NAME,'NO'),
+                    'id': getattr(student, Student.ID,'NO'),
+                }
+                team[('student' + str(i))] = dic
+            team_list.append(team)
+        return render(request, 'teacher/distribute_student.html', {'dict': team_list})
+    else:
+        user_id=request.GET['id']
+        return JsonResponse({'success':1})

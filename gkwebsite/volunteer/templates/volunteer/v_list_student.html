@@ -164,7 +164,7 @@
 		<script>
 			var list_start_pos = 0;
 			var user_array = [];
-			console.log('hehe');
+			//console.log('hehe');
 			function show_list(startnum){
 			    console.log('hehe');
 				var tag1, tag2, tag3;
@@ -179,7 +179,7 @@
 					//listitems+="<button type=\"button\" id=\""+tag3+"\" class = \"btn btn-danger btn-xs\">删除</button></td></tr>";
 					$('#student_list').append(listitems);
 					$('#'+tag1).click(function(){
-					    console.log('hehe2');
+					    console.log('hehe###2');
 					    //alert('cao');
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
@@ -200,7 +200,9 @@
 						*/
 						var abs_pos=list_start_pos+row;
 						//alert("Operation:view at row #"+abs_pos+" ?id="+user_array[abs_pos]['id']);
-						window.location="/volunteer/student_info?id="+user_array[abs_pos]['id'];
+						//console.log('hehe$$$2');
+						window.location="/volunteer/student_info?stu_id="+user_array[abs_pos]['id'];
+						//$.post("/volunteer/student_info/", {'stu_id':user_array[abs_pos]['id']});
 					});
 					/*
 					$('#'+tag2).click(function(){
