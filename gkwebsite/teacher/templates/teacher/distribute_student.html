@@ -4,9 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>学生分组</title></head>
-
-  <body>{% load staticfiles %}
+      {% load staticfiles %}
     <!-- Bootstrap Styles-->
     <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
     <!-- FontAwesome Styles-->
@@ -15,7 +13,14 @@
     <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
     <!-- Google Fonts-->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-    <div id="wrapper">{% include 'teacher/navtop.html' %} {% include 'teacher/teachernavside.html' %}
+
+    <title>学生分组</title></head>
+
+  <body> <div id="wrapper">
+        {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
       <div id="page-wrapper">
         <div id="page-inner">
           <div class="row">
@@ -29,11 +34,11 @@
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamname}}</a></h4>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamleader}}({{team.teamname}})</a></h4>
                   <div id="team{{team.teamname}}" class="panel-collapse collapse">
                     <div class="panel-body" id="body{{team.teamname}}">
                         {% for key, value in team.items %}
-                            {% if key != 'teamname'%}
+                            {% if key != 'teamname' and key != 'teamleader' %}
                         <div class="row" id="id{{value.id}}">
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
@@ -50,18 +55,12 @@
             </div>
           </div></div>{% empty %}
           <li>抱歉，列表为空</li>{% endfor %}
-          <div class="row">
-            <div class="col-md-offset-4 col-md-4">
-              <footer>
-                <p>Copyright &copy; 2016.Company name All rights reserved.
-                  <a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-              </footer>
-            </div>
-          </div>
+
+                  {% include 'teacher/include/footer.html' %}
         </div>
         <!-- /. PAGE INNER --></div>
       <!-- /. PAGE WRAPPER --></div>
-    <!-- /. WRAPPER -->{% include 'teacher/jsinclude.html' %}
+    <!-- /. WRAPPER -->{% include 'teacher/include/jsinclude.html' %}
     <script>/*function add(id, id1) {
         var newNode = document.createElement("div");
         newNode.setAttribute("id", "a" + toString(newNode.childElementCount + 1));

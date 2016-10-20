@@ -3,10 +3,7 @@
  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>查看志愿者</title>
- </head>
- <body>
-   {% load staticfiles %}
+     {% load staticfiles %}
   <!-- Bootstrap Styles-->
   <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
   <!-- FontAwesome Styles-->
@@ -15,8 +12,16 @@
   <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
   <!-- Google Fonts-->
   <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-  <div id="wrapper">
-    {% include 'teacher/navtop.html' %} {% include 'teacher/teachernavside.html' %}
+
+  <title>查看志愿者</title>
+ </head>
+ <body>
+<div id="wrapper">
+   {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+
    <div id="page-wrapper">
     <div id="page-inner">
      <div class="row">
@@ -57,13 +62,27 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="sex">性别：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="sex" name="sex" value="{{dict.sex}}" />
+               {% if dict.sex == 0 %}
+                    <select class="form-control" id="sex" name="sex"> <option value="0" selected="selected">男</option><option value="1">女</option> </select>
+               {% else %}
+                    <select class="form-control" id="sex" name="sex"> <option value="0">男</option><option value="1" selected="selected">女</option> </select>
+               {% endif %}
               </div>
              </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="nation" class="col-sm-2 control-label">民族：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="nation" name="nation" value="{{dict.nation}}" />
+              <select class="form-control" id="nation" name="nation">
+                {% for item in dict.nation.nationlist %}
+                   {% if forloop.counter0 == dict.nation.nation %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
@@ -75,13 +94,33 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">中学所在省：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="province" name="province" value="{{dict.province}}" />
+               <select class="form-control" id="province" name="province">
+                {% for item in dict.province.provincelist %}
+                   {% if forloop.counter0 == dict.province.province %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="school" class="col-sm-2 control-label">院系：</label>
               <div class="col-sm-4">
-               <input type="text" class="form-control" id="school" name="school" value="{{dict.department}}" />
+                  <select class="form-control" id="school" name="school">
+                {% for item in dict.department.departmentlist %}
+                   {% if forloop.counter0 == dict.department.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
               <label style="text-align:left;padding-left: 2em;" for="stu_class" class="col-sm-2 control-label">班级：</label>
               <div class="col-sm-4">
@@ -144,19 +183,13 @@
        </div>
       </div>
      </div>
-     <div class="row">
-      <div class="col-md-offset-4 col-md-4">
-       <footer>
-        <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-       </footer>
-      </div>
-     </div>
+        {% include 'teacher/include/footer.html' %}
     </div>
     <!-- /. PAGE INNER  -->
    </div>
    <!-- /. PAGE WRAPPER  -->
   </div>
-  <!-- /. WRAPPER  --> {% include 'teacher/jsinclude.html' %}
+  <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
  <script>
   function gourl(id) {
     window.location = "/teacher/volunteer_info_edit?id="+id;
