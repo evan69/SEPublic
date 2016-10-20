@@ -1,424 +1,515 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>修改学生信息</title>
-	{% load staticfiles %}
-	<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-</head>
-<body>
-    <div id="wrapper">
-        <nav class="navbar navbar-default top-navbar" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/teacher"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
-            </div>
-
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/teacher/profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/teacher/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-        </nav>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     {% load staticfiles %}
+  <!-- Bootstrap Styles-->
+  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+  <!-- FontAwesome Styles-->
+  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+  <!-- Custom Styles-->
+  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+  <div id="wrapper">
+  <title>修改学生信息</title>
+ </head>
+ <body>
+ {% include 'teacher/include/navtop.html' %}
         <!--/. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-
-                    <li>
-                        <a href="/teacher"><i class="fa fa-dashboard"></i> 首页</a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 管理学生<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/teacher/add_student">添加学生信息</a>
-                            </li>
-                            <li>
-                                <a href="/teacher/add_student_loadxls">批量导入学生信息</a>
-                            </li>
-														<li>
-                                <a href="/teacher/search_student">查看学生信息</a>
-                            </li>
-                            <li>
-                                <a href="#">管理学生组<span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="/teacher/add_group">新建学生组</a>
-                                    </li>
-                                    <li>
-                                        <a href="/teacher/list_group">查看学生组</a>
-                                    </li>
-																		<li>
-                                        <a href="/teacher/favourite">我关注的学生组</a>
-                                    </li>
-                                </ul>
-                            </li>
-														<li>
-                                <a href="/teacher/pushmsg">定向发布消息</a>
-                            </li>
-                        </ul>
-                    </li>
-					<!--student infomation-->
-					<li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 管理志愿者<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/teacher/add_volunteer">添加志愿者信息</a>
-                            </li>
-                            <li>
-                                <a href="/teacher/add_volunteer_loadxls">批量导入志愿者信息</a>
-                            </li>
-														<li>
-                                <a href="/teacher/search_volunteer">查看志愿者信息</a>
-                            </li>
-                        </ul>
-                    </li>
-					<!--volunteer infomation-->
-
-					<li>
-                        <a href="/teacher/release_test"><i class="fa fa-desktop"></i> 发布估分测试</a>
-                    </li>
-										<li>
-                        <a href="/teacher/logout"><i class="fa fa-desktop"></i> 退出登录</a>
-                    </li>
-
-                </ul>
-
-            </div>
-
-        </nav>
+		{% include 'teacher/include/navside.html' %}
         <!-- /. NAV SIDE  -->
-        <div id="page-wrapper" >
-            <div id="page-inner">
-				<div class="row">
-                    <div class="col-md-12">
-                        <h1 class="page-header">
-                            学生信息编辑 <small>高考估分系统教师端</small>
-                        </h1>
-                    </div>
-                </div>
-				<!--row-->
-        <div class = "row">
-					<div class = "col-md-12">
-						<div class= "panel panel-default">
-							<div class = "panel-body">
-								<div class = "row">
-									<div class = "col-md-6">
-										<form class = "form-horizontal" role = "form" method = "POST" action = "/teacher/student_info_edit/formsubmit/">
-										{% csrf_token %}
-                                            <fieldset disabled = "">
-                                                <div class = "form-group">
-                                                    <label for = "account" class = "col-sm-2 control-label">用户名: </label>
-                                                    <div class="col-sm-10">
-                                                        <p class = "form-control-static" id= "account" name= "account">{{student.account}}</p>
-                                                    </div>
-                                                </div>
-                                                <div class = "form-group">
-                                                    <label for = "realName" class = "col-sm-2 control-label">姓名：</label>
-                                                    <div class = "col-sm-10">
-                                                        <input type = "text" class = "form-control" id = "realName" name = "realName" value = "{{student.realName}}">
-                                                    </div>
-                                                </div>
-                                                <div class = "form-group">
-                                                    <label for = "idNumber" class = "col-sm-2 control-label">身份证号：</label>
-                                                    <div class = "col-sm-10">
-                                                        <input type = "text" class = "form-control" id = "idNumber" name = "idNumber" value = "{{student.idNumber}}">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for = "registerCode" class = "col-sm-2 control-label">注册码：</label>
-                                                    <div class = "col-sm-10">
-                                                        <input type = "text" class = "form-control" id = "registerCode" name = "registerCode" value = "{{student.registerCode}}">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class = "col-sm-2 control-label">性别：</label>
-                                                    <div class = "col-sm-10">
-                                                        <label class = "radio-inline">
-                                                            <input type = "radio" name = "sexSelect" value = "male"> 男
-                                                        </label>
-                                                        <label class = "radio-inline">
-                                                            <input type = "radio" name = "sexSelect"  value = "female"> 女
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="nationSelect" class="col-sm-2 control-label">民族：</label>
-                                                        <div class="col-sm-10">
-                                                            <select id="nationSelect" name="nationSelect">
-                                                                {% for nationOption in nation %}
-                                                                <option>{{nationOption}}</option>
-                                                                {% endfor %}
-                                                            </select>
-                                                        </div>
-                                                </div>
-                                                <div class = "form-group">
-                                                    <label for = "birth" class = "col-sm-2 control-label">出生日期: </label>
-                                                    <div class="col-sm-10">
-                                                        <p class = "date" id= "birth" name= "birth">{{student.birth}}</p>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                            <div class="form-group">
-                                                <label class = "col-sm-2 control-label">文理科：</label>
-                                                <div class = "col-sm-10">
-                                                    <label class = "radio-inline">
-                                                        <input type = "radio" name = "typeSelect" value = "wen"> 文
-                                                        <input type="radio" name="typeSelect" value="li"> 理
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="provinceSelect" class="col-sm-2 control-lable">地区：</label>
-                                                <div class="col-sm-10">
-                                                    <select id="provinceSelect" name="provinceSelect">
-                                                        {% for provinceOption in province %}
-                                                        <option>{{provinceOption}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-											<div class = "form-group">
-												<label for = "phone" class = "col-sm-2 control-label">手机：</label>
-												<div class = "col-sm-10">
-													<input type = "tel" class = "form-control" name = "phone" id = "phone" value = "{{student.phone}}">
-											    </div>
-											</div>
-											<div class = "form-group">
-												<label for = "email" class = "col-sm-2 control-label">邮箱：</label>
-												<div class = "col-sm-10">
-													<input type = "email" class = "form-control" id = "email" name = "email" value = "{{student.email}}">
-											    </div>
-											</div>
-											<div class = "form-group">
-												<label for = "address" class = "col-sm-2 control-label">地址：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "address" name = "address" value = "{{student.address}}">
-											    </div>
-											</div>
-                                            <div class="form-group">
-                                                <label for = "dadName" class="control-label">父亲姓名：</label>
-                                                <input type="text" class="form-control" id="dadName" name="dadName" value="{{student.dadName}}">
-                                                <label for="dadPhone" class="control-label">父亲电话：</label>
-                                                <input type="text" class="form-control" id = "dadPhone" name="dadPhone" value="{{student.dadPhone}}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for = "momName" class="control-label">母亲姓名：</label>
-                                                <input type="text" class="form-control" id="momName" name="momName" value="{{student.momName}}">
-                                                <label for="momPhone" class="control-label">母亲电话：</label>
-                                                <input type="text" class="form-control" id = "momPhone" name="momPhone" value="{{student.momPhone}}">
-                                            </div>
-                                            <div class = "form-group">
-												<label for = "school" class = "col-sm-2 control-label">学校：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "school" name = "school" value = "{{student.school}}">
-											    </div>
-                                                <label for = "stu_class" class="control-label">班级：</label>
-                                                <input type="text" class="form-control" id = "stu_class" name="stu_class" value="{{student.stu_class}}">
-											</div>
-                                            <div class="form-group">
-                                                <label for = "tutorName" class="control-label">班主任姓名：</label>
-                                                <input type="text" class="form-control" id="tutorName" name="tutorName" value="{{student.tutorName}}">
-                                                <label for="tutorPhone" class="control-label">班主任电话：</label>
-                                                <input type="text" class="form-control" id = "tutorPhone" name="tutorPhone" value="{{student.tutorPhone}}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="majorSelect1" class="col-sm-2 control-label">专业志愿一：</label>
-                                                <div class="col-sm-10">
-                                                    <select id="majorSelect1" name="majorSelect1">
-                                                        {% for majorOption in major %}
-                                                        <option>{{majorOption}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="majorSelect2" class="col-sm-2 control-label">专业志愿二：</label>
-                                                <div class="col-sm-10">
-                                                    <select id="majorSelect2" name="majorSelect2">
-                                                        {% for majorOption in major %}
-                                                        <option>{{majorOption}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="majorSelect3" class="col-sm-2 control-label">专业志愿三：</label>
-                                                <div class="col-sm-10">
-                                                    <select id="majorSelect3" name="majorSelect3">
-                                                        {% for majorOption in major %}
-                                                        <option>{{majorOption}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class = "form-group">
-												<label for = "testScore1" class = "control-label">一模成绩：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "testScore1" name = "testScore1" value = "{{student.testScoreList.0}}">
-											    </div>
-                                                <label for = "rank1" class="control-label">排名：</label>
-                                                <input type="text" class="form-control" id = "rank1" name="rank1" value="{{student.rankList.0}}">
-											</div>
-                                            <div class = "form-group">
-												<label for = "testScore2" class = "control-label">二模成绩：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "testScore2" name = "testScore2" value = "{{student.testScoreList.1}}">
-											    </div>
-                                                <label for = "rank2" class="control-label">排名：</label>
-                                                <input type="text" class="form-control" id = "rank2" name="rank2" value="{{student.rankList.1}}">
-											</div>
-                                            <div class = "form-group">
-												<label for = "testScore3" class = "control-label">三模成绩：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "testScore3" name = "testScore3" value = "{{student.testScoreList.2}}">
-											    </div>
-                                                <label for = "rank3" class="control-label">排名：</label>
-                                                <input type="text" class="form-control" id = "rank3" name="rank3" value="{{student.rankList.2}}">
-											</div>
-                                            <div class = "form-group">
-												<label for = "estimateScore" class = "col-sm-2 control-label">估分：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "estimateScore" name = "estimateScore" value = "{{student.estimateScore}}">
-											    </div>
-											</div>
-                                            <div class = "form-group">
-												<label for = "realScore" class = "col-sm-2 control-label">实考分：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "realScore" name = "realScore" value = "{{student.realScore}}">
-											    </div>
-											</div>
-                                            <div class="form-group">
-                                                <label for="admissionStatus" class="col-sm-2 control-label">录取情况：</label>
-                                                <div class="col-sm-10">
-                                                    <select id="admissionStatus" name="admissionStatus">
-                                                        <option>未录取</option>
-                                                        {% for majorOption in major %}
-                                                        <option>{{majorOption}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class = "form-group">
-												<label for = "relTeacher" class = "col-sm-2 control-label">对应老师：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "relTeacher" name = "relTeacher" value = "{{student.relTeacher}}">
-											    </div>
-											</div>
-                                            <div class = "form-group">
-												<label for = "relVolunteer" class = "col-sm-2 control-label">对应志愿者：</label>
-												<div class = "col-sm-10">
-													<input type = "text" class = "form-control" id = "relVolunteer" name = "relVolunteer" value = "{{student.relVolunteer}}">
-											    </div>
-											</div>
-                                            <div class="form-group">
-                                                <label for="comment" class="col_sm_2  control-label">备注：</label>
-                                                <div class="col-sm-10">
-                                                    <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
-                                                </div>
-                                            </div>
-                                            <div class = "form-group">
-												<div class="col-sm-offset-2 col-sm-10">
-													<button type = "submit" class = "btn btn-primary" value = "save" >保存</button>
-													<button type = "cancel" style = "margin-left:20px;" class = "btn btn-default" value = "cancel" >取消</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
-			</div>
-             <!-- /. PAGE INNER  -->
+
+
+   <div id="page-wrapper">
+    <div id="page-inner">
+     <div class="row">
+      <div class="col-md-offset-4 col-md-4">
+       <h1 class="page-header" style="text-align: center"> 学生详情 </h1>
+      </div>
+     </div>
+     <!--row-->
+     <div class="row">
+      <div class="col-md-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="row">
+          <div class="col-md-offset-3 col-md-6">
+           <form class="form-horizontal" role="form" action="#">
+             {% csrf_token %}
+            <fieldset disabled="">
+             <div class="form-group">
+              <label for="account" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
+              <div class="col-sm-10">
+               <p class="form-control-static" id="account" name="account">{{student.account}}</p>
+              </div>
+             </div>
+             <div class="form-group">
+              <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="realName" name="realName" value="{{student.realName}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{student.idNumber}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="registerCode" class="col-sm-2 control-label">注册码：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="registerCode" name="registerCode" value="{{student.registerCode}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="sex">性别：</label>
+              <div class="col-sm-10">
+               {% if student.sex == 0 %}
+                    <select class="form-control" id="sex" name="sex"> <option value="0" selected="selected">男</option><option value="1">女</option> </select>
+               {% else %}
+                    <select class="form-control" id="sex" name="sex"> <option value="0">男</option><option value="1" selected="selected">女</option> </select>
+               {% endif %}
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="nation" class="col-sm-2 control-label">民族：</label>
+              <div class="col-sm-10">
+              <select class="form-control" id="nation" name="nation">
+                {% for item in student.nation.nationlist %}
+                   {% if forloop.counter0 == student.nation.nation %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="birth" class="col-sm-2 control-label">出生日期: </label>
+              <div class="col-sm-10">
+               <p class="date" id="birth" name="birth">{{student.birth}}</p>
+              </div>
+             </div>
+             </fieldset>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="type">文理科：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="type" name="sex" value="{{student.type}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">地区：</label>
+              <div class="col-sm-10">
+               <select class="form-control" id="province" name="province">
+                {% for item in student.province.provincelist %}
+                   {% if forloop.counter0 == student.province.province %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="phone" class="col-sm-2 control-label">手机：</label>
+              <div class="col-sm-10">
+               <input type="tel" class="form-control" name="phone" id="phone" value="{{student.phone}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="email" class="col-sm-2 control-label">邮箱：</label>
+              <div class="col-sm-10">
+               <input type="email" class="form-control" id="email" name="email" value="{{student.email}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="address" class="col-sm-2 control-label">地址：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="address" name="address" value="{{student.address}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="dadName" class="col-sm-2 control-label">父亲姓名：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="dadName" name="dadName" value="{{student.dadName}}" />
+              </div>
+              <label style="text-align:left;padding-left: 2em;" for="dadPhone" class="col-sm-2 control-label">父亲电话：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="dadPhone" name="dadPhone" value="{{student.dadPhone}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="momName" class="col-sm-2 control-label">母亲姓名：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="momName" name="momName" value="{{student.momName}}" />
+              </div>
+              <label style="text-align:left;padding-left: 2em;" for="momPhone" class="col-sm-2 control-label">母亲电话：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="momPhone" name="momPhone" value="{{student.momPhone}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="school" class="col-sm-2 control-label">学校：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="school" name="school" value="{{student.school}}" />
+              </div>
+              <label style="text-align:left;padding-left: 2em;" for="stu_class" class="col-sm-2 control-label">班级：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="stu_class" name="stu_class" value="{{student.stu_class}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="tutorName" class="col-sm-2 control-label">班主任姓名：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="tutorName" name="tutorName" value="{{student.tutorName}}" />
+              </div>
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="tutorPhone" class="col-sm-2 control-label">班主任电话：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="tutorPhone" name="tutorPhone" value="{{student.tutorPhone}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="majorSelect1" class="col-sm-2 control-label">专业志愿一：</label>
+              <div class="col-sm-10">
+              <select class="form-control" id="majorSelect1" name="majorSelect1">
+                {% for item in student.major.0.departmentlist %}
+                   {% if forloop.counter0 == student.major.0.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="majorSelect2" class="col-sm-2 control-label">专业志愿二：</label>
+              <div class="col-sm-10">
+               <select class="form-control" id="majorSelect2" name="majorSelect2">
+                {% for item in student.major.1.departmentlist %}
+                   {% if forloop.counter0 == student.major.1.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+
+              </div>
+             </div>
+             <div class="form-group">
+              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿三：</label>
+              <div class="col-sm-10">
+              <select class="form-control" id="majorSelect3" name="majorSelect3">
+                {% for item in student.major.2.departmentlist %}
+                   {% if forloop.counter0 == student.major.2.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+             </div>
+
+             <div class="form-group">
+              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿四：</label>
+              <div class="col-sm-10">
+               <select class="form-control" id="majorSelect4" name="majorSelect4">
+                {% for item in student.major.3.departmentlist %}
+                   {% if forloop.counter0 == student.major.3.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+             </div>
+             <div class="form-group">
+              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿五：</label>
+              <div class="col-sm-10">
+               <select class="form-control" id="majorSelect5" name="majorSelect5">
+                {% for item in student.major.4.departmentlist %}
+                   {% if forloop.counter0 == student.major.4.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+             </div>
+             <div class="form-group">
+              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿六：</label>
+              <div class="col-sm-10">
+               <select class="form-control" id="majorSelect6" name="majorSelect6">
+                {% for item in student.major.5.departmentlist %}
+                   {% if forloop.counter0 == student.major.5.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+             </div>
+
+
+
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="testScore1" class="col-sm-2 control-label">一模成绩：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="testScore1" name="testScore1" value="{{student.testScoreList.0}}" />
+              </div>
+              <label style="text-align:left;padding-left: 2em;" for="rank1" class="col-sm-2 control-label">排名/人数：</label>
+              <div class="col-sm-2">
+               <input type="text" class="form-control" id="rank1" name="rank1" value="{{student.rankList.0}}" />
+              </div>
+              <div class="col-sm-2">
+               <input type="text" class="form-control" id="rank11" name="rank11" value="{{student.rankList.0}}" />
+              </div>
+
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="testScore2" class="col-sm-2 control-label">二模成绩：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="testScore2" name="testScore2" value="{{student.testScoreList.1}}" />
+              </div>
+              <label style="text-align:left;padding-left: 2em;" for="rank2" class="col-sm-2 control-label">排名/人数：</label>
+               <div class="col-sm-2">
+               <input type="text" class="form-control" id="rank2" name="rank2" value="{{student.rankList.0}}" />
+              </div>
+              <div class="col-sm-2">
+               <input type="text" class="form-control" id="rank22" name="rank22" value="{{student.rankList.0}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="testScore3" class="col-sm-2 control-label">三模成绩：</label>
+              <div class="col-sm-4">
+               <input type="text" class="form-control" id="testScore3" name="testScore3" value="{{student.testScoreList.2}}" />
+              </div>
+              <label style="text-align:left;padding-left: 2em;" for="rank3" class="col-sm-2 control-label">排名/人数：</label>
+               <div class="col-sm-2">
+               <input type="text" class="form-control" id="rank3" name="rank3" value="{{student.rankList.0}}" />
+              </div>
+
+              <div class="col-sm-2">
+               <input type="text" class="form-control" id="rank33" name="rank33" value="{{student.rankList.0}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="estimateScore" class="col-sm-2 control-label">估分：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="estimateScore" name="estimateScore" value="{{student.estimateScore}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="realScore" class="col-sm-2 control-label">实考分：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="realScore" name="realScore" value="{{student.realScore}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="admissionStatus" class="col-sm-2 control-label">录取情况：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="admissionStatus" name="estimateScore" value="{{student.admissionStatus}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="relTeacher" class="col-sm-2 control-label">对应老师：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="relTeacher" name="relTeacher" value="{{student.relTeacher}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="relVolunteer" class="col-sm-2 control-label">对应志愿者：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="relVolunteer" name="relVolunteer" value="{{student.relVolunteer}}" />
+              </div>
+             </div>
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
+              <div class="col-sm-10">
+               <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
+              </div>
+             </div>
+             <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+              <button id="student_save" type="button" class="btn btn-primary" value="save">保存</button>
+              </div>
+             </div>
+
+           </form>
+          </div>
+         </div>
         </div>
-         <!-- /. PAGE WRAPPER  -->
+       </div>
+      </div>
+     </div>
+      {% include 'teacher/include/footer.html' %}
     </div>
-     <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
-
-
-	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
-	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
-
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+    <!-- /. PAGE INNER  -->
 
 
 
-</body>
+
+   </div>
+   <!-- /. PAGE WRAPPER  -->
+
+
+
+  </div>
+  <!-- /. WRAPPER  -->
+
+
+{% include 'teacher/include/jsinclude.html' %}
+
+ <script>
+      console.log("WTF");
+      $(document).ready(function(){
+          console.log("Arrive here");
+          $("#student_save").click(function(){
+              console.log("student_save");
+            var user_name = $("#account").val();
+            var type = $("#type").val();
+            var province = $("#province").val();
+            var phone = $("#phone").val();
+            var email = $("#email").val();
+            var address = $("#address").val();
+            var dadName = $("#dadName").val();
+            var dadPhone = $("#dadPhone").val();
+            var momName = $("#momName").val();
+            var momPhone = $("#momPhone").val();
+            var school = $("#school").val();
+            var stu_class = $("#stu_class").val();
+            var tutorName = $("#tutorName").val();
+            var tutorPhone = $("#tutorPhone").val();
+            var majorSelect1 = $("#majorSelect1").val();
+            var majorSelect2 = $("#majorSelect2").val();
+            var majorSelect3 = $("#majorSelect3").val();
+            var majorSelect4 = $("#majorSelect4").val();
+            var majorSelect5 = $("#majorSelect5").val();
+            var majorSelect6 = $("#majorSelect6").val();
+            var testScore1 = $("#testScore1").val();
+            var testScore2 = $("#testScore2").val();
+            var testScore3 = $("#testScore3").val();
+            var rank1 = $("#rank1").val();
+            var rank11 = $("#rank11").val();
+            var rank2 = $("#rank2").val();
+            var rank22 = $("#rank22").val();
+            var rank3 = $("#rank3").val();
+            var rank33 = $("#rank33").val();
+            var estimateScore = $("#estimateScore").val();
+            var realScore = $("#realScore").val();
+            var admissionStatus = $("#admissionStatus").val();
+            var relTeacher = $("#relTeacher").val();
+            var relVolunteer = $("#relVolunteer").val();
+            var comment= $("#comment").val();
+           /*alert(
+                        'type'+type+
+             'province' +province+
+             'phone' +phone+
+             'email' +email+
+             'address' +address+
+             'dadName' +dadName+
+             'dadPhone' +dadPhone+
+             'momName' +momName+
+             'momPhone' +momPhone+
+             'school' +school+
+             'stu_class' +stu_class+
+             'tutorName' +tutorName+
+             'tutorPhone' +tutorPhone+
+             'majorSelect1' +majorSelect1+
+             'majorSelect2' +majorSelect2+
+             'majorSelect3' +majorSelect3+
+             'majorSelect4' +majorSelect4+
+             'majorSelect5' +majorSelect5+
+             'majorSelect6' +majorSelect6+
+             'testScore1' +testScore1+
+             'testScore2' +testScore2+
+             'testScore3' +testScore3+
+             'rank1' +rank1+
+             'rank11' +rank11+
+             'rank2' +rank2+
+             'rank22' +rank22+
+             'rank3' +rank3+
+             'rank33' +rank33+
+             'estimateScore' +estimateScore+
+             'realScore' +realScore+
+             'admissionStatus' +admissionStatus+
+             'relTeacher'+relTeacher+
+             'relVolunteer' +relVolunteer+
+             'comment'+comment
+                    );*/
+            $.post("",
+                    {
+                     'user_name':user_name,
+                        'type': type,
+             'province' :province,
+             'phone' : phone,
+             'email' : email,
+             'address' : address,
+             'dadName' : dadName,
+             'dadPhone' : dadPhone,
+             'momName' : momName,
+             'momPhone' : momPhone,
+             'school' : school,
+             'stu_class' : stu_class,
+             'tutorName' : tutorName,
+             'tutorPhone' : tutorPhone,
+             'majorSelect1' : majorSelect1,
+             'majorSelect2' : majorSelect2,
+             'majorSelect3' : majorSelect3,
+             'majorSelect4' : majorSelect4,
+             'majorSelect5' : majorSelect5,
+             'majorSelect6' : majorSelect6,
+             'testScore1' : testScore1,
+             'testScore2' : testScore2,
+             'testScore3' : testScore3,
+             'rank1' : rank1,
+             'rank11' : rank11,
+             'rank2' : rank2,
+             'rank22' : rank22,
+             'rank3' : rank3,
+             'rank33' : rank33,
+             'estimateScore' : estimateScore,
+             'realScore' : realScore,
+             'admissionStatus' : admissionStatus,
+             'relTeacher': relTeacher,
+             'relVolunteer' : relVolunteer,
+             'comment': comment,
+                    },
+                    function(profileDict){
+
+                        for (key_i in profileDict)
+                            $("#"+key_i).val(profileDict[key_i]);
+                        alert("修改成功");
+            })
+          });
+      });
+  </script>
+ </body>
 </html>

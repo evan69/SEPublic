@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>用户信息</title>
+ </head>
+ <body>
+   {% load staticfiles %}
+  <!-- Bootstrap Styles-->
+  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+  <!-- FontAwesome Styles-->
+  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+  <!-- Custom Styles-->
+  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+   <!-- profile-->
+  <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
+   <link href="{% static 'glDatePicker-2.0/styles/glDatePicker.default.css' %}" rel="stylesheet" type="text/css" />
+  <div id="wrapper">
+   {% include 'v_nav.html' %}
+   <div id="page-wrapper">
+    <div id="page-inner">
+     <!--row-->
+     <div class="row">
+      <div class="col-md-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="row">
+          <div class="col-md-12">
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+        <div class="row">
+          <div class="col-md-offset-4 col-md-4">
+                  <input type="text" id="mydate" gldp-id="mydate" />
+    <div gldp-el="mydate"
+         style="width:400px; height:300px;">
+    </div>
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="{% static 'glDatePicker-2.0/glDatePicker.min.js' %}"></script>
+
+    <!--script type="text/javascript">
+        $(window).load(function()
+        {
+            var myDatePicker = $('#mydate').glDatePicker(
+            {
+                showAlways: true,
+            }).glDatePicker(true);
+        });
+    </script-->
+             <footer>
+              <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
+             </footer>
+          </div>
+        </div>
+    </div>
+    <!-- /. PAGE INNER  -->
+   </div>
+   <!-- /. PAGE WRAPPER  -->
+  </div>
+  <!-- /. WRAPPER  -->
+  <!-- JS Scripts-->
+  <!-- jQuery Js -->
+
+ </body>
+</html>
+

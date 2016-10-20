@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'student.apps.StudentConfig',
 
     'teacher',
+
+		'volunteer',
+
+    'wechat',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -124,6 +128,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+#APPEND_SLASH = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
