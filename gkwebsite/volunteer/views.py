@@ -160,6 +160,12 @@ def student_info_show(request):
     # return JsonResponse(dic)
     return HttpResponse(t.render({'student':dic}))
 
+def date_choose(request):
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    t = get_template('volunteer/v_date_choose.html')
+    #t = get_template('volunteer/test.html')
+    return HttpResponse(t.render({}))
 
 @csrf_exempt
 def profile(request):
