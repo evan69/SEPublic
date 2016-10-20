@@ -47,20 +47,6 @@ def student_info_edit(request):
         '''
         id = request.GET.get('id')
         account = stu.idToAccountStudent(str(id))
-        print '---'
-        print id
-        student = stu.getStudentAll(account)
-
-        # 志愿者页面上目前可以修改的，之后会在有所改动
-        # phone = request.POST.get('phone', '110')
-        # email = request.POST.get('email', '110@qq')
-        # weichat = request.POST.get('weichat', '110@qq')
-        # comment = request.POST.get('comment', '110')
-
-        # vol.setVolunteer(account, Volunteer.PHONE, phone)
-        # vol.setVolunteer(account, Volunteer.EMAIL, email)
-        # vol.setVolunteer(account, Volunteer.WECHAT, weichat)
-        # vol.setVolunteer(account, Volunteer.COMMENT, comment)
 
         dic = {
             'type': request.POST.get('type', '110'),
@@ -122,7 +108,6 @@ def student_info_edit(request):
         # stu.setStudent(account, Student.TYPE, dic['relTeacher'])
         # stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
         stu.setStudent(account, Student.COMMENT, dic['comment'])
-
 
         return JsonResponse(request.POST)
     else:
@@ -186,61 +171,6 @@ def student_info_edit(request):
         }
         return render(request, 'teacher/student_info_edit.html', {'student': dic})
 
-
-#
-# def student_info_edit(request):
-#     if request.method == 'POST':
-#         '''
-#             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
-#         '''
-#         id = request.GET.get('id')
-#         account = vol.idToAccountVolunteer(str(id))
-#         volunteer = vol.getVolunteerAll(account)
-#
-#
-#     # print '-------------------'
-#     # t = get_template('teacher/student_info_edit.html')
-#     # id = request.GET.get('id', -1)
-#     # if id == -1:
-#     #     return HttpResponse('Access denied')
-#     # account = stu.idToAccountStudent(str(id))
-#     # stu_dic = stu.getStudentAllDictByAccount(account)
-#     # dic = {
-#     #         Student.ID: stu_dic[Student.ID],
-#     #         Student.ACCOUNT: stu_dic[Student.ACCOUNT],
-#     #         Student.REAL_NAME: stu_dic[Student.REAL_NAME],
-#     #         Student.BIRTH: stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
-#     #         Student.ID_NUMBER: stu_dic[Student.ID_NUMBER],
-#     #
-#     #         Student.TYPE: stu_dic[Student.TYPE],
-#     #         Student.SEX: stu_dic[Student.SEX],
-#     #         Student.NATION: stu_dic[Student.NATION],
-#     #         Student.SCHOOL: stu_dic[Student.SCHOOL],
-#     #         Student.CLASSROOM: stu_dic[Student.CLASSROOM],
-#     #
-#     #         Student.ADDRESS: stu_dic[Student.ADDRESS],
-#     #         Student.PHONE: stu_dic[Student.PHONE],
-#     #         Student.EMAIL: stu_dic[Student.EMAIL],
-#     #         Student.DAD_PHONE: stu_dic[Student.DAD_PHONE],
-#     #         Student.MOM_PHONE: stu_dic[Student.MOM_PHONE],
-#     #
-#     #         Student.TUTOR_NAME: stu_dic[Student.TUTOR_NAME],
-#     #         Student.TUTOR_PHONE: stu_dic[Student.TUTOR_PHONE],
-#     #         Student.PROVINCE: stu_dic[Student.PROVINCE],
-#     #         Student.MAJOR: stu_dic[Student.MAJOR],
-#     #         Student.TEST_SCORE_LIST: stu_dic[Student.TEST_SCORE_LIST],
-#     #
-#     #         Student.RANK_LIST: stu_dic[Student.RANK_LIST],
-#     #         Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
-#     #         Student.ESTIMATE_SCORE: stu_dic[Student.ESTIMATE_SCORE],
-#     #         Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
-#     #         Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
-#     #         Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
-#     #         Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
-#     #         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
-#     #         Student.COMMENT: stu_dic[Student.COMMENT],
-#     # }
-#     return HttpResponse(t.render({'student': dic}))
 
 @csrf_exempt
 def student_info_save(request):
