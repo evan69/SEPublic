@@ -17,141 +17,10 @@
 </head>
 <body>
     <div id="wrapper">
-        <nav class="navbar navbar-default top-navbar" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/teacher"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
-            </div>
-
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="/teacher/profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="/teacher/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-        </nav>
+           {% include 'teacher/include/navtop.html' %}
         <!--/. NAV TOP  -->
-				
-				
-        <nav class="navbar-default navbar-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-
-                    <li>
-                        <a href="/teacher"><i class="fa fa-dashboard"></i> 首页</a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 管理学生<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/teacher/add_student">添加学生信息</a>
-                            </li>
-                            <li>
-                                <a href="/teacher/add_student_loadxls">批量导入学生信息</a>
-                            </li>
-														<li>
-                                <a href="/teacher/search_student">查看学生信息</a>
-                            </li>
-                            <li>
-                                <a href="#">管理学生组<span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="/teacher/add_group">新建学生组</a>
-                                    </li>
-                                    <li>
-                                        <a href="/teacher/list_group">查看学生组</a>
-                                    </li>
-																		<li>
-                                        <a href="/teacher/favourite">我关注的学生组</a>
-                                    </li>
-                                </ul>
-                            </li>
-														<li>
-                                <a href="/teacher/pushmsg">定向发布消息</a>
-                            </li>
-                        </ul>
-                    </li>
-					<!--student infomation-->
-					<li>
-                        <a href="#"><i class="fa fa-sitemap"></i> 管理志愿者<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/teacher/add_volunteer">添加志愿者信息</a>
-                            </li>
-                            <li>
-                                <a href="/teacher/add_volunteer_loadxls">批量导入志愿者信息</a>
-                            </li>
-														<li>
-                                <a class="active-menu" href="#">查看志愿者信息</a>
-                            </li>
-                        </ul>
-                    </li>
-					<!--volunteer infomation-->
-					
-					<li>
-                        <a href="/teacher/release_test"><i class="fa fa-desktop"></i> 发布估分测试</a>
-                    </li>
-										<li>
-                        <a href="/teacher/logout"><i class="fa fa-desktop"></i> 退出登录</a>
-                    </li>
-					
-                </ul>
-
-            </div>
-
-        </nav>
+		{% include 'teacher/include/navside.html' %}
         <!-- /. NAV SIDE  -->
-				
 				<div id="page-wrapper" >
             <div id="page-inner">
 				<div class="row">
@@ -199,8 +68,10 @@
 					</div>
 				</div>
 				<!-- /. ROW -->
+
 				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a href="/info">早睡早起</a></p></footer>
 			</div>
+
              <!-- /. PAGE INNER  -->
         </div>
          <!-- /. PAGE WRAPPER  -->
