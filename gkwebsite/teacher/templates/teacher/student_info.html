@@ -184,9 +184,7 @@
               <div class="col-sm-10">
               <select class="form-control" id="majorSelect1" name="majorSelect1">
                 {% for item in student.major.0.departmentlist %}
-               {{student.major.0.department|get_digit:"-"}}
-                   {% ifequal forloop.counter0 student.major.0.department|get_digit:"-" %}
-
+                   {% ifequal forloop.counter0 student.major.0.department %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -285,7 +283,7 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="testScore1" class="col-sm-2 control-label">一模成绩：</label>
               <div class="col-sm-4">
-               <input type="text" class="form-control" id="testScore1" name="testScore1" value="{{student.testSocreList.0}}" />
+               <input type="text" class="form-control" id="testScore1" name="testScore1" value="{{student.testScoreList.0}}" />
               </div>
               <label style="text-align:left;padding-left: 2em;" for="rank1" class="col-sm-2 control-label">排名/人数：</label>
               <div class="col-sm-2">
@@ -299,7 +297,7 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="testScore2" class="col-sm-2 control-label">二模成绩：</label>
               <div class="col-sm-4">
-               <input type="text" class="form-control" id="testScore2" name="testScore2" value="{{student.testSocreList.1}}" />
+               <input type="text" class="form-control" id="testScore2" name="testScore2" value="{{student.testScoreList.1}}" />
               </div>
               <label style="text-align:left;padding-left: 2em;" for="rank2" class="col-sm-2 control-label">排名/人数：</label>
                <div class="col-sm-2">
@@ -312,7 +310,7 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="testScore3" class="col-sm-2 control-label">三模成绩：</label>
               <div class="col-sm-4">
-               <input type="text" class="form-control" id="testScore3" name="testScore3" value="{{student.testSocreList.2}}" />
+               <input type="text" class="form-control" id="testScore3" name="testScore3" value="{{student.testScoreList.2}}" />
               </div>
               <label style="text-align:left;padding-left: 2em;" for="rank3" class="col-sm-2 control-label">排名/人数：</label>
                <div class="col-sm-2">

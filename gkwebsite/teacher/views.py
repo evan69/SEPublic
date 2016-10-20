@@ -47,66 +47,78 @@ def student_info_edit(request):
         '''
         id = request.GET.get('id')
         account = stu.idToAccountStudent(str(id))
-        print '---'
-        print id
-        student = stu.getStudentAll(account)
 
-        # 志愿者页面上目前可以修改的，之后会在有所改动
-        # phone = request.POST.get('phone', '110')
-        # email = request.POST.get('email', '110@qq')
-        # weichat = request.POST.get('weichat', '110@qq')
-        # comment = request.POST.get('comment', '110')
+        info_dict = request.POST.copy()
+        for i in range(1,7):
+            if info_dict['majorSelect'+str(i)] == '':
+                info_dict['majorSelect'+str(i)] = '0'
+                print i,909090
+        for i in range(1,4):
+            if info_dict['testScore'+str(i)] == '':
+                info_dict['testScore'+str(i)] = '0'
+        for i in range(1,4):
+            if info_dict['rank'+str(i)] == '':
+                info_dict['rank'+str(i)] = '0'
+        for i in range(1,4):
+            if info_dict['rank'+str(i)] == '':
+                info_dict['rank'+str(i)] = '0'
+        for i in range(1,4):
+            if info_dict['rank'+str(i)+str(i)] == '':
+                info_dict['rank'+str(i)+str(i)] = '0'
+        if info_dict['estimateScore'] == '':
+            info_dict['estimateScore'] = '0'
+        if info_dict['realScore'] == '':
+            info_dict['realScore'] = '0'
+        if info_dict['admissionStatus'] == '':
+            info_dict['admissionStatus'] = '0'
 
-        # vol.setVolunteer(account, Volunteer.PHONE, phone)
-        # vol.setVolunteer(account, Volunteer.EMAIL, email)
-        # vol.setVolunteer(account, Volunteer.WECHAT, weichat)
-        # vol.setVolunteer(account, Volunteer.COMMENT, comment)
 
+        print info_dict
         dic = {
-            'type': request.POST.get('type', '110'),
-            'province': request.POST.get('province', '110'),
-            'phone': request.POST.get('phone', '110'),
-            'email': request.POST.get('email', '110'),
-            'address': request.POST.get('address', '110'),
-            'dadName': request.POST.get('dadName', '110'),
-            'dadPhone': request.POST.get('dadPhone', '110'),
-            'momName': request.POST.get('momName', '110'),
-            'momPhone': request.POST.get('momPhone', '110'),
-            'school': request.POST.get('school', '110'),
-            'stu_class': request.POST.get('stu_class', '110'),
-            'tutorName': request.POST.get('tutorName', '110'),
-            'tutorPhone': request.POST.get('tutorPhone', '110'),
-            'majorSelect1': request.POST.get('majorSelect1', '110'),
-            'majorSelect2': request.POST.get('majorSelect2', '110'),
-            'majorSelect3': request.POST.get('majorSelect3', '110'),
-            'majorSelect4': request.POST.get('majorSelect4', '110'),
-            'majorSelect5': request.POST.get('majorSelect5', '110'),
-            'majorSelect6': request.POST.get('majorSelect6', '110'),
-            'testScore1': request.POST.get('testScore1', '110'),
-            'testScore2': request.POST.get('testScore2', '110'),
-            'testScore3': request.POST.get('testScore3', '110'),
-            'rank1': request.POST.get('rank1', '110'),
-            'rank11': request.POST.get('rank11', '110'),
-            'rank2': request.POST.get('rank2', '110'),
-            'rank22': request.POST.get('rank22', '110'),
-            'rank3': request.POST.get('rank3', '110'),
-            'rank33': request.POST.get('rank33', '110'),
-            'estimateScore': request.POST.get('estimateScore', '110'),
-            'realScore': request.POST.get('realScore', '110'),
-            'admissionStatus': request.POST.get('admissionStatus', '110'),
-            'relTeacher': request.POST.get('relTeacher', '110'),
-            'relVolunteer': request.POST.get('relVolunteer', '110'),
-            'comment': request.POST.get('comment', '110'),
+            'type': int(info_dict.get('type', '110')),
+            'province': int(info_dict.get('province', '110')),
+            'phone': info_dict.get('phone', '110'),
+            'email': info_dict.get('email', '110'),
+            'address': info_dict.get('address', '110'),
+            'dadName': info_dict.get('dadName', '110'),
+            'dadPhone': info_dict.get('dadPhone', '110'),
+            'momName': info_dict.get('momName', '110'),
+            'momPhone': info_dict.get('momPhone', '110'),
+            'school': info_dict.get('school', '110'),
+            'stu_class': info_dict.get('stu_class', '110'),
+            'tutorName': info_dict.get('tutorName', '110'),
+            'tutorPhone': info_dict.get('tutorPhone', '110'),
+            'majorSelect1': int(info_dict.get('majorSelect1', '110')),
+            'majorSelect2': int(info_dict.get('majorSelect2', '110')),
+            'majorSelect3': int(info_dict.get('majorSelect3', '110')),
+            'majorSelect4': int(info_dict.get('majorSelect4', '110')),
+            'majorSelect5': int(info_dict.get('majorSelect5', '110')),
+            'majorSelect6': int(info_dict.get('majorSelect6', '110')),
+            'testScore1': int(info_dict.get('testScore1', '110')),
+            'testScore2': int(info_dict.get('testScore2', '110')),
+            'testScore3': int(info_dict.get('testScore3', '110')),
+            'rank1': int(info_dict.get('rank1', '110')),
+            'rank11': int(info_dict.get('rank11', '110')),
+            'rank2': int(info_dict.get('rank2', '110')),
+            'rank22': int(info_dict.get('rank22', '110')),
+            'rank3': int(info_dict.get('rank3', '110')),
+            'rank33': int(info_dict.get('rank33', '110')),
+            'estimateScore': int(info_dict.get('estimateScore', '110')),
+            'realScore': int(info_dict.get('realScore', '110')),
+            'admissionStatus': int(info_dict.get('admissionStatus', '110')),
+            'relTeacher': info_dict.get('relTeacher', '110'),
+            'relVolunteer': info_dict.get('relVolunteer', '110'),
+            'comment': info_dict.get('comment', '110'),
         }
 
-        # stu.setStudent(account, Student.TYPE, dic['type'])
-        # stu.setStudent(account, Student.PROVINCE, dic['province'])
+        stu.setStudent(account, Student.TYPE, dic['type'])
+        stu.setStudent(account, Student.PROVINCE, dic['province'])
         stu.setStudent(account, Student.PHONE, dic['phone'])
         stu.setStudent(account, Student.EMAIL, dic['email'])
         stu.setStudent(account, Student.ADDRESS, dic['address'])
-        # stu.setStudent(account, Student.TYPE, dic['dadName'])
+        stu.setStudent(account, Student.TYPE, dic['dadName'])
         stu.setStudent(account, Student.DAD_PHONE, dic['dadPhone'])
-        # stu.setStudent(account, Student.TYPE, dic['momName'])
+        stu.setStudent(account, Student.TYPE, dic['momName'])
         stu.setStudent(account, Student.MOM_PHONE, dic['momPhone'])
         stu.setStudent(account, Student.SCHOOL, dic['school'])
         stu.setStudent(account, Student.CLASSROOM, dic['stu_class'])
@@ -114,13 +126,14 @@ def student_info_edit(request):
         stu.setStudent(account, Student.TUTOR_PHONE, dic['tutorPhone'])
         stu.setStudent(account, Student.MAJOR, [dic['majorSelect1'], dic['majorSelect2'], dic['majorSelect3'],
                        dic['majorSelect4'], dic['majorSelect5'], dic['majorSelect6']] )
+        stu.setStudent(account, Student.TEST_SCORE_LIST, [dic['testScore1'], dic['testScore2'], dic['testScore3']] )
         stu.setStudent(account, Student.RANK_LIST, [dic['rank1'], dic['rank2'], dic['rank3']])
         stu.setStudent(account, Student.SUM_NUMBER_LIST, [dic['rank11'], dic['rank22'], dic['rank33']])
         stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
         stu.setStudent(account, Student.REAL_SCORE, dic['realScore'])
-        # stu.setStudent(account, Student.ADMISSION_STATUS, dic['admissionStatus'])
-        # stu.setStudent(account, Student.TYPE, dic['relTeacher'])
-        # stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
+        stu.setStudent(account, Student.ADMISSION_STATUS, dic['admissionStatus'])
+        stu.setStudent(account, Student.TYPE, dic['relTeacher'])
+        stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
         stu.setStudent(account, Student.COMMENT, dic['comment'])
 
 
@@ -184,63 +197,8 @@ def student_info_edit(request):
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
             Student.COMMENT: stu_dic[Student.COMMENT],
         }
+        print Student.TEST_SCORE_LIST, stu_dic[Student.TEST_SCORE_LIST],'caocao'
         return render(request, 'teacher/student_info_edit.html', {'student': dic})
-
-
-#
-# def student_info_edit(request):
-#     if request.method == 'POST':
-#         '''
-#             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
-#         '''
-#         id = request.GET.get('id')
-#         account = vol.idToAccountVolunteer(str(id))
-#         volunteer = vol.getVolunteerAll(account)
-#
-#
-#     # print '-------------------'
-#     # t = get_template('teacher/student_info_edit.html')
-#     # id = request.GET.get('id', -1)
-#     # if id == -1:
-#     #     return HttpResponse('Access denied')
-#     # account = stu.idToAccountStudent(str(id))
-#     # stu_dic = stu.getStudentAllDictByAccount(account)
-#     # dic = {
-#     #         Student.ID: stu_dic[Student.ID],
-#     #         Student.ACCOUNT: stu_dic[Student.ACCOUNT],
-#     #         Student.REAL_NAME: stu_dic[Student.REAL_NAME],
-#     #         Student.BIRTH: stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
-#     #         Student.ID_NUMBER: stu_dic[Student.ID_NUMBER],
-#     #
-#     #         Student.TYPE: stu_dic[Student.TYPE],
-#     #         Student.SEX: stu_dic[Student.SEX],
-#     #         Student.NATION: stu_dic[Student.NATION],
-#     #         Student.SCHOOL: stu_dic[Student.SCHOOL],
-#     #         Student.CLASSROOM: stu_dic[Student.CLASSROOM],
-#     #
-#     #         Student.ADDRESS: stu_dic[Student.ADDRESS],
-#     #         Student.PHONE: stu_dic[Student.PHONE],
-#     #         Student.EMAIL: stu_dic[Student.EMAIL],
-#     #         Student.DAD_PHONE: stu_dic[Student.DAD_PHONE],
-#     #         Student.MOM_PHONE: stu_dic[Student.MOM_PHONE],
-#     #
-#     #         Student.TUTOR_NAME: stu_dic[Student.TUTOR_NAME],
-#     #         Student.TUTOR_PHONE: stu_dic[Student.TUTOR_PHONE],
-#     #         Student.PROVINCE: stu_dic[Student.PROVINCE],
-#     #         Student.MAJOR: stu_dic[Student.MAJOR],
-#     #         Student.TEST_SCORE_LIST: stu_dic[Student.TEST_SCORE_LIST],
-#     #
-#     #         Student.RANK_LIST: stu_dic[Student.RANK_LIST],
-#     #         Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
-#     #         Student.ESTIMATE_SCORE: stu_dic[Student.ESTIMATE_SCORE],
-#     #         Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
-#     #         Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
-#     #         Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
-#     #         Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
-#     #         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
-#     #         Student.COMMENT: stu_dic[Student.COMMENT],
-#     # }
-#     return HttpResponse(t.render({'student': dic}))
 
 @csrf_exempt
 def student_info_save(request):
