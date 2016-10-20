@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- encoding: utf-8 -*-
 # Create your views here.
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -9,6 +9,9 @@ import urllib
 import urllib2
 import json
 import time
+import sys
+reload(sys)
+sys.setdefaultencoding('UTF-8')
 
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
@@ -147,38 +150,40 @@ def createMenu():
     print 'createMenu'
     token()
     url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s" % token_dic['access_token']
-    data = {
+    data = '''{
         "button": [
             {
-                "name": "basic",
+                "name": "基本功能",
                 "sub_button": [
                     {
                         "type": "view",
-                        "name": "login",
+                        "name": "登录",
                         "url": "http://59.66.182.75/login/"
                     },
                     {
                         "type": "view",
-                        "name": "register",
+                        "name": "注册",
                         "url": "http://59.66.182.75/login/"
                     }]
             },
             {
                 "type": "view",
-                "name": "test",
+                "name": "估分",
                 "url": "http://59.66.182.75/login/"
             },
             {
                 "type": "view",
-                "name": "profile",
+                "name": "个人信息",
                 "url": "http://59.66.182.75/login/"
 
             }
         ]
-    }
-    req = urllib2.Request(url)
-    req.add_header('Content-Type', 'application/json')
-    req.add_header('encoding', 'utf-8')
-    response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
+    }'''
+    request = urllib2.urlopen(url, data.encode('utf-8'))
+    #print request.read()
+    #req = urllib2.Request(url)
+    #req.add_header('Content-Type', 'application/json')
+    #req.add_header('encoding', 'utf-8')
+    #response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
     # result = response.read()
     # print result
