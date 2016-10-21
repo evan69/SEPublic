@@ -260,24 +260,24 @@ input[name="controls"] {display: none;}
 			<input id="reset" name="controls" type="radio" />
 			<div class="timer">
 				<div class="cell">
-					<div class="numbers tenhour moveten">0 1 2 3 4 5 6 7 8 9</div>
+					<div class="numbers" id = 'tem_ten_hour'></div>
 				</div>
 				<div class="cell">
-					<div class="numbers hour moveten">0 1 2 3 4 5 6 7 8 9</div>
-				</div>
-				<div class="cell divider"><div class="numbers">:</div></div>
-				<div class="cell">
-					<div class="numbers tenminute movesix">0 1 2 3 4 5 6</div>
-				</div>
-				<div class="cell">
-					<div class="numbers minute moveten">0 1 2 3 4 5 6 7 8 9</div>
+					<div class="numbers" id = 'tem_hour'></div>
 				</div>
 				<div class="cell divider"><div class="numbers">:</div></div>
 				<div class="cell">
-					<div class="numbers tensecond movesix">0 1 2 3 4 5 6</div>
+					<div class="numbers" id = 'tem_ten_minute'></div>
 				</div>
 				<div class="cell">
-					<div class="numbers second moveten">0 1 2 3 4 5 6 7 8 9</div>
+					<div class="numbers" id = 'tem_minute'></div>
+				</div>
+				<div class="cell divider"><div class="numbers">:</div></div>
+				<div class="cell">
+					<div class="numbers" id = 'tem_ten_second'></div>
+				</div>
+				<div class="cell">
+					<div class="numbers" id = 'tem_second'></div>
 				</div>
 				<!--div class="cell divider"><div class="numbers">:</div></div>
 				<div class="cell">
@@ -300,9 +300,29 @@ input[name="controls"] {display: none;}
 </section>
 </div>
 <br>
-<!--script>
-	var mon = document.getElementById('start');
-	mon.click();
-</script-->
+<script>
+	var show_time = function (sec) {
+	    var hour = parseInt(sec / 3600);
+	    var minute = parseInt((sec - 3600 * hour) / 60);
+	    var second = sec - 3600 * hour - 60 * minute;
+	    document.getElementById("tem_second").innerText = second % 10;
+	    document.getElementById("tem_ten_second").innerText = parseInt(second / 10);
+	    document.getElementById("tem_minute").innerText = minute % 10;
+	    document.getElementById("tem_ten_minute").innerText = parseInt(minute / 10);
+	    document.getElementById("tem_hour").innerText = hour % 10;
+	    document.getElementById("tem_ten_hour").innerText = parseInt(hour / 10);
+	    /*
+	    console.log(hour);
+	    console.log(minute);
+	    console.log(second);
+	    console.log(document.getElementById("tem_second").innerText);
+	    console.log(document.getElementById("tem_ten_second").innerText);
+	    console.log(document.getElementById("tem_minute").innerText);
+	    console.log(document.getElementById("tem_ten_minute").innerText);
+	    console.log(document.getElementById("tem_hour").innerText);
+	    console.log(document.getElementById("tem_ten_hour").innerText);
+	    */
+    };
+</script>
 </body>
 </html>

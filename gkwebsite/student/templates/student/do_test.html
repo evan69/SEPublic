@@ -31,9 +31,9 @@
 								</button>
 								<a class="navbar-brand" href="/student"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
 						</div>
-						
+
 						<ul class="nav navbar-top-links navbar-right">
-								
+
 								<li class="dropdown">
 										<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 												<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -67,7 +67,7 @@
 										<li>
 												<a href="/student/rank"><i class="fa fa-bar-chart-o"></i> 查看排名</a>
 										</li>
-										
+
 										<li>
 												<a href="/student/admit"><i class="fa fa-table"></i> 录取情况</a>
 										</li>
@@ -86,24 +86,9 @@
 
 
 								<div class="row">
-										<div class="col-md-12">
-												<h1 class="page-header">
-														估分测试 <small><span id="username">Welcome, </span></small>
-												</h1>
-                                                <h1 class="page-header"><small>注意：开始估分后，我们将显示并记录您每道题估分所用时间。</small></h1>
-                                                <h1 class="page-header"><small>选择试题：（请点击题目开始估分）</small></h1>
-										</div>
-								</div>
-                                <div class="row">
                                     {% include 'student/clock_templete.html' %}
 								</div>
 
-                                <div class="row">
-										<div class="col-md-12">
-                                                <h2>湖北卷-语文</h2>
-										</div>
-								</div>
-				
 				<!--
 				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
 				-->
@@ -118,20 +103,16 @@
 		<script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
 		<!-- Bootstrap Js -->
 		<script src="{% static "js/bootstrap.min.js" %}"></script>
-	 
+
 		<!-- Metis Menu Js -->
 		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
 
 		<!-- Custom Js -->
 		<script>
-            /*
 		    var rst = document.getElementById('reset');
 		    rst.click();
 		    var st = document.getElementById('start');
 	        st.click();
-	        */
-	        //alert(document.getElementById("tem_second").innerText);
-            //show_time(1123);
 			$(document).ready(function(){
 				$('#username').append({{ id }});
 				/*
@@ -140,15 +121,6 @@
 				})
 				*/
 			});
-			var cur_sec = 0;
-			for(cur_sec = 0;cur_sec < 1000;cur_sec++)
-			{
-                setInterval("ff()", 1000);
-			};
-			var ff = function()
-			{
-			    show_time(cur_sec);
-			}
 		</script>
 
 </body>
