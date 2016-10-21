@@ -1,4 +1,5 @@
-# -*- encoding: utf-8 -*-
+#coding=utf-8
+
 # Create your views here.
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -12,6 +13,7 @@ import time
 import sys
 reload(sys)
 sys.setdefaultencoding('UTF-8')
+
 
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
@@ -150,6 +152,7 @@ def createMenu():
     print 'createMenu'
     token()
     url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s" % token_dic['access_token']
+<<<<<<< HEAD
     data = '''{
         "button": [
             {
@@ -158,26 +161,49 @@ def createMenu():
                     {
                         "type": "view",
                         "name": "登录",
+=======
+    data = {
+        "button": [
+            {
+                "name": "basic",
+                "sub_button": [
+                    {
+                        "type": "view",
+                        "name": "login",
+>>>>>>> backend
                         "url": "http://59.66.182.75/login/"
                     },
                     {
                         "type": "view",
+<<<<<<< HEAD
                         "name": "注册",
+=======
+                        "name": "register",
+>>>>>>> backend
                         "url": "http://59.66.182.75/login/"
                     }]
             },
             {
                 "type": "view",
+<<<<<<< HEAD
                 "name": "估分",
+=======
+                "name": "test",
+>>>>>>> backend
                 "url": "http://59.66.182.75/login/"
             },
             {
                 "type": "view",
+<<<<<<< HEAD
                 "name": "个人信息",
+=======
+                "name": "profile",
+>>>>>>> backend
                 "url": "http://59.66.182.75/login/"
 
             }
         ]
+<<<<<<< HEAD
     }'''
     request = urllib2.urlopen(url, data.encode('utf-8'))
     #print request.read()
@@ -185,5 +211,12 @@ def createMenu():
     #req.add_header('Content-Type', 'application/json')
     #req.add_header('encoding', 'utf-8')
     #response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
+=======
+    }
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('encoding', 'utf-8')
+    response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
+>>>>>>> backend
     # result = response.read()
     # print result

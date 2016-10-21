@@ -116,11 +116,6 @@ def dashboard(request):
     return HttpResponse(t.render(c))
 
 
-# def volunteer_logout(request):
-#     del request.session['user_id']
-#     return redirect('/login')
-
-
 @csrf_exempt
 def student_info_show(request):
     if 'user_id' not in request.session.keys():
