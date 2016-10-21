@@ -161,6 +161,11 @@
 					add_to_table();
 					$('#account_table').show();
 					$('#export').show();
+          $('#export').click(function(){
+            $.post("/backend/export_registration_code/", {'content':codelist}, function(ret){
+              location.href="/teacher/download_registration_xls/file"+ret['filename'];
+            });
+          });
 					$('#add').removeAttr("disabled");
 					$('#add').removeClass("btn-danger");
 				$('#add').addClass("btn-success");

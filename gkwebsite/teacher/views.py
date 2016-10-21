@@ -1,15 +1,13 @@
 # encoding=utf-8
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.template.loader import get_template
 from django.template import Context
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 
-import sys
-
-sys.path.append("..")
+import os
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
@@ -608,3 +606,11 @@ def distribute_student(request):
             return JsonResponse({'success': 1})
         else:
             return JsonResponse({'success': 0})
+            
+def download_registration_xls(request, file_name):
+    file_path = os.path.join('files', file_name)
+    response = FileResponse(open(file_path, 'rb'))
+    response['Content-type'] = 'application/vnd.ms-excel'
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(file_name)
+    return response
+    
