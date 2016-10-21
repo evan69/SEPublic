@@ -91,6 +91,7 @@
 														Online Judge <small><span id="username">Welcome, </span></small>
 												</h1>
 										</div>
+                                    {% include 'student/clock_templete.html' %}
 								</div>
 				
 				<!--			
@@ -113,6 +114,10 @@
 
 		<!-- Custom Js -->
 		<script>
+		    var rst = document.getElementById('reset');
+		    rst.click();
+		    var st = document.getElementById('start');
+	        st.click();
 			$(document).ready(function(){
 				$('#username').append({{ id }});
 				/*
