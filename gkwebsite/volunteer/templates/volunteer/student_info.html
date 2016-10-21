@@ -184,38 +184,104 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="majorSelect1" class="col-sm-2 control-label">专业志愿一：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect1" name="majorSelect1" value="{{student.major.0}}" />
+               <!--input type="text" class="form-control" id="majorSelect1" name="majorSelect1" value="{{student.major.0}}" /-->
+                  <select class="form-control" id="major1" name="major1">
+                {% for item in student.major.1.departmentlist %}
+                   {% if forloop.counter0 == student.major.1.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="majorSelect2" class="col-sm-2 control-label">专业志愿二：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect2" name="majorSelect2" value="{{student.major.1}}" />
+               <!--input type="text" class="form-control" id="majorSelect2" name="majorSelect2" value="{{student.major.1}}" /-->
+                  <select class="form-control" id="major2" name="major2">
+                {% for item in student.major.2.departmentlist %}
+                   {% if forloop.counter0 == student.major.2.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
               <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿三：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect3" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect3" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major3" name="major3">
+                {% for item in student.major.3.departmentlist %}
+                   {% if forloop.counter0 == student.major.3.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
 
              <div class="form-group">
               <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿四：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect4" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect4" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major4" name="major4">
+                {% for item in student.major.4.departmentlist %}
+                   {% if forloop.counter0 == student.major.4.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
               <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿五：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect5" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect5" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major5" name="major5">
+                {% for item in student.major.5.departmentlist %}
+                   {% if forloop.counter0 == student.major.5.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
               <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿六：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect6" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect6" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major6" name="major6">
+                {% for item in student.major.6.departmentlist %}
+                   {% if forloop.counter0 == student.major.6.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
 
@@ -277,7 +343,18 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="admissionStatus" class="col-sm-2 control-label">录取情况：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="admissionStatus" name="estimateScore" value="{{student.admissionStatus}}" />
+               <!--input type="text" class="form-control" id="admissionStatus" name="estimateScore" value="{{student.admissionStatus}}" /-->
+                  <select class="form-control" id="admissionStatus" name="admissionStatus">
+                {% for item in student.admissionStatus.admissionstatuslist %}
+                   {% if forloop.counter0 == student.admissionStatus.admissionstatus %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
