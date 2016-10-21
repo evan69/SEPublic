@@ -146,6 +146,8 @@
 				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
 					$('#namefield').append(ret['name']);
 				});
+        $('#add_student').addClass("active-menu");
+        $('#add_student').attr("href", "#");
 				$('#account_table').hide();
 				$('#export').hide();
 			});

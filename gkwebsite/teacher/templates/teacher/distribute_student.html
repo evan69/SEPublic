@@ -75,6 +75,10 @@
     function modify(user_id) {
       window.location="/teacher/student_info_edit?id="+user_id;
     }
+    $(document).ready(function(){
+      $('#group_management').addClass("active-menu");
+      $('#group_management').attr("href", "#");
+    });
     function dlt(user_id, parentid, childid) {
       var parent=document.getElementById(parentid);
       var child=document.getElementById(childid);
