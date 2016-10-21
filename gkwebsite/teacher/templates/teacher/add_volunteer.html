@@ -180,7 +180,8 @@
 				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
-				
+				$('#add_volunteer').addClass("active-menu");
+        $('#add_volunteer').attr("href", "#");
 				$('#info').hide();
 				//$('#add').click(formSubmit);
 				

@@ -171,13 +171,12 @@
 				}
 			}
 			function postreq(namestr){
+        alert('query string: '+namestr+'\nlength='+String(namestr.length))
 				if(namestr.length==0){
-					//TODO: request all
 					list_start_pos = 0;
 					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/backend/student_list_all/", {}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
 					})
@@ -187,7 +186,6 @@
 					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
 					})
@@ -204,23 +202,16 @@
 						}
 				});
 				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
-				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
-				
+				$('#search_student').addClass("active-menu");
+        $('#search_student').attr("href", "#");
 				var nameinit=$('#realName').val();
 				postreq(nameinit);
 				
 				$('#search').click(function(){
 					var namestr=$('#realName').val();
-					list_start_pos = 0;
-					$('#student_list').empty();
-					//access server and load matching records
-					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-						user_array=ret;
-						show_list(list_start_pos);
-					})
+          postreq(namestr);
 				});
 			});
 		</script>
