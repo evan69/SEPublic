@@ -125,14 +125,29 @@ def student_info_edit(request):
         stu.setStudent(account, Student.CLASSROOM, dic['stu_class'])
         stu.setStudent(account, Student.TUTOR_NAME, dic['tutorName'])
         stu.setStudent(account, Student.TUTOR_PHONE, dic['tutorPhone'])
-        stu.setStudent(account, Student.MAJOR, [dic['majorSelect1'], dic['majorSelect2'], dic['majorSelect3'],
-                                                dic['majorSelect4'], dic['majorSelect5'], dic['majorSelect6']])
-        stu.setStudent(account, Student.TEST_SCORE_LIST, [dic['testScore1'], dic['testScore2'], dic['testScore3']])
-        stu.setStudent(account, Student.RANK_LIST, [dic['rank1'], dic['rank2'], dic['rank3']])
-        stu.setStudent(account, Student.SUM_NUMBER_LIST, [dic['rank11'], dic['rank22'], dic['rank33']])
+        stu.setStudent(account,
+                       Student.MAJOR,
+                       [dic['majorSelect1'],
+                        dic['majorSelect2'],
+                           dic['majorSelect3'],
+                           dic['majorSelect4'],
+                           dic['majorSelect5'],
+                           dic['majorSelect6']])
+        stu.setStudent(
+            account, Student.TEST_SCORE_LIST, [
+                dic['testScore1'], dic['testScore2'], dic['testScore3']])
+        stu.setStudent(
+            account, Student.RANK_LIST, [
+                dic['rank1'], dic['rank2'], dic['rank3']])
+        stu.setStudent(
+            account, Student.SUM_NUMBER_LIST, [
+                dic['rank11'], dic['rank22'], dic['rank33']])
         stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
         stu.setStudent(account, Student.REAL_SCORE, dic['realScore'])
-        stu.setStudent(account, Student.ADMISSION_STATUS, dic['admissionStatus'])
+        stu.setStudent(
+            account,
+            Student.ADMISSION_STATUS,
+            dic['admissionStatus'])
         stu.setStudent(account, Student.TYPE, dic['relTeacher'])
         stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
         stu.setStudent(account, Student.COMMENT, dic['comment'])
@@ -184,7 +199,9 @@ def student_info_edit(request):
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
             Student.COMMENT: stu_dic[Student.COMMENT],
         }
-        return render(request, 'teacher/student_info_edit.html', {'student': dic})
+        return render(request,
+                      'teacher/student_info_edit.html',
+                      {'student': dic})
 
 
 @csrf_exempt
@@ -291,7 +308,12 @@ def add_student(request):
 
 def fake_backend(request):
     if request.is_ajax() and request.method == 'POST':
-        c = {'name': 'Alice', 'gender': '男', 'source': '北京', 'school': '人大附中', 'id_card': '11010819980824181X'}
+        c = {
+            'name': 'Alice',
+            'gender': '男',
+            'source': '北京',
+            'school': '人大附中',
+            'id_card': '11010819980824181X'}
         c['name'] = request.POST.get('name')
         t = []
         t.append(c)
@@ -418,6 +440,8 @@ def upload(request):
 		老师查看志愿者详情
 		by byr 161017
 '''
+
+
 @csrf_exempt
 def volunteer_info(request):
     '''
@@ -518,19 +542,24 @@ def volunteer_info_edit(request):
             'teacher': '白老师 | 李老师',
             'comment': vol_dic[Volunteer.COMMENT],
         }
-        return render(request, 'teacher/volunteer_info_edit.html', {'dict': dict})
+        return render(request,
+                      'teacher/volunteer_info_edit.html',
+                      {'dict': dict})
 
 
 '''
 		老师给学生分组
 		by byr 161017
 '''
+
+
 def distribute_student(request):
     if 'id' not in request.GET:
         team_list = []
         vol_all = vol.getAllInVolunteer()
         for vol_item in vol_all:
-            vol_stu_account_list = getattr(vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
+            vol_stu_account_list = getattr(
+                vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
             team = {}
             team['teamleader'] = getattr(vol_item, Volunteer.REAL_NAME)
             team['teamname'] = getattr(vol_item, Volunteer.ACCOUNT)
@@ -543,7 +572,9 @@ def distribute_student(request):
                 }
                 team[('student' + str(i))] = dic
             team_list.append(team)
-        return render(request, 'teacher/distribute_student.html', {'dict': team_list})
+        return render(request,
+                      'teacher/distribute_student.html',
+                      {'dict': team_list})
     else:
         vol_id = 2
         stu_id = request.GET['id']
@@ -552,8 +583,10 @@ def distribute_student(request):
 
         print volunteer_account
         print student_account
-        vol_de_stu_account_list = vol.getVolunteerAllDictByAccount(volunteer_account)[Volunteer.STUDENT_ACCOUNT_LIST]
-        stu_de_vol_account_list = stu.getStudentAllDictByAccount(student_account)[Student.VOLUNTEER_ACCOUNT_LIST]
+        vol_de_stu_account_list = vol.getVolunteerAllDictByAccount(
+            volunteer_account)[Volunteer.STUDENT_ACCOUNT_LIST]
+        stu_de_vol_account_list = stu.getStudentAllDictByAccount(
+            student_account)[Student.VOLUNTEER_ACCOUNT_LIST]
 
         print vol_de_stu_account_list
         print stu_de_vol_account_list
@@ -562,8 +595,14 @@ def distribute_student(request):
         print vol_de_stu_account_list
         print stu_de_vol_account_list
 
-        flag1 = vol.setVolunteer(volunteer_account, Volunteer.STUDENT_ACCOUNT_LIST, vol_de_stu_account_list)
-        flag2 = stu.setStudent(student_account, Student.VOLUNTEER_ACCOUNT_LIST, stu_de_vol_account_list)
+        flag1 = vol.setVolunteer(
+            volunteer_account,
+            Volunteer.STUDENT_ACCOUNT_LIST,
+            vol_de_stu_account_list)
+        flag2 = stu.setStudent(
+            student_account,
+            Student.VOLUNTEER_ACCOUNT_LIST,
+            stu_de_vol_account_list)
 
         if flag1 and flag2:
             return JsonResponse({'success': 1})

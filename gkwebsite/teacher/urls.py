@@ -4,8 +4,11 @@ from . import views
 
 urlpatterns = [
     url(r'^fake_backend/$', views.fake_backend),
-    url(r'^student_info_edit/$', views.student_info_edit, name='student_info_edit'),
-    url(r'^student_info_edit/formsubmit/$', views.student_info_save, name='student_info'),
+    url(r'^student_info_edit/$',
+        views.student_info_edit,
+        name='student_info_edit'),
+    url(r'^student_info_edit/formsubmit/$',
+        views.student_info_save, name='student_info'),
     url(r'^student_info/edit/$', views.student_info_edit, name='student_info'),
     url(r'^student_info/$', views.student_info_show, name='student_info'),
     url(r'^logout/$', views.teacher_logout, name='logout'),
@@ -25,4 +28,3 @@ urlpatterns = [
     url(r'^$', views.dashboard, name='dashboard'),
     url(r'^add_volunteer/$', views.add_volunteer, name='add_volunteer')
 ]
-
