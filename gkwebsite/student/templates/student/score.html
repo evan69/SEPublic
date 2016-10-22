@@ -16,7 +16,11 @@
 		<link href="{% static "css/custom-styles.css" %}" rel="stylesheet" />
 		<!-- Google Fonts-->
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-
+        <!-- button -->
+        <link href="{% static "btn_css/base.css" %}" rel="stylesheet" />
+        <link href="{% static "btn_css/button.css" %}" rel="stylesheet" />
+        <!--link rel="stylesheet" type="text/css" href="css/base.css" media="screen">
+	    <link rel="stylesheet" type="text/css" href="css/button.css" media="screen"-->
 </head>
 
 <body>
@@ -99,9 +103,9 @@
 								</div>
 
                                 <div class="row">
-										<div class="col-md-12">
-                                                <h2>湖北卷-语文</h2>
-										</div>
+										<!--div class="col-md-12">
+                                                <div class="button gray" id = "btn1" href = "www.baidu.com" width = "100px"><div class="shine"></div>湖北卷-语文</div>
+										</div-->
 								</div>
 				
 				<!--
@@ -132,6 +136,11 @@
 				})
 				*/
 			});
+			/*
+			$('#btn1').click(function(){
+			    alert('dd');
+			}
+			*/
 			var cur_sec = 0;
 			var ff = function()
 			{
