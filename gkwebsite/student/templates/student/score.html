@@ -124,14 +124,6 @@
 
 		<!-- Custom Js -->
 		<script>
-            /*
-		    var rst = document.getElementById('reset');
-		    rst.click();
-		    var st = document.getElementById('start');
-	        st.click();
-	        */
-	        //alert(document.getElementById("tem_second").innerText);
-            //show_time(1123);
 			$(document).ready(function(){
 				$('#username').append({{ id }});
 				/*
@@ -141,14 +133,12 @@
 				*/
 			});
 			var cur_sec = 0;
-			for(cur_sec = 0;cur_sec < 1000;cur_sec++)
-			{
-                setInterval("ff()", 1000);
-			};
 			var ff = function()
 			{
 			    show_time(cur_sec);
+			    cur_sec++;
 			}
+            setInterval("ff()", 1000);
 		</script>
 
 </body>
