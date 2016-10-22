@@ -1,9 +1,12 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.template.loader import get_template
 from django.template import Context
 from django.shortcuts import redirect
+
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 
 
@@ -50,3 +53,10 @@ def student_logout(request):
 
 def profile(request):
     return render(request, 'student/userinfo.html')
+
+@csrf_exempt
+def get_all_tests(request):
+    # if 'user_id' not in request.session.keys():
+    #    return redirect('/login/')
+    dic = {'tests' : ['a','b','c']}
+    return JsonResponse(dic)
