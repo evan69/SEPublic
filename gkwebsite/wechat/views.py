@@ -10,6 +10,7 @@ import urllib2
 import json
 import time
 import sys
+import requests
 reload(sys)
 sys.setdefaultencoding('UTF-8')
 
@@ -180,10 +181,21 @@ def createMenu():
         ]
     }'''
     request = urllib2.urlopen(url, data.encode('utf-8'))
-    #print request.read()
-    #req = urllib2.Request(url)
-    #req.add_header('Content-Type', 'application/json')
-    #req.add_header('encoding', 'utf-8')
-    #response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
-    # result = response.read()
-    # print result
+
+# send text_msg to all users
+def send_textMsg(msg):
+    print "send_textMsg"
+    token()
+    url = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s" % token_dic['access_token']
+    data = {
+        "filter": {
+            "is_to_all": True
+        },
+        "text": {
+            "content": msg
+        },
+        "msgtype": "text"
+    }
+    r = requests.post(url=url, data=json.dumps(data, ensure_ascii=False, indent=2))
+    result = r.json()
+    print result
