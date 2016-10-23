@@ -257,13 +257,13 @@ input[name="controls"] {display: none;}
 			<input id="stop" name="controls" type="radio" />
 			<input id="reset" name="controls" type="radio" />
 			<div class="timer">
-				<div class="cell">
+				<!--div class="cell">
 					<div class="numbers" id = 'tem_ten_hour'></div>
 				</div>
 				<div class="cell">
 					<div class="numbers" id = 'tem_hour'></div>
 				</div>
-				<div class="cell divider"><div class="numbers">:</div></div>
+				<div class="cell divider"><div class="numbers">:</div></div-->
 				<div class="cell">
 					<div class="numbers" id = 'tem_ten_minute'></div>
 				</div>
@@ -289,11 +289,11 @@ input[name="controls"] {display: none;}
 				</div-->
 			</div>
 			<!-- Lables for the controls -->
-			<div id="timer_controls">
-				<!--label for="start">Start</label>
+			<!--div id="timer_controls">
+				<label for="start">Start</label>
 				<label for="stop">Stop</label>
-				<label for="reset">Reset</label-->
-			</div>
+				<label for="reset">Reset</label>
+			</div-->
 		</div>
     </section>
 </div>
@@ -307,8 +307,8 @@ input[name="controls"] {display: none;}
 	    document.getElementById("tem_ten_second").innerText = parseInt(second / 10);
 	    document.getElementById("tem_minute").innerText = minute % 10;
 	    document.getElementById("tem_ten_minute").innerText = parseInt(minute / 10);
-	    document.getElementById("tem_hour").innerText = hour % 10;
-	    document.getElementById("tem_ten_hour").innerText = parseInt(hour / 10);
+	    //document.getElementById("tem_hour").innerText = hour % 10;
+	    //document.getElementById("tem_ten_hour").innerText = parseInt(hour / 10);
 	    /*
 	    console.log(hour);
 	    console.log(minute);
