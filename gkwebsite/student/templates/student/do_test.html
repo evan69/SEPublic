@@ -88,6 +88,9 @@
 								<div class="row">
                                     {% include 'student/clock_templete.html' %}
 								</div>
+                                <div class="row" style = "width:500px; margin-left: auto;margin-right: auto;">
+                                    <img src="/static/images/8.jpg" style="width:100%">
+                                </div>
 
 				<!--
 				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
@@ -113,6 +116,13 @@
 		    rst.click();
 		    var st = document.getElementById('start');
 	        st.click();
+	        var cur_sec = 0;
+			var ff = function()
+			{
+			    show_time(cur_sec);
+			    cur_sec++;
+			}
+            setInterval("ff()", 1000);
 			$(document).ready(function(){
 				$('#username').append({{ id }});
 				/*

@@ -11,4 +11,7 @@ urlpatterns = [
     url(r'^profile/$', views.profile),
 
     url(r'^get_all_tests/$', views.get_all_tests),
+    url(r'^do_test/$', views.do_test),
+
+    url(r'^static/(?P<path>.*)', 'django.views.static.serve', {'document_root': 'd:/wwwsite/office/static'}),
 ]

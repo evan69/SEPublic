@@ -60,3 +60,10 @@ def get_all_tests(request):
     #    return redirect('/login/')
     dic = {'tests' : ['a','b','c']}
     return JsonResponse(dic)
+
+@csrf_exempt
+def do_test(request):
+    print 'hehe'
+    t = get_template('student/do_test.html')
+    return render(request, 'student/do_test.html')
+    return HttpResponse(t.render({}))
