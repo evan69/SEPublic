@@ -16,7 +16,7 @@
 		<link href="{% static "css/custom-styles.css" %}" rel="stylesheet" />
 		<!-- Google Fonts-->
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-
+        <!-- rel="stylesheet" -->
 </head>
 
 <body>
@@ -84,14 +84,32 @@
 				<div id="page-wrapper" style="margin-left: 260px">
 						<div id="page-inner">
 
-
 								<div class="row">
                                     {% include 'student/clock_templete.html' %}
 								</div>
-                                <div class="row" style = "width:500px; margin-left: auto;margin-right: auto;">
+
+                                <div class="row" style = "margin-left: auto;margin-right: auto;text-align:center">
+                                    <label style="width:100%">本题题号：</label>
+                                </div>
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:10px;text-align:center">
+                                    <label style="width:100%">本题类型：</label>
+                                </div>
+
+                                <div class="row" style = "width:500px; margin-left: auto;margin-right: auto;margin-top:20px">
                                     <img src="/static/images/8.jpg" style="width:100%">
                                 </div>
 
+
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:60px;text-align:center">
+                                    <label style="width:100%">本题满分：</label>
+                                </div>
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;text-align:center">
+                                    <lebel>请输入您估的分数：</lebel><input type="text" id="oText" align="center">
+                                </div>
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
+                                    <button>提交本题估分结果</button>
+                                    <!--div class="button" id = "btn1" href = "https://www.baidu.com"><div class="shine"></div>开始测试</div-->
+                                </div>
 				<!--
 				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
 				-->
