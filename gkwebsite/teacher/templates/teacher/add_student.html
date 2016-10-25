@@ -68,17 +68,7 @@
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+    {% include 'teacher/include/jsinclude.html' %}
 
 		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
@@ -97,31 +87,6 @@
 				}
 			});
 		});
-		</script>
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
-		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
-		<script>
-		function getCookie(name) {
-				var cookieValue = null;
-				if (document.cookie && document.cookie !== '') {
-						var cookies = document.cookie.split(';');
-						for (var i = 0; i < cookies.length; i++) {
-								var cookie = jQuery.trim(cookies[i]);
-								// Does this cookie string begin with the name we want?
-								if (cookie.substring(0, name.length + 1) === (name + '=')) {
-										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-										break;
-								}
-						}
-				}
-				return cookieValue;
-		}
-		function csrfSafeMethod(method) {
-				// these HTTP methods do not require CSRF protection
-				return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-		}
 		</script>
 		<script>
 			var codelist = [];
@@ -162,9 +127,11 @@
 					$('#account_table').show();
 					$('#export').show();
           $('#export').click(function(){
-            $.post("/backend/export_registration_code/", {'content':codelist}, function(ret){
-              location.href="/teacher/download_registration_xls/file"+ret['filename'];
-            });
+            if(codelist.length > 0){
+              $.post("/backend/export_registration_code/", {'id':{{id}}, 'length': codelist.length}, function(ret){
+                location.href="/teacher/download_registration_xls/file"+ret['filename'];
+              });
+            }
           });
 					$('#add').removeAttr("disabled");
 					$('#add').removeClass("btn-danger");
@@ -172,7 +139,6 @@
 				});
 			}
 		</script>
-
 
 </body>
 </html>

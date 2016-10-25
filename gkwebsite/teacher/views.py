@@ -614,3 +614,10 @@ def download_registration_xls(request, file_name):
     response['Content-Disposition'] = 'attachment; filename="{0}"'.format(file_name)
     return response
     
+def view_message(request):
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/view_message.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
