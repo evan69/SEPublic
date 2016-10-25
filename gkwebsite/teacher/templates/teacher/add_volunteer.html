@@ -89,25 +89,8 @@
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
-		
-		<!-- jQuery Growl Js -->
-		<script src="{% static 'js/jquery.growl.js' %}"></script>
-
-
-	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
-	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
-
+    
+    {% include 'teacher/include/jsinclude.html' %}
 		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
