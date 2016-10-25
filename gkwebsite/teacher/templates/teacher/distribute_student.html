@@ -50,7 +50,7 @@
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
                             <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}')" type="button">修改</button></div>
-                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{value.id}}','body{{team.teamname}}','id{{value.id}}')" type="button">删除</button></div>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamname}}', '{{value.id}}','body{{team.teamname}}','id{{value.id}}')" type="button">删除</button></div>
                         </div>
                             {% endif %}
 
@@ -71,31 +71,59 @@
 
     <script>
         function newteam() {
-        var newNode = document.createElement("div");
-        //newNode.setAttribute("id", "a" + toString(newNode.childElementCount + 1));
-        var str = "<div class=\"row\">"+
-            "<div class=\"col-md-12\">"+
-              "<div class=\"panel panel-default\">"+
-                "<div class=\"panel-heading\">"+
-                 "<h4 class=\"panel-title\">"+
-                    "<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#team6\">ok</a>"+
-                    "<a href=\"#\">给该组增加志愿者</a></h4>"+
-                        "<div id=\"team6\" class=\"panel-collapse collapse\">"+
-                    "<div class=\"panel-body\" id=\"body6\">"+
+            data={'newteam':1};
+            $.ajax({
+                    type: 'GET',
+                    url: '/teacher/list_group',
+                    data: data,
+                    dataType: 'json',
+                    success: function(data) {
+                        teamnum = data['teamnum'];
+                        alert('新建分组 “' + teamnum + '” 成功');
+                        var newNode = document.createElement("div");
+                        var str = "<div class=\"row\">"+
+                            "<div class=\"col-md-12\">"+
+                              "<div class=\"panel panel-default\">"+
+                                "<div class=\"panel-heading\">"+
+                                 "<h4 class=\"panel-title\">"+
+                                    "<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#"+teamnum+"\">ok</a>"+
+                                    "<a href=\"#\">给该组增加志愿者</a></h4>"+
+                                        "<div id=\""+teamnum+"\" class=\"panel-collapse collapse\">"+
+                                    "<div class=\"panel-body\" id=\"body6\">"+
+                                            "</div>"+
+                                            "</div>"+
+                              "</div>"+
                             "</div>"+
-                            "</div>"+
-              "</div>"+
-            "</div>"+
-          "</div></div>";
-        newNode.innerHTML = (str);
-// alert(document.getElementById("page-inner").innerHTML);
-       $(newNode).insertAfter(document.getElementById("newteam"));
+                          "</div></div>";
+                        newNode.innerHTML = (str);
+                // alert(document.getElementById("page-inner").innerHTML);
+                       $(newNode).insertAfter(document.getElementById("newteam"));
+
+                    },
+                    error: function(xhr, type) {
+                        alert('新建分组失败');
+                    }
+            });
+
+
 
       }
+
+
+
+
+
+
     function modify(user_id) {
       window.location="/teacher/student_info_edit?id="+user_id;
     }
-    function dlt(user_id, parentid, childid) {
+
+
+
+
+
+
+    function dlt(team_id, user_id, parentid, childid) {
       var parent=document.getElementById(parentid);
       var child=document.getElementById(childid);
       parent.removeChild(child);
@@ -116,10 +144,18 @@
             alert('删除成功');
           }
       }
-      xmlhttp.open("GET","/teacher/list_group?id=" + user_id,true);
+      xmlhttp.open("GET","/teacher/list_group?id=" + user_id + '&teamid=' + team_id,true);
       xmlhttp.send();
 
     }
+
+
+
+
+        	$(document).ready(function(){
+    $('#group_management').addClass("active-menu");
+        $('#group_management').attr("href", "#");
+        	});
     </script>
   </body>
 

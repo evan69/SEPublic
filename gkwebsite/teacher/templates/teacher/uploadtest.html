@@ -102,6 +102,23 @@
           <div class="col-md-6">
            <form>
             <fieldset disabled="">
+
+              <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >年：</label>
+             <div class="col-sm-4">
+              <select class="form-control" id="year"> <option value="2017">2017</option> <option value="2018">2018</option> <option value="2019">2019</option> <option value="2020">2020</option> <option value="2021">2021</option> <option value="2022">2022</option> <option value="2023">2023</option> <option value="2024">2024</option> <option value="2025">2025</option> <option value="2026">2026</option> <option value="2027">2027</option> <option value="2028">2028</option> <option value="2029">2029</option> </select>
+             </div>
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >省份：</label>
+             <div class="col-sm-4">
+              <select class="form-control" id="province"> <option value="beijing">北京</option> <option value="neimenggu">内蒙古</option> <option value="hubei">湖北</option> </select>
+             </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >科目：</label>
+             <div class="col-sm-10">
+              <select class="form-control" id="subject"> <option value="chinese">语文</option> <option value="math">数学</option> <option value="physics">物理</option> <option value="chemistry">化学</option> <option value="biology">生物</option> <option value="english">英语</option> </select>
+             </div>
+            </div>
             <div class="form-group">
              <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >题号：</label>
              <div class="col-sm-10">
@@ -152,32 +169,6 @@
   <!-- /. PAGE WRAPPER  -->
   <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
  <script>
-/*  $(document).ready(function(){
-     $('a[href="#present"]').click(function(){
-          var year = $("#year").val();
-          var province = $('#province').val();
-          var subject = $("#subject").val();
-          var number = $("#number").val();
-          var score = $("#score").val();
-          var category = $("#category").val();
-          var problem_upload = $("#problem_upload").val();
-            $.post("",
-                    {
-                        'year':year,
-                        'province':province,
-                        'subject':subject,
-                        'number':number,
-                        'score':score,
-                        'problem_upload':problem_upload,
-                        'category':category,
-                    },
-                    function(dict){
-                        alert(dict['result']);
-            });
-
-
-       });
-     });*/
    $(document).ready(function(){
        $('a[href="#present"]').click(function(){
             var year = $("#year").val();
@@ -207,8 +198,6 @@
             }).fail(function (dict) {
              alert(dict['result'] + ' fail');
             });
-
-
        });
      });
  </script>
