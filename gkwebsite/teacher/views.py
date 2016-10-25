@@ -12,6 +12,7 @@ import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
 import database.image_backend as pic
+import django.forms as forms
 import datetime
 from database.models import *
 from database.my_field import *
@@ -407,13 +408,24 @@ def profile(request):
         }
         return render(request, 'teacher/userinfo.html', {'dict': dict})
 
+'''
+    上传图片处理
+    by byr 161025
+'''
+def handle_uploaded_img(imgFile):
+    imgName = imgFile.name
+    dst = open(imgName, 'wb')
+    dst.write(imgFile.read())
+#    for chunk in imgFile.chunks():
+#        dst.write(chunk)
+#        dst.close()
+
+
 
 '''
 		老师上传试题
 		by byr 161016
 '''
-
-
 @csrf_exempt
 def upload(request):
     print '-----------'
@@ -421,7 +433,9 @@ def upload(request):
     if (request.method == 'GET'):
         return render(request, 'teacher/uploadtest.html')
     else:
-        print request.POST.get('problem_upload', 'ooo')
+        imgFile = request.FILES['problem_upload']
+        handle_uploaded_img(imgFile)
+
 
         form = pic.ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
