@@ -4,8 +4,11 @@ from . import views
 
 urlpatterns = [
     url(r'^fake_backend/$', views.fake_backend),
-    url(r'^student_info_edit/$', views.student_info_edit, name='student_info_edit'),
-    url(r'^student_info_edit/formsubmit/$', views.student_info_save, name='student_info'),
+    url(r'^student_info_edit/$',
+        views.student_info_edit,
+        name='student_info_edit'),
+    url(r'^student_info_edit/formsubmit/$',
+        views.student_info_save, name='student_info'),
     url(r'^student_info/edit/$', views.student_info_edit, name='student_info'),
     url(r'^student_info/$', views.student_info_show, name='student_info'),
     url(r'^logout/$', views.teacher_logout, name='logout'),
@@ -23,6 +26,7 @@ urlpatterns = [
     # teacher 给学生分组
     url(r'^list_group/$', views.distribute_student),
     url(r'^$', views.dashboard, name='dashboard'),
-    url(r'^add_volunteer/$', views.add_volunteer, name='add_volunteer')
+    url(r'^add_volunteer/$', views.add_volunteer, name='add_volunteer'),
+    url(r'^download_registration_xls/file(\w+\.\w*)/$', views.download_registration_xls, name = 'download_registration_xls'),
+    url(r'^message/$', views.view_message, name='view_message'),
 ]
-

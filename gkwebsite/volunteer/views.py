@@ -37,7 +37,8 @@ def student_list_all(request):
         return redirect('/login/')
     vol_id = request.session.get('user_id')
     vol_account = vol.idToAccountVolunteer(vol_id)
-    vol_student_account_list = getattr(vol.getVolunteerAll(vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
+    vol_student_account_list = getattr(vol.getVolunteerAll(
+        vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
     if request.is_ajax() and request.method == 'POST':
         t = []
         for account in vol_student_account_list:
@@ -67,7 +68,8 @@ def volunteer_search_student_by_name(request):
         t = []
         vol_id = request.session.get('user_id')
         vol_account = vol.idToAccountVolunteer(vol_id)
-        vol_student_account_list = getattr(vol.getVolunteerAll(vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
+        vol_student_account_list = getattr(vol.getVolunteerAll(
+            vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
         for account in vol_student_account_list:
             item = stu.getStudentAll(account)
             stu_dic = stu.getStudentAllDictByAccount(account)
@@ -116,11 +118,6 @@ def dashboard(request):
     return HttpResponse(t.render(c))
 
 
-# def volunteer_logout(request):
-#     del request.session['user_id']
-#     return redirect('/login')
-
-
 @csrf_exempt
 def student_info_show(request):
     if 'user_id' not in request.session.keys():
@@ -136,7 +133,8 @@ def student_info_show(request):
     # 检查这个id是否应该让这个志愿者看到
     vol_id = request.session.get('user_id')
     vol_account = vol.idToAccountVolunteer(vol_id)
-    vol_student_account_list = getattr(vol.getVolunteerAll(vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
+    vol_student_account_list = getattr(vol.getVolunteerAll(
+        vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
     if (stu.idToAccountStudent(str(id)) not in vol_student_account_list):
         return HttpResponse('Access denied')
 
@@ -150,7 +148,8 @@ def student_info_show(request):
         Student.BIRTH: stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
         Student.ID_NUMBER: stu_dic[Student.ID_NUMBER],
 
-        # Student.TYPE: stu_dic[Student.NATION]['typelist'][stu_dic[Student.NATION]['type']],
+        # Student.TYPE:
+        # stu_dic[Student.NATION]['typelist'][stu_dic[Student.NATION]['type']],
         Student.SEX: stu_dic[Student.SEX]['sexlist'][stu_dic[Student.SEX]['sex']],
         Student.NATION: stu_dic[Student.NATION]['nationlist'][stu_dic[Student.NATION]['nation']],
         Student.SCHOOL: stu_dic[Student.SCHOOL],

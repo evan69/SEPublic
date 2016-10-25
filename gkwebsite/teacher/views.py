@@ -1,15 +1,13 @@
 # encoding=utf-8
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.template.loader import get_template
 from django.template import Context
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 
-import sys
-
-sys.path.append("..")
+import os
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
@@ -125,14 +123,29 @@ def student_info_edit(request):
         stu.setStudent(account, Student.CLASSROOM, dic['stu_class'])
         stu.setStudent(account, Student.TUTOR_NAME, dic['tutorName'])
         stu.setStudent(account, Student.TUTOR_PHONE, dic['tutorPhone'])
-        stu.setStudent(account, Student.MAJOR, [dic['majorSelect1'], dic['majorSelect2'], dic['majorSelect3'],
-                                                dic['majorSelect4'], dic['majorSelect5'], dic['majorSelect6']])
-        stu.setStudent(account, Student.TEST_SCORE_LIST, [dic['testScore1'], dic['testScore2'], dic['testScore3']])
-        stu.setStudent(account, Student.RANK_LIST, [dic['rank1'], dic['rank2'], dic['rank3']])
-        stu.setStudent(account, Student.SUM_NUMBER_LIST, [dic['rank11'], dic['rank22'], dic['rank33']])
+        stu.setStudent(account,
+                       Student.MAJOR,
+                       [dic['majorSelect1'],
+                        dic['majorSelect2'],
+                           dic['majorSelect3'],
+                           dic['majorSelect4'],
+                           dic['majorSelect5'],
+                           dic['majorSelect6']])
+        stu.setStudent(
+            account, Student.TEST_SCORE_LIST, [
+                dic['testScore1'], dic['testScore2'], dic['testScore3']])
+        stu.setStudent(
+            account, Student.RANK_LIST, [
+                dic['rank1'], dic['rank2'], dic['rank3']])
+        stu.setStudent(
+            account, Student.SUM_NUMBER_LIST, [
+                dic['rank11'], dic['rank22'], dic['rank33']])
         stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
         stu.setStudent(account, Student.REAL_SCORE, dic['realScore'])
-        stu.setStudent(account, Student.ADMISSION_STATUS, dic['admissionStatus'])
+        stu.setStudent(
+            account,
+            Student.ADMISSION_STATUS,
+            dic['admissionStatus'])
         stu.setStudent(account, Student.TYPE, dic['relTeacher'])
         stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
         stu.setStudent(account, Student.COMMENT, dic['comment'])
@@ -184,7 +197,9 @@ def student_info_edit(request):
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
             Student.COMMENT: stu_dic[Student.COMMENT],
         }
-        return render(request, 'teacher/student_info_edit.html', {'student': dic})
+        return render(request,
+                      'teacher/student_info_edit.html',
+                      {'student': dic})
 
 
 @csrf_exempt
@@ -291,7 +306,12 @@ def add_student(request):
 
 def fake_backend(request):
     if request.is_ajax() and request.method == 'POST':
-        c = {'name': 'Alice', 'gender': '男', 'source': '北京', 'school': '人大附中', 'id_card': '11010819980824181X'}
+        c = {
+            'name': 'Alice',
+            'gender': '男',
+            'source': '北京',
+            'school': '人大附中',
+            'id_card': '11010819980824181X'}
         c['name'] = request.POST.get('name')
         t = []
         t.append(c)
@@ -521,7 +541,9 @@ def volunteer_info_edit(request):
             'teacher': '白老师 | 李老师',
             'comment': vol_dic[Volunteer.COMMENT],
         }
-        return render(request, 'teacher/volunteer_info_edit.html', {'dict': dict})
+        return render(request,
+                      'teacher/volunteer_info_edit.html',
+                      {'dict': dict})
 
 
 '''
@@ -535,7 +557,8 @@ def distribute_student(request):
         team_list = []
         vol_all = vol.getAllInVolunteer()
         for vol_item in vol_all:
-            vol_stu_account_list = getattr(vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
+            vol_stu_account_list = getattr(
+                vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
             team = {}
             team['teamleader'] = getattr(vol_item, Volunteer.REAL_NAME)
             team['teamname'] = getattr(vol_item, Volunteer.ACCOUNT)
@@ -548,7 +571,9 @@ def distribute_student(request):
                 }
                 team[('student' + str(i))] = dic
             team_list.append(team)
-        return render(request, 'teacher/distribute_student.html', {'dict': team_list})
+        return render(request,
+                      'teacher/distribute_student.html',
+                      {'dict': team_list})
     else:
         vol_id = 2
         stu_id = request.GET['id']
@@ -557,8 +582,10 @@ def distribute_student(request):
 
         print volunteer_account
         print student_account
-        vol_de_stu_account_list = vol.getVolunteerAllDictByAccount(volunteer_account)[Volunteer.STUDENT_ACCOUNT_LIST]
-        stu_de_vol_account_list = stu.getStudentAllDictByAccount(student_account)[Student.VOLUNTEER_ACCOUNT_LIST]
+        vol_de_stu_account_list = vol.getVolunteerAllDictByAccount(
+            volunteer_account)[Volunteer.STUDENT_ACCOUNT_LIST]
+        stu_de_vol_account_list = stu.getStudentAllDictByAccount(
+            student_account)[Student.VOLUNTEER_ACCOUNT_LIST]
 
         print vol_de_stu_account_list
         print stu_de_vol_account_list
@@ -567,10 +594,31 @@ def distribute_student(request):
         print vol_de_stu_account_list
         print stu_de_vol_account_list
 
-        flag1 = vol.setVolunteer(volunteer_account, Volunteer.STUDENT_ACCOUNT_LIST, vol_de_stu_account_list)
-        flag2 = stu.setStudent(student_account, Student.VOLUNTEER_ACCOUNT_LIST, stu_de_vol_account_list)
+        flag1 = vol.setVolunteer(
+            volunteer_account,
+            Volunteer.STUDENT_ACCOUNT_LIST,
+            vol_de_stu_account_list)
+        flag2 = stu.setStudent(
+            student_account,
+            Student.VOLUNTEER_ACCOUNT_LIST,
+            stu_de_vol_account_list)
 
         if flag1 and flag2:
             return JsonResponse({'success': 1})
         else:
             return JsonResponse({'success': 0})
+            
+def download_registration_xls(request, file_name):
+    file_path = os.path.join('files', file_name)
+    response = FileResponse(open(file_path, 'rb'))
+    response['Content-type'] = 'application/vnd.ms-excel'
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(file_name)
+    return response
+    
+def view_message(request):
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/view_message.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
