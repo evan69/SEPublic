@@ -1,3 +1,4 @@
+#coding:utf8
 from django.shortcuts import render
 
 from django.http import HttpResponse,JsonResponse
@@ -56,8 +57,11 @@ def profile(request):
 
 @csrf_exempt
 def get_all_tests(request):
-    # if 'user_id' not in request.session.keys():
-    #    return redirect('/login/')
+    """
+        后端应在此处返回该学生全部可以做的题目名称。名称无重复
+        学生id由request.session中获取，同其他函数里的写法
+        然后放到下面样例写好的dic的'tests'键对应的列表值中
+    """
     dic = {'tests' : ['a','b','c']}
     return JsonResponse(dic)
 
