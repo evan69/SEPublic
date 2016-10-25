@@ -67,7 +67,14 @@ def get_all_tests(request):
 
 @csrf_exempt
 def do_test(request):
-    print 'hehe'
+    test_name = request.GET.get('test_name')
     t = get_template('student/do_test.html')
-    return render(request, 'student/do_test.html')
-    return HttpResponse(t.render({}))
+    return HttpResponse(t.render({'test_name': test_name}))
+    # return render(request, 'student/do_test.html')
+    # return HttpResponse(t.render({}))
+
+@csrf_exempt
+def get_problem_list(request):
+    print 'problem list'
+    dic = {'problem_list': [1, 5, 22]}
+    return JsonResponse(dic)
