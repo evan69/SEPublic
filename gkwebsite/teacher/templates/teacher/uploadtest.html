@@ -166,7 +166,7 @@
   <!-- /. PAGE WRAPPER  -->
   <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
  <script>
-  $(document).ready(function(){
+/*  $(document).ready(function(){
      $('a[href="#present"]').click(function(){
           var year = $("#year").val();
           var province = $('#province').val();
@@ -187,6 +187,39 @@
                     },
                     function(dict){
                         alert(dict['result']);
+            });
+
+
+       });
+     });*/
+   $(document).ready(function(){
+       $('a[href="#present"]').click(function(){
+            var year = $("#year").val();
+            var province = $('#province').val();
+            var subject = $("#subject").val();
+            var number = $("#number").val();
+            var score = $("#score").val();
+            var category = $("#category").val();
+            var problem_upload = $("#problem_upload")[0].files[0];
+            var formData = new FormData();
+            formData.append('year',year);
+            formData.append('province',province);
+            formData.append('subject',subject);
+            formData.append('number',number);
+            formData.append('score',score);
+            formData.append('problem_upload',problem_upload);
+            formData.append('category',category);
+            $.ajax({
+             url: '',
+             type:'POST',
+             cache:false,
+             data:formData,
+             processData: false,
+             contentType:false,
+            }).done(function (dict) {
+              alert(dict['result'] + ' done');
+            }).fail(function (dict) {
+             alert(dict['result'] + ' fail');
             });
 
 

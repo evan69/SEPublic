@@ -42,9 +42,9 @@
        <input type="text" placeholder="用户名" name="login_username" id="l_user" class="login user" title="Username" required="" style="float: right" />
         <input type="password" name="login_password" placeholder="密码" id="l_password" class="login password" title="Password" required="" style="float: right;margin-right: 10px" />
        
-        <img src="/yzm/150/30" class="yzm" />
+        <img src="/yzm/150/30" title="看不清？点击一下" class="yzm" onclick="refresh(this)"/>
 
-        <input type="text" name="login_yzm" class="login yzm" style="width: 25%;height: 25px; float: right;margin-top: 20px" placeholder="验证码" required="" />
+        <input type="text" name="login_yzm" class="login yzm" style="width: 120px;height: 25px;float: right;margin-top: 20px;padding-left: 10px;padding-right: 10px;" placeholder="看不清请点击图片" required="" />
 
        <input type="submit" name="student" value="学生登录" class="btn_login" />
        <input type="submit" name="teacher" value="教师登录" class="btn_login" />
@@ -72,5 +72,11 @@
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="{% static 'assets/js/login/flux.js' %}"></script>
   <script src="{% static 'assets/js/login/jquery.avgrund.js' %}"></script>
+ <script>
+  function refresh(img) {
+   img.src='/yzm/150/30?code='+Math.random();
+
+  }
+ </script>
  </body>
 </html>

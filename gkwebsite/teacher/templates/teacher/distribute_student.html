@@ -28,13 +28,20 @@
               <h1 class="page-header" style="text-align: center">学生分组</h1></div>
           </div>
           <!--row-->
-          {% for team in dict %}
+         <div class="row">
+               <div class="col-md-4">
+                <button onclick="newteam()" type="button">新建一组</button>
+                   </div>
+          </div>
+         {% for team in dict %}
           <div class="row">
             <div class="col-md-12">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamleader}}({{team.teamname}})</a></h4>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamleader}}({{team.teamname}})</a>
+                    <a href="#">给该组增加志愿者</a></h4>
+
                   <div id="team{{team.teamname}}" class="panel-collapse collapse">
                     <div class="panel-body" id="body{{team.teamname}}">
                         {% for key, value in team.items %}

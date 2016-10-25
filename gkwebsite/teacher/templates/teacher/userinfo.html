@@ -35,7 +35,7 @@
           <div class="col-md-12">
            <form role = "form" action="#">
               {% csrf_token %}
-            <h1>我的信息</h1>
+            <h1>{{dict.user_name}}我的信息</h1>
             <div class="contentform">
              <div class="leftcontact">
               <div class="form-group">
@@ -50,12 +50,7 @@
                <input value="{{dict.email}}" required type="email" name="email" id="email" data-rule="email" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'E-mail' est obligatoire." />
                <div class="validation"></div>
               </div>
-              <div class="form-group">
-               <p>办公地址 <span>*</span></p>
-               <span class="icon-case"><i class="fa fa-home"></i></span>
-               <input value="{{dict.work_address}}" required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
-              </div>
+
               <div class="form-group">
                <p>密码 </p>
                <span class="icon-case"><i class="fa fa-info"></i></span>
@@ -71,12 +66,7 @@
 
              </div>
              <div class="rightcontact">
-              <div class="form-group">
-               <p>固定电话 </p>
-               <span class="icon-case"><i class="fa fa-phone"></i></span>
-               <input value="{{dict.homephone}}" type="text" name="homephone" id="homephone" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Ville' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
-              </div>
+
               <div class="form-group">
                <p>手机号码 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-phone"></i></span>
@@ -84,17 +74,12 @@
                <div class="validation"></div>
               </div>
               <div class="form-group">
-               <p>QQ </p>
-               <span class="icon-case"><i class="fa fa-info"></i></span>
-               <input value="{{dict.qqn}}" type="text" name="qqn" id="qqn" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Fonction' doit &ecirc;tre renseign&eacute;." />
+               <p>办公地址 <span>*</span></p>
+               <span class="icon-case"><i class="fa fa-home"></i></span>
+               <input value="{{dict.work_address}}" required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
                <div class="validation"></div>
               </div>
-              <div class="form-group">
-               <p>微信号 </p>
-               <span class="icon-case"><i class="fa fa-comment-o"></i></span>
-               <input value="{{dict.weichat}}" type="text" name="weichat" id="weichat" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Sujet' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
-              </div>
+
               <div class="form-group">
                <p>个人描述 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-comments-o"></i></span>
@@ -132,10 +117,7 @@
             var work_address = $("#work_address").val();
             var password1 = $("#password1").val();
             var password2 = $("#password2").val();
-            var homephone = $("#homephone").val();
             var phone = $("#phone").val();
-            var qqn = $("#qqn").val();
-            var weichat = $("#weichat").val();
             var describe = $("#describe").val();
             if (password1 != password2){
              alert("两次密码不一致，请重新输入");
@@ -148,10 +130,7 @@
                         'work_address':work_address,
                         'password1':password1,
                         'password2':password2,
-                        'homephone':homephone,
                         'phone':phone,
-                        'qqn':qqn,
-                        'weichat':weichat,
                         'describe':describe,
                     },
                     function(profileDict){

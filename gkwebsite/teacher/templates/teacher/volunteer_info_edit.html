@@ -39,23 +39,19 @@
              {% csrf_token %}
             <fieldset disabled="">
              <div class="form-group">
-              <label for="volunteer_name" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
+              <label for="account" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
               <div class="col-sm-10">
-               <p class="form-control-static" id="volunteer_name" name="volunteer_name">{{dict.user_name}}</p>
+               <input type="text" class="form-control" id="account" name="account" value="{{dict.user_name}}" />
               </div>
              </div>
+
              <div class="form-group">
               <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
               <div class="col-sm-10">
                <input type="text" class="form-control" id="realName" name="realName" value="{{dict.realName}}" />
               </div>
              </div>
-             <div class="form-group">
-              <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{dict.idNumber}}" />
-              </div>
-             </div>
+
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="sex">性别：</label>
               <div class="col-sm-10">
@@ -83,13 +79,7 @@
               </div>
              </div>
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="birth" class="col-sm-2 control-label">出生日期: </label>
-              <div class="col-sm-10">
-               <p class="date" id="birth" name="birth">{{dict.birth_year}}年{{dict.birth_month}}月{{dict.birth_date}}日</p>
-              </div>
-             </div>
-                     <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">中学所在地：</label>
+             <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">生源地：</label>
              <div class="col-sm-10">
               <select class="form-control" id="province" name="province">
                 {% for item in dict.province.provincelist %}
@@ -124,6 +114,13 @@
               <input type="text" class="form-control" id="stu_class" name="stu_class" value="{{dict.class}}" />
              </div>
             </div>
+             <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="distribute" class="col-sm-2 control-label">分管组：</label>
+             <div class="col-sm-10">
+              <input type="text" class="form-control" id="distribute" name="distribute" value="{{dict.distribute}}" />
+             </div>
+            </div>
+
             </fieldset>
 
             <div class="form-group">
@@ -148,18 +145,6 @@
              <label style="text-align:left;padding-left: 2em;" for="weichat" class="col-sm-2 control-label">微信：</label>
              <div class="col-sm-10">
               <input type="text" class="form-control" id="weichat" name="weichat" value="{{dict.weichat}}" />
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" for="distribute" class="col-sm-2 control-label">分管组：</label>
-             <div class="col-sm-10">
-              <input type="text" class="form-control" id="distribute" name="distribute" value="{{dict.distribute}}" />
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="teacher" class="col-sm-2 control-label">对应老师：</label>
-             <div class="col-sm-10">
-              <input type="text" class="form-control" id="teacher" name="teacher" value="{{dict.teacher}}" />
              </div>
             </div>
             <div class="form-group">
@@ -195,7 +180,6 @@
               console.log("volunteer_save");
             var volunteer_name = $("#volunteer_name").val();
             var distribute = $("#distribute").val();
-            var teacher = $("#teacher").val();
             var email = $("#email").val();
             var phone = $("#phone").val();
             var qqn = $("#qqn").val();
