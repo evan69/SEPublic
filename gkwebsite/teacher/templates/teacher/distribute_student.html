@@ -28,7 +28,7 @@
               <h1 class="page-header" style="text-align: center">学生分组</h1></div>
           </div>
           <!--row-->
-         <div class="row">
+         <div class="row" id="newteam">
                <div class="col-md-4">
                 <button onclick="newteam()" type="button">新建一组</button>
                    </div>
@@ -68,17 +68,30 @@
         <!-- /. PAGE INNER --></div>
       <!-- /. PAGE WRAPPER --></div>
     <!-- /. WRAPPER -->{% include 'teacher/include/jsinclude.html' %}
-    <script>/*function add(id, id1) {
+
+    <script>
+        function newteam() {
         var newNode = document.createElement("div");
-        newNode.setAttribute("id", "a" + toString(newNode.childElementCount + 1));
-        var str = " <div class='form-group'>" + "              <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "              <div class='col-sm-3'>" + " <p class='form-control-static' id='account' name='account'>李三胖</p>" + "   </div>" + "    <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "   <div class='col-sm-3'>" + "   <p class='form-control-static' id='account1' name='account'>李三胖</p>" + "   </div>" + "   <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "    <div class='col-sm-3'>" + "    <p class='form-control-static' id='account2' name='account'>李三胖</p>" + " </div>" +
-
-        "  </div>";
+        //newNode.setAttribute("id", "a" + toString(newNode.childElementCount + 1));
+        var str = "<div class=\"row\">"+
+            "<div class=\"col-md-12\">"+
+              "<div class=\"panel panel-default\">"+
+                "<div class=\"panel-heading\">"+
+                 "<h4 class=\"panel-title\">"+
+                    "<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#team6\">ok</a>"+
+                    "<a href=\"#\">给该组增加志愿者</a></h4>"+
+                        "<div id=\"team6\" class=\"panel-collapse collapse\">"+
+                    "<div class=\"panel-body\" id=\"body6\">"+
+                            "</div>"+
+                            "</div>"+
+              "</div>"+
+            "</div>"+
+          "</div></div>";
         newNode.innerHTML = (str);
+// alert(document.getElementById("page-inner").innerHTML);
+       $(newNode).insertAfter(document.getElementById("newteam"));
 
-        document.getElementById(id).insertBefore(newNode, document.getElementById(id1));
-        //   alert(document.getElementById(id).innerHTML);
-      }*/
+      }
     function modify(user_id) {
       window.location="/teacher/student_info_edit?id="+user_id;
     }

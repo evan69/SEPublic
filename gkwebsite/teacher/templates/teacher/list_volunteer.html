@@ -68,8 +68,7 @@
 					</div>
 				</div>
 				<!-- /. ROW -->
-
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a href="/info">早睡早起</a></p></footer>
+   {% include 'teacher/include/footer.html' %}
 			</div>
 
              <!-- /. PAGE INNER  -->
@@ -180,7 +179,6 @@
 					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/backend/volunteer_list_all/", {}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
 					})
@@ -190,7 +188,6 @@
 					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/backend/search_volunteer_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
 						show_list(list_start_pos);
 					})
@@ -207,23 +204,18 @@
 						}
 				});
 				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
-				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
 				
+        $('#search_volunteer').addClass("active-menu");
+        $('#search_volunteer').attr("href", "#");
+        
 				var nameinit=$('#realName').val();
 				postreq(nameinit);
 				
 				$('#search').click(function(){
 					var namestr=$('#realName').val();
-					list_start_pos = 0;
-					$('#student_list').empty();
-					//access server and load matching records
-					$.post("/backend/search_volunteer_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-						user_array=ret;
-						show_list(list_start_pos);
-					})
+					postreq(namestr);
 				});
 			});
 		</script>

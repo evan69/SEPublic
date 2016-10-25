@@ -1,4 +1,5 @@
-# -*- encoding: utf-8 -*-
+#coding=utf-8
+
 # Create your views here.
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -12,6 +13,7 @@ import time
 import sys
 reload(sys)
 sys.setdefaultencoding('UTF-8')
+
 
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
@@ -150,6 +152,7 @@ def createMenu():
     print 'createMenu'
     token()
     url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s" % token_dic['access_token']
+
     data = '''{
         "button": [
             {
@@ -158,26 +161,38 @@ def createMenu():
                     {
                         "type": "view",
                         "name": "登录",
+
                         "url": "http://59.66.131.171/login/"
+
                     },
                     {
                         "type": "view",
+
                         "name": "注册",
+
                         "url": "http://59.66.131.171/login/"
+
                     }]
             },
             {
                 "type": "view",
+
                 "name": "估分",
+
                 "url": "http://59.66.131.171/login/"
+
             },
             {
                 "type": "view",
+
                 "name": "个人信息",
+
                 "url": "http://59.66.131.171/login/"
+
 
             }
         ]
+
     }'''
     request = urllib2.urlopen(url, data.encode('utf-8'))
     #print request.read()
@@ -185,5 +200,6 @@ def createMenu():
     #req.add_header('Content-Type', 'application/json')
     #req.add_header('encoding', 'utf-8')
     #response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
+
     # result = response.read()
     # print result
