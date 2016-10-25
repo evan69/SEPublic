@@ -17,6 +17,8 @@ sys.setdefaultencoding('UTF-8')
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
+#Appid = "wxddbda149c7afb981"
+#Appsecret = "29473a0ef9f517ae1d1496fc707d0774"
 token_dic = {'last_time': 0, 'access_token': ""}
 
 
@@ -137,9 +139,11 @@ def handleText(msg):
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'关键词':
-        tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统"
+        tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统\n回复更新，查看最新推送"
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+    elif msg['Content'] == u'更新':
+        resultStr = send_pic_text(msg)
     else:
         tmp = u'TT暂不支持该项功能，回复关键词试试看'
         resultStr = resultStr % (
@@ -182,8 +186,8 @@ def createMenu():
     }'''
     request = urllib2.urlopen(url, data.encode('utf-8'))
 
-# send text_msg to all users
-def send_textMsg(msg):
+# send text_msg to all users, wechat don't support this function now
+'''def send_textMsg(msg):
     print "send_textMsg"
     token()
     url = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s" % token_dic['access_token']
@@ -199,3 +203,17 @@ def send_textMsg(msg):
     r = requests.post(url=url, data=json.dumps(data, ensure_ascii=False, indent=2))
     result = r.json()
     print result
+'''
+
+def send_pic_text(msg):
+    newshead = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType>\
+    <ArticleCount>%s</ArticleCount><Articles>"
+    newsbody = "<item><Title><![CDATA[%s]]></Title><Description><![CDATA[%s]]></Description><PicUrl><![CDATA[%s]]></PicUrl><Url><![CDATA[%s]]></Url></item>"
+    newstail = "</Articles></xml>"
+    picurl = "http://statics.xiumi.us/xmi/rc/azY5/i/390486cc423f22d66ac517e7267a790b-sz_66475.jpg"
+    testurl = "http://r.xiumi.us/board/v3/26Aaa/2801910"
+    sendhead = newshead % (msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'news', '1')
+    sendbody = newsbody % (u'五道口的面包房', u'测试图文推送功能', picurl, testurl)
+    sendtail = newstail
+    resStr = sendhead + sendbody + sendtail
+    return resStr
