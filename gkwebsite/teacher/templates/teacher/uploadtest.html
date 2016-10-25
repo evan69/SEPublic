@@ -2,10 +2,7 @@
 <html>
  <head id="Head1">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-   <title>发布测试题</title>
- </head>
- <body>
-   {% load staticfiles %}
+     {% load staticfiles %}
   <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
   <!-- Bootstrap Styles-->
   <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
@@ -74,8 +71,16 @@
        overflow: hidden !important;
    }
 </style>
+   <title>发布测试题</title>
+ </head>
+ <body>
+
   <div id="wrapper">
-    {% include 'teacher/navtop.html' %} {% include 'teacher/teachernavside.html' %}
+     {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+
    <div id="page-wrapper">
     <div id="page-inner">
      <div class="row">
@@ -90,12 +95,12 @@
         <div class="panel-body">
          <div class="row">
           <div class="col-md-6">
-           <div class="image_container">
-            <img id="preview" style="width: 800px;height: 800px;border:1px black;margin-right: 10px;margin-bottom: 10px;" />
+           <div class="image_container" style="text-align: center">
+            <img id="preview" style="width: 600px;height: 500px;border:1px black;margin-right: 10px;margin-bottom: 10px;" />
            </div>
           </div>
           <div class="col-md-6">
-           <form>
+           <form >
             <div class="form-group">
              <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >年：</label>
              <div class="col-sm-4">
@@ -134,7 +139,7 @@
              <label style="text-align:left;padding-left: 2em;" class="col-sm-4 control-label" >上传题目图片</label>
              <div class="col-md-4">
               <div class="upload">
-               <input id="problem_upload" type="file" />
+               <input id="problem_upload" type="file" name="image"/>
               </div>
              </div>
             </div>
@@ -152,18 +157,14 @@
       </div>
      </div>
     </div>
-    <div class="row">
-     <div class="col-md-offset-4 col-md-4">
-      <footer>
-       <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-      </footer>
-     </div>
-    </div>
+
+      {% include 'teacher/include/footer.html' %}
+
    </div>
    <!-- /. PAGE INNER  -->
   </div>
   <!-- /. PAGE WRAPPER  -->
-  <!-- /. WRAPPER  --> {% include 'teacher/jsinclude.html' %}
+  <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
  <script>
   $(document).ready(function(){
      $('a[href="#present"]').click(function(){

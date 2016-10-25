@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>查看学生</title>
+		{% load staticfiles %}
+		<!-- Bootstrap Styles-->
+    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+        <!-- Custom Styles-->
+    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <!-- jQuert UI Styles -->
+    <link href="{% static 'jquery-ui-1.12.1/jquery-ui.min.css' %}" rel='stylesheet'/>
+</head>
+<body>
+    <div id="wrapper">
+         {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+				
+				<div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            消息列表 <small>您好，<span id='namefield'></span></small>
+                        </h1>
+                    </div>
+                </div> 
+				<!--row-->
+        <div class = "row">
+					<div class = "col-md-12">
+						<div class= "panel panel-default">
+							<div class = "panel-body">
+                <table class="table table-hover">
+                  <caption>消息列表</caption>
+                  <thead>
+                    <tr>
+                      <th>发送人</th>
+                      <th>标题</th>
+                      <th>时间</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="student_list">
+                    <tr>
+                      <td>白云仁</td>
+                      <td><i class="fa fa-envelope"></i> 测试消息！</td>
+                      <td>2016/10/23 15:04</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>日期：<input type="text" id="datepicker"></p>
+              </div>
+						</div>
+					</div>
+				</div>
+				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a href="/info">早睡早起</a></p></footer>
+			</div>
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+     <!-- /. WRAPPER  -->
+    <div id="dialog" title="测试消息！">
+      <p>这是一条测试消息，它没有什么实在意义，只是为了写得长一点，这样看上去比较好看。</p>
+      <p>发送人：白云仁</p>
+    </div>
+    {% include 'teacher/include/jsinclude.html' %}
+    <!--<script>console.log('A');</script>-->
+    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'jquery-ui-1.12.1/datepicker-zh.js' %}"></script>
+		<script>
+			$(document).ready(function(){
+				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+				var csrftoken = getCookie('csrftoken');
+				$.ajaxSetup({
+						beforeSend: function(xhr, settings) {
+								if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+									xhr.setRequestHeader("X-CSRFToken", csrftoken);
+								}
+						}
+				});
+				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+					$('#namefield').append(ret['name']);
+				})
+				$( "#dialog" ).dialog({
+          autoOpen: false,
+          modal: true,
+          show: {
+            effect: "blind",
+            duration: 1000
+          }
+        });
+        $("#datepicker").datepicker($.datepicker.regional[ "zh-CN" ]);
+        $("tr").click(function(){$( "#dialog" ).dialog( "open" );})
+			});
+		</script>
+    
+</body>
+</html>
