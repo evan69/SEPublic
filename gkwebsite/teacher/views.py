@@ -373,6 +373,7 @@ def profile(request):
         account = tch.idToAccountTeacher(id)
         teacher = tch.getTeacherAll(account)
         dict = {
+            'user_name': getattr(teacher, Teacher.REAL_NAME, ' '),
             'teacher_name': getattr(teacher, Teacher.REAL_NAME, ' '),
             'email': getattr(teacher, Teacher.EMAIL, ' '),
             'work_address': getattr(teacher, Teacher.AREA, ' '),
@@ -418,6 +419,8 @@ def upload(request):
 		老师查看志愿者详情
 		by byr 161017
 '''
+
+
 @csrf_exempt
 def volunteer_info(request):
     '''
@@ -525,6 +528,8 @@ def volunteer_info_edit(request):
 		老师给学生分组
 		by byr 161017
 '''
+
+
 def distribute_student(request):
     if 'id' not in request.GET:
         team_list = []
