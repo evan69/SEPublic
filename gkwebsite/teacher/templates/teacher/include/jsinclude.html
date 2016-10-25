@@ -47,7 +47,7 @@
     var session_id = {{id}};
     var message_num;
     var score_num;
-    $.post("/backend/get_alert_by_id/", {'id':session_id}, function(ret){
+    $.post("/backend/get_teacher_alert_by_id/", {'id':session_id}, function(ret){
       message_num = parseInt(ret["message"]);
       score_num = parseInt(ret["score"]);
       $('#message_text').empty();
