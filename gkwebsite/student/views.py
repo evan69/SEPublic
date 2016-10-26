@@ -75,6 +75,13 @@ def do_test(request):
 
 @csrf_exempt
 def get_problem_list(request):
+    """
+        后端应在此处返回某套题内包含的题目id列表，且需要按顺序
+        试题名称由request.POST.get('test_name')获取，见下面样例
+        然后放到下面样例写好的dic的'problem_list'键对应的列表值中
+    """
+    test_name = request.POST.get('test_name')
+    print test_name
     print 'problem list'
     dic = {'problem_list': [1, 5, 22]}
     return JsonResponse(dic)
