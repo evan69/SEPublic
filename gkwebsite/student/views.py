@@ -151,3 +151,25 @@ def get_problem_list(request):
     dic = {'problem_list': id_list}
     print 'id_list ', id_list
     return JsonResponse(dic)
+
+@csrf_exempt
+def get_problem_info(request):
+    """
+        后端应在此处返回某道试题的全部信息，信息应转化为字符串
+        试题id由request.POST.get('problem_id')获取，见下面样例
+        然后放到下面样例写好的dic中
+    """
+    problem_id = request.POST.get('problem_id')
+    print problem_id
+    print 'problem id'
+    if problem_id < 4:
+        dic = {'problem_num': '999',
+           'problem_type': '客观题',
+           'problem_full_score': '10',
+           'problem_pic': '/static/images/2017_beijing_chinese_1_1_subjective'}
+    else:
+        dic = {'problem_num': '22',
+           'problem_type': '主观题',
+           'problem_full_score': '44',
+           'problem_pic': '/static/images/2017_beijing_chinese_1_1_subjective'}
+    return JsonResponse({'problem_info': dic})
