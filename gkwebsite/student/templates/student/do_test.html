@@ -89,10 +89,10 @@
 								</div>
 
                                 <div class="row" style = "margin-left: auto;margin-right: auto;text-align:center">
-                                    <label style="width:100%">本题题号：</label>
+                                    <label id = "problem_num" style="width:100%;font-size:20px">本题题号：</label>
                                 </div>
                                 <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:10px;text-align:center">
-                                    <label style="width:100%">本题类型：</label>
+                                    <label id = "problem_type" style="width:100%;font-size:20px">本题类型：</label>
                                 </div>
 
                                 <div id = "problem_pic" class="row" style = "width:500px; margin-left: auto;margin-right: auto;margin-top:20px">
@@ -101,13 +101,13 @@
 
 
                                 <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:60px;text-align:center">
-                                    <label style="width:100%">本题满分：</label>
+                                    <label id = "problem_full_score" style="width:100%;font-size:20px">本题满分：</label>
                                 </div>
                                 <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;text-align:center">
-                                    <lebel>请输入您估的分数：</lebel><input type="text" id="oText" align="center">
+                                    <lebel style="font-size:20px">请输入您估的分数：</lebel><input type="text" id = "student_score" align="center">
                                 </div>
-                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
-                                    <button>提交本题估分结果</button>
+                                <div id = "submit_test" class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
+                                    <button style="font-size:20px">提交本题估分结果</button>
                                     <!--div class="button" id = "btn1" href = "https://www.baidu.com"><div class="shine"></div>开始测试</div-->
                                 </div>
                                 <div id = 'test_name' name = {{test_name}}></div>
@@ -149,19 +149,56 @@
 				show_list();
 			})
             */
-
+            /*
             $('#problem_pic').empty();
             $('#problem_pic').append("<img src=\"/static/images/2017_beijing_chinese_1_1_subjective\" style=\"width:100%\">");
-
+            */
             var ka=document.getElementById("test_name");
-            alert(ka.getAttribute("name"));
-            problem_list = [];
+            //alert(ka.getAttribute("name"));
+            var problem_list = [];
+            var time_list = [];//时间
+            var score_list = [];//分数
+            var cur_problem = 0;//当前的题目是第几个
+            var problem_info = {};//当前题目的信息，存在字典里
             $.post("/student/get_problem_list/", {'test_name':ka.getAttribute("name")}, function(ret){
-			    problem_list = ret.problem_list;
-			    alert(problem_list);
+			    problem_list = ret.problem_list;//获取题目id列表
+			    //alert(problem_list);
 			    //console.log('hehe' + problem_list)
 			});
 
+			$('#submit_test').click(function(){
+			    $.post("/student/get_problem_info/", {'problem_id' : problem_list[cur_problem]}, function(ret){
+                     //alert(problem_list.length);
+                     if(cur_problem > problem_list.length - 1)
+                     {
+                        //已经做完题目
+                        alert('完成本套题估分');
+                        window.location="/student/score";
+                        return;
+                     }
+
+                     if(cur_problem > 0)//用户点击
+                     {
+                            time_list.push(cur_sec);
+                            alert('本题用时:' + cur_sec);
+                            cur_sec = 0;
+                     }
+                     alert('#第几题：' + String(cur_problem+1));
+                     problem_info = ret.problem_info;
+                     document.getElementById('problem_num').innerHTML = "本题题号：" + String(problem_info['problem_num']);
+                     document.getElementById('problem_type').innerHTML = "本题类型：" + String(problem_info['problem_type']);
+                     document.getElementById('problem_full_score').innerHTML = "本题满分：" + String(problem_info['problem_full_score']);
+                     $('#problem_pic').empty();
+                     //alert(String(problem_info['problem_pic']));
+                     //$('#problem_pic').append("<img src=\"/static/images/2017_beijing_chinese_1_1_subjective\" style=\"width:100%\">");
+                     var src = '<img src=' +  String(problem_info['problem_pic']) + ' style=\"width:100%\">';
+                     console.log(src);
+                     $('#problem_pic').append(src);
+                     //alert(src);
+                     cur_problem++;
+				});
+			});
+            $('#submit_test').click();
 			$(document).ready(function(){
 				$('#username').append({{ id }});
 				/*

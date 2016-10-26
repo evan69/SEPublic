@@ -169,21 +169,25 @@
 				//user_array = [1,2,3];
 				for(var i = 0; i < user_array.length; ++i){
 					tag1 = String(i)+'_A';
-					var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label style = \"font-size: 30px\">";
+					tag2 = String(i)+'_Aname';
+					var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
 			        var data = user_array[i];
 			        var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">开始测试</div></div>"
 			        $('#test_list').append(tt_begin + data + tt_end);
 					$('#'+tag1).click(function(){
-					    console.log('hehe###2');
-					    //alert('cao');
-                        window.location="/student/do_test?test_name="+data;
+					    var parse = this.id.split("_");
+					    //alert(parse);
+						var row = this.id + "name";
+						//alert(row);
+					    //alert(user_array);
+					    //alert(i);
+					    //alert(user_array[i]);
+                        window.location="/student/do_test?test_name="+document.getElementById(row).innerHTML;
                         /*
 					    $.post("/student/do_test/", {'test_name' : user_array[i]}, function(ret){
                             alert('hehe');
 					    })
 					    */
-						var parse = this.id.split("_");
-						var row = parseInt(parse[0]);
 						//No need to examine the suffix since we are dealing with 'tag1'
 			        })
 			    }
