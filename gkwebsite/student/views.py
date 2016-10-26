@@ -96,7 +96,7 @@ def get_problem_info(request):
     problem_id = request.POST.get('problem_id')
     print problem_id
     print 'problem id'
-    if problem_id < 4:
+    if int(problem_id) < 4:
         dic = {'problem_num': '999',
            'problem_type': '客观题',
            'problem_full_score': '10',
@@ -110,5 +110,17 @@ def get_problem_info(request):
 
 @csrf_exempt
 def submit_test_result(request):
+    """
+        后端应在此处保存这次答题的结果
+        学生id从request.session获取
+        时间数据、分数数据、试题名称见下面样例
+        返回空Json即可
+    """
     print request.POST
+    time_list = [int(item) for item in request.POST.get('time_list').split(",")]
+    score_list = [int(item) for item in request.POST.get('score_list').split(",")]
+    test_name = request.POST.get('test_name')
+    print time_list
+    print score_list
+    print test_name
     return JsonResponse({})

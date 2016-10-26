@@ -179,8 +179,8 @@
                     return false;//不是整数
                 }
                 var max_score = parseInt(problem_info['problem_full_score']);
-                alert('score' + String(num));
-                alert('max' + String(max_score));
+                //alert('score' + String(num));
+                //alert('max' + String(max_score));
                 if(num < 0 || num > max_score)
                 {
                     return false;
@@ -196,24 +196,25 @@
 			}
 
 			$('#submit_test').click(function(){
+			    if(cur_problem > problem_list.length - 1)
+                 {
+                    //已经做完题目
+                    time_list.push(cur_sec);
+                    score_list.push(parseInt($("#student_score").val()));
+                    alert('您已经完成本套题估分');
+                    var ret_info = {'test_name':ka.getAttribute("name"),"time_list":String(time_list),'score_list':String(score_list)};
+                    $.post("/student/submit_test_result/", ret_info, function(ret){
+                        //alert(time_list);
+                        //alert(score_list);
+                    });
+                    window.location="/student/score";
+                    return;
+                 }
 			    $.post("/student/get_problem_info/", {'problem_id' : problem_list[cur_problem]}, function(ret){
                      //alert(problem_list.length);
                      if(cur_problem > 0 && check_valid() != true)
                      {
                         alert("您填写的估分结果不合法");
-                        return;
-                     }
-                     if(cur_problem > problem_list.length - 1)
-                     {
-                        //已经做完题目
-                        time_list.push(cur_sec);
-                        score_list.push(parseInt($("#student_score").val()));
-                        alert('您已经完成本套题估分');
-                        $.post("/student/submit_test_result/", {'time_list':time_list,'score_list':score_list}, function(ret){
-                            alert(time_list);
-                            alert(score_list);
-                        });
-                        window.location="/student/score";
                         return;
                      }
 
