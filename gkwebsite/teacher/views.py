@@ -434,7 +434,13 @@ def upload(request):
     else:
         imgFile = request.FILES['problem_upload']
         handle_uploaded_img(imgFile)
-
+        '''POST:'year',
+        'province',
+        'subject',
+        'number',
+        'score',
+        'problem_upload',
+        'category', '''
 
         form = pic.ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -452,8 +458,6 @@ def upload(request):
 		老师查看志愿者详情
 		by byr 161017
 '''
-
-
 @csrf_exempt
 def volunteer_info(request):
     '''
@@ -470,7 +474,7 @@ def volunteer_info(request):
 
     dict = {
         'id': vol_dic[Volunteer.ID],
-        'user_name': vol_dic[Volunteer.REAL_NAME],
+        'user_name': vol_dic[Volunteer.ACCOUNT],
         'realName': vol_dic[Volunteer.REAL_NAME],
         'idNumber': vol_dic[Volunteer.ID_NUMBER],
         'sex': vol_dic[Volunteer.SEX],
@@ -496,8 +500,6 @@ def volunteer_info(request):
 		老师编辑志愿者详情
 		by byr 161017
 '''
-
-
 @csrf_exempt
 def volunteer_info_edit(request):
     if request.method == 'POST':
@@ -535,7 +537,7 @@ def volunteer_info_edit(request):
         vol_dic = vol.getVolunteerAllDictByAccount(account)
         dict = {
             'id': vol_dic[Volunteer.ID],
-            'user_name': vol_dic[Volunteer.REAL_NAME],
+            'user_name': vol_dic[Volunteer.ACCOUNT],
             'realName': vol_dic[Volunteer.REAL_NAME],
             'idNumber': vol_dic[Volunteer.ID_NUMBER],
             'sex': vol_dic[Volunteer.SEX],
@@ -563,9 +565,15 @@ def volunteer_info_edit(request):
 		老师给学生分组
 		by byr 161017
 '''
-
-
 def distribute_student(request):
+    '''
+       GET newteam 新建组
+    '''
+    if 'newteam' in request.GET:
+        return JsonResponse({'teamnum': 6})
+    '''
+    GET id teamid 删除
+    '''
     if 'id' not in request.GET:
         team_list = []
         vol_all = vol.getAllInVolunteer()
