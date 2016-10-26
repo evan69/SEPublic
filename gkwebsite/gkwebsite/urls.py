@@ -36,6 +36,11 @@ urlpatterns = [
     url(r'^logincheck/$', loginViews.logincheck),
     #   验证码界面
     url(r'^yzm/(\d+)/(\d+)/$', loginViews.gnrtyzm),
+    #   注册界面
+    #   by byr 161026
+    url(r'^register/$', loginViews.register),
+
+
 
     url(r'^student/', include('student.urls')),
 
