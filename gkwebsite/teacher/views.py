@@ -11,7 +11,6 @@ import os
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
-import database.image_backend as pic
 import django.forms as forms
 import datetime
 from database.models import *
@@ -104,8 +103,7 @@ def student_info_edit(request):
             'rank33': int(info_dict.get('rank33', '110')),
             'estimateScore': int(info_dict.get('estimateScore', '110')),
             'realScore': int(info_dict.get('realScore', '110')),
-            # 'admissionStatus': int(info_dict.get('admissionStatus', '110')),
-            'admissionStatus': 1,
+            'admissionStatus': info_dict.get('admissionStatus', '110'),
             'relTeacher': info_dict.get('relTeacher', '110'),
             'relVolunteer': info_dict.get('relVolunteer', '110'),
             'comment': info_dict.get('comment', '110'),
@@ -412,14 +410,11 @@ def profile(request):
     上传图片处理
     by byr 161025
 '''
-def handle_uploaded_img(imgFile):
+def handle_uploaded_img(imgFile, year, province, subject, number, score, category):
     imgName = imgFile.name
-    dst = open(imgName, 'wb')
+    path = 'student/static/images/'+ str(year) + '_' + str(province) + '_' + str(subject) + '_' + str(number) + '_' + str(score) + '_' + str(category)
+    dst = open(path, 'wb')
     dst.write(imgFile.read())
-#    for chunk in imgFile.chunks():
-#        dst.write(chunk)
-#        dst.close()
-
 
 
 '''
@@ -428,29 +423,39 @@ def handle_uploaded_img(imgFile):
 '''
 @csrf_exempt
 def upload(request):
-    print '-----------'
-    print request.POST
-    if (request.method == 'GET'):
-        return render(request, 'teacher/uploadtest.html')
+    if request.method == 'GET':
+        dic = {
+            'year': {'year': 0, 'yearlist': YEAR_LIST},
+            'province': {'province': 0, 'provincelist': PROVINCE_LIST},
+            'subject': {'subject': 0, 'subjectlist': SUBJECT_LIST},
+            'number': {'number': 0, 'numberlist': NUMBER_LIST},
+            'score': {'score': 0, 'scorelist': SCORE_LIST},
+            'category': {'category': 0, 'categorylist': CATEGORY_LIST},
+        }
+        return render(request, 'teacher/uploadtest.html', {'dict': dic})
     else:
-        imgFile = request.FILES['problem_upload']
-        handle_uploaded_img(imgFile)
-        '''POST:'year',
-        'province',
-        'subject',
-        'number',
-        'score',
-        'problem_upload',
-        'category', '''
+        year = request.POST.get('year')
+        province = request.POST.get('province')
+        subject = request.POST.get('subject')
+        number = request.POST.get('number')
+        score = request.POST.get('score')
+        category = request.POST.get('category')
 
-        form = pic.ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            # m = Picture.objects.get(pk=course_id)
-            # m.model_pic = form.cleaned_data['image']
-            # m.save()
-            print pic.createPicture('a', {Picture.IMG: form.cleaned_data['image']})
-        else:
-            print 'hahahahahah'
+        dic = {
+            Picture.YEAR: int(year),
+            Picture.PROVINCE: int(province),
+            Picture.SUBJECT: int(subject),
+            Picture.NUMBER: int(number),
+            Picture.SCORE: int(score),
+            Picture.category: int(category),
+        }
+
+        imgFile = request.FILES['problem_upload']
+        handle_uploaded_img(imgFile, year, province, subject, number, score, category)
+
+        print year, province, subject, number, score, category
+
+
         dict = {'result': '上传成功'}
         return JsonResponse(dict)
 
