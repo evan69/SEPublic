@@ -96,7 +96,7 @@ def get_all_tests(request):
         if pic_dic[Picture.SUBJECT] in subject_list:
             continue
         subject_list.append(pic_dic[Picture.SUBJECT])
-        tao = u'%s %s %s' % (str(YEAR_LIST[pic_dic[Picture.YEAR]]),
+        tao = u'%s_%s_%s' % (str(YEAR_LIST[pic_dic[Picture.YEAR]]),
                             str(PROVINCE_LIST[pic_dic[Picture.PROVINCE]]),
                             str(SUBJECT_LIST[pic_dic[Picture.SUBJECT]]))
         ret_list.append(tao)
@@ -122,11 +122,9 @@ def get_problem_list(request):
         然后放到下面样例写好的dic的'problem_list'键对应的列表值中
     """
     test_name = request.POST.get('test_name')
-    print 'test_name', test_name
-    print 'problem list'
-
-    info = u'2016 北京市 语文'
-    info_list = info.split(' ')
+    # print 'test_name', test_name
+    info = test_name
+    info_list = info.split('_')
     print info_list
     year = int(info_list[0]) - YEAR_LIST[1] + 1
     province = find_item_index_in_list(info_list[1], PROVINCE_LIST)
@@ -143,7 +141,7 @@ def get_problem_list(request):
 
     id_list = []
     pic_list = pic.getPicturebyDict(dict)
-    print 'len ',len(pic_list)
+    print 'len ', len(pic_list)
     for item in pic_list:
         pic_dic = pic.getPictureAllDictByObject(item)
         id_list.append(pic_dic[Picture.ID])
@@ -159,7 +157,9 @@ def get_problem_info(request):
         试题id由request.POST.get('problem_id')获取，见下面样例
         然后放到下面样例写好的dic中
     """
+    print request.POST
     problem_id = request.POST.get('problem_id')
+    print 'dd'
     print problem_id
     print 'problem id'
     if problem_id < 4:
