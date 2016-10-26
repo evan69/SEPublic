@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>教师主页</title>
+    <title>编辑测试</title>
 		{% load staticfiles %}
 		<!-- Bootstrap Styles-->
     <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
@@ -27,7 +27,7 @@
 				<div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            高考招生系统教师端 <small>您好，<span id='namefield'></span></small>
+                            高考招生系统教师端 <small>您好，您正在编辑{{test_id}}</small>
                         </h1>
                     </div>
                 </div> 
@@ -51,12 +51,6 @@
 								}
 						}
 				});
-				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
-					$('#namefield').append(ret['name']);
-				})
-				
-        $('#dashboard').addClass("active-menu");
-        $('#dashboard').attr("href", "#");
 			});
 		</script>
 

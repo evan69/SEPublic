@@ -676,3 +676,19 @@ def view_message(request):
     t = get_template('teacher/view_message.html')
     c = {'id': id}
     return HttpResponse(t.render(c))
+    
+def manage_test(request):
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/view_test.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+    
+def edit_test(request, test_id):
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/edit_test.html')
+    c = {'id': id, 'test_id': test_id}
+    return HttpResponse(t.render(c))
