@@ -32,32 +32,14 @@
                     </div>
                 </div> 
 				<!--row-->
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a href="/info">早睡早起</a></p></footer>
+   {% include 'teacher/include/footer.html' %}
 			</div>
              <!-- /. PAGE INNER  -->
         </div>
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
-
-
-	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
-	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
-
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+    {% include 'teacher/include/jsinclude.html' %}
 		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
 		<script>
 		function getCookie(name) {
