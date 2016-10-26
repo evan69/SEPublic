@@ -159,6 +159,7 @@ def get_problem_info(request):
     """
     # print request.POST
     problem_id = request.POST.get('problem_id')
+
     picture = pic.getPicturebyField('id', int(problem_id))
     pic_dic = pic.getPictureAllDictByObject(picture[0])
     pic_name = get_picture_path(pic_dic[Picture.YEAR], pic_dic[Picture.PROVINCE],
@@ -171,9 +172,22 @@ def get_problem_info(request):
        'problem_full_score': pic_dic[Picture.SCORE],
        'problem_pic': '/static/images/'+pic_name}
 
+
     return JsonResponse({'problem_info': dic})
 
 @csrf_exempt
 def submit_test_result(request):
+    """
+        后端应在此处保存这次答题的结果
+        学生id从request.session获取
+        时间数据、分数数据、试题名称见下面样例
+        返回空Json即可
+    """
     print request.POST
+    time_list = [int(item) for item in request.POST.get('time_list').split(",")]
+    score_list = [int(item) for item in request.POST.get('score_list').split(",")]
+    test_name = request.POST.get('test_name')
+    print time_list
+    print score_list
+    print test_name
     return JsonResponse({})
