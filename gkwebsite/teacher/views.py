@@ -11,6 +11,7 @@ import os
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
+import database.image_backend as pic
 import django.forms as forms
 import datetime
 from database.models import *
@@ -425,12 +426,12 @@ def handle_uploaded_img(imgFile, year, province, subject, number, score, categor
 def upload(request):
     if request.method == 'GET':
         dic = {
-            'year': {'year': 0, 'yearlist': YEAR_LIST},
-            'province': {'province': 0, 'provincelist': PROVINCE_LIST},
-            'subject': {'subject': 0, 'subjectlist': SUBJECT_LIST},
-            'number': {'number': 0, 'numberlist': NUMBER_LIST},
-            'score': {'score': 0, 'scorelist': SCORE_LIST},
-            'category': {'category': 0, 'categorylist': CATEGORY_LIST},
+            'year': {'year': 1, 'yearlist': YEAR_LIST},
+            'province': {'province': 1, 'provincelist': PROVINCE_LIST},
+            'subject': {'subject': 1, 'subjectlist': SUBJECT_LIST},
+            'number': {'number': 1, 'numberlist': NUMBER_LIST},
+            'score': {'score': 1, 'scorelist': SCORE_LIST},
+            'category': {'category': 1, 'categorylist': CATEGORY_LIST},
         }
         return render(request, 'teacher/uploadtest.html', {'dict': dic})
     else:
@@ -450,13 +451,16 @@ def upload(request):
             Picture.category: int(category),
         }
 
+        flag = pic.createPicturebyDict(dic)
         imgFile = request.FILES['problem_upload']
         handle_uploaded_img(imgFile, year, province, subject, number, score, category)
 
         print year, province, subject, number, score, category
 
-
-        dict = {'result': '上传成功'}
+        if flag:
+            dict = {'result': '上传成功'}
+        else:
+            dict = {'result': '上传失败'}
         return JsonResponse(dict)
 
 
