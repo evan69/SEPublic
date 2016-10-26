@@ -442,20 +442,22 @@ def upload(request):
         score = request.POST.get('score')
         category = request.POST.get('category')
 
+        print year, province, subject, number, score, category
+
         dic = {
             Picture.YEAR: int(year),
             Picture.PROVINCE: int(province),
             Picture.SUBJECT: int(subject),
             Picture.NUMBER: int(number),
             Picture.SCORE: int(score),
-            Picture.category: int(category),
+            Picture.CATEGORY: int(category),
         }
 
         flag = pic.createPicturebyDict(dic)
         imgFile = request.FILES['problem_upload']
         handle_uploaded_img(imgFile, year, province, subject, number, score, category)
 
-        print year, province, subject, number, score, category
+
 
         if flag:
             dict = {'result': '上传成功'}

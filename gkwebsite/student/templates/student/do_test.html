@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Home</title>
+		{% load static from staticfiles %}
+		<!-- Bootstrap Styles-->
+		<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" />
+		<!-- FontAwesome Styles-->
+		<link href="{% static "css/font-awesome.css" %}" rel="stylesheet" />
+		<!-- Morris Chart Styles-->
+		<link href="{% static "js/morris/morris-0.4.3.min.css" %}" rel="stylesheet" />
+		<!-- Custom Styles-->
+		<link href="{% static "css/custom-styles.css" %}" rel="stylesheet" />
+		<!-- Google Fonts-->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+        <!-- rel="stylesheet" -->
+</head>
+
+<body>
+		<div id="wrapper">
+				<nav class="navbar navbar-default top-navbar" role="navigation">
+						<div class="navbar-header">
+								<button type="button" class="navbar-toggle" id="collapse" data-toggle="collapse" data-target=".sidebar-collapse" onclick="collapseOnClick()">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/student"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
+						</div>
+
+						<ul class="nav navbar-top-links navbar-right">
+
+								<li class="dropdown">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+												<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+										</a>
+										<ul class="dropdown-menu dropdown-user">
+												<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+												</li>
+												<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+												</li>
+												<li class="divider"></li>
+												<li><a href="/student/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+												</li>
+										</ul>
+										<!-- /.dropdown-user -->
+								</li>
+								<!-- /.dropdown -->
+						</ul>
+				</nav>
+				<!--/. NAV TOP	-->
+				<nav class="navbar-default navbar-side" role="navigation" id="nav-bar-left" style="left:0px">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+						<div class="sidebar-collapse">
+								<ul class="nav" id="main-menu">
+
+										<li>
+												<a href="/student"><i class="fa fa-dashboard"></i> Dashboard</a>
+										</li>
+										<li>
+												<a class="active-menu" href="/student/score"><i class="fa fa-desktop"></i> 在线估分</a>
+										</li>
+										<li>
+												<a href="/student/rank"><i class="fa fa-bar-chart-o"></i> 查看排名</a>
+										</li>
+
+										<li>
+												<a href="/student/admit"><i class="fa fa-table"></i> 录取情况</a>
+										</li>
+										<li>
+												<a href="/student/contact"><i class="fa fa-edit"></i> 联系我们 </a>
+										</li>
+
+								</ul>
+
+						</div>
+
+				</nav>
+				<!-- /. NAV SIDE	-->
+				<div id="page-wrapper" style="margin-left: 260px">
+						<div id="page-inner">
+
+								<div class="row" style = "margin-left: auto;margin-right: auto;text-align:center;width:100%">
+                                    {% include 'student/clock_templete.html' %}
+								</div>
+
+                                <div class="row" style = "margin-left: auto;margin-right: auto;text-align:center">
+                                    <label style="width:100%">本题题号：</label>
+                                </div>
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:10px;text-align:center">
+                                    <label style="width:100%">本题类型：</label>
+                                </div>
+
+                                <div id = "problem_pic" class="row" style = "width:500px; margin-left: auto;margin-right: auto;margin-top:20px">
+                                    <img src="/static/images/8.jpg" style="width:100%">
+                                </div>
+
+
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:60px;text-align:center">
+                                    <label style="width:100%">本题满分：</label>
+                                </div>
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;text-align:center">
+                                    <lebel>请输入您估的分数：</lebel><input type="text" id="oText" align="center">
+                                </div>
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
+                                    <button>提交本题估分结果</button>
+                                    <!--div class="button" id = "btn1" href = "https://www.baidu.com"><div class="shine"></div>开始测试</div-->
+                                </div>
+                                <div id = 'test_name' name = {{test_name}}></div>
+				<!--
+				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
+				-->
+						</div>
+						<!-- /. PAGE INNER	-->
+				</div>
+				<!-- /. PAGE WRAPPER	-->
+		</div>
+		<!-- /. WRAPPER	-->
+		<!-- JS Scripts-->
+		<!-- jQuery Js -->
+		<script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
+		<!-- Bootstrap Js -->
+		<script src="{% static "js/bootstrap.min.js" %}"></script>
+
+		<!-- Metis Menu Js -->
+		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
+
+		<!-- Custom Js -->
+		<script>
+		    var rst = document.getElementById('reset');
+		    rst.click();
+		    var st = document.getElementById('start');
+	        st.click();
+	        var cur_sec = 0;
+			var ff = function()
+			{
+			    show_time(cur_sec);
+			    cur_sec++;
+			}
+            setInterval("ff()", 1000);
+
+            /*
+            $.post("/student/get_all_tests/", {}, function(ret){
+			    user_array = ret.tests;
+				show_list();
+			})
+            */
+
+            $('#problem_pic').empty();
+            $('#problem_pic').append("<img src=\"/static/images/2017_beijing_chinese_1_1_subjective\" style=\"width:100%\">");
+
+            var ka=document.getElementById("test_name");
+            alert(ka.getAttribute("name"));
+            problem_list = [];
+            $.post("/student/get_problem_list/", {'test_name':ka.getAttribute("name")}, function(ret){
+			    problem_list = ret.problem_list;
+			    alert(problem_list);
+			    //console.log('hehe' + problem_list)
+			});
+
+			$(document).ready(function(){
+				$('#username').append({{ id }});
+				/*
+				$.post("/backend/get_user_by_id", {'id': {{ id }} }, function(data, status, xhr){
+					$('#username').append(data['username']);
+				})
+				*/
+			});
+		</script>
+
+</body>
+
+</html>
