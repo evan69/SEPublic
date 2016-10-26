@@ -79,7 +79,7 @@ def get_all_tests(request):
     year = datetime.datetime.now().strftime("%Y")
 
     year = int(year) - YEAR_LIST[1] + 1
-    province = int(stu_dic[Student.PROVINCE]['province']);
+    province = int(stu_dic[Student.PROVINCE]['province'])
 
     dic = {
         Picture.YEAR: year,
@@ -183,11 +183,19 @@ def submit_test_result(request):
         时间数据、分数数据、试题名称见下面样例
         返回空Json即可
     """
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    print id
     print request.POST
     time_list = [int(item) for item in request.POST.get('time_list').split(",")]
     score_list = [int(item) for item in request.POST.get('score_list').split(",")]
     test_name = request.POST.get('test_name')
-    print time_list
-    print score_list
-    print test_name
+    account = stu.idToAccountStudent(str(id))
+    tmp = (stu.getStudentAllDictByAccount(account))[Student.ESTIMATE_SCORE]
+    if tmp.strip() == '':
+        tmp = '{}'
+    stu_dic = eval(tmp)
+    stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list)}
+    stu.setStudent(account, Student.ESTIMATE_SCORE, str(stu_dic))
     return JsonResponse({})

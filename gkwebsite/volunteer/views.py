@@ -177,6 +177,16 @@ def student_info_show(request):
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
     }
+
+    tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
+    try:
+        tmp_dic = eval(tmp_dic)
+    except:
+        tmp_dic = eval('{}')
+    sum_score = 0
+    for key in tmp_dic.keys():
+        sum_score += tmp_dic[key]['score']
+    dic[Student.ESTIMATE_SCORE] = str(sum_score)
     return HttpResponse(t.render({'student': dic}))
 
 

@@ -140,7 +140,7 @@ def student_info_edit(request):
         stu.setStudent(
             account, Student.SUM_NUMBER_LIST, [
                 dic['rank11'], dic['rank22'], dic['rank33']])
-        stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
+        # stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
         stu.setStudent(account, Student.REAL_SCORE, dic['realScore'])
         stu.setStudent(
             account,
@@ -197,6 +197,17 @@ def student_info_edit(request):
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
             Student.COMMENT: stu_dic[Student.COMMENT],
         }
+
+        tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
+        try:
+            tmp_dic = eval(tmp_dic)
+        except:
+            tmp_dic = eval('{}')
+        sum_score = 0
+        for key in tmp_dic.keys():
+            sum_score += tmp_dic[key]['score']
+        dic[Student.ESTIMATE_SCORE] = str(sum_score)
+
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic})
@@ -291,6 +302,16 @@ def student_info_show(request):
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
     }
+
+    tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
+    try:
+        tmp_dic = eval(tmp_dic)
+    except:
+        tmp_dic = eval('{}')
+    sum_score = 0
+    for key in tmp_dic.keys():
+        sum_score += tmp_dic[key]['score']
+    dic[Student.ESTIMATE_SCORE] = str(sum_score)
     return HttpResponse(t.render({'student': dic}))
 
 
@@ -429,7 +450,7 @@ def upload(request):
             'year': {'year': 1, 'yearlist': YEAR_LIST},
             'province': {'province': 1, 'provincelist': PROVINCE_LIST},
             'subject': {'subject': 2, 'subjectlist': SUBJECT_LIST},
-            'number': {'number': 2, 'numberlist': NUMBER_LIST},
+            'number': {'number': 1, 'numberlist': NUMBER_LIST},
             'score': {'score': 1, 'scorelist': SCORE_LIST},
             'category': {'category': 1, 'categorylist': CATEGORY_LIST},
         }
