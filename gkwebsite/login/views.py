@@ -19,6 +19,7 @@ import sys
 sys.path.append("../")
 import database.teacher_backend as teacher_backend
 import database.volunteer_backend as volunteer_backend
+import database.student_backend as student_backend
 
 '''
     login & register 界面
@@ -48,11 +49,19 @@ def logincheck(request):
             if 'student' in request.POST:
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
-                request.session['user_id']  = 31
-                request.session['user_name'] = username
-                request.session['password'] = password
-                # return render_to_response('/student')
-                return redirect('/student')
+                yzmString = request.POST.get('login_yzm').upper()
+                if (yzmString == request.session['yzmString']):
+                    print ' student login'
+                    (login, id) = student_backend.checkStudentPassword(username, password)
+                    if login:
+                        request.session['user_id'] = int(id)
+                        request.session['user_name'] = username
+                        request.session['password'] = password
+                        return redirect('/student/')
+                    else:
+                        return HttpResponse(u"学生界面登录失败啦")
+                else:
+                    return HttpResponse(u"学生界面登录失败")
             elif 'teacher' in request.POST:
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
