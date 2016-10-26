@@ -72,15 +72,15 @@
         <fieldset style="padding:0; border:0; margin-top:25px;">
           <label for="year" style="display:block">年份</label>
           <select name="year" id="year" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
-            <option value="2017">2017</option>
+            <!--<option value="2017">2017</option>-->
           </select>
           <label for="place" style="display:block">地区</label>
           <select name="place" id="place" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
-            <option value="1">北京卷</option>
+            <!--<option value="1">北京卷</option>-->
           </select>
           <label for="subject" style="display:block">科目</label>
           <select name="subject" id="subject" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
-            <option value="1">语文</option>
+            <!--<option value="1">语文</option>-->
           </select>
           <!-- Allow form submission with keyboard without duplicating the dialog button -->
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
@@ -157,8 +157,23 @@
       }
       function submit_dialog(){
         var yearval = $('#year').val();
+        var placeval = $('#place').val();
+        var subjectval = $('#subject').val();
         $('#dialog').dialog("close");
+        /*
+        $.growl.notice({title:"year", message:yearval});
+        $.growl.notice({title:"place", message:placeval});
+        $.growl.notice({title:"subject", message:subjectval});
         $.growl.notice({title:"Add new test", message:"test"});
+        */
+        $.post("/backend/add_test/", {"year":yearval, "place":placeval, "subject":subjectval}, function(ret){
+          if(ret['success'].charAt(0) == 'N'){
+            $.growl.error({ title: "添加失败", message: ret['message'] });
+          }
+          else{
+            $.growl.notice({ title: "添加成功", message: "成功新建估分测试" });
+          }
+        });
         refresh();
       }
 			$(document).ready(function(){
@@ -173,7 +188,22 @@
 				});
 				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
 					$('#namefield').append(ret['name']);
-				})
+				});
+        $.post("/backend/get_test_yearlist/", {}, function(ret){
+          for(var i = 0; i < ret.length; ++i){
+            $("#year").append("<option value="+ret[i]['num']+">"+ret[i]['str']+"</option>");
+          }
+        });
+        $.post("/backend/get_test_placelist/", {}, function(ret){
+          for(var i = 0; i < ret.length; ++i){
+            $("#place").append("<option value="+ret[i]['num']+">"+ret[i]['str']+"</option>");
+          }
+        });
+        $.post("/backend/get_test_subjectlist/", {}, function(ret){
+          for(var i = 0; i < ret.length; ++i){
+            $("#subject").append("<option value="+ret[i]['num']+">"+ret[i]['str']+"</option>");
+          }
+        });
 				
         $('#test_management').addClass("active-menu");
         $('#test_management').attr("href", "#");
