@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^profile/$', views.profile),
     # teacher 上传试题
     url(r'^release_test/$', views.upload),
+    url(r'^manage_test/$', views.manage_test, name='manage_test'),
     # teacher 查看志愿者详情
     url(r'^volunteer_info/$', views.volunteer_info),
     # teacher 编辑志愿者详情
@@ -29,4 +30,5 @@ urlpatterns = [
     url(r'^add_volunteer/$', views.add_volunteer, name='add_volunteer'),
     url(r'^download_registration_xls/file(\w+\.\w*)/$', views.download_registration_xls, name = 'download_registration_xls'),
     url(r'^message/$', views.view_message, name='view_message'),
+    url(r'^edit_test/(.*)/$', views.edit_test, name='edit_test'),
 ]

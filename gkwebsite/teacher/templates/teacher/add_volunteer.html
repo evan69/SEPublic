@@ -91,7 +91,7 @@
      <!-- /. WRAPPER  -->
     
     {% include 'teacher/include/jsinclude.html' %}
-    <script src="{% static 'js/jquery.growl.js' %}"></script>
+
 		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
@@ -124,9 +124,6 @@
 			});
 		});
 		</script>
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
 		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
 		<script>
 		function getCookie(name) {
