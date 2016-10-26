@@ -11,7 +11,7 @@ import os
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
-import database.image_backend as pic
+import django.forms as forms
 import datetime
 from database.models import *
 from database.my_field import *
@@ -103,8 +103,7 @@ def student_info_edit(request):
             'rank33': int(info_dict.get('rank33', '110')),
             'estimateScore': int(info_dict.get('estimateScore', '110')),
             'realScore': int(info_dict.get('realScore', '110')),
-            # 'admissionStatus': int(info_dict.get('admissionStatus', '110')),
-            'admissionStatus': 1,
+            'admissionStatus': info_dict.get('admissionStatus', '110'),
             'relTeacher': info_dict.get('relTeacher', '110'),
             'relVolunteer': info_dict.get('relVolunteer', '110'),
             'comment': info_dict.get('comment', '110'),
@@ -393,6 +392,7 @@ def profile(request):
         account = tch.idToAccountTeacher(id)
         teacher = tch.getTeacherAll(account)
         dict = {
+            'user_name': getattr(teacher, Teacher.REAL_NAME, ' '),
             'teacher_name': getattr(teacher, Teacher.REAL_NAME, ' '),
             'email': getattr(teacher, Teacher.EMAIL, ' '),
             'work_address': getattr(teacher, Teacher.AREA, ' '),
@@ -406,30 +406,56 @@ def profile(request):
         }
         return render(request, 'teacher/userinfo.html', {'dict': dict})
 
+'''
+    上传图片处理
+    by byr 161025
+'''
+def handle_uploaded_img(imgFile, year, province, subject, number, score, category):
+    imgName = imgFile.name
+    path = 'student/static/images/'+ str(year) + '_' + str(province) + '_' + str(subject) + '_' + str(number) + '_' + str(score) + '_' + str(category)
+    dst = open(path, 'wb')
+    dst.write(imgFile.read())
+
 
 '''
 		老师上传试题
 		by byr 161016
 '''
-
-
 @csrf_exempt
 def upload(request):
-    print '-----------'
-    print request.POST
-    if (request.method == 'GET'):
-        return render(request, 'teacher/uploadtest.html')
+    if request.method == 'GET':
+        dic = {
+            'year': {'year': 1, 'yearlist': YEAR_LIST},
+            'province': {'province': 1, 'provincelist': PROVINCE_LIST},
+            'subject': {'subject': 1, 'subjectlist': SUBJECT_LIST},
+            'number': {'number': 1, 'numberlist': NUMBER_LIST},
+            'score': {'score': 1, 'scorelist': SCORE_LIST},
+            'category': {'category': 1, 'categorylist': CATEGORY_LIST},
+        }
+        return render(request, 'teacher/uploadtest.html', {'dict': dic})
     else:
-        print request.POST.get('problem_upload', 'ooo')
+        year = request.POST.get('year')
+        province = request.POST.get('province')
+        subject = request.POST.get('subject')
+        number = request.POST.get('number')
+        score = request.POST.get('score')
+        category = request.POST.get('category')
 
-        form = pic.ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            # m = Picture.objects.get(pk=course_id)
-            # m.model_pic = form.cleaned_data['image']
-            # m.save()
-            print pic.createPicture('a', {Picture.IMG: form.cleaned_data['image']})
-        else:
-            print 'hahahahahah'
+        dic = {
+            Picture.YEAR: int(year),
+            Picture.PROVINCE: int(province),
+            Picture.SUBJECT: int(subject),
+            Picture.NUMBER: int(number),
+            Picture.SCORE: int(score),
+            Picture.category: int(category),
+        }
+
+        imgFile = request.FILES['problem_upload']
+        handle_uploaded_img(imgFile, year, province, subject, number, score, category)
+
+        print year, province, subject, number, score, category
+
+
         dict = {'result': '上传成功'}
         return JsonResponse(dict)
 
@@ -438,8 +464,6 @@ def upload(request):
 		老师查看志愿者详情
 		by byr 161017
 '''
-
-
 @csrf_exempt
 def volunteer_info(request):
     '''
@@ -456,7 +480,7 @@ def volunteer_info(request):
 
     dict = {
         'id': vol_dic[Volunteer.ID],
-        'user_name': vol_dic[Volunteer.REAL_NAME],
+        'user_name': vol_dic[Volunteer.ACCOUNT],
         'realName': vol_dic[Volunteer.REAL_NAME],
         'idNumber': vol_dic[Volunteer.ID_NUMBER],
         'sex': vol_dic[Volunteer.SEX],
@@ -482,8 +506,6 @@ def volunteer_info(request):
 		老师编辑志愿者详情
 		by byr 161017
 '''
-
-
 @csrf_exempt
 def volunteer_info_edit(request):
     if request.method == 'POST':
@@ -521,7 +543,7 @@ def volunteer_info_edit(request):
         vol_dic = vol.getVolunteerAllDictByAccount(account)
         dict = {
             'id': vol_dic[Volunteer.ID],
-            'user_name': vol_dic[Volunteer.REAL_NAME],
+            'user_name': vol_dic[Volunteer.ACCOUNT],
             'realName': vol_dic[Volunteer.REAL_NAME],
             'idNumber': vol_dic[Volunteer.ID_NUMBER],
             'sex': vol_dic[Volunteer.SEX],
@@ -549,9 +571,15 @@ def volunteer_info_edit(request):
 		老师给学生分组
 		by byr 161017
 '''
-
-
 def distribute_student(request):
+    '''
+       GET newteam 新建组
+    '''
+    if 'newteam' in request.GET:
+        return JsonResponse({'teamnum': 6})
+    '''
+    GET id teamid 删除
+    '''
     if 'id' not in request.GET:
         team_list = []
         vol_all = vol.getAllInVolunteer()

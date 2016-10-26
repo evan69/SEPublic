@@ -88,7 +88,8 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	width: 35%;
     padding: 2em;
     margin: 0 auto;
-    background:rgba(0, 0, 0, 0.41);
+    /*background:rgba(0, 0, 0, 0.41);*/
+	background:#1cc09f;
     border: 5px solid #fff;
 }
 .w3layouts_main_grid span {
@@ -115,16 +116,17 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 .w3layouts_main_grid input[type="text"],#category,#category1,#risk,#priority,.agileits_w3layouts_main_gridr input[type="time"], .w3layouts_main_grid input[type="email"], .w3layouts_main_grid textarea {
     outline: none;
     width: 75%;
-	background:#a79e9e;
+	/*background:#a79e9e;*/
 	/*    background: #fff;*/
 /*    color:#4B4B4B;*/
-color:#efe8e8;
+/*color:#efe8e8;*/
     padding: 10px;
     font-size: 14px;
     border: 1px solid #E7E7E7;
 }
 ::-webkit-input-placeholder{
-	color:#4B4B4B !important;
+	/*color:#4B4B4B !important;*/
+	color:lightgrey !important;
 }
 #category,#category1,#risk,#priority{
     width: 79% !important;
