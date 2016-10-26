@@ -10,6 +10,11 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 
+from database.models import *
+from database.my_field import *
+import database.student_backend as stu
+import database.image_backend as pic
+
 
 # Create your views here.
 
@@ -55,6 +60,9 @@ def student_logout(request):
 def profile(request):
     return render(request, 'student/userinfo.html')
 
+
+rec_dict = {}
+
 @csrf_exempt
 def get_all_tests(request):
     """
@@ -62,7 +70,40 @@ def get_all_tests(request):
         学生id由request.session中获取，同其他函数里的写法
         然后放到下面样例写好的dic的'tests'键对应的列表值中
     """
-    dic = {'tests' : ['a','b','c']}
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    print id
+    account = stu.idToAccountStudent(str(id))
+    stu_dic = stu.getStudentAllDictByAccount(account)
+    year = datetime.datetime.now().strftime("%Y")
+
+    year = int(year) - YEAR_LIST[1] + 1
+    province = int(stu_dic[Student.PROVINCE]['province']);
+
+    dic = {
+        Picture.YEAR: year,
+        Picture.PROVINCE: province,
+    }
+    global rec_dict
+    rec_dict = dic
+
+    ret_list = []
+    subject_list = []
+    pic_list = pic.getPicturebyDict(dic)
+    for item in pic_list:
+        pic_dic = pic.getPictureAllDictByObject(item)
+        if pic_dic[Picture.SUBJECT] in subject_list:
+            continue
+        subject_list.append(pic_dic[Picture.SUBJECT])
+        tao = u'%s %s %s' % (str(YEAR_LIST[pic_dic[Picture.YEAR]]),
+                            str(PROVINCE_LIST[pic_dic[Picture.PROVINCE]]),
+                            str(SUBJECT_LIST[pic_dic[Picture.SUBJECT]]))
+        ret_list.append(tao)
+
+
+    dic = {'tests' : ret_list}
+
     return JsonResponse(dic)
 
 @csrf_exempt
@@ -81,7 +122,32 @@ def get_problem_list(request):
         然后放到下面样例写好的dic的'problem_list'键对应的列表值中
     """
     test_name = request.POST.get('test_name')
-    print test_name
+    print 'test_name', test_name
     print 'problem list'
-    dic = {'problem_list': [1, 5, 22]}
+
+    info = u'2016 北京市 语文'
+    info_list = info.split(' ')
+    print info_list
+    year = int(info_list[0]) - YEAR_LIST[1] + 1
+    province = find_item_index_in_list(info_list[1], PROVINCE_LIST)
+    subject = find_item_index_in_list(info_list[2], SUBJECT_LIST)
+
+    dict = {
+        Picture.YEAR: year,
+        Picture.PROVINCE: province,
+        Picture.SUBJECT: subject,
+    }
+
+    if province == -1 or subject == -1:
+        print 'ERROR !!!!!!!!!!!!!!!!!!!'
+
+    id_list = []
+    pic_list = pic.getPicturebyDict(dict)
+    print 'len ',len(pic_list)
+    for item in pic_list:
+        pic_dic = pic.getPictureAllDictByObject(item)
+        id_list.append(pic_dic[Picture.ID])
+
+    dic = {'problem_list': id_list}
+    print 'id_list ', id_list
     return JsonResponse(dic)

@@ -48,7 +48,7 @@ def logincheck(request):
             if 'student' in request.POST:
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
-                request.session['user_id'] = 10086
+                request.session['user_id']  = 31
                 request.session['user_name'] = username
                 request.session['password'] = password
                 # return render_to_response('/student')
