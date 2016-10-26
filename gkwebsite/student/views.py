@@ -173,3 +173,8 @@ def get_problem_info(request):
            'problem_full_score': '44',
            'problem_pic': '/static/images/2017_beijing_chinese_1_1_subjective'}
     return JsonResponse({'problem_info': dic})
+
+@csrf_exempt
+def submit_test_result(request):
+    print request.POST
+    return JsonResponse({})

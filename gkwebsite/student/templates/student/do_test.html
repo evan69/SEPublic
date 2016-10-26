@@ -164,17 +164,57 @@
 			    problem_list = ret.problem_list;//获取题目id列表
 			    alert(problem_list);
 			    //console.log('hehe' + problem_list)
+                $('#submit_test').click();
 			});
+
+			var check_valid = function()//检查分数合法性
+			{
+                var num = parseInt($("#student_score").val());
+                if(num == NaN)
+                {
+                    return false;//不能转成数
+                }
+                if(num % 1 != 0)
+                {
+                    return false;//不是整数
+                }
+                var max_score = parseInt(problem_info['problem_full_score']);
+                alert('score' + String(num));
+                alert('max' + String(max_score));
+                if(num < 0 || num > max_score)
+                {
+                    return false;
+                }
+                if($("#problem_type").val() == "客观")
+                {
+                    if(num != 0 && num != max_score)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+			}
 
 			$('#submit_test').click(function(){
 			    $.post("/student/get_problem_info/", {'problem_id' : problem_list[cur_problem]}, function(ret){
 			    	alert("cur" + cur_problem);
 			    	alert(problem_list[cur_problem]);
                      //alert(problem_list.length);
+                     if(cur_problem > 0 && check_valid() != true)
+                     {
+                        alert("您填写的估分结果不合法");
+                        return;
+                     }
                      if(cur_problem > problem_list.length - 1)
                      {
                         //已经做完题目
-                        alert('完成本套题估分');
+                        time_list.push(cur_sec);
+                        score_list.push(parseInt($("#student_score").val()));
+                        alert('您已经完成本套题估分');
+                        $.post("/student/submit_test_result/", {'time_list':time_list,'score_list':score_list}, function(ret){
+                            alert(time_list);
+                            alert(score_list);
+                        });
                         window.location="/student/score";
                         return;
                      }
@@ -182,10 +222,14 @@
                      if(cur_problem > 0)//用户点击
                      {
                             time_list.push(cur_sec);
-                            alert('本题用时:' + cur_sec);
+                            score_list.push(parseInt($("#student_score").val()));
+                            alert('本题已提交，用时:' + cur_sec + "秒");
+                            var top = document.body.scrollTop || document.documentElement.scrollTop;
+                            scrollBy(0,-top);//返回顶部
                             cur_sec = 0;
                      }
-                     alert('#第几题：' + String(cur_problem+1));
+                     document.getElementById("student_score").value = "";
+                     //alert('#第几题：' + String(cur_problem+1));
                      problem_info = ret.problem_info;
                      document.getElementById('problem_num').innerHTML = "本题题号：" + String(problem_info['problem_num']);
                      document.getElementById('problem_type').innerHTML = "本题类型：" + String(problem_info['problem_type']);
@@ -200,7 +244,7 @@
                      cur_problem++;
 				});
 			});
-            $('#submit_test').click();
+
 			$(document).ready(function(){
 				$('#username').append({{ id }});
 				/*
