@@ -157,21 +157,20 @@ def get_problem_info(request):
         试题id由request.POST.get('problem_id')获取，见下面样例
         然后放到下面样例写好的dic中
     """
-    print request.POST
+    # print request.POST
     problem_id = request.POST.get('problem_id')
-    print 'dd'
-    print problem_id
-    print 'problem id'
-    if problem_id < 4:
-        dic = {'problem_num': '999',
-           'problem_type': '客观题',
-           'problem_full_score': '10',
-           'problem_pic': '/static/images/2017_beijing_chinese_1_1_subjective'}
-    else:
-        dic = {'problem_num': '22',
-           'problem_type': '主观题',
-           'problem_full_score': '44',
-           'problem_pic': '/static/images/2017_beijing_chinese_1_1_subjective'}
+    picture = pic.getPicturebyField('id', int(problem_id))
+    pic_dic = pic.getPictureAllDictByObject(picture[0])
+    pic_name = get_picture_path(pic_dic[Picture.YEAR], pic_dic[Picture.PROVINCE],
+                                pic_dic[Picture.SUBJECT], pic_dic[Picture.NUMBER],
+                                pic_dic[Picture.SCORE], pic_dic[Picture.CATEGORY])
+    # print pic_dic
+
+    dic = {'problem_num': pic_dic[Picture.NUMBER],
+       'problem_type': CATEGORY_LIST[pic_dic[Picture.CATEGORY]],
+       'problem_full_score': pic_dic[Picture.SCORE],
+       'problem_pic': '/static/images/'+pic_name}
+
     return JsonResponse({'problem_info': dic})
 
 @csrf_exempt

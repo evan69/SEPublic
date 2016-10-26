@@ -413,7 +413,7 @@ def profile(request):
 '''
 def handle_uploaded_img(imgFile, year, province, subject, number, score, category):
     imgName = imgFile.name
-    path = 'student/static/images/'+ str(year) + '_' + str(province) + '_' + str(subject) + '_' + str(number) + '_' + str(score) + '_' + str(category)
+    path = 'student/static/images/'+ get_picture_path(year, province, subject, number, score, category)
     dst = open(path, 'wb')
     dst.write(imgFile.read())
 
@@ -428,8 +428,8 @@ def upload(request):
         dic = {
             'year': {'year': 1, 'yearlist': YEAR_LIST},
             'province': {'province': 1, 'provincelist': PROVINCE_LIST},
-            'subject': {'subject': 1, 'subjectlist': SUBJECT_LIST},
-            'number': {'number': 1, 'numberlist': NUMBER_LIST},
+            'subject': {'subject': 2, 'subjectlist': SUBJECT_LIST},
+            'number': {'number': 2, 'numberlist': NUMBER_LIST},
             'score': {'score': 1, 'scorelist': SCORE_LIST},
             'category': {'category': 1, 'categorylist': CATEGORY_LIST},
         }
