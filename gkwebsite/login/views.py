@@ -1,4 +1,5 @@
 # encoding=utf-8
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import render, render_to_response
 
@@ -20,7 +21,8 @@ sys.path.append("../")
 import database.teacher_backend as teacher_backend
 import database.volunteer_backend as volunteer_backend
 import database.student_backend as student_backend
-
+import database.register_backend as reg
+from database.models import *
 '''
     login & register 界面
     by byr 161003
@@ -150,18 +152,38 @@ def register(request):
     后端需要检验邀请码和相关信息
     无误后写入到数据库
     '''
+    print 'commint 12121212'
     username = request.POST.get('username', '1')
     password = request.POST.get('password','2')
     email = request.POST.get('email','3')
     invited = request.POST.get('invited','4')
+    print 'username : ', username
 
+    reg_list = reg.getRegisterCodebydic({RegisterCode.REGISTER_CODE: invited, RegisterCode.STATE: 0})
+    if len(reg_list) <= 0:
+        print '--------------'
+        return JsonResponse({'result': '验证码不可用'})
+
+    success = student_backend.createStudent(username, {Student.PASSWORD: password, Student.EMAIL: email,
+                                                       Student.REGISTER_CODE: invited})
+    if success:
+        reg.removeRegisterCode(invited)
+        obj = RegisterCode.objects.model()
+        try:
+            setattr(obj, RegisterCode.REGISTER_CODE, invited)
+            setattr(obj, RegisterCode.STATE, 1)
+            setattr(obj, RegisterCode.ACCOUNT, username)
+            obj.full_clean()
+        except:
+            return False
+        obj.save()
+
+    else:
+        return JsonResponse({'result': '注册失败，用户名已存在'})
 
     print email
-    success = True
     if (success):
         sendEmail(email)
-
-
     return JsonResponse({'result': '注册成功'})
 
 
