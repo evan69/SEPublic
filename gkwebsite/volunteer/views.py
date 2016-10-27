@@ -198,28 +198,33 @@ def profile(request):
                     希望能够返回是否保存成功，以及哪些字段不合法的信息
                     后端可以通过request.session.get('user_id')获取id
                 '''
-        volunteer_name = request.POST.get('volunteer_name', 'byr')
+        print request.POST
+        volunteer_name = request.POST.get('volunteer_name')
+        print "name:", volunteer_name
         email = request.POST.get('email', 'byr')
-        work_address = request.POST.get('work_address', 'byr')
+        province = request.POST.get('province', 'byr')
         phone = request.POST.get('phone', '110')
         describe = request.POST.get('describe', 'byr')
-
+        print province
+        '''
         vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
         vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
         vol.setVolunteer(vol_account, Volunteer.PROVINCE, work_address)
         vol.setVolunteer(vol_account, Volunteer.PHONE, phone)
         vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
-
-        dict = {'volunteer_name': volunteer_name,
-                'email': email,
-                'work_address': work_address,
-                'home_address': '130',
-                'postcode': '43',
-                'homephone': '49',
-                'phone': phone,
-                'qqn': '85',
-                'weichat': '66',
-                'describe': describe, }
+        '''
+        dict = {'volunteer_name': '李昊阳0-chenged',
+                'sex': {'sex': 1, 'sexlist': ['男c', '女c']},
+                'email': 'email@qq.comc',
+                'nation': {'nation': 1, 'nationlist': ['汉族c', '其他c']},
+                'province': {'province': 1, 'provincelist': ['北京c', '湖北c', '四川c', '其他c']},
+                'department': {'department': 1, 'departmentlist': ['计算机c', '其他c']},
+                'classroom': '计45c',
+                'phone': '13000000000c',
+                'qqn': '85c',
+                'weichat': '66c',
+                'distribute': '1 and 2 c',
+                'describe': 'describec', }
         return JsonResponse(dict)
     else:
         '''
@@ -237,15 +242,14 @@ def profile(request):
         #     'weichat': '66',
         #     'describe': getattr(volunteer, Volunteer.COMMENT, ' '),
         # }
-
+        print 'other'
         dict = {'volunteer_name': '李昊阳0',
                 'sex':{'sex' : 1 , 'sexlist' : ['男','女']},
                 'email' : 'email@qq.com',
                 'nation': {'nation' : 1 ,'nationlist' : ['汉族','其他']},
-                'province': {'province' : 1 ,'provincelist' : ['北京','其他']},
+                'province': {'province' : 1 ,'provincelist' : ['北京','湖北','四川','其他']},
                 'department': {'department': 1, 'departmentlist': ['计算机', '其他']},
                 'classroom': '计45',
-                'homephone': '49',
                 'phone': '13000000000',
                 'qqn': '85',
                 'weichat': '66',

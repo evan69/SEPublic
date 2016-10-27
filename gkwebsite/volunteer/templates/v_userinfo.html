@@ -30,7 +30,7 @@
           <div class="col-md-12">
            <form role = "form" action="#">
               {% csrf_token %}
-            <h1>我的信息 User:{{dict.account}}</h1>
+            <h1>我的信息</h1>
             <div class="contentform">
              <div class="leftcontact">
 
@@ -39,7 +39,7 @@
                <p>姓名<span>*</span></p>
                <!--span class="icon-case"><i class="fa fa-male"></i></span>
                <input value="{{dict.realName}}" type="text" name="volunteer_name" id="volunteer_name" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
-               <input type="text" class="form-control" id="realName" name="realName" value="{{dict.volunteer_name}}" />
+               <input type="text" class="form-control" id="volunteer_name" name="realName" value="{{dict.volunteer_name}}" />
                   <div class="validation"></div>
               </div>
 
@@ -61,7 +61,7 @@
 
                  <div class="form-group">
                <p>院系<span>*</span></p>
-               <select class="form-control" id="school" name="school">
+               <select class="form-control" id="department" name="school">
                 {% for item in dict.department.departmentlist %}
                    {% if forloop.counter0 == dict.department.department %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
@@ -199,41 +199,60 @@
   <script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
   <!-- Custom Js -->
   <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
-  <script>
+    <script>
       console.log("WTF");
       $(document).ready(function(){
           console.log("Arrive here");
           $("#volunteer_save").click(function(){
               console.log("volunteer_save");
             var volunteer_name = $("#volunteer_name").val();
+            //alert($("#volunteer_name").val());
+            var sex = $("#sex").val();
+            var department = $("#department").val();
+            var classroom = $("#classroom").val();
             var email = $("#email").val();
-            var work_address = $("#work_address").val();
-            var home_address = $("#home_address").val();
-            var postcode = $("#postcode").val();
-            var homephone = $("#homephone").val();
             var phone = $("#phone").val();
+            var nation = $("#nation").val();
+            var province = $("#province").val();
+            //var work_address = $("#work_address").val();
+            //var home_address = $("#home_address").val();
+            //var postcode = $("#postcode").val();
+            //var homephone = $("#homephone").val();
             var qqn = $("#qqn").val();
             var weichat = $("#weichat").val();
+            var distribute = $("#distribute").val();
             var describe = $("#describe").val();
+            //alert(province);
+            //console.log(department[0]);
             $.post("",
                     {
                         'volunteer_name':volunteer_name,
+                        'sex':sex,
+                        'department':department,
+                        'classroom':classroom,
                         'email':email,
-                        'work_address':work_address,
-                        'home_address':home_address,
-                        'postcode':postcode,
-                        'homephone':homephone,
+                        //'work_address':work_address,
+                        //'home_address':home_address,
+                        //'postcode':postcode,
+                        //'homephone':homephone,
                         'phone':phone,
+                        'nation':nation,
+                        'province':province,
                         'qqn':qqn,
                         'weichat':weichat,
+                        'distribute':distribute,
                         'describe':describe,
                     },
                     function(profileDict){
-                        console.log(profileDict['homephone']);
-                        alert('success');
-                        for (key_i in profileDict)
-                            $("#"+key_i).val(profileDict[key_i])
-            })
+                        //console.log(profileDict['homephone']);
+                        alert('修改成功');
+                        //alert(String(profileDict));
+                        //console.log(profileDict);
+                        window.location="/volunteer/profile";
+                        //for (key_i in profileDict)
+                        //    $("#"+key_i).val(profileDict[key_i])
+            });
+            //alert('cao2');
           });
       });
   </script>
