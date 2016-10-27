@@ -21,8 +21,8 @@
        {% csrf_token %}
        <input type="text" name="register_username" placeholder="用户名" id="user" class="register user" title="用户名" required="" />
        <input type="email" name="register_email" placeholder="电子邮件" id="email" class="register email" title="电子邮件" required="" />
-       <input type="password" name="register_password" id="password" placeholder="密码" class="register password" title="Password" required="" style="width: 90px;margin-right: 3px; display: inline"/>
-       <input type="password" name="register_repeat_password" id="rpassword" placeholder="确认密码" class="register password" title="Repeat Password" required="" style="width: 90px;margin-right: 3px; display: inline" />
+       <input type="password" name="register_password" id="password" class="register password" title="Password" required="" style="width: 90px;margin-right: 3px; display: inline"/>
+       <input type="password" name="register_repeat_password" id="rpassword" class="register password" title="Repeat Password" required="" style="width: 90px;margin-right: 3px; display: inline" />
        <input type="text" placeholder="注册码" id="invited" class="register " title="注册码" required="" />
 
        <!-- Label for PopupBox --> 
@@ -40,7 +40,7 @@
       <form name="login" action="/logincheck/" method="POST" accept-charset="utf-8">
        {% csrf_token %}
        <input type="text" placeholder="用户名" name="login_username" id="l_user" class="login user" title="Username" required="" style="float: right" />
-        <input type="password" name="login_password" placeholder="密码" id="l_password" class="login password" title="Password" required="" style="float: right;margin-right: 10px" />
+        <input type="password" name="login_password" id="l_password" class="login password" title="Password" required="" style="float: right;margin-right: 10px" />
        
         <img src="/yzm/150/30" title="看不清？点击一下" class="yzm" onclick="refresh(this)"/>
 

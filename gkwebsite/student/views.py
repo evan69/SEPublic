@@ -1,4 +1,5 @@
-#coding:utf8
+#encoding=utf-8
+from django.http import JsonResponse
 from django.shortcuts import render
 
 from django.http import HttpResponse,JsonResponse
@@ -58,7 +59,59 @@ def student_logout(request):
 
 
 def profile(request):
-    return render(request, 'student/userinfo.html')
+    dict = {
+        'name': 'name',
+        'identification': 'identification',
+        'sex': 'sex',
+        'nation': 'nation',
+        'birth': 'birth',
+        'province': 'province',
+        'phone': 'phone',
+        'email': 'email',
+        'wenli': 'wenli',
+        'address': 'address',
+        'dadName': 'dadName',
+        'dadPhone': 'dadPhone',
+        'momName': 'momName',
+        'momPhone': 'momPhone',
+        'school': 'school',
+        'stu_class': 'stu_class',
+        'tutorName': 'tutorName',
+        'tutorPhone': 'tutorPhone',
+        'majorSelect1': 'majorSelect1',
+        'majorSelect2': 'majorSelect2',
+        'majorSelect3': 'majorSelect3',
+        'majorSelect4': 'majorSelect4',
+        'majorSelect5': 'majorSelect5',
+        'majorSelect6': 'majorSelect6',
+        'testScore1': 'testScore1',
+        'testScore2': 'testScore2',
+        'testScore3': 'testScore3',
+        'rank1': 'rank1',
+        'rank11': 'rank11',
+        'rank2': 'rank2',
+        'rank22': 'rank22',
+        'rank3': 'rank3',
+        'rank33': 'rank33',
+        'realScore': 'realScore',
+        'relTeacher': 'relTeacher',
+        'comment': 'comment',
+        'estimateScore': 'estimateScore',
+        'estimateRank': 'estimateRank',
+    }
+
+
+    if request.method == 'POST':
+        '''
+        保存信息并返回json
+        '''
+        return JsonResponse(dict)
+    else:
+        '''
+        获取信息并返回
+        '''
+    return render(request, 'student/userinfo.html', {'dict': dict})
+
 
 
 rec_dict = {}
@@ -199,3 +252,6 @@ def submit_test_result(request):
     stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list)}
     stu.setStudent(account, Student.ESTIMATE_SCORE, str(stu_dic))
     return JsonResponse({})
+
+
+
