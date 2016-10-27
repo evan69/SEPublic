@@ -242,14 +242,17 @@ def profile(request):
         #     'describe': getattr(volunteer, Volunteer.COMMENT, ' '),
         # }
 
-        dict = {'volunteer_name': 'volunteer_name',
-                'email': 'email',
-                'work_address': 'work_address',
-                'home_address': '130',
-                'postcode': '43',
+        dict = {'volunteer_name': '李昊阳0',
+                'sex':{'sex' : 1 , 'sexlist' : ['男','女']},
+                'email' : 'email@qq.com',
+                'nation': {'nation' : 1 ,'nationlist' : ['汉族','其他']},
+                'province': {'province' : 1 ,'provincelist' : ['北京','其他']},
+                'department': {'department': 1, 'departmentlist': ['计算机', '其他']},
+                'classroom': '计45',
                 'homephone': '49',
-                'phone': 'phone',
+                'phone': '13000000000',
                 'qqn': '85',
                 'weichat': '66',
+                'distribute' : '1 and 2',
                 'describe': 'describe', }
         return render(request, 'v_userinfo.html', {'dict': dict})
