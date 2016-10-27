@@ -61,7 +61,7 @@
 									</tbody>
                 </table>
                 <p style="font-family:宋体; font-size:16px; text-align:center" id="empty_msg">您还没有添加题目！</p>
-                <button type="button">添加题目</button>
+                <button type="button" id="new_question">添加题目</button>
               </div>
 						</div>
 					</div>
@@ -91,10 +91,21 @@
         for(var i = 0; i < qlist.length; ++i){
           edit_tag = String(i)+"_edit";
           delete_tag = String(i)+"_delete";
+          up_tag = String(i)+"_up";
+          down_tag = String(i)+"_down";
           item = "<tr><td>"+qlist[i]['num']+"</td><td>"+qlist[i]['type']+"</td><td>"+qlist[i]['maxscore']+"</td><td>";
           item += "<button type=\"button\" id=\""+edit_tag+"\"class=\"btn btn-info btn-xs\">编辑</button>\n";
-          item += "<button type=\"button\" id=\""+delete_tag+"\"class=\"btn btn-danger btn-xs\">删除</button>\n</td></tr>";
+          item += "<button type=\"button\" id=\""+delete_tag+"\"class=\"btn btn-danger btn-xs\">删除</button>\n";
+          item += "<button type=\"button\" id=\""+up_tag+"\"class=\"btn btn-warning btn-xs\">上移</button>\n";
+          item += "<button type=\"button\" id=\""+down_tag+"\"class=\"btn btn-warning btn-xs\">下移</button>\n";
+          item += "</td></tr>";
           $('#question_list').append(item);
+          if(i == 0){
+            $('#'+up_tag).attr('disabled', 'true');
+          }
+          if(i == qlist.length - 1){
+            $('#'+down_tag).attr('disabled', 'true');
+          }
           $('#'+edit_tag).click(function(){
             var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
@@ -109,7 +120,31 @@
               }
             });
             refresh();
-          })
+          });
+          $('#'+up_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            $("button").attr("disabled", "true");
+            $.post("/backend/move_question_up/", {'test_id':test_id, 'num':qlist[row]['num']}, function(ret){
+              if(ret['success'].charAt(0) == 'N'){
+                $.growl.error({ title: "移动失败", message: ret['message'] });
+              }
+              $("button").removeAttr("disabled");
+              refresh();
+            });
+          });
+          $('#'+down_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            $("button").attr("disabled", "true");
+            $.post("/backend/move_question_down/", {'test_id':test_id, 'num':qlist[row]['num']}, function(ret){
+              if(ret['success'].charAt(0) == 'N'){
+                $.growl.error({ title: "移动失败", message: ret['message'] });
+              }
+              $("button").removeAttr("disabled");
+              refresh();
+            });
+          });
         }
       }
       function refresh(){
@@ -129,6 +164,11 @@
 						}
 				});
         refresh();
+        $('#new_question').click(function(){
+          $.post("/backend/get_next_question_num/", {'test_id':test_id}, function(ret){
+            window.location="{%url "upload_question" %}"+"?test_id="+test_id+"&num="+ret['num'];
+          });
+        });
 			});
 		</script>
 
