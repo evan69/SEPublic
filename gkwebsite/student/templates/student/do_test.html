@@ -103,11 +103,18 @@
                                 <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:60px;text-align:center">
                                     <label id = "problem_full_score" style="width:100%;font-size:20px">本题满分：</label>
                                 </div>
+                                <!--div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;text-align:center">
+                                    <lebel style="font-size:20px">请输入您估的分数：</lebel><input type="text" id = "tmp_student_score" align="center">
+                                </div-->
                                 <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;text-align:center">
-                                    <lebel style="font-size:20px">请输入您估的分数：</lebel><input type="text" id = "student_score" align="center">
+                                    <lebel style="font-size:20px">请选择您估的分数：</lebel><select id="student_score" name="nation" style="width:100px" align="center">
+                                        <option value=0 selected="selected">11</option>
+                                        <option value=44>22</option>
+                                    </select>
                                 </div>
-                                <div id = "submit_test" class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
-                                    <button style="font-size:20px">提交本题估分结果</button>
+
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
+                                    <button id = "submit_test" style="font-size:20px">提交本题估分结果</button>
                                     <!--div class="button" id = "btn1" href = "https://www.baidu.com"><div class="shine"></div>开始测试</div-->
                                 </div>
                                 <div id = 'test_name' name = {{test_name}}></div>
@@ -196,6 +203,7 @@
 			}
 
 			$('#submit_test').click(function(){
+			    //alert('click');
 			    if(cur_problem > problem_list.length - 1)
                  {
                     //已经做完题目
@@ -204,20 +212,21 @@
                     alert('您已经完成本套题估分');
                     var ret_info = {'test_name':ka.getAttribute("name"),"time_list":String(time_list),'score_list':String(score_list)};
                     $.post("/student/submit_test_result/", ret_info, function(ret){
-                        //alert(time_list);
-                        //alert(score_list);
+                        alert(time_list);
+                        alert(score_list);
                     });
                     window.location="/student/score";
                     return;
                  }
 			    $.post("/student/get_problem_info/", {'problem_id' : problem_list[cur_problem]}, function(ret){
                      //alert(problem_list.length);
+                     /*
                      if(cur_problem > 0 && check_valid() != true)
                      {
                         alert("您填写的估分结果不合法");
                         return;
                      }
-
+                     */
                      if(cur_problem > 0)//用户点击
                      {
                             time_list.push(cur_sec);
@@ -239,6 +248,24 @@
                      var src = '<img src=' +  String(problem_info['problem_pic']) + ' style=\"width:100%\">';
                      console.log(src);
                      $('#problem_pic').append(src);
+                     $('#student_score').empty();
+                     //alert('heh');
+                     if(String(problem_info['problem_type']) == "主观")
+                     {
+                        //alert('heh1');
+                        var i = 1;
+                        $('#student_score').append("<option value=0 selected=\"selected\">0</option>");
+                        for(i = 1;i <= parseInt(problem_info['problem_full_score']);i++)
+                        {
+                            $('#student_score').append("<option value=" + String(i) + ">" + String(i) + "</option>");
+                        }
+                     }
+                     else
+                     {
+                        //alert('heh2');
+                        $('#student_score').append("<option value=0 selected=\"selected\">0</option>");
+                        $('#student_score').append("<option value=" + String(problem_info['problem_full_score']) + ">" + String(problem_info['problem_full_score']) + "</option>");
+                     }
                      //alert(src);
                      cur_problem++;
 				});

@@ -98,12 +98,12 @@ def get_problem_info(request):
     print 'problem id'
     if int(problem_id) < 4:
         dic = {'problem_num': '999',
-           'problem_type': '客观题',
+           'problem_type': '客观',
            'problem_full_score': '10',
            'problem_pic': '/static/images/2017_beijing_chinese_1_1_subjective'}
     else:
         dic = {'problem_num': '22',
-           'problem_type': '主观题',
+           'problem_type': '主观',
            'problem_full_score': '44',
            'problem_pic': '/static/images/2017_beijing_chinese_1_1_subjective'}
     return JsonResponse({'problem_info': dic})
