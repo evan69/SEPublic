@@ -15,6 +15,4 @@ urlpatterns = [
     url(r'^get_problem_list/$', views.get_problem_list),
     url(r'^get_problem_info/$', views.get_problem_info),
     url(r'^submit_test_result/$', views.submit_test_result),
-
-    url(r'^static/(?P<path>.*)', 'django.views.static.serve', {'document_root': 'd:/wwwsite/office/static'}),
 ]
