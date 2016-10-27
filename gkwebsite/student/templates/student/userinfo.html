@@ -36,6 +36,18 @@
          <input id="name" type="text" name="name" placeholder="输入你的姓名" required="" />
         </span>
        </div>
+
+        <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>估计分<i>:</i></label>
+         <input readonly="readonly" id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" />
+        </span>
+       </div>
+        <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>估计分排名<i>:</i></label>
+         <input readonly="readonly" id="estimateRank" type="text" value="{{dict.estimateRank}}" required="" />
+        </span>
+       </div>
+
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>身份证<i>:</i></label>
          <input id="identification" type="text" name="name" placeholder="输入你的身份证号" required="" /> </span>
@@ -195,7 +207,7 @@
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>对应老师<i>:</i></label>
-         <input id="relTeacher" type="text" name="Reminder" placeholder="对应老师" required="" /> </span>
+         <input id="relTeacher" readonly="readonly" type="text" name="Reminder" placeholder="对应老师" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>修改密码<i>:</i></label>
@@ -293,7 +305,9 @@
             var rank22 = $("#rank22").val();
             var rank3 = $("#rank3").val();
             var rank33 = $("#rank33").val();
-            //var estimateScore = $("#estimateScore").val();
+            var estimateScore = $("#estimateScore").val();
+           var estimateRank = $("#estimateRank").val();
+
             var realScore = $("#realScore").val();
             //var admissionStatus = $("#admissionStatus").val();
             var relTeacher = $("#relTeacher").val();
@@ -375,7 +389,8 @@ alert(
              'rank22' : rank22,
              'rank3' : rank3,
              'rank33' : rank33,
-           //  'estimateScore' : estimateScore,
+             'estimateScore' : estimateScore,
+                     'estimateRank' : estimateRank,
              'realScore' : realScore,
            //  'admissionStatus' : admissionStatus,
              'relTeacher': relTeacher,

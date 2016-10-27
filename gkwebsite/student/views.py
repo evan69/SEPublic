@@ -88,6 +88,8 @@ def profile(request):
                         'realScore': 'realScore',
                           'relTeacher': 'relTeacher',
                        'comment': 'comment',
+        'estimateScore': 'estimateScore',
+        'estimateRank': 'estimateRank',
     }
     if request.method == 'POST':
         '''
