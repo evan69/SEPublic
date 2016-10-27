@@ -11,6 +11,7 @@ import os
 import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
+import database.image_backend as pic
 import django.forms as forms
 import datetime
 from database.models import *
@@ -139,7 +140,7 @@ def student_info_edit(request):
         stu.setStudent(
             account, Student.SUM_NUMBER_LIST, [
                 dic['rank11'], dic['rank22'], dic['rank33']])
-        stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
+        # stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
         stu.setStudent(account, Student.REAL_SCORE, dic['realScore'])
         stu.setStudent(
             account,
@@ -196,6 +197,17 @@ def student_info_edit(request):
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
             Student.COMMENT: stu_dic[Student.COMMENT],
         }
+
+        tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
+        try:
+            tmp_dic = eval(tmp_dic)
+        except:
+            tmp_dic = eval('{}')
+        sum_score = 0
+        for key in tmp_dic.keys():
+            sum_score += tmp_dic[key]['score']
+        dic[Student.ESTIMATE_SCORE] = str(sum_score)
+
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic})
@@ -290,6 +302,16 @@ def student_info_show(request):
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
     }
+
+    tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
+    try:
+        tmp_dic = eval(tmp_dic)
+    except:
+        tmp_dic = eval('{}')
+    sum_score = 0
+    for key in tmp_dic.keys():
+        sum_score += tmp_dic[key]['score']
+    dic[Student.ESTIMATE_SCORE] = str(sum_score)
     return HttpResponse(t.render({'student': dic}))
 
 
@@ -412,7 +434,7 @@ def profile(request):
 '''
 def handle_uploaded_img(imgFile, year, province, subject, number, score, category):
     imgName = imgFile.name
-    path = 'student/static/images/'+ str(year) + '_' + str(province) + '_' + str(subject) + '_' + str(number) + '_' + str(score) + '_' + str(category)
+    path = 'student/static/images/'+ get_picture_path(year, province, subject, number, score, category)
     dst = open(path, 'wb')
     dst.write(imgFile.read())
 
@@ -427,7 +449,7 @@ def upload(request):
         dic = {
             'year': {'year': 1, 'yearlist': YEAR_LIST},
             'province': {'province': 1, 'provincelist': PROVINCE_LIST},
-            'subject': {'subject': 1, 'subjectlist': SUBJECT_LIST},
+            'subject': {'subject': 2, 'subjectlist': SUBJECT_LIST},
             'number': {'number': 1, 'numberlist': NUMBER_LIST},
             'score': {'score': 1, 'scorelist': SCORE_LIST},
             'category': {'category': 1, 'categorylist': CATEGORY_LIST},
@@ -441,22 +463,27 @@ def upload(request):
         score = request.POST.get('score')
         category = request.POST.get('category')
 
+        print year, province, subject, number, score, category
+
         dic = {
             Picture.YEAR: int(year),
             Picture.PROVINCE: int(province),
             Picture.SUBJECT: int(subject),
             Picture.NUMBER: int(number),
             Picture.SCORE: int(score),
-            Picture.category: int(category),
+            Picture.CATEGORY: int(category),
         }
 
+        flag = pic.createPicturebyDict(dic)
         imgFile = request.FILES['problem_upload']
         handle_uploaded_img(imgFile, year, province, subject, number, score, category)
 
-        print year, province, subject, number, score, category
 
 
-        dict = {'result': '上传成功'}
+        if flag:
+            dict = {'result': '上传成功'}
+        else:
+            dict = {'result': '上传失败'}
         return JsonResponse(dict)
 
 
