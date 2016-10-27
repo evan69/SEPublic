@@ -114,12 +114,14 @@
           $('#'+delete_tag).click(function(){
             var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
+            $("button").attr("disabled", "true");
             $.post("/backend/remove_question/", {'test_id':test_id, 'num':qlist[row]['num']}, function(ret){
               if(ret['success'].charAt(0) == 'N'){
                 $.growl.error({ title: "删除失败", message: ret['message'] });
               }
+              $("button").removeAttr("disabled");
+              refresh();
             });
-            refresh();
           });
           $('#'+up_tag).click(function(){
             var parse = this.id.split("_");
