@@ -211,58 +211,74 @@ def profile(request):
                     后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict。
                     希望能够返回是否保存成功，以及哪些字段不合法的信息
                     后端可以通过request.session.get('user_id')获取id
-                '''
+
+        '''
+        print 'sex : ', request.POST.get
+        # print type(request.POST.get('sex'))
+
         volunteer_name = request.POST.get('volunteer_name', 'byr')
+        sex = int(request.POST.get('sex', 'byr'))
         email = request.POST.get('email', 'byr')
-        work_address = request.POST.get('work_address', 'byr')
+        nation = int(request.POST.get('nation', 'byr'))
+        province = int(request.POST.get('province', 'byr'))
+
+        department = [int(request.POST.get('department', 'byr'))]
+        classroom = request.POST.get('classroom', 'byr')
         phone = request.POST.get('phone', '110')
+        qqn = request.POST.get('qqn', 'byr')
+        weichat = request.POST.get('weichat', 'byr')
+
+        distribute = request.POST.get('distribute', 'byr')
         describe = request.POST.get('describe', 'byr')
 
+        print volunteer_name, sex, email, nation, province, department, classroom, phone, qqn, weichat,distribute, describe
+
+        print 'province ', PROVINCE_LIST[province]
         vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
+        vol.setVolunteer(vol_account, Volunteer.SEX, sex)
         vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
-        vol.setVolunteer(vol_account, Volunteer.PROVINCE, work_address)
+        vol.setVolunteer(vol_account, Volunteer.NATION, nation)
+        vol.setVolunteer(vol_account, Volunteer.PROVINCE, province)
+
+        vol.setVolunteer(vol_account, Volunteer.MAJOR, department)
+        vol.setVolunteer(vol_account, Volunteer.CLASSROOM, classroom)
         vol.setVolunteer(vol_account, Volunteer.PHONE, phone)
+        vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
+        vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
+
+        # vol.setVolunteer(vol_account, Volunteer., distribute)
         vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
 
-        dict = {'volunteer_name': volunteer_name,
-                'email': email,
-                'work_address': work_address,
-                'home_address': '130',
-                'postcode': '43',
-                'homephone': '49',
-                'phone': phone,
-                'qqn': '85',
-                'weichat': '66',
-                'describe': describe, }
+        vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
+        dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
+                'sex':vol_dic[Volunteer.SEX],
+                'email': vol_dic[Volunteer.EMAIL],
+                'nation': vol_dic[Volunteer.NATION],
+                'province': vol_dic[Volunteer.PROVINCE],
+                'department': vol_dic[Volunteer.MAJOR][0],
+                'classroom': vol_dic[Volunteer.CLASSROOM],
+                'phone': vol_dic[Volunteer.PHONE],
+                'qqn': vol_dic[Volunteer.PHONE],
+                'weichat': vol_dic[Volunteer.WECHAT],
+                'distribute' : '1 and 2',
+                'describe': vol_dic[Volunteer.COMMENT], }
+        print 'NEW' ,dict
         return JsonResponse(dict)
     else:
         '''
              后端需要在这里改代码，从数据库读取正确的dict，并返回
         '''
-        # dict = {
-        #     'volunteer_name': getattr(volunteer, Volunteer.REAL_NAME, ' '),
-        #     'email': getattr(volunteer, Volunteer.EMAIL, ' '),
-        #     'work_address': getattr(volunteer, Volunteer.AREA, ' '),
-        #     'home_address': '130',
-        #     'postcode': '43',
-        #     'homephone': getattr(volunteer, Volunteer.FIXED_PHONE, ' '),
-        #     'phone': getattr(volunteer, Volunteer.PHONE, ' '),
-        #     'qqn': '85',
-        #     'weichat': '66',
-        #     'describe': getattr(volunteer, Volunteer.COMMENT, ' '),
-        # }
-
-        dict = {'volunteer_name': '李昊阳0',
-                'sex':{'sex' : 1 , 'sexlist' : ['男','女']},
-                'email' : 'email@qq.com',
-                'nation': {'nation' : 1 ,'nationlist' : ['汉族','其他']},
-                'province': {'province' : 1 ,'provincelist' : ['北京','其他']},
-                'department': {'department': 1, 'departmentlist': ['计算机', '其他']},
-                'classroom': '计45',
-                'homephone': '49',
-                'phone': '13000000000',
-                'qqn': '85',
-                'weichat': '66',
+        vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
+        dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
+                'sex':vol_dic[Volunteer.SEX],
+                'email': vol_dic[Volunteer.EMAIL],
+                'nation': vol_dic[Volunteer.NATION],
+                'province': vol_dic[Volunteer.PROVINCE],
+                'department': vol_dic[Volunteer.MAJOR][0],
+                'classroom': vol_dic[Volunteer.CLASSROOM],
+                'phone': vol_dic[Volunteer.PHONE],
+                'qqn': vol_dic[Volunteer.PHONE],
+                'weichat': vol_dic[Volunteer.WECHAT],
                 'distribute' : '1 and 2',
-                'describe': 'describe', }
+                'describe': vol_dic[Volunteer.COMMENT], }
         return render(request, 'v_userinfo.html', {'dict': dict})
