@@ -198,7 +198,7 @@ def profile(request):
                     希望能够返回是否保存成功，以及哪些字段不合法的信息
                     后端可以通过request.session.get('user_id')获取id
                 '''
-        print request.POST
+        print 'des:', request.POST.get('describe')
         volunteer_name = request.POST.get('volunteer_name')
         print "name:", volunteer_name
         email = request.POST.get('email', 'byr')
