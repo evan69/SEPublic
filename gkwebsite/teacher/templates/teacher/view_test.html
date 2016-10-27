@@ -15,7 +15,7 @@
     
     <link href= "{% static 'css/jquery.growl.css' %}" rel="stylesheet" />
     <!-- Google Fonts-->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link href="{% static 'css/google-fonts.css' %}" rel='stylesheet' type='text/css' />
     <!-- jQuert UI Styles -->
     <link href="{% static 'jquery-ui-1.12.1/jquery-ui.min.css' %}" rel='stylesheet'/>
 </head>
@@ -101,12 +101,12 @@
           withdraw_tag = String(i)+"_withdraw";
           delete_tag = String(i)+"_delete";
           item = "<tr><td style=\"font-family:宋体; font-size:18px\">"+testlist[i]['year']+" "+testlist[i]['place']+" "+testlist[i]['subject'];
-          item += "</td><td><button type=\"button\" id="+edit_tag+" class = \"btn btn-info btn-xs\">编辑</button>\n";
+          item += "</td><td><button type=\"button\" id=\""+edit_tag+"\" class = \"btn btn-info btn-xs\">编辑</button>\n";
           if(testlist[i]['released'].charAt(0)=='N')
-            item += "<button type=\"button\" id="+release_tag+" class = \"btn btn-success btn-xs\">发布</button>\n";
+            item += "<button type=\"button\" id=\""+release_tag+"\" class = \"btn btn-success btn-xs\">发布</button>\n";
           else
-            item += "<button type=\"button\" id="+withdraw_tag+" class = \"btn btn-warning btn-xs\">撤回</button>\n";
-          item += "<button type=\"button\" id="+delete_tag+" class = \"btn btn-danger btn-xs\">删除</button>\n</td></tr>";
+            item += "<button type=\"button\" id=\""+withdraw_tag+"\" class = \"btn btn-warning btn-xs\">撤回</button>\n";
+          item += "<button type=\"button\" id=\""+delete_tag+"\" class = \"btn btn-danger btn-xs\">删除</button>\n</td></tr>";
           $('#test_list').append(item);
           $('#'+edit_tag).click(function(){
             var parse = this.id.split("_");

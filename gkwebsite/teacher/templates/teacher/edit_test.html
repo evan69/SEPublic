@@ -12,6 +12,8 @@
     <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
         <!-- Custom Styles-->
     <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+    
+    <link href= "{% static 'css/jquery.growl.css' %}" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href="{% static 'css/google-fonts.css' %}" rel='stylesheet' type='text/css' />
 </head>
@@ -36,7 +38,7 @@
 					<div class = "col-md-12">
 						<div class= "panel panel-default">
 							<div class = "panel-body">
-                <table class="table table-hover">
+                <table class="table table-hover" id = "question_table">
                   <caption></caption>
 									<thead>
 										<tr>
@@ -54,6 +56,7 @@
                       <td>
                         <button type="button" class="btn btn-info btn-xs">编辑</button>
                         <button type="button" class="btn btn-danger btn-xs">删除</button>
+                      </td>
                     </tr>
 									</tbody>
                 </table>
@@ -71,6 +74,49 @@
      <!-- /. WRAPPER  -->
     {% include 'teacher/include/jsinclude.html' %}
 		<script>
+      var test_id = "{{test_id}}";
+      var qlist = [];
+      function print_list(){
+        var item = "";
+        var edit_tag, delete_tag;
+        $('#question_list').empty();
+        if(qlist.length == 0){
+          $('#question_table').hide();
+          $('#empty_msg').show();
+        }
+        else{
+          $('#empty_msg').hide();
+        }
+        for(var i = 0; i < qlist.length; ++i){
+          edit_tag = String(i)+"_edit";
+          delete_tag = String(i)+"_delete";
+          item = "<tr><td>"+qlist[i]['num']+"</td><td>"+qlist[i]['type']+"</td><td>"+qlist[i]['maxscore']+"</td><td>";
+          item += "<button type=\"button\" id=\""+edit_tag+"\"class=\"btn btn-info btn-xs\">编辑</button>\n";
+          item += "<button type=\"button\" id=\""+delete_tag+"\"class=\"btn btn-danger btn-xs\">删除</button>\n</td></tr>";
+          $('#question_list').append(item);
+          $('#'+edit_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            window.location="{%url "upload_question" %}"+"?test_id="+test_id+"&num="+qlist[row]['num'];
+          });
+          $('#'+delete_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            $.post("/backend/remove_question/", {'test_id':test_id, 'num':qlist[row]['num']}, function(ret){
+              if(ret['success'].charAt(0) == 'N'){
+                $.growl.error({ title: "删除失败", message: ret['message'] });
+              }
+            });
+            refresh();
+          })
+        }
+      }
+      function refresh(){
+        $.post("/backend/list_question/", {'id':test_id}, function(ret){
+          qlist = ret;
+          print_list();
+        })
+      }
 			$(document).ready(function(){
 				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
 				var csrftoken = getCookie('csrftoken');
@@ -81,6 +127,7 @@
 								}
 						}
 				});
+        refresh();
 			});
 		</script>
 

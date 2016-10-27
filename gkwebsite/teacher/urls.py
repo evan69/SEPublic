@@ -18,7 +18,7 @@ urlpatterns = [
     # teacher 查看修改个人信息
     url(r'^profile/$', views.profile),
     # teacher 上传试题
-    url(r'^release_test/$', views.upload),
+    url(r'^release_test/$', views.upload, name = 'upload_question'),
     url(r'^manage_test/$', views.manage_test, name='manage_test'),
     # teacher 查看志愿者详情
     url(r'^volunteer_info/$', views.volunteer_info),
