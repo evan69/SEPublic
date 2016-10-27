@@ -33,72 +33,136 @@
             <h1>我的信息</h1>
             <div class="contentform">
              <div class="leftcontact">
+
+
               <div class="form-group">
                <p>姓名<span>*</span></p>
-               <span class="icon-case"><i class="fa fa-male"></i></span>
-               <input value="{{dict.volunteer_name}}" type="text" name="volunteer_name" id="volunteer_name" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
+               <!--span class="icon-case"><i class="fa fa-male"></i></span>
+               <input value="{{dict.realName}}" type="text" name="volunteer_name" id="volunteer_name" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
+               <input type="text" class="form-control" id="realName" name="realName" value="{{dict.volunteer_name}}" />
+                  <div class="validation"></div>
               </div>
-              <div class="form-group">
-               <p>E-mail <span>*</span></p>
-               <span class="icon-case"><i class="fa fa-envelope-o"></i></span>
-               <input value="{{dict.email}}" required type="email" name="email" id="email" data-rule="email" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'E-mail' est obligatoire." />
-               <div class="validation"></div>
-              </div>
-              <div class="form-group">
-               <p>办公室地址 <span>*</span></p>
-               <span class="icon-case"><i class="fa fa-home"></i></span>
-               <input value="{{dict.work_address}}" required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
-              </div>
-              <div class="form-group">
-               <p>家庭地址 </p>
-               <span class="icon-case"><i class="fa fa-map-marker"></i></span>
-               <input value="{{dict.home_address}}" type="text" name="home_address" id="home_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Code postal' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
-              </div>
-              <div class="form-group">
-               <p>邮编 </p>
-               <span class="icon-case"><i class="fa fa-location-arrow"></i></span>
-               <input value="{{dict.postcode}}" type="text" name="postcode" id="postcode" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Adresse' doit &ecirc;tre renseign&eacute;." />
+
+                 <div class="form-group">
+               <p>性别<span>*</span></p>
+               <select class="form-control" id="sex" name="sex">
+                {% for item in dict.sex.sexlist %}
+                   {% if forloop.counter0 == dict.sex.sex %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
                <div class="validation"></div>
               </div>
 
+                 <div class="form-group">
+               <p>院系<span>*</span></p>
+               <select class="form-control" id="school" name="school">
+                {% for item in dict.department.departmentlist %}
+                   {% if forloop.counter0 == dict.department.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+               <div class="validation"></div>
+              </div>
+
+                 <div class="form-group">
+               <p>班级<span>*</span></p>
+               <!--span class="icon-case"><i class="fa fa-male"></i></span>
+               <input value="{{dict.email}}" type="text" name="email" id="email" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
+               <input type="text" class="form-control" id="classroom" name="classroom" value="{{dict.classroom}}" />
+                      <div class="validation"></div>
+              </div>
+
+                 <div class="form-group">
+               <p>E-mail<span>*</span></p>
+               <!--span class="icon-case"><i class="fa fa-male"></i></span>
+               <input value="{{dict.email}}" type="text" name="email" id="email" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
+               <input type="text" class="form-control" id="email" name="email" value="{{dict.email}}" />
+                      <div class="validation"></div>
+              </div>
+                </div>
+
+
+                <div class="rightcontact">
+                <div class="form-group">
+               <p>手机<span>*</span></p>
+               <!--span class="icon-case"><i class="fa fa-male"></i></span>
+               <input value="{{dict.phone}}" type="text" name="phone" id="phone" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
+               <input type="text" class="form-control" id="phone" name="phone" value="{{dict.phone}}" />
+                     <div class="validation"></div>
+              </div>
+
+                 <div class="form-group">
+               <p>民族<span>*</span></p>
+               <select class="form-control" id="nation" name="nation">
+                {% for item in dict.nation.nationlist %}
+                   {% if forloop.counter0 == dict.nation.nation %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+               <div class="validation"></div>
+              </div>
+
+                   <div class="form-group">
+
+               <p>生源地<span>*</span></p>
+             <select class="form-control" id="province" name="province">
+                {% for item in dict.province.provincelist %}
+                   {% if forloop.counter0 == dict.province.province %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+            <div class="validation"></div>
+                       </div>
+                    <div class="form-group">
+               <p>QQ</p>
+               <!--span class="icon-case"><i class="fa fa-male"></i></span-->
+               <!--input value="{{dict.qqn}}" type="text" name="qqn" id="qqn" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
+                <input type="text" class="form-control" id="qqn" name="qqn" value="{{dict.qqn}}" />
+                     <div class="validation"></div>
+              </div>
+
+              <div class="form-group">
+               <p>微信</p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+               <input type="text" class="form-control" id="weichat" name="weichat" value="{{dict.weichat}}" />
+               <div class="validation"></div>
+              </div>
              </div>
-             <div class="rightcontact">
-              <div class="form-group">
-               <p>固定电话 </p>
-               <span class="icon-case"><i class="fa fa-phone"></i></span>
-               <input value="{{dict.homephone}}" type="text" name="homephone" id="homephone" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Ville' doit &ecirc;tre renseign&eacute;." />
+
+                <!--fieldset disabled=""-->
+                <div class="form-group">
+               <p>分管组</p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+               <input type="text" class="form-control" id="distribute" name="distribute" value="{{dict.distribute}}" readonly="true"/>
                <div class="validation"></div>
-              </div>
-              <div class="form-group">
-               <p>手机号码 <span>*</span></p>
-               <span class="icon-case"><i class="fa fa-phone"></i></span>
-               <input value="{{dict.phone}}" required  type="text" name="phone" id="phone" data-rule="maxlen:10" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'T&eacute;l&eacute;phone' doit &ecirc;tre renseign&eacute;. Minimum 10 chiffres" />
+              </div><!--fieldset/-->
+
+                <div class="form-group">
+               <p>备注<span>*</span></p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+                <textarea type="text" class="form-control" id="describe" name="describe" rows="4">{{dict.describe}}</textarea>
                <div class="validation"></div>
-              </div>
-              <div class="form-group">
-               <p>QQ </p>
-               <span class="icon-case"><i class="fa fa-info"></i></span>
-               <input value="{{dict.qqn}}" type="text" name="qqn" id="qqn" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Fonction' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
-              </div>
-              <div class="form-group">
-               <p>微信号 </p>
-               <span class="icon-case"><i class="fa fa-comment-o"></i></span>
-               <input value="{{dict.weichat}}" type="text" name="weichat" id="weichat" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Sujet' doit &ecirc;tre renseign&eacute;." />
-               <div class="validation"></div>
-              </div>
-              <div class="form-group">
-               <p>个人描述 <span>*</span></p>
-               <span class="icon-case"><i class="fa fa-comments-o"></i></span>
-               <textarea required  name="describe" id="describe" rows="14" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Message' doit &ecirc;tre renseign&eacute;.">
-                {{dict.describe}}
-               </textarea>
-               <div class="validation"></div>
-              </div>
-             </div>
             </div>
             <button type="button" id="volunteer_save" name="volunteer_save" class="bouton-contact">保存</button>
            </form>

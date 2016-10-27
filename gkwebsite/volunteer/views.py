@@ -177,6 +177,16 @@ def student_info_show(request):
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
     }
+
+    tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
+    try:
+        tmp_dic = eval(tmp_dic)
+    except:
+        tmp_dic = eval('{}')
+    sum_score = 0
+    for key in tmp_dic.keys():
+        sum_score += tmp_dic[key]['score']
+    dic[Student.ESTIMATE_SCORE] = str(sum_score)
     return HttpResponse(t.render({'student': dic}))
 
 
@@ -242,14 +252,17 @@ def profile(request):
         #     'describe': getattr(volunteer, Volunteer.COMMENT, ' '),
         # }
 
-        dict = {'volunteer_name': 'volunteer_name',
-                'email': 'email',
-                'work_address': 'work_address',
-                'home_address': '130',
-                'postcode': '43',
+        dict = {'volunteer_name': '李昊阳0',
+                'sex':{'sex' : 1 , 'sexlist' : ['男','女']},
+                'email' : 'email@qq.com',
+                'nation': {'nation' : 1 ,'nationlist' : ['汉族','其他']},
+                'province': {'province' : 1 ,'provincelist' : ['北京','其他']},
+                'department': {'department': 1, 'departmentlist': ['计算机', '其他']},
+                'classroom': '计45',
                 'homephone': '49',
-                'phone': 'phone',
+                'phone': '13000000000',
                 'qqn': '85',
                 'weichat': '66',
+                'distribute' : '1 and 2',
                 'describe': 'describe', }
         return render(request, 'v_userinfo.html', {'dict': dict})
