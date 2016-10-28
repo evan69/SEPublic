@@ -144,8 +144,8 @@
               if(ret['success'].charAt(0) == 'N'){
                 $.growl.error({ title: "删除失败", message: ret['message'] });
               }
+              refresh();
             });
-            refresh();
           });
         }
       }
