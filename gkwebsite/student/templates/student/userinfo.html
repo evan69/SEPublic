@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
- <head></head>
- <body>
+ <head>
+
    {% load staticfiles %}
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,43 +21,219 @@
   <!-- Custom Styles-->
   <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
   <!-- Google Fonts-->
+ </head>
+ <body>
+
   <div id="wrapper">
     {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
    <div id="page-wrapper">
     <div class="main">
-     <h1 class="w3layouts_head" style="color: black">个人信息</h1>
+     <h1 class="w3layouts_head" style="color: black">{{dict.user_name}}个人信息</h1>
      <div class="w3layouts_main_grid">
       <form action="#" method="post" class="w3_form_post">
        <div class="w3_agileits_main_grid w3l_main_grid">
-        <span class="agileits_grid"> <label>姓名<i>:</i></label> <input type="text" name="name" placeholder="输入你的姓名" required="" /> </span>
+        <span class="agileits_grid"> <label>姓名<i>:</i></label>
+         <input id="name" type="text" name="name" placeholder="输入你的姓名" required="" />
+        </span>
+       </div>
+
+        <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>估计分<i>:</i></label>
+         <input readonly="readonly" id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" />
+        </span>
+       </div>
+        <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>估计分排名<i>:</i></label>
+         <input readonly="readonly" id="estimateRank" type="text" value="{{dict.estimateRank}}" required="" />
+        </span>
+       </div>
+
+       <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>身份证<i>:</i></label>
+         <input id="identification" type="text" name="name" placeholder="输入你的身份证号" required="" /> </span>
+       </div>
+       <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>性别<i>:</i></label>
+        <select id="sex" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+        </span>
+       </div>
+       <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>民族<i>:</i></label>
+        <select id="nation" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+
+        </span>
        </div>
        <div class="agileits_w3layouts_main_grid w3ls_main_grid">
-        <span class="agileinfo_grid"> <label>出生日期<i>:</i></label> <input class="date" id="datepicker" name="Text" type="text" value="mm/dd/yyyy" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="" /> </span>
+        <span class="agileinfo_grid"> <label>出生日期<i>:</i></label>
+         <input class="date" id="datepicker" name="Text" type="text" value="mm/dd/yyyy" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>邮箱<i>:</i></label> <input type="text" name="Reminder" placeholder="个人常用邮箱" required="" /> </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>QQ<i>:</i></label> <input type="text" name="Reminder" placeholder="QQ" required="" /> </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>微信<i>:</i></label> <input type="text" name="Reminder" placeholder="微信号或注册手机" required="" /> </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>手机<i>:</i></label> <input type="text" name="Reminder" placeholder="手机" required="" /> </span>
+        <span class="agile_grid"> <label>手机<i>:</i></label>
+         <input id="phone" type="text" name="Reminder" placeholder="手机" required="" />
+        </span>
        </div>
        <div class="agileinfo_main_grid">
-        <span class="agileits_w3layouts_grid"> <label>省份<i>:</i></label> <select id="category1" name="category1" required=""> <option value="personal">北京</option> <option value="business">内蒙</option> <option value="other">湖北</option> </select> </span>
+        <span class="agileits_w3layouts_grid"> <label>地区<i>:</i></label> 
+         <select id="category1" name="category1" required=""> <option value="personal">北京</option> <option value="business">内蒙</option> <option value="other">湖北</option> </select> </span>
        </div>
        <div class="wthree_main_grid">
-        <span class="agile_grid"> <label>文理<i>:</i></label> <select id="priority" name="priority" required=""> <option value="high">文科</option> <option value="low">理科</option> </select> </span>
+        <span class="agile_grid"> <label>文理<i>:</i></label> <select id="priority" required=""> <option value="high">文科</option> <option value="low">理科</option> </select> </span>
        </div>
+
+
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>邮箱<i>:</i></label>
+         <input type="text" id="email" name="Reminder" placeholder="个人常用邮箱" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>地址<i>:</i></label>
+         <input type="text" id="address" name="Reminder" placeholder="家庭地址" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>学校<i>:</i></label>
+         <input type="text" id="school" name="Reminder" placeholder="高中学校名称" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>班级<i>:</i></label>
+         <input type="text" id="stu_class" name="Reminder" placeholder="班级" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>父亲姓名<i>:</i></label>
+         <input type="text" id="dadName" name="Reminder" placeholder="父亲姓名" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>父亲手机号<i>:</i></label>
+         <input type="text" id="dadPhone" name="Reminder" placeholder="父亲手机号" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>母亲姓名<i>:</i></label>
+         <input type="text" id="momName" name="Reminder" placeholder="母亲姓名" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>母亲手机号<i>:</i></label>
+         <input type="text" id="momPhone" name="Reminder" placeholder="母亲手机号" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>班主任<i>:</i></label>
+         <input type="text" id="tutorName" name="Reminder" placeholder="班主任" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>班主任手机号<i>:</i></label>
+         <input type="text" id="tutorPhone" name="Reminder" placeholder="班主任手机号" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿一<i>:</i></label>
+         <select id="majorSelect1" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿二<i>:</i></label>
+         <select id="majorSelect2" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿三<i>:</i></label>
+        <select id="majorSelect3" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿四<i>:</i></label>
+         <select id="majorSelect4" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿五<i>:</i></label>
+        <select id="majorSelect5" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿六<i>:</i></label>
+        <select id="majorSelect6" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>一模成绩<i>:</i></label>
+         <input type="text" id="testScore1" name="Reminder" placeholder="一模成绩" required="" />
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>一模排名<i>:</i></label>
+         <input type="text" id="rank1" name="Reminder" placeholder="名次" required="" style="
+    width: 36.4%;
+"/>
+         <input type="text" id="rank11" name="Reminder" placeholder="总人数" required="" style="
+    width: 36.4%;
+"/>
+        </span>
+       </div>
+
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>二模成绩<i>:</i></label>
+         <input type="text" id="testScore2" name="Reminder" placeholder="二模成绩" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>二模排名<i>:</i></label>
+         <input type="text" id="rank2" name="Reminder" placeholder="名次" required="" style="
+    width: 36.4%;
+"/>
+         <input type="text" id="rank22" name="Reminder" placeholder="总人数" required="" style="
+    width: 36.4%;
+"/>
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>三模成绩<i>:</i></label>
+         <input type="text" id="testScore3" name="Reminder" placeholder="三模成绩" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>三模排名<i>:</i></label>
+         <input type="text" id="rank3" name="Reminder" placeholder="名次" required="" style="
+    width: 36.4%;
+"/>
+         <input type="text" id="rank33" name="Reminder" placeholder="总人数" required="" style="
+    width: 36.4%;
+"/>
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>实考分<i>:</i></label>
+         <input type="text" id="realScore" name="Reminder" placeholder="实考分" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>对应老师<i>:</i></label>
+         <input id="relTeacher" readonly="readonly" type="text" name="Reminder" placeholder="对应老师" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>修改密码<i>:</i></label>
+         <input type="password" name="password1" id="password1" />
+                </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>密码确认<i>:</i></label>
+         <input type="password" name="password1" id="password2" /> </span>
+       </div>
+
+
+
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>备注<i>:</i></label>
+        <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
+
+        </span>
+       </div>
+
        <div class="w3_main_grid">
         <div class="w3_main_grid_left">
          <a href="#">清华欢迎你</a>
         </div>
         <div class="w3_main_grid_right">
-         <input type="submit" value="保存" />
+         <input id="save" type="submit" value="保存" />
         </div>
         <div class="clear">
         </div>
@@ -79,5 +255,156 @@
 					  });
 			  </script>
   <!-- //Calendar -->
+
+  <script>
+      console.log("WTF");
+      $(document).ready(function(){
+          console.log("Arrive here");
+          $("#save").click(function(){
+              console.log("student_save");
+           var password1 = $("#password1").val();
+            var password2 = $("#password2").val();
+            if (password1 != password2){
+             alert("密码不一致，请重新输入");
+             return;
+            }
+            var name = $("#name").val();
+            var identification = $("#identification").val();
+            var province = $("#category1").val();
+            var sex = $("#sex").val();
+            var nation = $("#nation").val();
+            var birth = $("#datepicker").val();
+            var phone = $("#phone").val();
+           var wenli = $("#priority").val();
+            var email = $("#email").val();
+
+
+            var address = $("#address").val();
+
+            var dadName = $("#dadName").val();
+            var dadPhone = $("#dadPhone").val();
+            var momName = $("#momName").val();
+            var momPhone = $("#momPhone").val();
+            var school = $("#school").val();
+
+            var stu_class = $("#stu_class").val();
+            var tutorName = $("#tutorName").val();
+            var tutorPhone = $("#tutorPhone").val();
+            var majorSelect1 = $("#majorSelect1").val();
+            var majorSelect2 = $("#majorSelect2").val();
+            var majorSelect3 = $("#majorSelect3").val();
+            var majorSelect4 = $("#majorSelect4").val();
+            var majorSelect5 = $("#majorSelect5").val();
+            var majorSelect6 = $("#majorSelect6").val();
+            var testScore1 = $("#testScore1").val();
+            var testScore2 = $("#testScore2").val();
+            var testScore3 = $("#testScore3").val();
+            var rank1 = $("#rank1").val();
+            var rank11 = $("#rank11").val();
+            var rank2 = $("#rank2").val();
+            var rank22 = $("#rank22").val();
+            var rank3 = $("#rank3").val();
+            var rank33 = $("#rank33").val();
+            var estimateScore = $("#estimateScore").val();
+           var estimateRank = $("#estimateRank").val();
+
+            var realScore = $("#realScore").val();
+            //var admissionStatus = $("#admissionStatus").val();
+            var relTeacher = $("#relTeacher").val();
+       //     var relVolunteer = $("#relVolunteer").val();
+            var comment= $("#comment").val();
+alert(
+         name+" "+
+                        identification+" "+
+                     sex+" "+
+                  nation+" "+
+                 birth+" "+
+            province+" "+
+           phone+" "+
+          email+" "+
+         wenli+" "+
+          address+" "+
+           dadName+" "+
+          dadPhone+" "+
+           momName+" "+
+         momPhone+" "+
+             school+" "+
+            stu_class+" "+
+            tutorName+" "+
+             tutorPhone+" "+
+          majorSelect1+" "+
+        majorSelect2+" "+
+         majorSelect3+" "+
+  majorSelect4+" "+
+      majorSelect5+" "+
+        majorSelect6+" "+
+           testScore1+" "+
+            testScore2+" "+
+             testScore3+" "+
+        rank1+" "+
+          rank11+" "+
+         rank2+" "+
+         rank22+" "+
+             rank3+" "+
+        rank33+" "+
+
+            realScore+" "+
+
+            relTeacher+" "+
+
+            comment
+);
+            $.post("",
+                    {
+                     'name':name,
+                        'identification': identification,
+                     'sex':sex,
+                     'nation':nation,
+                     'birth':birth,
+             'province' :province,
+             'phone' : phone,
+             'email' : email,
+                     'wenli': wenli,
+             'address' : address,
+             'dadName' : dadName,
+             'dadPhone' : dadPhone,
+             'momName' : momName,
+             'momPhone' : momPhone,
+             'school' : school,
+             'stu_class' : stu_class,
+             'tutorName' : tutorName,
+             'tutorPhone' : tutorPhone,
+             'majorSelect1' : majorSelect1,
+             'majorSelect2' : majorSelect2,
+             'majorSelect3' : majorSelect3,
+             'majorSelect4' : majorSelect4,
+             'majorSelect5' : majorSelect5,
+             'majorSelect6' : majorSelect6,
+             'testScore1' : testScore1,
+             'testScore2' : testScore2,
+             'testScore3' : testScore3,
+             'rank1' : rank1,
+             'rank11' : rank11,
+             'rank2' : rank2,
+             'rank22' : rank22,
+             'rank3' : rank3,
+             'rank33' : rank33,
+             'estimateScore' : estimateScore,
+                     'estimateRank' : estimateRank,
+             'realScore' : realScore,
+           //  'admissionStatus' : admissionStatus,
+             'relTeacher': relTeacher,
+         //    'relVolunteer' : relVolunteer,
+             'comment': comment,
+                    },
+                    function(profileDict){
+
+                        for (key_i in profileDict)
+                            $("#"+key_i).val(profileDict[key_i]);
+                        alert("修改成功");
+            })
+          });
+      });
+  </script>
  </body>
 </html>
