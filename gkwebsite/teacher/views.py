@@ -645,15 +645,16 @@ def distribute_student(request):
 
 
             team_list.append(team)
+
         return render(request,
                       'teacher/distribute_student.html',
                       {'dict': team_list})
     else:
         print '+++++' ,request.GET
-        group_id = int(1)
-        isDelStudent = False
-        if isDelStudent:
-            stu_id = str(1)
+        group_id = int(request.GET['teamid'])
+        isDelStudent = int(request.GET['class'])
+        if isDelStudent == 1:
+            stu_id = str(request.GET['id'])
             group = back.getGroupbyDict({Group.ID: group_id})[0]
             group_dic = back.getGroupAllDictByObject(group)
             # print 'group_dic', group_dic
@@ -664,7 +665,7 @@ def distribute_student(request):
             print 'haha', str_list
             back.setGroup(group, Group.STU_LIST, str_list)
         else:
-            vol_id = str(1)
+            vol_id = str(request.GET['id'])
             group = back.getGroupbyDict({Group.ID: group_id})[0]
             group_dic = back.getGroupAllDictByObject(group)
             vol_id_list = group_dic[Group.VOL_LIST].split('_')
