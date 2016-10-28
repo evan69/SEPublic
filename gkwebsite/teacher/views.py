@@ -12,6 +12,7 @@ import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
 import database.image_backend as pic
+import database.backend as back
 import django.forms as forms
 import datetime
 from database.models import *
@@ -198,15 +199,15 @@ def student_info_edit(request):
             Student.COMMENT: stu_dic[Student.COMMENT],
         }
 
-        tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
-        try:
-            tmp_dic = eval(tmp_dic)
-        except:
-            tmp_dic = eval('{}')
-        sum_score = 0
-        for key in tmp_dic.keys():
-            sum_score += tmp_dic[key]['score']
-        dic[Student.ESTIMATE_SCORE] = str(sum_score)
+        # tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
+        # try:
+        #     tmp_dic = eval(tmp_dic)
+        # except:
+        #     tmp_dic = eval('{}')
+        # sum_score = 0
+        # for key in tmp_dic.keys():
+        #     sum_score += tmp_dic[key]['score']
+        # dic[Student.ESTIMATE_SCORE] = str(sum_score)
 
         return render(request,
                       'teacher/student_info_edit.html',
@@ -294,7 +295,7 @@ def student_info_show(request):
 
         Student.RANK_LIST: stu_dic[Student.RANK_LIST],
         Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
-        Student.ESTIMATE_SCORE: stu_dic[Student.ESTIMATE_SCORE],
+        Student.ESTIMATE_SCORE: getStudentEstimateScore(stu.getStudentAll(account)),
         Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
         Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
         Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
@@ -609,58 +610,70 @@ def distribute_student(request):
     '''
     if 'id' not in request.GET:
         team_list = []
-        vol_all = vol.getAllInVolunteer()
-        for vol_item in vol_all:
-            vol_stu_account_list = getattr(
-                vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
+
+        group_list = back.getGroupbyDict({})
+        for group in group_list:
+            group_dic = back.getGroupAllDictByObject(group)
             team = {}
-            team['teamleader'] = getattr(vol_item, Volunteer.REAL_NAME)
-            team['teamname'] = getattr(vol_item, Volunteer.ACCOUNT)
-            for i in range(0, len(vol_stu_account_list)):
-                student = stu.getStudentAll(vol_stu_account_list[i])
+            team['teamleader'] = str(group_dic[Group.ID])
+            team['teamname'] = str(group_dic[Group.NAME])
+            team['volunteer'] = {}
+            team['student'] = {}
+            vol_id_list = group_dic[Group.VOL_LIST].split('_')
+            for i in range(0, len(vol_id_list)):
+                vol_account = vol.idToAccountVolunteer(str(vol_id_list[i]))
+                vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
                 dic = {
-                    'user_name': getattr(student, Student.ACCOUNT, 'NO'),
-                    'name': getattr(student, Student.REAL_NAME, 'NO'),
-                    'id': getattr(student, Student.ID, 'NO'),
+                    'user_name': vol_dic[Volunteer.ACCOUNT],
+                    'name': vol_dic[Volunteer.REAL_NAME],
+                    'id': vol_dic[Volunteer.ID],
                 }
-                team[('student' + str(i))] = dic
+
+                team['volunteer'][('volunteer' + str(i))] = dic
+
+            stu_id_list = group_dic[Group.STU_LIST].split('_')
+            for i in range(0, len(stu_id_list)):
+                stu_account = stu.idToAccountStudent(str(stu_id_list[i]))
+                stu_dic = stu.getStudentAllDictByAccount(stu_account)
+                dic = {
+                    'user_name': stu_dic[Student.ACCOUNT],
+                    'name': stu_dic[Student.REAL_NAME],
+                    'id': stu_dic[Student.ID],
+                }
+                team['student'][('student' + str(i))] = dic
+
+
+
             team_list.append(team)
         return render(request,
                       'teacher/distribute_student.html',
                       {'dict': team_list})
     else:
-        vol_id = 2
-        stu_id = request.GET['id']
-        volunteer_account = vol.idToAccountVolunteer(str(vol_id))
-        student_account = stu.idToAccountStudent(str(stu_id))
-
-        print volunteer_account
-        print student_account
-        vol_de_stu_account_list = vol.getVolunteerAllDictByAccount(
-            volunteer_account)[Volunteer.STUDENT_ACCOUNT_LIST]
-        stu_de_vol_account_list = stu.getStudentAllDictByAccount(
-            student_account)[Student.VOLUNTEER_ACCOUNT_LIST]
-
-        print vol_de_stu_account_list
-        print stu_de_vol_account_list
-        vol_de_stu_account_list.remove(student_account)
-        stu_de_vol_account_list.remove(volunteer_account)
-        print vol_de_stu_account_list
-        print stu_de_vol_account_list
-
-        flag1 = vol.setVolunteer(
-            volunteer_account,
-            Volunteer.STUDENT_ACCOUNT_LIST,
-            vol_de_stu_account_list)
-        flag2 = stu.setStudent(
-            student_account,
-            Student.VOLUNTEER_ACCOUNT_LIST,
-            stu_de_vol_account_list)
-
-        if flag1 and flag2:
-            return JsonResponse({'success': 1})
+        print '+++++' ,request.GET
+        group_id = int(1)
+        isDelStudent = False
+        if isDelStudent:
+            stu_id = str(1)
+            group = back.getGroupbyDict({Group.ID: group_id})[0]
+            group_dic = back.getGroupAllDictByObject(group)
+            # print 'group_dic', group_dic
+            stu_id_list = group_dic[Group.STU_LIST].split('_')
+            if stu_id in stu_id_list:
+                stu_id_list.remove(stu_id)
+            str_list = '_'.join(stu_id_list)
+            print 'haha', str_list
+            back.setGroup(group, Group.STU_LIST, str_list)
         else:
-            return JsonResponse({'success': 0})
+            vol_id = str(1)
+            group = back.getGroupbyDict({Group.ID: group_id})[0]
+            group_dic = back.getGroupAllDictByObject(group)
+            vol_id_list = group_dic[Group.VOL_LIST].split('_')
+            if vol_id in vol_id_list:
+                vol_id_list.remove(vol_id)
+            str_list = '_'.join(vol_id_list)
+            back.setGroup(group, Group.VOL_LIST, str_list)
+
+        return JsonResponse({'success': 1})
             
 def download_registration_xls(request, file_name):
     file_path = os.path.join('files', file_name)
