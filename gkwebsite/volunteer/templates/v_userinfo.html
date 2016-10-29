@@ -30,7 +30,7 @@
           <div class="col-md-12">
            <form role = "form" action="#">
               {% csrf_token %}
-            <h1>我的信息 User:{{dict.account}}</h1>
+            <h1>我的信息</h1>
             <div class="contentform">
              <div class="leftcontact">
 
@@ -159,12 +159,19 @@
               </div><!--fieldset/-->
 
                 <div class="form-group">
-               <p>备注<span>*</span></p>
+               <p>历史个人工作日志<span></span></p>
                <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
-                <textarea type="text" class="form-control" id="describe" name="describe" rows="4">{{dict.describe}}</textarea>
+                <textarea type="text" class="form-control" id="describe" name="describe" rows="4" disabled = "disabled">{{dict.describe}}</textarea>
                <div class="validation"></div>
             </div>
-            <button type="button" id="volunteer_save" name="volunteer_save" class="bouton-contact">保存</button>
+
+                <div class="form-group">
+               <p>添加个人工作日志<span></span></p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+                <textarea type="text" class="form-control" id="describe_add" name="describe" rows="4"></textarea>
+               <div class="validation"></div>
+            </div>
+            <button type="button" id="volunteer_save" name="volunteer_save" class="bouton-contact">保存（若填写了添加个人工作日志栏，将上传一次工作日志）</button>
            </form>
           </div>
          </div>
@@ -221,9 +228,16 @@
             var qqn = $("#qqn").val();
             var weichat = $("#weichat").val();
             var distribute = $("#distribute").val();
-            var describe = $("#describe").val();
-            alert(province);
+
+            var describe = $("#describe_add").val();
+            var myDate = new Date();
+            if(describe.length > 0)
+            {
+                describe = '[' + myDate.toLocaleString() + '] ' + describe;
+            }
+            //alert(province);
             //console.log(department[0]);
+            //alert(describe);
             $.post("",
                     {
                         'volunteer_name':volunteer_name,
@@ -244,10 +258,10 @@
                         'describe':describe,
                     },
                     function(profileDict){
-                        console.log(profileDict['homephone']);
-                        alert('success');
-                        alert(String(profileDict));
-                        console.log(profileDict);
+                        //console.log(profileDict['homephone']);
+                        alert('修改成功');
+                        //alert(String(profileDict));
+                        //console.log(profileDict);
                         window.location="/volunteer/profile";
                         //for (key_i in profileDict)
                         //    $("#"+key_i).val(profileDict[key_i])

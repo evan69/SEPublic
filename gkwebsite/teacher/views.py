@@ -74,8 +74,8 @@ def student_info_edit(request):
 
         print info_dict
         dic = {
-            # 'type': int(info_dict.get('type', '110')),
-            'type': 1,
+            'type': int(info_dict.get('type', '110')),
+            # 'type': 1,
             'province': int(info_dict.get('province', '110')),
             'phone': info_dict.get('phone', '110'),
             'email': info_dict.get('email', '110'),
@@ -116,7 +116,7 @@ def student_info_edit(request):
         stu.setStudent(account, Student.PHONE, dic['phone'])
         stu.setStudent(account, Student.EMAIL, dic['email'])
         stu.setStudent(account, Student.ADDRESS, dic['address'])
-        # stu.setStudent(account, Student.TYPE, dic['dadName'])
+        stu.setStudent(account, Student.TYPE, dic['type'])
         stu.setStudent(account, Student.DAD_PHONE, dic['dadPhone'])
         # stu.setStudent(account, Student.TYPE, dic['momName'])
         stu.setStudent(account, Student.MOM_PHONE, dic['momPhone'])
@@ -147,10 +147,12 @@ def student_info_edit(request):
             account,
             Student.ADMISSION_STATUS,
             dic['admissionStatus'])
-        stu.setStudent(account, Student.TYPE, dic['relTeacher'])
-        stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
+        # stu.setStudent(account, Student.TYPE, dic['relTeacher'])
+        # stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
         stu.setStudent(account, Student.COMMENT, dic['comment'])
 
+        stu.setStudent(account, Student.DAD_NAME, dic['dadName'])
+        stu.setStudent(account, Student.MOM_NAME, dic['momName'])
         return JsonResponse(request.POST)
     else:
         '''
@@ -197,17 +199,10 @@ def student_info_edit(request):
             Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
             Student.COMMENT: stu_dic[Student.COMMENT],
-        }
 
-        # tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
-        # try:
-        #     tmp_dic = eval(tmp_dic)
-        # except:
-        #     tmp_dic = eval('{}')
-        # sum_score = 0
-        # for key in tmp_dic.keys():
-        #     sum_score += tmp_dic[key]['score']
-        # dic[Student.ESTIMATE_SCORE] = str(sum_score)
+            Student.MOM_NAME: stu_dic[Student.MOM_NAME],
+            Student.DAD_NAME: stu_dic[Student.DAD_NAME],
+        }
 
         return render(request,
                       'teacher/student_info_edit.html',
@@ -257,6 +252,9 @@ def student_info_save(request):
         Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
+
+        Student.MOM_NAME: stu_dic[Student.MOM_NAME],
+        Student.DAD_NAME: stu_dic[Student.DAD_NAME],
     }
     return HttpResponse(t.render({'student': dic}))
 
@@ -302,17 +300,11 @@ def student_info_show(request):
         Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
+
+        Student.MOM_NAME: stu_dic[Student.MOM_NAME],
+        Student.DAD_NAME: stu_dic[Student.DAD_NAME],
     }
 
-    tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
-    try:
-        tmp_dic = eval(tmp_dic)
-    except:
-        tmp_dic = eval('{}')
-    sum_score = 0
-    for key in tmp_dic.keys():
-        sum_score += tmp_dic[key]['score']
-    dic[Student.ESTIMATE_SCORE] = str(sum_score)
     return HttpResponse(t.render({'student': dic}))
 
 

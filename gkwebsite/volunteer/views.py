@@ -208,14 +208,10 @@ def profile(request):
     volunteer = vol.getVolunteerAll(vol_account)
     if request.method == 'POST':
         '''
-                    后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict。
-                    希望能够返回是否保存成功，以及哪些字段不合法的信息
-                    后端可以通过request.session.get('user_id')获取id
-
+            后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict。
+            希望能够返回是否保存成功，以及哪些字段不合法的信息
+            后端可以通过request.session.get('user_id')获取id
         '''
-        print 'sex : ', request.POST.get
-        # print type(request.POST.get('sex'))
-
         volunteer_name = request.POST.get('volunteer_name', 'byr')
         sex = int(request.POST.get('sex', 'byr'))
         email = request.POST.get('email', 'byr')
@@ -224,6 +220,7 @@ def profile(request):
 
         department = [int(request.POST.get('department', 'byr'))]
         classroom = request.POST.get('classroom', 'byr')
+
         phone = request.POST.get('phone', '110')
         qqn = request.POST.get('qqn', 'byr')
         weichat = request.POST.get('weichat', 'byr')
@@ -231,9 +228,6 @@ def profile(request):
         distribute = request.POST.get('distribute', 'byr')
         describe = request.POST.get('describe', 'byr')
 
-        print volunteer_name, sex, email, nation, province, department, classroom, phone, qqn, weichat,distribute, describe
-
-        print 'province ', PROVINCE_LIST[province]
         vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
         vol.setVolunteer(vol_account, Volunteer.SEX, sex)
         vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
@@ -247,6 +241,8 @@ def profile(request):
         vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
 
         # vol.setVolunteer(vol_account, Volunteer., distribute)
+
+        describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
         vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
 
         vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
@@ -260,9 +256,10 @@ def profile(request):
                 'phone': vol_dic[Volunteer.PHONE],
                 'qqn': vol_dic[Volunteer.PHONE],
                 'weichat': vol_dic[Volunteer.WECHAT],
-                'distribute' : '1 and 2',
+                'distribute': '1 and 2',
                 'describe': vol_dic[Volunteer.COMMENT], }
-        print 'NEW' ,dict
+        print 'NEW', dict
+
         return JsonResponse(dict)
     else:
         '''
@@ -279,6 +276,8 @@ def profile(request):
                 'phone': vol_dic[Volunteer.PHONE],
                 'qqn': vol_dic[Volunteer.PHONE],
                 'weichat': vol_dic[Volunteer.WECHAT],
-                'distribute' : '1 and 2',
+                'distribute': 'no group',
                 'describe': vol_dic[Volunteer.COMMENT], }
+        dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
+
         return render(request, 'v_userinfo.html', {'dict': dict})
