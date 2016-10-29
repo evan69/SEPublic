@@ -33,7 +33,7 @@
                 </div> 
 				<!--row-->
 				<div class = "row">
-					<div class = "col-md-12">
+					<div class = "col-md-12 col-lg-12">
 						<div class= "panel panel-default">
 							<div class = "panel-body">
 								<div class = "row">
@@ -48,22 +48,42 @@
 											</div>
 										</div>
 									</div>
+                  <div class = "col-md-4">
+                    <button type = "button" class = "btn btn-primary" id="all">显示全部</button>
+                  </div>
 								</div>
-								<table class="table table-hover">
-									<caption>匹配结果</caption>
-									<thead>
-										<tr>
-											<th>姓名</th>
-											<th>性别</th>
-											<th>生源地</th>
-											<th>学校</th>
-											<th>身份证号</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody id="student_list">
-									</tbody>
-								</table>
+                <div class = "row">
+									<div class = "col-md-12 col-lg-10">
+                    <table class="table table-hover">
+                      <caption>匹配结果</caption>
+                      <thead>
+                        <tr>
+                          <th>姓名</th>
+                          <th>性别</th>
+                          <th>生源地</th>
+                          <th>学校</th>
+                          <th>身份证号</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="student_list">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-lg-10" style="text-align:center">
+                    <ul class="pagination pagination-lg" id="pages">
+                      <li><a href="javascript:void(0)" onclick="jump_prev()">&laquo;</a></li>
+                      <li><a href="javascript:void(0)" onclick="jump_page(1)">1</a></li>
+                      <li><a href="javascript:void(0)" onclick="jump_page(2)">2</a></li>
+                      <li><a href="javascript:void(0)" onclick="jump_page(3)">3</a></li>
+                      <li><a href="javascript:void(0)" onclick="jump_page(4)">4</a></li>
+                      <li><a href="javascript:void(0)" onclick="jump_page(5)">5</a></li>
+                      <li><a href="javascript:void(0)" onclick="jump_next()">&raquo;</a></li>
+                    </ul><br>
+                  </div>
+                </div>
 							</div>
 						</div>
 					</div>
@@ -80,11 +100,33 @@
     {% include 'teacher/include/jsinclude.html' %}
 		<script>
 			var list_start_pos = 0;
+      var item_per_list = {{n_item}};
 			var user_array = [];
+      function jump_prev(){
+        list_start_pos -= item_per_list;
+        if(list_start_pos < 0)
+          list_start_pos = 0;
+        show_list(list_start_pos);
+      }
+      function jump_next(){
+        list_start_pos += item_per_list;
+        if(list_start_pos > user_array.length - 1)
+          list_start_pos = user_array.length - 1;
+        show_list(list_start_pos);
+      }
+      function jump_page(num){
+        list_start_pos = (num-1)*item_per_list;
+        if(list_start_pos < 0)
+          list_start_pos = 0;
+        if(list_start_pos > user_array.length - 1)
+          list_start_pos = user_array.length - 1;
+        show_list(list_start_pos);
+      }
 			function show_list(startnum){
 				var tag1, tag2, tag3;
 				var listitem="";
-				for(var i = startnum; i < user_array.length; ++i){
+        $('#student_list').empty();
+				for(var i = startnum; i < user_array.length && i < startnum + item_per_list; ++i){
 					tag1 = String(i)+'_A';
 					tag2 = String(i)+'_B';
 					tag3 = String(i)+'_C';
@@ -96,21 +138,6 @@
 					$('#'+tag1).click(function(){
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
-						//No need to examine the suffix since we are dealing with 'tag1'
-						/*
-						var type = parse[1];
-						switch(type.charAt(0)){
-							case 'A':
-								alert("Operation A at row #"+row);
-								break;
-							case 'B':
-								alert("Operation B at row #"+row);
-								break;
-							case 'C':
-								alert("Operation C at row #"+row);
-								break;
-						}
-						*/
 						var abs_pos=list_start_pos+row;
 						//alert("Operation:view at row #"+abs_pos+" ?id="+user_array[abs_pos]['id']);
 						window.location="/teacher/student_info?id="+user_array[abs_pos]['id'];
@@ -137,16 +164,23 @@
 			function postreq(namestr){
 				if(namestr.length==0){
 					list_start_pos = 0;
-					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/backend/student_list_all/", {}, function(ret){
 						user_array=ret;
+            /*
+            var n_page = Math.ceil(user_array.length / item_per_list);
+            $('#pages').append("<li><a id=\"prev\" href=\"#\">&laquo;</a></li>");
+            for(var i = 0; i < n_page; ++i){
+              
+            }
+            $('#pages').append("<li><a id=\"next\" href=\"#\">&raquo;</a></li>");
+            */
 						show_list(list_start_pos);
 					})
+          
 				}
 				else{
 					list_start_pos = 0;
-					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
 						user_array=ret;
@@ -176,6 +210,9 @@
 					var namestr=$('#realName').val();
           postreq(namestr);
 				});
+        $('#all').click(function(){
+          postreq("");
+        });
 			});
 		</script>
 

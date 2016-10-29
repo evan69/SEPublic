@@ -25,7 +25,7 @@ def search_student(request):
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/list_student.html')
-    c = {'id': id}
+    c = {'id': id, 'n_item': 3}
     return HttpResponse(t.render(c))
 
 
