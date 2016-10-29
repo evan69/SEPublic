@@ -117,7 +117,6 @@ def student_info_edit(request):
         stu.setStudent(account, Student.ADDRESS, dic['address'])
         stu.setStudent(account, Student.TYPE, dic['type'])
         stu.setStudent(account, Student.DAD_PHONE, dic['dadPhone'])
-        # stu.setStudent(account, Student.TYPE, dic['momName'])
         stu.setStudent(account, Student.MOM_PHONE, dic['momPhone'])
         stu.setStudent(account, Student.SCHOOL, dic['school'])
         stu.setStudent(account, Student.CLASSROOM, dic['stu_class'])
@@ -153,7 +152,9 @@ def student_info_edit(request):
         stu.setStudent(account, Student.DAD_NAME, dic['dadName'])
         stu.setStudent(account, Student.MOM_NAME, dic['momName'])
 
-        stu.setStudentGroupbyList(stu.getStudentAll(account), [7,8,9])
+        stu.setStudentGroupbyList(stu.getStudentAll(account), [1,2,3])
+
+        stu.setStudent(account, Student.DUIYING_TEACHER, dic['relTeacher'])
         return JsonResponse(request.POST)
     else:
         '''
@@ -203,6 +204,7 @@ def student_info_edit(request):
 
             Student.MOM_NAME: stu_dic[Student.MOM_NAME],
             Student.DAD_NAME: stu_dic[Student.DAD_NAME],
+            student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
         }
 
         group_list = stu.getStudentGroupIDListString(student).split(' ')
@@ -318,6 +320,7 @@ def student_info_show(request):
 
         Student.MOM_NAME: stu_dic[Student.MOM_NAME],
         Student.DAD_NAME: stu_dic[Student.DAD_NAME],
+        student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
     }
 
     group_list = stu.getStudentGroupIDListString(stu.getStudentAll(account)).split(' ')
@@ -681,6 +684,8 @@ def distribute_student(request):
             if len(group_dic[Group.VOL_LIST].strip()) > 0:
                 vol_id_list = group_dic[Group.VOL_LIST].split('_')
                 for i in range(0, len(vol_id_list)):
+                    if vol_id_list[i].strip() == '':
+                        continue
                     vol_account = vol.idToAccountVolunteer(str(vol_id_list[i]))
                     vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
                     dic = {
@@ -693,6 +698,8 @@ def distribute_student(request):
             if len(group_dic[Group.STU_LIST].strip()) > 0:
                 stu_id_list = group_dic[Group.STU_LIST].split('_')
                 for i in range(0, len(stu_id_list)):
+                    if stu_id_list[i].strip() == '':
+                        continue
                     stu_account = stu.idToAccountStudent(str(stu_id_list[i]))
                     stu_dic = stu.getStudentAllDictByAccount(stu_account)
                     dic = {
