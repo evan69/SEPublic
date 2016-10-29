@@ -152,7 +152,7 @@
 								}
 						}
 				});
-				$.post("/backend/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
+				$.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
 				

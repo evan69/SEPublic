@@ -98,10 +98,12 @@ def get_volunteer_name_by_id(request):
         return redirect('/login/')
     # completed by evan69
     # use this if-else to block violent access
+    # print 'vol_name'
     if request.is_ajax() and request.method == 'POST':
         id = request.POST.get('id')
         account = vol.idToAccountVolunteer(id)
         t = {'name': vol.getVolunteer(account, 'realName')}
+        # t = {'name': '李昊阳（调试信息）'}
         return JsonResponse(t)
     else:
         return HttpResponse('Access denied.')
@@ -198,7 +200,7 @@ def profile(request):
                     希望能够返回是否保存成功，以及哪些字段不合法的信息
                     后端可以通过request.session.get('user_id')获取id
                 '''
-        print 'des:', request.POST.get('describe')
+        print 'des:', request.POST
         volunteer_name = request.POST.get('volunteer_name')
         print "name:", volunteer_name
         email = request.POST.get('email', 'byr')
@@ -224,7 +226,8 @@ def profile(request):
                 'qqn': '85c',
                 'weichat': '66c',
                 'distribute': '1 and 2 c',
-                'describe': 'describec', }
+                'describe': 'describec',
+                'password': 'mima',}
         return JsonResponse(dict)
     else:
         '''
@@ -254,5 +257,7 @@ def profile(request):
                 'qqn': '85',
                 'weichat': '66',
                 'distribute' : '1 and 2',
-                'describe': 'describe', }
+                'describe': 'describe',
+                'password': 'mima',
+                'studentID': '2014011419'}
         return render(request, 'v_userinfo.html', {'dict': dict})
