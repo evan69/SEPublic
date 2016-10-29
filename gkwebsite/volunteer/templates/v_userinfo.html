@@ -84,12 +84,28 @@
               </div>
 
                  <div class="form-group">
-               <p>E-mail<span>*</span></p>
+               <p>学号<span>*</span></p>
                <!--span class="icon-case"><i class="fa fa-male"></i></span>
                <input value="{{dict.email}}" type="text" name="email" id="email" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
-               <input type="text" class="form-control" id="email" name="email" value="{{dict.email}}" />
+               <input type="text" class="form-control" id="studentID" name="studentID" value="{{dict.studentID}}" />
                       <div class="validation"></div>
               </div>
+
+
+                 <div class="form-group">
+               <p>修改密码</p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+               <input type="password" class="form-control" id="password" name="password" value="{{dict.password}}" />
+               <div class="validation"></div>
+              </div>
+
+                <div class="form-group">
+               <p>确认修改密码</p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+               <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="{{dict.password}}" />
+               <div class="validation"></div>
+              </div>
+
                 </div>
 
 
@@ -134,6 +150,15 @@
                </select>
             <div class="validation"></div>
                        </div>
+
+                    <div class="form-group">
+               <p>E-mail<span>*</span></p>
+               <!--span class="icon-case"><i class="fa fa-male"></i></span>
+               <input value="{{dict.email}}" type="text" name="email" id="email" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
+               <input type="text" class="form-control" id="email" name="email" value="{{dict.email}}" />
+                      <div class="validation"></div>
+                        </div>
+
                     <div class="form-group">
                <p>QQ</p>
                <!--span class="icon-case"><i class="fa fa-male"></i></span-->
@@ -148,6 +173,9 @@
                <input type="text" class="form-control" id="weichat" name="weichat" value="{{dict.weichat}}" />
                <div class="validation"></div>
               </div>
+
+
+
              </div>
 
                 <!--fieldset disabled=""-->
@@ -221,6 +249,14 @@
             var phone = $("#phone").val();
             var nation = $("#nation").val();
             var province = $("#province").val();
+            var studentID = $("#studentID").val();
+            var password = $("#password").val();
+            var confirm_password = $("#confirm_password").val();
+            if(password != confirm_password)
+            {
+                alert("本次修改请求不成功：两次输入的密码不同，请重试。");
+                return;
+            }
             //var work_address = $("#work_address").val();
             //var home_address = $("#home_address").val();
             //var postcode = $("#postcode").val();
@@ -256,6 +292,8 @@
                         'weichat':weichat,
                         'distribute':distribute,
                         'describe':describe,
+                        'studentID':studentID,
+                        'password':password
                     },
                     function(profileDict){
                         //console.log(profileDict['homephone']);

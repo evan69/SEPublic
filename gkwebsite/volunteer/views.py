@@ -100,10 +100,12 @@ def get_volunteer_name_by_id(request):
         return redirect('/login/')
     # completed by evan69
     # use this if-else to block violent access
+    # print 'vol_name'
     if request.is_ajax() and request.method == 'POST':
         id = request.POST.get('id')
         account = vol.idToAccountVolunteer(id)
         t = {'name': vol.getVolunteer(account, 'realName')}
+        # t = {'name': '李昊阳（调试信息）'}
         return JsonResponse(t)
     else:
         return HttpResponse('Access denied.')
@@ -214,6 +216,7 @@ def profile(request):
         '''
         volunteer_name = request.POST.get('volunteer_name', 'byr')
         sex = int(request.POST.get('sex', 'byr'))
+
         email = request.POST.get('email', 'byr')
         nation = int(request.POST.get('nation', 'byr'))
         province = int(request.POST.get('province', 'byr'))
@@ -228,6 +231,8 @@ def profile(request):
         distribute = request.POST.get('distribute', 'byr')
         describe = request.POST.get('describe', 'byr')
 
+        password = request.POST.get('password', 'byr')
+
         vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
         vol.setVolunteer(vol_account, Volunteer.SEX, sex)
         vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
@@ -240,10 +245,11 @@ def profile(request):
         vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
         vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
 
-        # vol.setVolunteer(vol_account, Volunteer., distribute)
+        vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
 
         describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
         vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
+
 
         vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
         dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
@@ -259,6 +265,7 @@ def profile(request):
                 'distribute': '1 and 2',
                 'describe': vol_dic[Volunteer.COMMENT], }
         print 'NEW', dict
+
 
         return JsonResponse(dict)
     else:
@@ -277,7 +284,11 @@ def profile(request):
                 'qqn': vol_dic[Volunteer.PHONE],
                 'weichat': vol_dic[Volunteer.WECHAT],
                 'distribute': 'no group',
-                'describe': vol_dic[Volunteer.COMMENT], }
+                'describe': vol_dic[Volunteer.COMMENT],
+                'password': vol_dic[Volunteer.PASSWORD],
+                'studentID': vol_dic[Volunteer.STUDENT_ID],}
         dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
+
+
 
         return render(request, 'v_userinfo.html', {'dict': dict})
