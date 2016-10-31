@@ -21,66 +21,8 @@
 
 <body>
 		<div id="wrapper">
-				<nav class="navbar navbar-default top-navbar" role="navigation">
-						<div class="navbar-header">
-								<button type="button" class="navbar-toggle" id="collapse" data-toggle="collapse" data-target=".sidebar-collapse" onclick="collapseOnClick()">
-										<span class="sr-only">Toggle navigation</span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-								</button>
-								<a class="navbar-brand" href="/student"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
-						</div>
 
-						<ul class="nav navbar-top-links navbar-right">
-
-								<li class="dropdown">
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-												<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-										</a>
-										<ul class="dropdown-menu dropdown-user">
-												<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-												</li>
-												<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-												</li>
-												<li class="divider"></li>
-												<li><a href="/student/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-												</li>
-										</ul>
-										<!-- /.dropdown-user -->
-								</li>
-								<!-- /.dropdown -->
-						</ul>
-				</nav>
-				<!--/. NAV TOP	-->
-				<nav class="navbar-default navbar-side" role="navigation" id="nav-bar-left" style="left:0px">
-		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
-						<div class="sidebar-collapse">
-								<ul class="nav" id="main-menu">
-
-										<li>
-												<a href="/student"><i class="fa fa-dashboard"></i> Dashboard</a>
-										</li>
-										<li>
-												<a class="active-menu" href="/student/score"><i class="fa fa-desktop"></i> 在线估分</a>
-										</li>
-										<li>
-												<a href="/student/rank"><i class="fa fa-bar-chart-o"></i> 查看排名</a>
-										</li>
-
-										<li>
-												<a href="/student/admit"><i class="fa fa-table"></i> 录取情况</a>
-										</li>
-										<li>
-												<a href="/student/contact"><i class="fa fa-edit"></i> 联系我们 </a>
-										</li>
-
-								</ul>
-
-						</div>
-
-				</nav>
-				<!-- /. NAV SIDE	-->
+    {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
 				<div id="page-wrapper" style="margin-left: 260px">
 						<div id="page-inner">
 
@@ -119,6 +61,7 @@
 				</div>
 				<!-- /. PAGE WRAPPER	-->
 		</div>
+{% include 'student/include/footer.html' %}
 		<!-- /. WRAPPER	-->
 		<!-- JS Scripts-->
 		<!-- jQuery Js -->
@@ -128,7 +71,7 @@
 
 		<!-- Metis Menu Js -->
 		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
-
+{% include 'student/include/jsinclude.html' %}
 		<!-- Custom Js -->
 		<script>
 		    var rst = document.getElementById('reset');
