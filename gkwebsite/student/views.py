@@ -41,13 +41,24 @@ def student_rank(request):
 
 
 def student_admit(request):
-    t = get_template('student/admit.html')
-    return HttpResponse(t.render({}))
+    '''
+
+    后端需要获取录取信息传给前端
+    '''
+    admition = '李三胖同学，你已被朝鲜大学成功录取'
+    return render(request,
+                  'student/admit.html', {'admition': admition})
 
 
 def student_contact(request):
-    t = get_template('student/contact.html')
-    return HttpResponse(t.render({}))
+    '''
+                后端需要在这里改代码，从数据库读取正确的dict，并返回
+    '''
+    list = []
+    dict1 = {'name':'李三胖','phone':'123','email':'@1','address':'包头'}
+    list.append(dict1)
+    list.append(dict1)
+    return render(request,'student/contact.html', {'dict': list})
 
 
 def student_logout(request):

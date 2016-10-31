@@ -758,3 +758,24 @@ def edit_test(request, test_id):
     t = get_template('teacher/edit_test.html')
     c = {'id': id, 'test_id': test_id}
     return HttpResponse(t.render(c))
+
+@csrf_exempt
+def checkscore(request):
+    '''
+
+    后端需要从数据库获取数据补全代码
+    '''
+    list = []
+    dict = {'name':'李三胖',
+            'sex': '女',
+            'province': '内蒙古',
+            'school': '北重军校三中',
+            'ident': '12345678901234X231154',
+            'testname': '内蒙包头二卷2013英语',
+            'time': '2分钟',
+    }
+    list.append(dict)
+
+    id_ = request.session.get('user_id', -1)
+    return render(request,
+                  'teacher/checkscore.html', {'dict':list, 'id':id_})
