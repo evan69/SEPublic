@@ -214,7 +214,7 @@ def student_info_edit(request):
             else:
                 dic['group'+str(i)] = '0'
 
-        dic['grouplist'] = []
+        dic['grouplist'] = [' ']
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
@@ -320,7 +320,7 @@ def student_info_show(request):
 
         Student.MOM_NAME: stu_dic[Student.MOM_NAME],
         Student.DAD_NAME: stu_dic[Student.DAD_NAME],
-        student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
+        Student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
     }
 
     group_list = stu.getStudentGroupIDListString(stu.getStudentAll(account)).split(' ')
@@ -330,11 +330,11 @@ def student_info_show(request):
         else:
             dic['group' + str(i)] = '0'
 
-    dic['grouplist'] = []
+    dic['grouplist'] = [' ']
     all_group = back.getGroupbyDict({})
     for item in all_group:
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
-
+    print dic['grouplist']
     return HttpResponse(t.render({'student': dic}))
 
 
@@ -617,7 +617,7 @@ def volunteer_info_edit(request):
             else:
                 dic['group' + str(i)] = '0'
 
-        dic['grouplist'] = []
+        dic['grouplist'] = [' ']
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
@@ -681,6 +681,7 @@ def distribute_student(request):
             team['volunteer'] = {}
             team['student'] = {}
 
+            print 'adf', group_dic
             if len(group_dic[Group.VOL_LIST].strip()) > 0:
                 vol_id_list = group_dic[Group.VOL_LIST].split('_')
                 for i in range(0, len(vol_id_list)):
