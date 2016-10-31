@@ -12,6 +12,7 @@ import database.teacher_backend as tch
 import database.student_backend as stu
 import database.volunteer_backend as vol
 import database.image_backend as pic
+import database.backend as back
 import django.forms as forms
 import datetime
 from database.models import *
@@ -24,7 +25,7 @@ def search_student(request):
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/list_student.html')
-    c = {'id': id}
+    c = {'id': id, 'n_item': 15}
     return HttpResponse(t.render(c))
 
 
@@ -73,8 +74,7 @@ def student_info_edit(request):
 
         print info_dict
         dic = {
-            # 'type': int(info_dict.get('type', '110')),
-            'type': 1,
+            'type': int(info_dict.get('type', '110')),
             'province': int(info_dict.get('province', '110')),
             'phone': info_dict.get('phone', '110'),
             'email': info_dict.get('email', '110'),
@@ -115,9 +115,8 @@ def student_info_edit(request):
         stu.setStudent(account, Student.PHONE, dic['phone'])
         stu.setStudent(account, Student.EMAIL, dic['email'])
         stu.setStudent(account, Student.ADDRESS, dic['address'])
-        # stu.setStudent(account, Student.TYPE, dic['dadName'])
+        stu.setStudent(account, Student.TYPE, dic['type'])
         stu.setStudent(account, Student.DAD_PHONE, dic['dadPhone'])
-        # stu.setStudent(account, Student.TYPE, dic['momName'])
         stu.setStudent(account, Student.MOM_PHONE, dic['momPhone'])
         stu.setStudent(account, Student.SCHOOL, dic['school'])
         stu.setStudent(account, Student.CLASSROOM, dic['stu_class'])
@@ -146,10 +145,16 @@ def student_info_edit(request):
             account,
             Student.ADMISSION_STATUS,
             dic['admissionStatus'])
-        stu.setStudent(account, Student.TYPE, dic['relTeacher'])
-        stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
+        # stu.setStudent(account, Student.TYPE, dic['relTeacher'])
+        # stu.setStudent(account, Student.TYPE, dic['relVolunteer'])
         stu.setStudent(account, Student.COMMENT, dic['comment'])
 
+        stu.setStudent(account, Student.DAD_NAME, dic['dadName'])
+        stu.setStudent(account, Student.MOM_NAME, dic['momName'])
+
+        stu.setStudentGroupbyList(stu.getStudentAll(account), [1,2,3])
+
+        stu.setStudent(account, Student.DUIYING_TEACHER, dic['relTeacher'])
         return JsonResponse(request.POST)
     else:
         '''
@@ -196,21 +201,31 @@ def student_info_edit(request):
             Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
             Student.COMMENT: stu_dic[Student.COMMENT],
+
+            Student.MOM_NAME: stu_dic[Student.MOM_NAME],
+            Student.DAD_NAME: stu_dic[Student.DAD_NAME],
+            student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
         }
 
-        tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
-        try:
-            tmp_dic = eval(tmp_dic)
-        except:
-            tmp_dic = eval('{}')
-        sum_score = 0
-        for key in tmp_dic.keys():
-            sum_score += tmp_dic[key]['score']
-        dic[Student.ESTIMATE_SCORE] = str(sum_score)
+        group_list = stu.getStudentGroupIDListString(student).split(' ')
+        for i in range(1, 6):
+            if i < len(group_list):
+                dic['group'+str(i)] = group_list[i]
+            else:
+                dic['group'+str(i)] = '0'
 
+        dic['grouplist'] = [' ']
+        all_group = back.getGroupbyDict({})
+        for item in all_group:
+            dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+
+        # print '-------------------'
+        # print dic['grouplist'],dic['group1'],dic['group2'],dic['group3'],dic['group4'],dic['group5']
+
+        id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/student_info_edit.html',
-                      {'student': dic})
+                      {'student': dic, 'id':id_})
 
 
 @csrf_exempt
@@ -256,8 +271,13 @@ def student_info_save(request):
         Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
+
+        Student.MOM_NAME: stu_dic[Student.MOM_NAME],
+        Student.DAD_NAME: stu_dic[Student.DAD_NAME],
     }
-    return HttpResponse(t.render({'student': dic}))
+
+    id_ = request.session.get('user_id', -1)
+    return HttpResponse(t.render({'student': dic, 'id':id_}))
 
 
 def student_info_show(request):
@@ -294,25 +314,34 @@ def student_info_show(request):
 
         Student.RANK_LIST: stu_dic[Student.RANK_LIST],
         Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
-        Student.ESTIMATE_SCORE: stu_dic[Student.ESTIMATE_SCORE],
+        Student.ESTIMATE_SCORE: getStudentEstimateScore(stu.getStudentAll(account)),
         Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
         Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
         Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
         Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
         Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
         Student.COMMENT: stu_dic[Student.COMMENT],
+
+        Student.MOM_NAME: stu_dic[Student.MOM_NAME],
+        Student.DAD_NAME: stu_dic[Student.DAD_NAME],
+        Student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
     }
 
-    tmp_dic = stu_dic[Student.ESTIMATE_SCORE]
-    try:
-        tmp_dic = eval(tmp_dic)
-    except:
-        tmp_dic = eval('{}')
-    sum_score = 0
-    for key in tmp_dic.keys():
-        sum_score += tmp_dic[key]['score']
-    dic[Student.ESTIMATE_SCORE] = str(sum_score)
-    return HttpResponse(t.render({'student': dic}))
+    group_list = stu.getStudentGroupIDListString(stu.getStudentAll(account)).split(' ')
+    for i in range(1, 6):
+        if i < len(group_list):
+            dic['group' + str(i)] = group_list[i]
+        else:
+            dic['group' + str(i)] = '0'
+
+    dic['grouplist'] = [' ']
+    all_group = back.getGroupbyDict({})
+    for item in all_group:
+        dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+    print dic['grouplist']
+
+    id_ = request.session.get('user_id', -1)
+    return HttpResponse(t.render({'student': dic, 'id':id_}))
 
 
 @ensure_csrf_cookie
@@ -371,8 +400,6 @@ def add_volunteer(request):
 		查看和修改教师个人信息
 		by byr 161012
 '''
-
-
 # @csrf_protect
 @csrf_exempt
 def profile(request):
@@ -380,16 +407,18 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
+        password1 = request.POST.get('password1', 'byr')
+        password2 = request.POST.get('password2', 'byr')
+        if password1 != password2:
+            return {'result': "0"}
+
         teacher_name = request.POST.get('teacher_name', 'byr')
         phone = request.POST.get('phone', '110')
         email = request.POST.get('email', '110')
         work_address = request.POST.get('work_address', '110')
-        home_address = request.POST.get('home_address', '110')
-        postcode = request.POST.get('postcode', '110')
-        homephone = request.POST.get('homephone', '110')
-        qqn = request.POST.get('qqn', '110')
-        weichat = request.POST.get('weichat', '110')
         describe = request.POST.get('describe', '110')
+
+
 
         id = (int)(request.session.get('user_id'))
         account = tch.idToAccountTeacher(id)
@@ -399,11 +428,7 @@ def profile(request):
         tch.setTeacher(account, Teacher.EMAIL, email)
         tch.setTeacher(account, Teacher.AREA, work_address)
         tch.setTeacher(account, Teacher.COMMENT, describe)
-        tch.setTeacher(account, Teacher.FIXED_PHONE, homephone)
-        # tch.setTeacher(account, Teacher.REAL_NAME, homephone)
-        # tch.setTeacher(account, Teacher.REAL_NAME, qqn)
-        # tch.setTeacher(account, Teacher.REAL_NAME, weichat)
-        # tch.setTeacher(account, Teacher.REAL_NAME, describe)
+        tch.setTeacher(account, Teacher.PASSWORD, password1)
 
         return JsonResponse(request.POST)
     else:
@@ -414,19 +439,17 @@ def profile(request):
         account = tch.idToAccountTeacher(id)
         teacher = tch.getTeacherAll(account)
         dict = {
-            'user_name': getattr(teacher, Teacher.REAL_NAME, ' '),
+            'user_name': getattr(teacher, Teacher.ACCOUNT, ' '),
             'teacher_name': getattr(teacher, Teacher.REAL_NAME, ' '),
             'email': getattr(teacher, Teacher.EMAIL, ' '),
             'work_address': getattr(teacher, Teacher.AREA, ' '),
-            'home_address': '130',
-            'postcode': '43',
-            'homephone': getattr(teacher, Teacher.FIXED_PHONE, ' '),
             'phone': getattr(teacher, Teacher.PHONE, ' '),
-            'qqn': '85',
-            'weichat': '66',
             'describe': getattr(teacher, Teacher.COMMENT, ' '),
+            'password1': getattr(teacher, Teacher.PASSWORD, 'password'),
+            'password2': getattr(teacher, Teacher.PASSWORD, 'password'),
         }
-        return render(request, 'teacher/userinfo.html', {'dict': dict})
+        print 'dict ',dict
+        return render(request, 'teacher/userinfo.html', {'dict': dict, 'id':id})
 
 '''
     上传图片处理
@@ -454,7 +477,8 @@ def upload(request):
             'score': {'score': 1, 'scorelist': SCORE_LIST},
             'category': {'category': 1, 'categorylist': CATEGORY_LIST},
         }
-        return render(request, 'teacher/uploadtest.html', {'dict': dic})
+        id_ = request.session.get('user_id', -1)
+        return render(request, 'teacher/uploadtest.html', {'dict': dic, 'id':id_})
     else:
         year = request.POST.get('year')
         province = request.POST.get('province')
@@ -526,7 +550,8 @@ def volunteer_info(request):
         'teacher': '白老师 | 李老师',
         'comment': vol_dic[Volunteer.COMMENT],
     }
-    return render(request, 'teacher/volunteer_info.html', {'dict': dict})
+    id_ = request.session.get('user_id', -1)
+    return render(request, 'teacher/volunteer_info.html', {'dict': dict, 'id':id_})
 
 
 '''
@@ -555,6 +580,7 @@ def volunteer_info_edit(request):
         vol.setVolunteer(account, Volunteer.WECHAT, weichat)
         vol.setVolunteer(account, Volunteer.COMMENT, comment)
         vol.setVolunteer(account, Volunteer.QQ, qqn)
+        vol.setVolunteerGroupbyList(volunteer, [10,9,8])
 
         return JsonResponse(request.POST)
     else:
@@ -568,7 +594,7 @@ def volunteer_info_edit(request):
         account = vol.idToAccountVolunteer(str(id))
         volunteer = vol.getVolunteerAll(account)
         vol_dic = vol.getVolunteerAllDictByAccount(account)
-        dict = {
+        dic = {
             'id': vol_dic[Volunteer.ID],
             'user_name': vol_dic[Volunteer.ACCOUNT],
             'realName': vol_dic[Volunteer.REAL_NAME],
@@ -589,9 +615,23 @@ def volunteer_info_edit(request):
             'teacher': '白老师 | 李老师',
             'comment': vol_dic[Volunteer.COMMENT],
         }
+
+        group_list = vol.getVolunteerGroupIDListString(volunteer).split(' ')
+        for i in range(1, 6):
+            if i < len(group_list):
+                dic['group' + str(i)] = group_list[i]
+            else:
+                dic['group' + str(i)] = '0'
+
+        dic['grouplist'] = [' ']
+        all_group = back.getGroupbyDict({})
+        for item in all_group:
+            dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+
+        id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/volunteer_info_edit.html',
-                      {'dict': dict})
+                      {'dict': dic, 'id':id_})
 
 
 '''
@@ -603,64 +643,90 @@ def distribute_student(request):
        GET newteam 新建组
     '''
     if 'newteam' in request.GET:
-        return JsonResponse({'teamnum': 6})
+        back.createGroupbyDict({Group.NAME: 'new name'})
+        num = len(back.getGroupbyDict({}))
+        return JsonResponse({'teamnum': num})
     '''
     GET id teamid 删除
     '''
-    if 'id' not in request.GET:
+    if ('id' in request.GET) and ('teamid' in request.GET)and ('class' in request.GET):
+
+        print 'cao ', request.GET
+        group_id = int(request.GET['teamid'])
+        isDelStudent = int(request.GET['class'])
+        if isDelStudent == 1:
+            stu_id = str(request.GET['id'])
+            group = back.getGroupbyDict({Group.ID: group_id})[0]
+            group_dic = back.getGroupAllDictByObject(group)
+            # print 'group_dic', group_dic
+            stu_id_list = group_dic[Group.STU_LIST].split('_')
+            if stu_id in stu_id_list:
+                stu_id_list.remove(stu_id)
+            str_list = '_'.join(stu_id_list)
+            print 'haha', str_list
+            back.setGroup(group, Group.STU_LIST, str_list)
+        else:
+            vol_id = str(request.GET['id'])
+            group = back.getGroupbyDict({Group.ID: group_id})[0]
+            group_dic = back.getGroupAllDictByObject(group)
+            vol_id_list = group_dic[Group.VOL_LIST].split('_')
+            if vol_id in vol_id_list:
+                vol_id_list.remove(vol_id)
+            str_list = '_'.join(vol_id_list)
+            back.setGroup(group, Group.VOL_LIST, str_list)
+
+        return JsonResponse({'success': 1})
+    else:
         team_list = []
-        vol_all = vol.getAllInVolunteer()
-        for vol_item in vol_all:
-            vol_stu_account_list = getattr(
-                vol_item, Volunteer.STUDENT_ACCOUNT_LIST)
+
+        group_list = back.getGroupbyDict({})
+        for group in group_list:
+            group_dic = back.getGroupAllDictByObject(group)
             team = {}
-            team['teamleader'] = getattr(vol_item, Volunteer.REAL_NAME)
-            team['teamname'] = getattr(vol_item, Volunteer.ACCOUNT)
-            for i in range(0, len(vol_stu_account_list)):
-                student = stu.getStudentAll(vol_stu_account_list[i])
-                dic = {
-                    'user_name': getattr(student, Student.ACCOUNT, 'NO'),
-                    'name': getattr(student, Student.REAL_NAME, 'NO'),
-                    'id': getattr(student, Student.ID, 'NO'),
-                }
-                team[('student' + str(i))] = dic
+            team['teamleader'] = str(group_dic[Group.ID])
+            team['teamname'] = str(group_dic[Group.NAME])
+            team['volunteer'] = {}
+            team['student'] = {}
+
+            print 'adf', group_dic
+            if len(group_dic[Group.VOL_LIST].strip()) > 0:
+                vol_id_list = group_dic[Group.VOL_LIST].split('_')
+                for i in range(0, len(vol_id_list)):
+                    if vol_id_list[i].strip() == '':
+                        continue
+                    vol_account = vol.idToAccountVolunteer(str(vol_id_list[i]))
+                    vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
+                    dic = {
+                        'user_name': vol_dic[Volunteer.ACCOUNT],
+                        'name': vol_dic[Volunteer.REAL_NAME],
+                        'id': vol_dic[Volunteer.ID],
+                    }
+                    team['volunteer'][('volunteer' + str(i))] = dic
+
+            if len(group_dic[Group.STU_LIST].strip()) > 0:
+                stu_id_list = group_dic[Group.STU_LIST].split('_')
+                for i in range(0, len(stu_id_list)):
+                    if stu_id_list[i].strip() == '':
+                        continue
+                    stu_account = stu.idToAccountStudent(str(stu_id_list[i]))
+                    stu_dic = stu.getStudentAllDictByAccount(stu_account)
+                    dic = {
+                        'user_name': stu_dic[Student.ACCOUNT],
+                        'name': stu_dic[Student.REAL_NAME],
+                        'id': stu_dic[Student.ID],
+                    }
+                    team['student'][('student' + str(i))] = dic
+
             team_list.append(team)
+        team_list.reverse()
+
+        id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/distribute_student.html',
-                      {'dict': team_list})
-    else:
-        vol_id = 2
-        stu_id = request.GET['id']
-        volunteer_account = vol.idToAccountVolunteer(str(vol_id))
-        student_account = stu.idToAccountStudent(str(stu_id))
+                      {'dict': team_list, 'id':id_})
 
-        print volunteer_account
-        print student_account
-        vol_de_stu_account_list = vol.getVolunteerAllDictByAccount(
-            volunteer_account)[Volunteer.STUDENT_ACCOUNT_LIST]
-        stu_de_vol_account_list = stu.getStudentAllDictByAccount(
-            student_account)[Student.VOLUNTEER_ACCOUNT_LIST]
 
-        print vol_de_stu_account_list
-        print stu_de_vol_account_list
-        vol_de_stu_account_list.remove(student_account)
-        stu_de_vol_account_list.remove(volunteer_account)
-        print vol_de_stu_account_list
-        print stu_de_vol_account_list
 
-        flag1 = vol.setVolunteer(
-            volunteer_account,
-            Volunteer.STUDENT_ACCOUNT_LIST,
-            vol_de_stu_account_list)
-        flag2 = stu.setStudent(
-            student_account,
-            Student.VOLUNTEER_ACCOUNT_LIST,
-            stu_de_vol_account_list)
-
-        if flag1 and flag2:
-            return JsonResponse({'success': 1})
-        else:
-            return JsonResponse({'success': 0})
             
 def download_registration_xls(request, file_name):
     file_path = os.path.join('files', file_name)

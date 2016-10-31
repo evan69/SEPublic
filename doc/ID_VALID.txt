@@ -1,0 +1,13 @@
+int a[18];
+for (int i=0;i<17;i++) a[i]=ID.mid(i,1).toInt();
+if (ID.mid(17,1)=="X" || ID.mid(17,1)=="x") a[17]=10; else a[17]=ID.mid(17,1).toInt();
+int sum = a[0]*7 + a[1]*9 + a[2]*10 + a[3]*5 + a[4]*8 + a[5]*4 + a[6]*2  
++ a[7]*1 + a[8]*6 + a[9]*3 +a[10]*7 + a[11]*9 + a[12]*10 + a[13]*5  
++ a[14]*8 + a[15]*4 + a[16]*2;
+int b=sum%11;
+if (b!=(12-a[17])%11) {
+	QMessageBox msg;
+	msg.setText(QStringLiteral("无效的身份证号！"));
+	msg.exec();
+	flag=false;
+}
