@@ -30,7 +30,7 @@
           <div class="col-md-12">
            <form role = "form" action="#">
               {% csrf_token %}
-            <h1>我的信息 User:{{dict.account}}</h1>
+            <h1>我的信息</h1>
             <div class="contentform">
              <div class="leftcontact">
 
@@ -84,12 +84,28 @@
               </div>
 
                  <div class="form-group">
-               <p>E-mail<span>*</span></p>
+               <p>学号<span>*</span></p>
                <!--span class="icon-case"><i class="fa fa-male"></i></span>
                <input value="{{dict.email}}" type="text" name="email" id="email" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
-               <input type="text" class="form-control" id="email" name="email" value="{{dict.email}}" />
+               <input type="text" class="form-control" id="studentID" name="studentID" value="{{dict.studentID}}" />
                       <div class="validation"></div>
               </div>
+
+
+                 <div class="form-group">
+               <p>修改密码</p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+               <input type="password" class="form-control" id="password" name="password" value="{{dict.password}}" />
+               <div class="validation"></div>
+              </div>
+
+                <div class="form-group">
+               <p>确认修改密码</p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+               <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="{{dict.password}}" />
+               <div class="validation"></div>
+              </div>
+
                 </div>
 
 
@@ -134,6 +150,15 @@
                </select>
             <div class="validation"></div>
                        </div>
+
+                    <div class="form-group">
+               <p>E-mail<span>*</span></p>
+               <!--span class="icon-case"><i class="fa fa-male"></i></span>
+               <input value="{{dict.email}}" type="text" name="email" id="email" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." /-->
+               <input type="text" class="form-control" id="email" name="email" value="{{dict.email}}" />
+                      <div class="validation"></div>
+                        </div>
+
                     <div class="form-group">
                <p>QQ</p>
                <!--span class="icon-case"><i class="fa fa-male"></i></span-->
@@ -148,6 +173,9 @@
                <input type="text" class="form-control" id="weichat" name="weichat" value="{{dict.weichat}}" />
                <div class="validation"></div>
               </div>
+
+
+
              </div>
 
                 <!--fieldset disabled=""-->
@@ -159,12 +187,19 @@
               </div><!--fieldset/-->
 
                 <div class="form-group">
-               <p>备注<span>*</span></p>
+               <p>历史个人工作日志<span></span></p>
                <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
-                <textarea type="text" class="form-control" id="describe" name="describe" rows="4">{{dict.describe}}</textarea>
+                <textarea type="text" class="form-control" id="describe" name="describe" rows="4" disabled = "disabled">{{dict.describe}}</textarea>
                <div class="validation"></div>
             </div>
-            <button type="button" id="volunteer_save" name="volunteer_save" class="bouton-contact">保存</button>
+
+                <div class="form-group">
+               <p>添加个人工作日志<span></span></p>
+               <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
+                <textarea type="text" class="form-control" id="describe_add" name="describe" rows="4"></textarea>
+               <div class="validation"></div>
+            </div>
+            <button type="button" id="volunteer_save" name="volunteer_save" class="bouton-contact">保存（若填写了添加个人工作日志栏，将上传一次工作日志）</button>
            </form>
           </div>
          </div>
@@ -214,6 +249,14 @@
             var phone = $("#phone").val();
             var nation = $("#nation").val();
             var province = $("#province").val();
+            var studentID = $("#studentID").val();
+            var password = $("#password").val();
+            var confirm_password = $("#confirm_password").val();
+            if(password != confirm_password)
+            {
+                alert("本次修改请求不成功：两次输入的密码不同，请重试。");
+                return;
+            }
             //var work_address = $("#work_address").val();
             //var home_address = $("#home_address").val();
             //var postcode = $("#postcode").val();
@@ -221,9 +264,16 @@
             var qqn = $("#qqn").val();
             var weichat = $("#weichat").val();
             var distribute = $("#distribute").val();
-            var describe = $("#describe").val();
-            alert(province);
+
+            var describe = $("#describe_add").val();
+            var myDate = new Date();
+            if(describe.length > 0)
+            {
+                describe = '[' + myDate.toLocaleString() + '] ' + describe;
+            }
+            //alert(province);
             //console.log(department[0]);
+            //alert(describe);
             $.post("",
                     {
                         'volunteer_name':volunteer_name,
@@ -242,12 +292,14 @@
                         'weichat':weichat,
                         'distribute':distribute,
                         'describe':describe,
+                        'studentID':studentID,
+                        'password':password
                     },
                     function(profileDict){
-                        console.log(profileDict['homephone']);
-                        alert('success');
-                        alert(String(profileDict));
-                        console.log(profileDict);
+                        //console.log(profileDict['homephone']);
+                        alert('修改成功');
+                        //alert(String(profileDict));
+                        //console.log(profileDict);
                         window.location="/volunteer/profile";
                         //for (key_i in profileDict)
                         //    $("#"+key_i).val(profileDict[key_i])

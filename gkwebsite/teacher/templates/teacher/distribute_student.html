@@ -39,23 +39,27 @@
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamleader}}({{team.teamname}})</a>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamleader}}">{{team.teamleader}}</a>
                     <a href="#">给该组增加志愿者</a></h4>
 
-                  <div id="team{{team.teamname}}" class="panel-collapse collapse">
-                    <div class="panel-body" id="body{{team.teamname}}">
-                        {% for key, value in team.items %}
-                            {% if key != 'teamname' and key != 'teamleader' %}
-                        <div class="row" id="id{{value.id}}">
+                  <div id="team{{team.teamleader}}" class="panel-collapse collapse">
+                    <div class="panel-body" id="body{{team.teamleader}}">
+                        {% for key, value in team.volunteer.items %}
+                        <div class="row" id="t{{team.teamleader}}vol{{value.id}}">
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
-                            <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}')" type="button">修改</button></div>
-                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamname}}', '{{value.id}}','body{{team.teamname}}','id{{value.id}}')" type="button">删除</button></div>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}', 0)" type="button">修改</button></div>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}vol{{value.id}}', 0)" type="button">删除</button></div>
                         </div>
-                            {% endif %}
-
                         {% endfor %}
-
+                        {% for key, value in team.student.items %}
+                        <div class="row" id="t{{team.teamleader}}stu{{value.id}}">
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}', 1)" type="button">修改</button></div>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}stu{{value.id}}', 1)" type="button">删除</button></div>
+                        </div>
+                        {% endfor %}
                     </div>
                   </div>
               </div>
@@ -86,10 +90,10 @@
                               "<div class=\"panel panel-default\">"+
                                 "<div class=\"panel-heading\">"+
                                  "<h4 class=\"panel-title\">"+
-                                    "<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#"+teamnum+"\">ok</a>"+
+                                    "<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#team"+teamnum+"\">"+teamnum+" </a>"+
                                     "<a href=\"#\">给该组增加志愿者</a></h4>"+
-                                        "<div id=\""+teamnum+"\" class=\"panel-collapse collapse\">"+
-                                    "<div class=\"panel-body\" id=\"body6\">"+
+                                        "<div id=\"team"+teamnum+"\" class=\"panel-collapse collapse\">"+
+                                    "<div class=\"panel-body\" id=\"body" + teamnum+ "\">"+
                                             "</div>"+
                                             "</div>"+
                               "</div>"+
@@ -104,9 +108,6 @@
                         alert('新建分组失败');
                     }
             });
-
-
-
       }
 
 
@@ -114,8 +115,12 @@
 
 
 
-    function modify(user_id) {
+    function modify(user_id, isor) {
+        if (isor == 1)
       window.location="/teacher/student_info_edit?id="+user_id;
+        else
+                  window.location="/teacher/volunteer_info_edit?id="+user_id;
+
     }
 
 
@@ -123,7 +128,7 @@
 
 
 
-    function dlt(team_id, user_id, parentid, childid) {
+    function dlt(team_id, user_id, parentid, childid, cl) {
       var parent=document.getElementById(parentid);
       var child=document.getElementById(childid);
       parent.removeChild(child);
@@ -144,7 +149,7 @@
             alert('删除成功');
           }
       }
-      xmlhttp.open("GET","/teacher/list_group?id=" + user_id + '&teamid=' + team_id,true);
+      xmlhttp.open("GET","/teacher/list_group?id=" + user_id + '&teamid=' + team_id + '&class='+cl,true);
       xmlhttp.send();
 
     }

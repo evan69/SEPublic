@@ -363,8 +363,8 @@
               <label style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">对应组号：</label>
               <div class="col-sm-2">
                <select class="form-control" id="team1" name="team1">
-                {% for item in student.major.5.departmentlist %}
-                   {% if forloop.counter0 == student.major.5.department %}
+                 {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group1 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -376,8 +376,8 @@
               </div>
               <div class="col-sm-2">
                <select class="form-control" id="team2" name="team2">
-                {% for item in student.major.5.departmentlist %}
-                   {% if forloop.counter0 == student.major.5.department %}
+              {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group2 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -389,8 +389,8 @@
               </div>
               <div class="col-sm-2">
                <select class="form-control" id="team3" name="team3">
-                {% for item in student.major.5.departmentlist %}
-                   {% if forloop.counter0 == student.major.5.department %}
+                {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group3 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -402,8 +402,8 @@
               </div>
               <div class="col-sm-2">
                <select class="form-control" id="team4" name="team4">
-                {% for item in student.major.5.departmentlist %}
-                   {% if forloop.counter0 == student.major.5.department %}
+           {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group4 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -415,8 +415,8 @@
               </div>
               <div class="col-sm-2">
                <select class="form-control" id="team5" name="team5">
-                {% for item in student.major.5.departmentlist %}
-                   {% if forloop.counter0 == student.major.5.department %}
+            {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group5 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -513,6 +513,13 @@
             var relTeacher = $("#relTeacher").val();
             var relVolunteer = $("#relVolunteer").val();
             var comment= $("#comment").val();
+            var team1= $("#team1").val();
+            var team2= $("#team2").val();
+            var team3= $("#team3").val();
+            var team4= $("#team4").val();
+            var team5= $("#team5").val();
+
+
            /*alert(
                         'type'+type+
              'province' +province+
@@ -586,6 +593,12 @@
              'relTeacher': relTeacher,
              'relVolunteer' : relVolunteer,
              'comment': comment,
+             'team1': team1,
+             'team2': team2,
+             'team3': team3,
+             'team4': team4,
+             'team5': team5,
+
                     },
                     function(profileDict){
 

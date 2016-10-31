@@ -59,7 +59,7 @@
 										</tr>
 									</thead>
 									<tbody id="student_list">
-										<tr>
+										<!--tr>
 											<td>白云仁</td>
 											<td>男</td>
 											<td>四川</td>
@@ -106,7 +106,7 @@
 											<button type="button" class = "btn btn-success btn-xs">编辑</button>
 											<button type="button" class = "btn btn-danger btn-xs">删除</button>
 											</td>
-										</tr>
+										</tr-->
 									</tbody>
 								</table>
 							</div>
@@ -258,6 +258,7 @@
 								}
 						}
 				});
+				alert('hhe');
 				$.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
 				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
