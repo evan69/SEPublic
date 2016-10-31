@@ -218,14 +218,10 @@ def student_info_edit(request):
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
-
-        # print '-------------------'
-        # print dic['grouplist'],dic['group1'],dic['group2'],dic['group3'],dic['group4'],dic['group5']
-
         id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/student_info_edit.html',
-                      {'student': dic, 'id':id_})
+                      {'student': dic, 'id': id_})
 
 
 @csrf_exempt
@@ -469,13 +465,19 @@ def handle_uploaded_img(imgFile, year, province, subject, number, score, categor
 @csrf_exempt
 def upload(request):
     if request.method == 'GET':
+        id = request.GET.get('test_id')
+        num = int(request.GET.get('num'))
+        list = id.split('_')
+        year = find_item_index_in_list(int(list[0]), YEAR_LIST)
+        province = find_item_index_in_list(list[1], SHITI_LIST)
+        subject = find_item_index_in_list(list[2], SUBJECT_LIST)
         dic = {
-            'year': {'year': 1, 'yearlist': YEAR_LIST},
-            'province': {'province': 1, 'provincelist': PROVINCE_LIST},
-            'subject': {'subject': 2, 'subjectlist': SUBJECT_LIST},
-            'number': {'number': 1, 'numberlist': NUMBER_LIST},
-            'score': {'score': 1, 'scorelist': SCORE_LIST},
-            'category': {'category': 1, 'categorylist': CATEGORY_LIST},
+            'year': {'year': year, 'yearlist': YEAR_LIST},
+            'province': {'province': province, 'provincelist': PROVINCE_LIST},
+            'subject': {'subject': subject, 'subjectlist': SUBJECT_LIST},
+            'number': {'number': num, 'numberlist': NUMBER_LIST},
+            'score': {'score': 0, 'scorelist': SCORE_LIST},
+            'category': {'category': 0, 'categorylist': CATEGORY_LIST},
         }
         id_ = request.session.get('user_id', -1)
         return render(request, 'teacher/uploadtest.html', {'dict': dic, 'id':id_})
