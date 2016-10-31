@@ -15,6 +15,8 @@
      <!-- Google Fonts-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <link href="{% static "btn_css/round_btn.css" %}" rel="stylesheet" />
+    <!-- jQuert UI Styles -->
+    <link href="{% static 'jquery-ui-1.12.1/jquery-ui.min.css' %}" rel='stylesheet'/>
 </head>
 <body>
     <div id="wrapper">
@@ -59,6 +61,46 @@
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
+    <div id="dialog" title="选择时间">
+      <form id="form">
+          <table id = "time_table" class="table table-hover">
+                <tr>
+                    <th>2016/1/3</th>
+                    <th><input type="checkbox" value="Bike" checked="checked" /></th>
+                </tr>
+                <tr>
+                    <th>2016/1/4</th>
+                    <th><input type="checkbox" value="Bike" checked="checked" /></th>
+                </tr>
+              <tr>
+                    <th>2016/1/4</th>
+                    <th><input type="checkbox" value="Bike" checked="checked" /></th>
+                </tr>
+              <tr>
+                    <th>2016/1/4</th>
+                    <th><input type="checkbox" value="Bike" checked="checked" /></th>
+                </tr>
+              <tr>
+                    <th>2016/1/4</th>
+                    <th><input type="checkbox" value="Bike" checked="checked" /></th>
+                </tr>
+              <tr>
+                    <th>2016/1/4</th>
+                    <th><input type="checkbox" value="Bike" checked="checked" /></th>
+                </tr>
+        </table>
+        <!--fieldset style="padding:0; border:0; margin-top:100px;">
+          <label for="place" style="display:block">地区</label>
+          <select name="place" id="place" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
+          </select>
+          <label for="subject" style="display:block">科目</label>
+          <select name="subject" id="subject" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
+          </select>
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset-->
+      </form>
+    </div>
+
     <!-- JS Scripts-->
     <!-- jQuery Js -->
     <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
@@ -75,7 +117,7 @@
 	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
 	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
 
-
+    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
     <!-- Custom Js -->
     <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
 		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
@@ -118,13 +160,16 @@
         });
     });
     var user_array = [];
+    var time_array = [];
+    var act_id = "";
     function show_list(){
+        $('#ac_list').empty();
         console.log('hehe');
         var tag1, tag2, tag3;
         var listitem = "";
         for(var i = 0; i < user_array.length; ++i){
             tag1 = String(i)+'_A';
-            tag2 = String(i)+'_Aname';
+            tag1 = String(user_array[i]['activity_id'])+'_Aname';
             var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
             var data = user_array[i];
             var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">填写</div></div>"
@@ -133,8 +178,22 @@
             $('#ac_list').append(listitems);
             $('#'+tag1).click(function(){
                 var parse = this.id.split("_");
-                var row = this.id + "name";
-                window.location="/student/do_test?test_name="+document.getElementById(row).innerHTML;
+                var row = parse[0];
+                //alert(row);
+                $('#time_table').empty();
+                $.post("/volunteer/get_activity_time/", {'activity_id':row}, function(ret){
+                    //$('#namefield').append(ret['name']);
+                    act_id = row;
+                    time_array = ret.time;
+                    var index = 0;
+                    for(index = 0;index < ret.time.length;index++)
+                    {
+                        var checkbox_id = String(index) + "_checkbox_id";
+                        var a = "<tr><th>" + ret.time[index] + "</th><th><input id=\"" + checkbox_id + "\" type=\"checkbox\"/></th></tr>";
+                        $('#time_table').append(a);
+                    }
+                });
+                $( "#dialog" ).dialog("open");
                 //No need to examine the suffix since we are dealing with 'tag1'
             })
         }
@@ -144,6 +203,61 @@
         user_array = ret.activity;
         show_list();
     })
+
+    function refresh(){
+        $.post("/volunteer/get_all_activity/", {}, function(ret){
+            user_array = ret.activity;
+            show_list();
+        });
+    }
+      function submit_dialog(){
+        ret_list = [];
+        var index = 0;
+        for(index = 0;index < time_array.length;index++)
+        {
+            var checkbox_id = String(index) + "_checkbox_id";
+            var ids = document.getElementById(checkbox_id);
+            if(ids.checked)
+            {
+                ret_list.push(time_array[index]);
+            }
+        }
+        console.log(act_id);
+        console.log(String(ret_list));
+        //alert(ret_list[0]);
+        $.post("/volunteer/submit_time/", {"activity_id":act_id,'time_list':String(ret_list)}, function(ret){
+            $('#dialog').dialog("close");
+            if(ret.success)
+            {
+                alert('成功提交');
+            }
+            else
+            {
+                alert('因未知原因提交失败');
+            }
+            refresh();
+        });
+      }
 </script>
+    <script>
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "确认":submit_dialog,
+        "取消": function() {
+          $("#dialog").dialog( "close" );
+        }
+      },
+      close: function() {
+        $("#form")[0].reset();
+      }
+    });
+    $("#new_test").click(function(){
+      $( "#dialog" ).dialog("open");
+    });
+    </script>
 </body>
 </html>
