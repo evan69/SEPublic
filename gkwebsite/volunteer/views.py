@@ -179,11 +179,27 @@ def student_info_show(request):
 
 
 def date_choose(request):
+    print 'date choose'
     if 'user_id' not in request.session.keys():
         return redirect('/login/')
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
     t = get_template('volunteer/v_date_choose.html')
-    # t = get_template('volunteer/test.html')
-    return HttpResponse(t.render({}))
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
+@csrf_exempt
+def get_all_activity(request):
+    """
+        后端应在此处返回该学生全部可以做的题目名称。名称无重复
+        学生id由request.session中获取，同其他函数里的写法
+        然后放到下面样例写好的dic的'tests'键对应的列表值中
+    """
+    dic = {'activity' : [{'name':'第一次组会','proposer':'李三胖','state':'未填写'},
+                         {'name':'一对一解答','proposer':'屁孩','state':'已填写'},
+                         {'name':'庆功会','proposer':'王大神','state':'未填写'}]}
+    return JsonResponse(dic)
 
 
 @csrf_exempt

@@ -1,72 +1,149 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>用户信息</title>
- </head>
- <body>
-   {% load staticfiles %}
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-   <!-- profile-->
-  <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
-   <link href="{% static 'glDatePicker-2.0/styles/glDatePicker.default.css' %}" rel="stylesheet" type="text/css" />
-  <div id="wrapper">
-   {% include 'v_nav.html' %}
-   <div id="page-wrapper">
-    <div id="page-inner">
-     <!--row-->
-     <div class="row">
-      <div class="col-md-12">
-       <div class="panel panel-default">
-        <div class="panel-body">
-         <div class="row">
-          <div class="col-md-12">
-          </div>
-         </div>
-        </div>
-       </div>
-      </div>
-     </div>
-        <div class="row">
-          <div class="col-md-offset-4 col-md-4">
-                  <input type="text" id="mydate" gldp-id="mydate" />
-    <div gldp-el="mydate"
-         style="width:400px; height:300px;">
-    </div>
-   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="{% static 'glDatePicker-2.0/glDatePicker.min.js' %}"></script>
 
-    <!--script type="text/javascript">
-        $(window).load(function()
-        {
-            var myDatePicker = $('#mydate').glDatePicker(
-            {
-                showAlways: true,
-            }).glDatePicker(true);
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>查看学生</title>
+		{% load staticfiles %}
+		<!-- Bootstrap Styles-->
+    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+        <!-- Custom Styles-->
+    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+     <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link href="{% static "btn_css/round_btn.css" %}" rel="stylesheet" />
+</head>
+<body>
+    <div id="wrapper">
+        {% include 'v_nav.html' %}
+
+		<div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            选择时间 <small>高考估分系统志愿者端  您好，<span id='namefield'></span></small>
+                        </h1>
+                    </div>
+                </div>
+				<!--row-->
+				<div class = "row">
+					<div class = "col-md-12">
+						<div class= "panel panel-default">
+							<div class = "panel-body">
+								<table class="table table-hover">
+									<caption>请选择要填写的活动</caption>
+									<thead>
+										<tr>
+											<th>活动名称</th>
+											<th>发起人</th>
+											<th>状态</th>
+											<th>进入填写页面</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody id="ac_list">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /. ROW -->
+				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
+			</div><!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    <!-- Bootstrap Js -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+    <!-- Metis Menu Js -->
+    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
+    <!-- Morris Chart Js -->
+    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+
+
+	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
+	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
+
+
+    <!-- Custom Js -->
+    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
+		<script>
+		function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie !== '') {
+						var cookies = document.cookie.split(';');
+						for (var i = 0; i < cookies.length; i++) {
+								var cookie = jQuery.trim(cookies[i]);
+								// Does this cookie string begin with the name we want?
+								if (cookie.substring(0, name.length + 1) === (name + '=')) {
+										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+										break;
+								}
+						}
+				}
+				return cookieValue;
+		}
+		function csrfSafeMethod(method) {
+				// these HTTP methods do not require CSRF protection
+				return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		</script>
+
+<script>
+    $(document).ready(function(){
+        //CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                }
         });
-    </script-->
-             <footer>
-              <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-             </footer>
-          </div>
-        </div>
-    </div>
-    <!-- /. PAGE INNER  -->
-   </div>
-   <!-- /. PAGE WRAPPER  -->
-  </div>
-  <!-- /. WRAPPER  -->
-  <!-- JS Scripts-->
-  <!-- jQuery Js -->
-
- </body>
+        //alert('hhe');
+        $.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
+            $('#namefield').append(ret['name']);
+        });
+    });
+    var user_array = [];
+    function show_list(){
+        console.log('hehe');
+        var tag1, tag2, tag3;
+        var listitem = "";
+        for(var i = 0; i < user_array.length; ++i){
+            tag1 = String(i)+'_A';
+            tag2 = String(i)+'_Aname';
+            var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
+            var data = user_array[i];
+            var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">填写</div></div>"
+            listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['proposer']+"</td><td>"+user_array[i]['state']+"</td>";
+			listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">填写</button>\n";
+            $('#ac_list').append(listitems);
+            $('#'+tag1).click(function(){
+                var parse = this.id.split("_");
+                var row = this.id + "name";
+                window.location="/student/do_test?test_name="+document.getElementById(row).innerHTML;
+                //No need to examine the suffix since we are dealing with 'tag1'
+            })
+        }
+    }
+    $('#test_list').empty();
+    $.post("/volunteer/get_all_activity/", {}, function(ret){
+        user_array = ret.activity;
+        show_list();
+    })
+</script>
+</body>
 </html>
-
