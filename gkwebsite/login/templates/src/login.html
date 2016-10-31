@@ -41,6 +41,7 @@
       <br /> 
       <form name="login" action="/logincheck/" method="POST" accept-charset="utf-8">
        {% csrf_token %}
+
        <input type="text" placeholder="用户名" name="login_username" id="l_user" class="login user" title="Username" required="" style="float: right" />
         <input type="password" name="login_password" id="l_password" class="login password" title="Password" required="" style="float: right;margin-right: 10px" />
        

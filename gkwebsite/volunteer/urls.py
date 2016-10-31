@@ -16,5 +16,5 @@ urlpatterns = [
         name="search_student_by_name"),
     url(r'^date_choose/$', views.date_choose, name="date_choose"),
     url(r'^profile/$', views.profile),
-    url(r'^$', views.dashboard),
+    url(r'^$', views.profile),
 ]

@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^download_registration_xls/file(\w+\.\w*)/$', views.download_registration_xls, name = 'download_registration_xls'),
     url(r'^message/$', views.view_message, name='view_message'),
     url(r'^edit_test/(.*)/$', views.edit_test, name='edit_test'),
+    url(r'^checkscore/$', views.checkscore, name='edit_test'),
 ]
