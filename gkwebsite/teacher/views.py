@@ -221,9 +221,11 @@ def student_info_edit(request):
 
         # print '-------------------'
         # print dic['grouplist'],dic['group1'],dic['group2'],dic['group3'],dic['group4'],dic['group5']
+
+        id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/student_info_edit.html',
-                      {'student': dic})
+                      {'student': dic, 'id':id_})
 
 
 @csrf_exempt
@@ -273,7 +275,9 @@ def student_info_save(request):
         Student.MOM_NAME: stu_dic[Student.MOM_NAME],
         Student.DAD_NAME: stu_dic[Student.DAD_NAME],
     }
-    return HttpResponse(t.render({'student': dic}))
+
+    id_ = request.session.get('user_id', -1)
+    return HttpResponse(t.render({'student': dic, 'id':id_}))
 
 
 def student_info_show(request):
@@ -335,7 +339,9 @@ def student_info_show(request):
     for item in all_group:
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
     print dic['grouplist']
-    return HttpResponse(t.render({'student': dic}))
+
+    id_ = request.session.get('user_id', -1)
+    return HttpResponse(t.render({'student': dic, 'id':id_}))
 
 
 @ensure_csrf_cookie
@@ -394,8 +400,6 @@ def add_volunteer(request):
 		查看和修改教师个人信息
 		by byr 161012
 '''
-
-
 # @csrf_protect
 @csrf_exempt
 def profile(request):
@@ -435,7 +439,7 @@ def profile(request):
         account = tch.idToAccountTeacher(id)
         teacher = tch.getTeacherAll(account)
         dict = {
-            'user_name': getattr(teacher, Teacher.REAL_NAME, ' '),
+            'user_name': getattr(teacher, Teacher.ACCOUNT, ' '),
             'teacher_name': getattr(teacher, Teacher.REAL_NAME, ' '),
             'email': getattr(teacher, Teacher.EMAIL, ' '),
             'work_address': getattr(teacher, Teacher.AREA, ' '),
@@ -445,7 +449,7 @@ def profile(request):
             'password2': getattr(teacher, Teacher.PASSWORD, 'password'),
         }
         print 'dict ',dict
-        return render(request, 'teacher/userinfo.html', {'dict': dict})
+        return render(request, 'teacher/userinfo.html', {'dict': dict, 'id':id})
 
 '''
     上传图片处理
@@ -473,7 +477,8 @@ def upload(request):
             'score': {'score': 1, 'scorelist': SCORE_LIST},
             'category': {'category': 1, 'categorylist': CATEGORY_LIST},
         }
-        return render(request, 'teacher/uploadtest.html', {'dict': dic})
+        id_ = request.session.get('user_id', -1)
+        return render(request, 'teacher/uploadtest.html', {'dict': dic, 'id':id_})
     else:
         year = request.POST.get('year')
         province = request.POST.get('province')
@@ -545,7 +550,8 @@ def volunteer_info(request):
         'teacher': '白老师 | 李老师',
         'comment': vol_dic[Volunteer.COMMENT],
     }
-    return render(request, 'teacher/volunteer_info.html', {'dict': dict})
+    id_ = request.session.get('user_id', -1)
+    return render(request, 'teacher/volunteer_info.html', {'dict': dict, 'id':id_})
 
 
 '''
@@ -622,9 +628,10 @@ def volunteer_info_edit(request):
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
 
+        id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/volunteer_info_edit.html',
-                      {'dict': dic})
+                      {'dict': dic, 'id':id_})
 
 
 '''
@@ -712,9 +719,11 @@ def distribute_student(request):
 
             team_list.append(team)
         team_list.reverse()
+
+        id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/distribute_student.html',
-                      {'dict': team_list})
+                      {'dict': team_list, 'id':id_})
 
 
 

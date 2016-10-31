@@ -58,7 +58,7 @@ def logincheck(request):
                     if login:
                         request.session['user_id'] = int(id)
                         request.session['user_name'] = username
-                        request.session['password'] = password
+                        #request.session['password'] = password
                         return redirect('/student/')
                     else:
                         return HttpResponse(u"学生界面登录失败啦")
@@ -74,7 +74,7 @@ def logincheck(request):
                     if login:
                         request.session['user_id'] = int(id)
                         request.session['user_name'] = username
-                        request.session['password'] = password
+                        #request.session['password'] = password
                         return redirect('/teacher/')
                     else:
                         return HttpResponse(u"教师界面登录失败")
@@ -89,7 +89,7 @@ def logincheck(request):
                     if login:
                         request.session['user_id'] = id
                         request.session['user_name'] = username
-                        request.session['password'] = password
+                        #request.session['password'] = password
                         # return render_to_response('/student')
                         return redirect('/volunteer')
                         #return HttpResponse(u"志愿者界面")
