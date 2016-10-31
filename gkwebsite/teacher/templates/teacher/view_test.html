@@ -173,8 +173,8 @@
           else{
             $.growl.notice({ title: "添加成功", message: "成功新建估分测试" });
           }
+          refresh();
         });
-        refresh();
       }
 			$(document).ready(function(){
 				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)

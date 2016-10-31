@@ -74,13 +74,6 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-10" style="text-align:center">
                     <ul class="pagination pagination-lg" id="pages">
-                      <li><a href="javascript:void(0)" onclick="jump_prev()">&laquo;</a></li>
-                      <li><a href="javascript:void(0)" onclick="jump_page(1)">1</a></li>
-                      <li><a href="javascript:void(0)" onclick="jump_page(2)">2</a></li>
-                      <li><a href="javascript:void(0)" onclick="jump_page(3)">3</a></li>
-                      <li><a href="javascript:void(0)" onclick="jump_page(4)">4</a></li>
-                      <li><a href="javascript:void(0)" onclick="jump_page(5)">5</a></li>
-                      <li><a href="javascript:void(0)" onclick="jump_next()">&raquo;</a></li>
                     </ul><br>
                   </div>
                 </div>
@@ -103,15 +96,13 @@
       var item_per_list = {{n_item}};
 			var user_array = [];
       function jump_prev(){
-        list_start_pos -= item_per_list;
-        if(list_start_pos < 0)
-          list_start_pos = 0;
+        if(list_start_pos - item_per_list >= 0)
+          list_start_pos -= item_per_list;
         show_list(list_start_pos);
       }
       function jump_next(){
-        list_start_pos += item_per_list;
-        if(list_start_pos > user_array.length - 1)
-          list_start_pos = user_array.length - 1;
+        if(list_start_pos + item_per_list < user_array.length)
+          list_start_pos += item_per_list;
         show_list(list_start_pos);
       }
       function jump_page(num){
@@ -125,6 +116,18 @@
 			function show_list(startnum){
 				var tag1, tag2, tag3;
 				var listitem="";
+        var page = Math.floor(startnum / item_per_list) + 1;
+        console.log(page);
+        var n_page = Math.ceil(user_array.length / item_per_list);
+        $("li").removeClass("disabled");
+        $("li").removeClass("active");
+        if(page == 1){
+          $("li:nth-child(1)").addClass("disabled");
+        }
+        if(page == n_page){
+          $("li:nth-child("+String(n_page+2)+")").addClass("disabled");
+        }
+        $("li:nth-child("+String(page+1)+")").addClass("active");
         $('#student_list').empty();
 				for(var i = startnum; i < user_array.length && i < startnum + item_per_list; ++i){
 					tag1 = String(i)+'_A';
@@ -167,14 +170,14 @@
 					//access server and load matching records
 					$.post("/backend/student_list_all/", {}, function(ret){
 						user_array=ret;
-            /*
+            $('#pages').empty();
             var n_page = Math.ceil(user_array.length / item_per_list);
-            $('#pages').append("<li><a id=\"prev\" href=\"#\">&laquo;</a></li>");
-            for(var i = 0; i < n_page; ++i){
-              
+            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
+            for(var i = 1; i <= n_page; ++i){
+              $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
             }
-            $('#pages').append("<li><a id=\"next\" href=\"#\">&raquo;</a></li>");
-            */
+            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
+            
 						show_list(list_start_pos);
 					})
           
@@ -184,6 +187,13 @@
 					//access server and load matching records
 					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
 						user_array=ret;
+            $('#pages').empty();
+            var n_page = Math.ceil(user_array.length / item_per_list);
+            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
+            for(var i = 1; i <= n_page; ++i){
+              $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
+            }
+            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
 						show_list(list_start_pos);
 					})
 				}
