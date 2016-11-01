@@ -193,12 +193,54 @@ def student_info_show(request):
 
 
 def date_choose(request):
+    print 'date choose'
     if 'user_id' not in request.session.keys():
         return redirect('/login/')
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
     t = get_template('volunteer/v_date_choose.html')
-    # t = get_template('volunteer/test.html')
-    return HttpResponse(t.render({}))
+    c = {'id': id}
+    return HttpResponse(t.render(c))
 
+@csrf_exempt
+def get_all_activity(request):
+    """
+        后端应在此处返回该志愿者可以提交的时间问卷列表，包括填过未填过的
+        然后放到下面样例写好的dic的'activity'键对应的列表值中，列表里有若干字典
+    """
+    print "activity "
+    dic = {'activity' : [{'name':'第一次组会','proposer':'李三胖','state':'未填写','activity_id':'12'},
+                         {'name':'一对一解答','proposer':'屁孩','state':'已填写','activity_id':'32'},
+                         {'name':'庆功会','proposer':'王大神','state':'未填写','activity_id':'9'}]}
+    return JsonResponse(dic)
+
+@csrf_exempt
+def get_activity_time(request):
+    """
+        后端应在此处根据活动的id返回该活动可选择的时间段
+        然后放到下面样例写好的dic的'time'键对应的列表值中
+    """
+    print 'ac_id=:', request.POST.get('activity_id')
+    dic = {'time': ['2016/9/1',
+                    '2016/9/2',
+                    '2016/9/3',
+                    '2016/9/4',
+                    '2016/9/5']}
+    return JsonResponse(dic)
+
+@csrf_exempt
+def submit_time(request):
+    """
+        后端应在此处提交本次问卷填写结果
+        然后返回是否成功
+    """
+    print request.POST
+    ac_id = request.POST.get('activity_id') # 活动问卷的id
+    time_list = request.POST.get('time_list').split(',') # 列表，存储有空的时间
+    print ac_id
+    print time_list
+    return JsonResponse({'success': 'true'}) # 成功返回true否则false
 
 @csrf_exempt
 def profile(request):
