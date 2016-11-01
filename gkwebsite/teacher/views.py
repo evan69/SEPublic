@@ -102,12 +102,17 @@ def student_info_edit(request):
             'rank22': int(info_dict.get('rank22', '110')),
             'rank3': int(info_dict.get('rank3', '110')),
             'rank33': int(info_dict.get('rank33', '110')),
-            'estimateScore': int(info_dict.get('estimateScore', '110')),
+            'estimateScore': getStudentEstimateScore(stu.getStudentAll(account)),
             'realScore': int(info_dict.get('realScore', '110')),
             'admissionStatus': info_dict.get('admissionStatus', '110'),
             'relTeacher': info_dict.get('relTeacher', '110'),
             'relVolunteer': info_dict.get('relVolunteer', '110'),
             'comment': info_dict.get('comment', '110'),
+            'team1': info_dict.get('team1', '1'),
+            'team2': info_dict.get('team2', '1'),
+            'team3': info_dict.get('team3', '1'),
+            'team4': info_dict.get('team4', '1'),
+            'team5': info_dict.get('team5', '1'),
         }
 
         stu.setStudent(account, Student.TYPE, dic['type'])
@@ -139,7 +144,6 @@ def student_info_edit(request):
         stu.setStudent(
             account, Student.SUM_NUMBER_LIST, [
                 dic['rank11'], dic['rank22'], dic['rank33']])
-        # stu.setStudent(account, Student.ESTIMATE_SCORE, dic['estimateScore'])
         stu.setStudent(account, Student.REAL_SCORE, dic['realScore'])
         stu.setStudent(
             account,
@@ -152,7 +156,7 @@ def student_info_edit(request):
         stu.setStudent(account, Student.DAD_NAME, dic['dadName'])
         stu.setStudent(account, Student.MOM_NAME, dic['momName'])
 
-        stu.setStudentGroupbyList(stu.getStudentAll(account), [1,2,3])
+        stu.setStudentGroupbyList(stu.getStudentAll(account), [dic['team1'], dic['team2'], dic['team3'],dic['team4'],dic['team5']])
 
         stu.setStudent(account, Student.DUIYING_TEACHER, dic['relTeacher'])
         return JsonResponse(request.POST)
@@ -194,7 +198,7 @@ def student_info_edit(request):
 
             Student.RANK_LIST: stu_dic[Student.RANK_LIST],
             Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
-            Student.ESTIMATE_SCORE: stu_dic[Student.ESTIMATE_SCORE],
+            Student.ESTIMATE_SCORE: getStudentEstimateScore(stu.getStudentAll(account)),
             Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
             Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
             Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
@@ -218,14 +222,10 @@ def student_info_edit(request):
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
-
-        # print '-------------------'
-        # print dic['grouplist'],dic['group1'],dic['group2'],dic['group3'],dic['group4'],dic['group5']
-
         id_ = request.session.get('user_id', -1)
         return render(request,
                       'teacher/student_info_edit.html',
-                      {'student': dic, 'id':id_})
+                      {'student': dic, 'id': id_})
 
 
 @csrf_exempt
@@ -264,7 +264,7 @@ def student_info_save(request):
 
         Student.RANK_LIST: stu_dic[Student.RANK_LIST],
         Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
-        Student.ESTIMATE_SCORE: stu_dic[Student.ESTIMATE_SCORE],
+        Student.ESTIMATE_SCORE: getStudentEstimateScore(stu.getStudentAll(account)),
         Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
         Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
         Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
@@ -407,11 +407,7 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
-        password1 = request.POST.get('password1', 'byr')
-        password2 = request.POST.get('password2', 'byr')
-        if password1 != password2:
-            return {'result': "0"}
-
+        password1 = request.POST.get('password', 'byr')
         teacher_name = request.POST.get('teacher_name', 'byr')
         phone = request.POST.get('phone', '110')
         email = request.POST.get('email', '110')
@@ -425,7 +421,6 @@ def profile(request):
         # except KeyError:
         #   dosomething()
         # by dqn14 2016/11/1
-
 
         id = (int)(request.session.get('user_id'))
         account = tch.idToAccountTeacher(id)
@@ -478,13 +473,19 @@ def handle_uploaded_img(imgFile, year, province, subject, number, score, categor
 @csrf_exempt
 def upload(request):
     if request.method == 'GET':
+        id = request.GET.get('test_id')
+        num = int(request.GET.get('num'))
+        list = id.split('_')
+        year = find_item_index_in_list(int(list[0]), YEAR_LIST)
+        province = find_item_index_in_list(list[1], SHITI_LIST)
+        subject = find_item_index_in_list(list[2], SUBJECT_LIST)
         dic = {
-            'year': {'year': 1, 'yearlist': YEAR_LIST},
-            'province': {'province': 1, 'provincelist': PROVINCE_LIST},
-            'subject': {'subject': 2, 'subjectlist': SUBJECT_LIST},
-            'number': {'number': 1, 'numberlist': NUMBER_LIST},
-            'score': {'score': 1, 'scorelist': SCORE_LIST},
-            'category': {'category': 1, 'categorylist': CATEGORY_LIST},
+            'year': {'year': year, 'yearlist': YEAR_LIST},
+            'province': {'province': province, 'provincelist': PROVINCE_LIST},
+            'subject': {'subject': subject, 'subjectlist': SUBJECT_LIST},
+            'number': {'number': num, 'numberlist': NUMBER_LIST},
+            'score': {'score': 0, 'scorelist': SCORE_LIST},
+            'category': {'category': 0, 'categorylist': CATEGORY_LIST},
         }
         id_ = request.session.get('user_id', -1)
         return render(request, 'teacher/uploadtest.html', {'dict': dic, 'id':id_})
@@ -775,15 +776,36 @@ def checkscore(request):
     后端需要从数据库获取数据补全代码
     '''
     list = []
-    dict = {'name':'李三胖',
-            'sex': '女',
-            'province': '内蒙古',
-            'school': '北重军校三中',
-            'ident': '12345678901234X231154',
-            'testname': '内蒙包头二卷2013英语',
-            'time': '2分钟',
-    }
-    list.append(dict)
+    student_list = stu.getAllInStudent()
+    for student in student_list:
+        info_dic = stu.getStudentAllDictByAccount(getattr(student, Student.ACCOUNT))
+        name = info_dic[Student.REAL_NAME]
+        sex = SEX_LIST[int(info_dic[Student.SEX]['sex'])]
+        province = PROVINCE_LIST[int(info_dic[Student.PROVINCE]['province'])]
+        school = info_dic[Student.SCHOOL]
+        ident = info_dic[Student.ID_NUMBER]
+        estimate_score = info_dic[Student.ESTIMATE_SCORE]
+        try:
+            estimate_score = eval(estimate_score)
+        except:
+            estimate_score = eval('{}')
+        for key in estimate_score.keys():
+            testname = key
+            time = str(estimate_score[key]['time']) + ' s'
+            score = str(estimate_score[key]['score']) + ' points'
+            if 'shenhe' in estimate_score[key].keys():
+                continue
+            else:
+                dict = {'name':name,
+                        'sex': sex,
+                        'province': province,
+                        'school':school,
+                        'ident': ident,
+                        'testname': testname,
+                        'time': time,
+                         'score':score,
+                }
+                list.append(dict)
 
     id_ = request.session.get('user_id', -1)
     return render(request,

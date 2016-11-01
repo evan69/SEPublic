@@ -15,6 +15,8 @@ from database.models import *
 from database.my_field import *
 import database.student_backend as stu
 import database.image_backend as pic
+import database.teacher_backend as tch
+import database.backend as back
 
 
 # Create your views here.
@@ -45,7 +47,16 @@ def student_admit(request):
 
     后端需要获取录取信息传给前端
     '''
-    admition = '李三胖同学，你已被朝鲜大学成功录取'
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+
+
+    student_dic = stu.getStudentAllDictByAccount(stu.idToAccountStudent(str(id)))
+    info = student_dic[Student.ADMISSION_STATUS]
+    if info.strip() == '' or info.strip() == "0":
+        info = u'暂时还没有您的录取信息，请耐心等待老师添加'
+    admition = info
     return render(request,
                   'student/admit.html', {'admition': admition})
 
@@ -54,10 +65,16 @@ def student_contact(request):
     '''
                 后端需要在这里改代码，从数据库读取正确的dict，并返回
     '''
+    teacher_list = tch.getAllInTeacher()
     list = []
-    dict1 = {'name':'李三胖','phone':'123','email':'@1','address':'包头'}
-    list.append(dict1)
-    list.append(dict1)
+    for teacher in teacher_list:
+        account = getattr(teacher, Teacher.ACCOUNT)
+        name = tch.getTeacher(account, Teacher.REAL_NAME)
+        phone = tch.getTeacher(account, Teacher.PHONE)
+        email = tch.getTeacher(account, Teacher.EMAIL)
+        address = tch.getTeacher(account, Teacher.AREA)
+        dict = {'name':name, 'phone':phone,'email':email,'address':address}
+        list.append(dict)
     return render(request,'student/contact.html', {'dict': list})
 
 
@@ -70,7 +87,6 @@ def student_logout(request):
 
 
 def profile(request):
-
     dict = {
         'name': 'name',
         'identification': 'identification',
@@ -116,7 +132,6 @@ def profile(request):
         '''
         保存信息并返回json
         '''
-
         return JsonResponse(dict)
     else:
         '''
@@ -125,48 +140,53 @@ def profile(request):
         id = request.session.get('user_id', -1)
         if id == -1:
             return HttpResponse('Access denied')
-        dict = {
-            'name': 'name',
-            'username': 'account',
-            'identification': '123',
-            'sex': 'sex',
-            'nation': 'nation',
-            'birth': 'birth',
-            'province': 'province',
-            'phone': 'phone',
-            'email': 'asdfasdf',
-            'wenli': 'wenli',
-            'address': 'address',
-            'dadName': 'dadName',
-            'dadPhone': 'dadPhone',
-            'momName': 'momName',
-            'momPhone': 'momPhone',
-            'school': 'school',
-            'stu_class': 'stu_class',
-            'tutorName': 'tutorName',
-            'tutorPhone': 'tutorPhone',
-            'majorSelect1': 'majorSelect1',
-            'majorSelect2': 'majorSelect2',
-            'majorSelect3': 'majorSelect3',
-            'majorSelect4': 'majorSelect4',
-            'majorSelect5': 'majorSelect5',
-            'majorSelect6': 'majorSelect6',
-            'testScore1': 'testScore1',
-            'testScore2': 'testScore2',
-            'testScore3': 'testScore3',
-            'rank1': 'rank1',
-            'rank11': 'rank11',
-            'rank2': 'rank2',
-            'rank22': 'rank22',
-            'rank3': 'rank3',
-            'rank33': 'rank33',
-            'realScore': 'realScore',
-            'relTeacher': 'relTeacher',
-            'comment': 'comment',
-            'estimateScore': 'estimcaocaoateScore',
-            'estimateRank': 'estimateRank',
+        account = stu.idToAccountStudent(str(id))
+        student = stu.getStudentAll(account)
+        stu_dic = stu.getStudentAllDictByAccount(account)
+        dic = {
+            'name': stu_dic[Student.REAL_NAME],
+            'birth': stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
+            'identification': stu_dic[Student.ID_NUMBER],
+            'wenli': stu_dic[Student.TYPE],
+            'sex': stu_dic[Student.SEX],
+            'nation': stu_dic[Student.NATION],
+            'school': stu_dic[Student.SCHOOL],
+            'address': stu_dic[Student.ADDRESS],
+            'phone': stu_dic[Student.PHONE],
+            'email': stu_dic[Student.EMAIL],
+            'dadPhone': stu_dic[Student.DAD_PHONE],
+            'momPhone': stu_dic[Student.MOM_PHONE],
+
+            Student.TUTOR_NAME: stu_dic[Student.TUTOR_NAME],
+            Student.TUTOR_PHONE: stu_dic[Student.TUTOR_PHONE],
+            'province': stu_dic[Student.PROVINCE],
+            Student.MAJOR: stu_dic[Student.MAJOR],
+            Student.TEST_SCORE_LIST: stu_dic[Student.TEST_SCORE_LIST],
+
+            Student.RANK_LIST: stu_dic[Student.RANK_LIST],
+            Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
+            Student.ESTIMATE_SCORE: getStudentEstimateScore(stu.getStudentAll(account)),
+            Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
+            Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
+            Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
+            Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
+            Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
+            'comment': stu_dic[Student.COMMENT],
+            'momName': stu_dic[Student.MOM_NAME],
+            'dadName': stu_dic[Student.DAD_NAME],
+            'relTeacher': stu_dic[Student.DUIYING_TEACHER],
         }
-        print request.POST
+        group_list = stu.getStudentGroupIDListString(student).split(' ')
+        for i in range(1, 6):
+            if i < len(group_list):
+                dic['group' + str(i)] = group_list[i]
+            else:
+                dic['group' + str(i)] = '0'
+
+        dic['grouplist'] = [' ']
+        all_group = back.getGroupbyDict({})
+        for item in all_group:
+            dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         return render(request, 'student/userinfo.html', {'dict': dict})
 
 @csrf_exempt
@@ -186,7 +206,7 @@ def get_all_tests(request):
 
     year = int(year) - YEAR_LIST[1] + 1
     province = int(stu_dic[Student.PROVINCE]['province'])
-
+    print 'pro ',province
     dic = {
         Picture.YEAR: year,
         Picture.PROVINCE: province,
@@ -235,7 +255,6 @@ def get_problem_list(request):
     year = int(info_list[0]) - YEAR_LIST[1] + 1
     province = find_item_index_in_list(info_list[1], PROVINCE_LIST)
     subject = find_item_index_in_list(info_list[2], SUBJECT_LIST)
-
     dict = {
         Picture.YEAR: year,
         Picture.PROVINCE: province,
@@ -278,7 +297,6 @@ def get_problem_info(request):
        'problem_full_score': pic_dic[Picture.SCORE],
        'problem_pic': '/static/images/'+pic_name}
 
-
     return JsonResponse({'problem_info': dic})
 
 @csrf_exempt
@@ -301,7 +319,10 @@ def submit_test_result(request):
     tmp = (stu.getStudentAllDictByAccount(account))[Student.ESTIMATE_SCORE]
     if tmp.strip() == '':
         tmp = '{}'
-    stu_dic = eval(tmp)
+    try:
+        stu_dic = eval(tmp)
+    except:
+        stu_dic = {}
     stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list)}
     stu.setStudent(account, Student.ESTIMATE_SCORE, str(stu_dic))
     return JsonResponse({})
