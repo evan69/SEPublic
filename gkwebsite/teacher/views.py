@@ -882,3 +882,33 @@ def generateTimerXLS(timer_id, teacher_id):
 
         info.append(this_day_list)
     outputXLS('', 'haha.xls', 'sheet1', info, ['name'] + day_list)
+
+
+def get_num_teacher_shenhe_estimate():
+    '''
+    获得老师应该审核的学生估分数目
+    :return:
+    '''
+    student_list = stu.getAllInStudent()
+    num = 0
+    for student in student_list:
+        account = getattr(student, Student.ACCOUNT)
+        try:
+            esti_dic = eval(stu.getStudent(account, Student.ESTIMATE_SCORE))
+        except:
+            esti_dic = {}
+        for key in esti_dic.keys():
+            info_dic = esti_dic[key]
+            if 'shenhe' not in info_dic.keys():
+                num = num + 1
+
+    return num
+
+
+
+
+
+
+
+
+
