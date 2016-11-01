@@ -87,7 +87,6 @@ def student_logout(request):
 
 
 def profile(request):
-
     dict = {
         'name': 'name',
         'identification': 'identification',
@@ -133,7 +132,6 @@ def profile(request):
         '''
         保存信息并返回json
         '''
-
         return JsonResponse(dict)
     else:
         '''
@@ -146,27 +144,22 @@ def profile(request):
         student = stu.getStudentAll(account)
         stu_dic = stu.getStudentAllDictByAccount(account)
         dic = {
-            Student.ID: stu_dic[Student.ID],
-            Student.ACCOUNT: stu_dic[Student.ACCOUNT],
-            Student.REAL_NAME: stu_dic[Student.REAL_NAME],
-            Student.BIRTH: stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
-            Student.ID_NUMBER: stu_dic[Student.ID_NUMBER],
-
-            Student.TYPE: stu_dic[Student.TYPE],
-            Student.SEX: stu_dic[Student.SEX],
-            Student.NATION: stu_dic[Student.NATION],
-            Student.SCHOOL: stu_dic[Student.SCHOOL],
-            Student.CLASSROOM: stu_dic[Student.CLASSROOM],
-
-            Student.ADDRESS: stu_dic[Student.ADDRESS],
-            Student.PHONE: stu_dic[Student.PHONE],
-            Student.EMAIL: stu_dic[Student.EMAIL],
-            Student.DAD_PHONE: stu_dic[Student.DAD_PHONE],
-            Student.MOM_PHONE: stu_dic[Student.MOM_PHONE],
+            'name': stu_dic[Student.REAL_NAME],
+            'birth': stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
+            'identification': stu_dic[Student.ID_NUMBER],
+            'wenli': stu_dic[Student.TYPE],
+            'sex': stu_dic[Student.SEX],
+            'nation': stu_dic[Student.NATION],
+            'school': stu_dic[Student.SCHOOL],
+            'address': stu_dic[Student.ADDRESS],
+            'phone': stu_dic[Student.PHONE],
+            'email': stu_dic[Student.EMAIL],
+            'dadPhone': stu_dic[Student.DAD_PHONE],
+            'momPhone': stu_dic[Student.MOM_PHONE],
 
             Student.TUTOR_NAME: stu_dic[Student.TUTOR_NAME],
             Student.TUTOR_PHONE: stu_dic[Student.TUTOR_PHONE],
-            Student.PROVINCE: stu_dic[Student.PROVINCE],
+            'province': stu_dic[Student.PROVINCE],
             Student.MAJOR: stu_dic[Student.MAJOR],
             Student.TEST_SCORE_LIST: stu_dic[Student.TEST_SCORE_LIST],
 
@@ -178,13 +171,11 @@ def profile(request):
             Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
             Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
             Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
-            Student.COMMENT: stu_dic[Student.COMMENT],
-
-            Student.MOM_NAME: stu_dic[Student.MOM_NAME],
-            Student.DAD_NAME: stu_dic[Student.DAD_NAME],
-            student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
+            'comment': stu_dic[Student.COMMENT],
+            'momName': stu_dic[Student.MOM_NAME],
+            'dadName': stu_dic[Student.DAD_NAME],
+            'relTeacher': stu_dic[Student.DUIYING_TEACHER],
         }
-
         group_list = stu.getStudentGroupIDListString(student).split(' ')
         for i in range(1, 6):
             if i < len(group_list):
@@ -196,7 +187,6 @@ def profile(request):
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
-        print request.POST
         return render(request, 'student/userinfo.html', {'dict': dict})
 
 @csrf_exempt
@@ -216,7 +206,7 @@ def get_all_tests(request):
 
     year = int(year) - YEAR_LIST[1] + 1
     province = int(stu_dic[Student.PROVINCE]['province'])
-
+    print 'pro ',province
     dic = {
         Picture.YEAR: year,
         Picture.PROVINCE: province,
@@ -265,7 +255,6 @@ def get_problem_list(request):
     year = int(info_list[0]) - YEAR_LIST[1] + 1
     province = find_item_index_in_list(info_list[1], PROVINCE_LIST)
     subject = find_item_index_in_list(info_list[2], SUBJECT_LIST)
-
     dict = {
         Picture.YEAR: year,
         Picture.PROVINCE: province,
@@ -330,7 +319,10 @@ def submit_test_result(request):
     tmp = (stu.getStudentAllDictByAccount(account))[Student.ESTIMATE_SCORE]
     if tmp.strip() == '':
         tmp = '{}'
-    stu_dic = eval(tmp)
+    try:
+        stu_dic = eval(tmp)
+    except:
+        stu_dic = {}
     stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list)}
     stu.setStudent(account, Student.ESTIMATE_SCORE, str(stu_dic))
     return JsonResponse({})

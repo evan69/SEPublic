@@ -407,18 +407,12 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
-        password1 = request.POST.get('password1', 'byr')
-        password2 = request.POST.get('password2', 'byr')
-        if password1 != password2:
-            return {'result': "0"}
-
+        password1 = request.POST.get('password', 'byr')
         teacher_name = request.POST.get('teacher_name', 'byr')
         phone = request.POST.get('phone', '110')
         email = request.POST.get('email', '110')
         work_address = request.POST.get('work_address', '110')
         describe = request.POST.get('describe', '110')
-
-
 
         id = (int)(request.session.get('user_id'))
         account = tch.idToAccountTeacher(id)
@@ -771,17 +765,6 @@ def checkscore(request):
 
     后端需要从数据库获取数据补全代码
     '''
-    # list = []
-    # dict = {'name':'李三胖',
-    #         'sex': '女',
-    #         'province': '内蒙古',
-    #         'school': '北重军校三中',
-    #         'ident': '12345678901234X231154',
-    #         'testname': '内蒙包头二卷2013英语',
-    #         'time': '2分钟',
-    #          'score':1
-    # }
-    # list.append(dict)
     list = []
     student_list = stu.getAllInStudent()
     for student in student_list:
@@ -791,7 +774,6 @@ def checkscore(request):
         province = PROVINCE_LIST[int(info_dic[Student.PROVINCE]['province'])]
         school = info_dic[Student.SCHOOL]
         ident = info_dic[Student.ID_NUMBER]
-
         estimate_score = info_dic[Student.ESTIMATE_SCORE]
         try:
             estimate_score = eval(estimate_score)
@@ -799,8 +781,8 @@ def checkscore(request):
             estimate_score = eval('{}')
         for key in estimate_score.keys():
             testname = key
-            time = estimate_score[key]['time'] + u'秒'
-            score = estimate_score[key]['score'] + u'分'
+            time = str(estimate_score[key]['time']) + ' s'
+            score = str(estimate_score[key]['score']) + ' points'
             if 'shenhe' in estimate_score[key].keys():
                 continue
             else:
