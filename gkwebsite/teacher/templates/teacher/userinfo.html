@@ -3,22 +3,15 @@
  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     {% load staticfiles %}
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-   <!-- profile-->
+  {% load staticfiles %}
+  {% include 'teacher/include/cssinclude.html' %}
+  <!-- profile-->
   <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
-  <div id="wrapper">
   <title>用户信息</title>
- </head>
- <body>
- {% include 'teacher/include/navtop.html' %}
+  </head>
+  <body>
+  <div id="wrapper">
+  {% include 'teacher/include/navtop.html' %}
         <!--/. NAV TOP  -->
 		{% include 'teacher/include/navside.html' %}
         <!-- /. NAV SIDE  -->

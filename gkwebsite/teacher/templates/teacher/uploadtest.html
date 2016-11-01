@@ -2,16 +2,8 @@
 <html>
  <head id="Head1">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-     {% load staticfiles %}
-  <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+  {% load staticfiles %}
+  {% include 'teacher/include/cssinclude.html' %}
   <!-- profile-->
   <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
   <!--3d button-->
@@ -71,7 +63,7 @@
        overflow: hidden !important;
    }
 </style>
-   <title>发布测试题</title>
+   <title>编辑测试题</title>
  </head>
  <body>
 
