@@ -482,6 +482,7 @@ def profile(request):
         #print 'dict ',dict
         # No garbage output
         # by dqn14 2016/11/1
+        # generateTimerXLS(1,1)
         return render(request, 'teacher/userinfo.html', {'dict': dict, 'id':id})
 
 '''
@@ -541,12 +542,13 @@ def upload(request):
         imgFile = request.FILES['problem_upload']
         handle_uploaded_img(imgFile, year, province, subject, number, score, category)
 
-
-
         if flag:
             dict = {'result': '上传成功'}
         else:
             dict = {'result': '上传失败'}
+        dict['url'] = '%s_%s_%s' % (str(YEAR_LIST[dic[Picture.YEAR]]),
+                                    SHITI_LIST[dic[Picture.PROVINCE]],
+                                    SUBJECT_LIST[dic[Picture.SUBJECT]])
         return JsonResponse(dict)
 
 
@@ -589,6 +591,20 @@ def volunteer_info(request):
         'teacher': '白老师 | 李老师',
         'comment': vol_dic[Volunteer.COMMENT],
     }
+    group_list = vol.getVolunteerGroupIDListString(volunteer).split(' ')
+    for i in range(1, 6):
+        if i < len(group_list):
+            dic['group' + str(i)] = group_list[i]
+        else:
+            dic['group' + str(i)] = '0'
+
+    dic['grouplist'] = [' ']
+    all_group = back.getGroupbyDict({})
+    for item in all_group:
+        dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+
+
+
     id_ = request.session.get('user_id', -1)
     return render(request, 'teacher/volunteer_info.html', {'dict': dict, 'id':id_})
 
@@ -839,3 +855,30 @@ def checkscore(request):
     id_ = request.session.get('user_id', -1)
     return render(request,
                   'teacher/checkscore.html', {'dict':list, 'id':id_})
+
+
+
+
+def generateTimerXLS(timer_id, teacher_id):
+    timer = back.getTimerbyDict({Timer.ID: int(timer_id)})[0]
+    info_dic = back.getTimerAllDictByObject(timer)
+    (day_list, nouse) = back.date_start_to_end(info_dic[Timer.START_TIME], info_dic[Timer.END_TIME])
+    vol_id_list = info_dic[Timer.VOLUNTEER_DIC].keys()
+    vol_name_list = []
+    for vol_id in vol_id_list:
+        account = vol.idToAccountVolunteer(str(vol_id))
+        vol_name_list.append(vol.getVolunteer(account, Volunteer.REAL_NAME))
+
+    info = [vol_name_list]
+    for day in day_list:
+        tmp_list = day.split('/')
+        day = datetime.date(int(tmp_list[0]), int(tmp_list[1]), int(tmp_list[2]))
+        this_day_list = []
+        for vol_id in vol_id_list:
+            if back.check_volunteerID_date(timer_id, vol_id, day):
+                this_day_list.append(u'有空')
+            else:
+                this_day_list.append(' ')
+
+        info.append(this_day_list)
+    outputXLS('', 'haha.xls', 'sheet1', info, ['name'] + day_list)
