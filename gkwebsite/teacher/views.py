@@ -547,6 +547,9 @@ def upload(request):
             dict = {'result': '上传成功'}
         else:
             dict = {'result': '上传失败'}
+        dict['url'] = '%s_%s_%s' % (str(YEAR_LIST[dic[Picture.YEAR]]),
+                                    SHITI_LIST[dic[Picture.PROVINCE]],
+                                    SUBJECT_LIST[dic[Picture.SUBJECT]])
         return JsonResponse(dict)
 
 
@@ -568,7 +571,7 @@ def volunteer_info(request):
 
     vol_dic = vol.getVolunteerAllDictByAccount(account)
 
-    dict = {
+    dic = {
         'id': vol_dic[Volunteer.ID],
         'user_name': vol_dic[Volunteer.ACCOUNT],
         'realName': vol_dic[Volunteer.REAL_NAME],
@@ -589,8 +592,19 @@ def volunteer_info(request):
         'teacher': '白老师 | 李老师',
         'comment': vol_dic[Volunteer.COMMENT],
     }
+    group_list = vol.getVolunteerGroupIDListString(volunteer).split(' ')
+    for i in range(1, 6):
+        if i < len(group_list):
+            dic['group' + str(i)] = group_list[i]
+        else:
+            dic['group' + str(i)] = '0'
+
+    dic['grouplist'] = [' ']
+    all_group = back.getGroupbyDict({})
+    for item in all_group:
+        dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
     id_ = request.session.get('user_id', -1)
-    return render(request, 'teacher/volunteer_info.html', {'dict': dict, 'id':id_})
+    return render(request, 'teacher/volunteer_info.html', {'dict': dic, 'id':id_})
 
 
 '''
