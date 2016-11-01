@@ -109,27 +109,27 @@
         var password2 = $("#password2").val();
         var phone = $("#phone").val();
         var describe = $("#describe").val();
-        if (password1 != password2){
-         alert("两次密码不一致，请重新输入");
-         return;
-        }
         $.post("",
-                {
-                    'teacher_name':teacher_name,
-                    'email':email,
-                    'work_address':work_address,
-                    'password1':password1,
-                    'password2':password2,
-                    'phone':phone,
-                    'describe':describe,
-                },
-                function(profileDict){
-                    for (key_i in profileDict){
-                      $("#"+key_i).val(profileDict[key_i]);
-                      //$.growl.notice({ title: "1 Key", message: "+1" });
-                    }
-                    alert("修改成功");
-        })
+            {
+                'teacher_name':teacher_name,
+                'email':email,
+                'work_address':work_address,
+                'password1':password1,
+                'password2':password2,
+                'phone':phone,
+                'describe':describe,
+            },
+            function(ret){
+              if(ret['success'].charAt(0)=='N'){
+                $.growl.error({ title: "修改信息失败", message: ret['message'] });
+              }
+              $('#teacher_name').val(ret['teacher_name']);
+              $('#email').val(ret['email']);
+              $('#work_address').val(ret['work_address']);
+              $('#phone').val(ret['phone']);
+              $('#describe').val(ret['describe']);
+              $.growl.notice({ title: "修改成功", message: "用户信息已更新"});
+            });
       }
       $(document).ready(function(){
         $('#profile').attr("href", "#");
@@ -137,11 +137,24 @@
           submitHandler:save,
           debug:false,
           rules:{
+            teacher_name:{
+              required:true
+            },
             phone:{
               required:true,
               minlength:11,
               maxlength:11,
               digits:true
+            },
+            work_address:{
+              required:true
+            },
+            describe:{
+              required:true
+            },
+            email:{
+              email:true,
+              required:true
             },
             password1:{
               legalPassword: true

@@ -417,7 +417,14 @@ def profile(request):
         email = request.POST.get('email', '110')
         work_address = request.POST.get('work_address', '110')
         describe = request.POST.get('describe', '110')
-
+        # The default values above are not making any difference
+        # You are only covering up bugs if there are any
+        # You should check the keys like:
+        # try:
+        #   teacher_name = request.POST.get('teacher_name')
+        # except KeyError:
+        #   dosomething()
+        # by dqn14 2016/11/1
 
 
         id = (int)(request.session.get('user_id'))
@@ -448,7 +455,9 @@ def profile(request):
             'password1': getattr(teacher, Teacher.PASSWORD, 'password'),
             'password2': getattr(teacher, Teacher.PASSWORD, 'password'),
         }
-        print 'dict ',dict
+        #print 'dict ',dict
+        # No garbage output
+        # by dqn14 2016/11/1
         return render(request, 'teacher/userinfo.html', {'dict': dict, 'id':id})
 
 '''
