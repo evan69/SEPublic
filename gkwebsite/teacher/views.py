@@ -407,7 +407,7 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
-        password1 = request.POST.get('password', 'byr')
+        password1 = request.POST.get('password', 'has')
         teacher_name = request.POST.get('teacher_name', 'byr')
         phone = request.POST.get('phone', '110')
         email = request.POST.get('email', '110')
@@ -422,7 +422,8 @@ def profile(request):
         tch.setTeacher(account, Teacher.EMAIL, email)
         tch.setTeacher(account, Teacher.AREA, work_address)
         tch.setTeacher(account, Teacher.COMMENT, describe)
-        tch.setTeacher(account, Teacher.PASSWORD, password1)
+        if password1 != 'has' and len(password1) > 3:
+            tch.setTeacher(account, Teacher.PASSWORD, password1)
 
         return JsonResponse(request.POST)
     else:
@@ -439,8 +440,8 @@ def profile(request):
             'work_address': getattr(teacher, Teacher.AREA, ' '),
             'phone': getattr(teacher, Teacher.PHONE, ' '),
             'describe': getattr(teacher, Teacher.COMMENT, ' '),
-            'password1': getattr(teacher, Teacher.PASSWORD, 'password'),
-            'password2': getattr(teacher, Teacher.PASSWORD, 'password'),
+            # 'password1': getattr(teacher, Teacher.PASSWORD, 'password'),
+            # 'password2': getattr(teacher, Teacher.PASSWORD, 'password'),
         }
         print 'dict ',dict
         return render(request, 'teacher/userinfo.html', {'dict': dict, 'id':id})
