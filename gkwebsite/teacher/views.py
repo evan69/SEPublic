@@ -407,12 +407,31 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
-        password1 = request.POST.get('password', 'has')
-        teacher_name = request.POST.get('teacher_name', 'byr')
-        phone = request.POST.get('phone', '110')
-        email = request.POST.get('email', '110')
-        work_address = request.POST.get('work_address', '110')
-        describe = request.POST.get('describe', '110')
+        flag = False
+        if 'password' not in request.POST.keys():
+            flag = False
+        else:
+            flag = True
+        try:
+            teacher_name = request.POST.get('teacher_name')
+        except:
+            return JsonResponse({'success': 'N', 'message': 'name missing'})
+        try:
+            phone = request.POST.get('phone')
+        except:
+            return JsonResponse({'success': 'N', 'message': 'phone missing'})
+        try:
+            email = request.POST.get('email')
+        except:
+            return JsonResponse({'success': 'N', 'message': 'email missing'})
+        try:
+            work_address = request.POST.get('work_address')
+        except:
+            return JsonResponse({'success': 'N', 'message': 'work address missing'})
+        try:
+            describe = request.POST.get('describe')
+        except:
+            return JsonResponse({'success': 'N', 'message': 'comment missing'})
         # The default values above are not making any difference
         # You are only covering up bugs if there are any
         # You should check the keys like:
@@ -425,15 +444,24 @@ def profile(request):
         id = (int)(request.session.get('user_id'))
         account = tch.idToAccountTeacher(id)
 
-        tch.setTeacher(account, Teacher.REAL_NAME, teacher_name)
-        tch.setTeacher(account, Teacher.PHONE, phone)
-        tch.setTeacher(account, Teacher.EMAIL, email)
-        tch.setTeacher(account, Teacher.AREA, work_address)
-        tch.setTeacher(account, Teacher.COMMENT, describe)
-        if password1 != 'has' and len(password1) > 3:
-            tch.setTeacher(account, Teacher.PASSWORD, password1)
+        if not tch.setTeacher(account, Teacher.REAL_NAME, teacher_name):
+            return JsonResponse({'success': 'N', 'message': 'real name missing'})
+        if not tch.setTeacher(account, Teacher.PHONE, phone):
+            return JsonResponse({'success': 'N', 'message': 'phone missing'})
+        if not tch.setTeacher(account, Teacher.EMAIL, email):
+            return JsonResponse({'success': 'N', 'message': 'email missing'})
+        if not tch.setTeacher(account, Teacher.AREA, work_address):
+            return JsonResponse({'success': 'N', 'message': 'area missing'})
+        if not tch.setTeacher(account, Teacher.COMMENT, describe):
+            return JsonResponse({'success': 'N', 'message': 'comment missing'})
+        if flag:
+            tch.setTeacher(account, Teacher.PASSWORD, request.POST.get('password'))
 
-        return JsonResponse(request.POST)
+        dicc = {}
+        dicc['success'] = 'Y'
+        for key in request.POST:
+            dicc[key] = request.POST.get(key)
+        return JsonResponse(dicc)
     else:
         '''
             后端需要在这里改代码，从数据库读取正确的dict，并返回
