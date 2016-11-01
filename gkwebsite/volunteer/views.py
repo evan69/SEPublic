@@ -206,13 +206,19 @@ def get_activity_time(request):
     """
         后端应在此处根据活动的id返回该活动可选择的时间段
         然后放到下面样例写好的dic的'time'键对应的列表值中
+        'checked'键表示上次选择的结果
     """
     print 'ac_id=:', request.POST.get('activity_id')
     dic = {'time': ['2016/9/1',
                     '2016/9/2',
                     '2016/9/3',
                     '2016/9/4',
-                    '2016/9/5']}
+                    '2016/9/5'],
+           'checked': ['1',
+                       '0',
+                       '1',
+                       '1',
+                       '0']}
     return JsonResponse(dic)
 
 @csrf_exempt
@@ -223,9 +229,11 @@ def submit_time(request):
     """
     print request.POST
     ac_id = request.POST.get('activity_id') # 活动问卷的id
-    time_list = request.POST.get('time_list').split(',') # 列表，存储有空的时间
+    time_list = request.POST.get('time').split(',') # 列表，存储全部可选的时间
+    checked_list = request.POST.get('checked').split(',')  # 列表，和上一个列表对应，1表示选中，0表示未选中
     print ac_id
     print time_list
+    print checked_list
     return JsonResponse({'success': 'true'}) # 成功返回true否则false
 
 @csrf_exempt
