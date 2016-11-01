@@ -3,22 +3,15 @@
  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     {% load staticfiles %}
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-   <!-- profile-->
+  {% load staticfiles %}
+  {% include 'teacher/include/cssinclude.html' %}
+  <!-- profile-->
   <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
-  <div id="wrapper">
   <title>用户信息</title>
- </head>
- <body>
- {% include 'teacher/include/navtop.html' %}
+  </head>
+  <body>
+  <div id="wrapper">
+  {% include 'teacher/include/navtop.html' %}
         <!--/. NAV TOP  -->
 		{% include 'teacher/include/navside.html' %}
         <!-- /. NAV SIDE  -->
@@ -33,7 +26,7 @@
         <div class="panel-body">
          <div class="row">
           <div class="col-md-12">
-           <form role = "form" action="#">
+           <form id = "form" action="#">
               {% csrf_token %}
             <h1>{{dict.user_name}} 的信息</h1>
             <div class="contentform">
@@ -41,26 +34,26 @@
               <div class="form-group">
                <p>姓名<span>*</span></p>
                <span class="icon-case"><i class="fa fa-male"></i></span>
-               <input value="{{dict.teacher_name}}" type="text" name="teacher_name" id="teacher_name" required data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Nom' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.teacher_name}}" type="text" name="teacher_name" id="teacher_name"></input>
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>E-mail <span>*</span></p>
                <span class="icon-case"><i class="fa fa-envelope-o"></i></span>
-               <input value="{{dict.email}}" required type="email" name="email" id="email" data-rule="email" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'E-mail' est obligatoire." />
+               <input value="{{dict.email}}" type="text" name="email" id="email" ></input>
                <div class="validation"></div>
               </div>
 
               <div class="form-group">
                <p>密码 </p>
                <span class="icon-case"><i class="fa fa-info"></i></span>
-               <input type="password" name="password1" id="password1" value="{{dict.password1}}"  data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Code postal' doit &ecirc;tre renseign&eacute;." />
+               <input type="password" name="password1" id="password1"></input>
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>密码确认 </p>
                <span class="icon-case"><i class="fa fa-info"></i></span>
-               <input type="password" name="password2" id="password2" value="{{dict.password2}}"  data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Adresse' doit &ecirc;tre renseign&eacute;." />
+               <input type="password" name="password2" id="password2"></input>
                <div class="validation"></div>
               </div>
 
@@ -70,25 +63,25 @@
               <div class="form-group">
                <p>手机号码 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-phone"></i></span>
-               <input value="{{dict.phone}}" required  type="text" name="phone" id="phone" data-rule="maxlen:10" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'T&eacute;l&eacute;phone' doit &ecirc;tre renseign&eacute;. Minimum 10 chiffres" />
+               <input value="{{dict.phone}}" type="text" name="phone" id="phone" ></input>
                <div class="validation"></div>
               </div>
               <div class="form-group">
                <p>办公地址 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-home"></i></span>
-               <input value="{{dict.work_address}}" required  type="text" name="work_address" id="work_address" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Soci&eacute;t&eacute;' doit &ecirc;tre renseign&eacute;." />
+               <input value="{{dict.work_address}}" type="text" name="work_address" id="work_address"></input>
                <div class="validation"></div>
               </div>
 
               <div class="form-group">
                <p>个人描述 <span>*</span></p>
                <span class="icon-case"><i class="fa fa-comments-o"></i></span>
-               <textarea required  name="describe" id="describe" rows="14" data-rule="required" data-msg="V&eacute;rifiez votre saisie sur les champs : Le champ 'Message' doit &ecirc;tre renseign&eacute;.">{{dict.describe}}</textarea>
+               <textarea name="describe" id="describe" rows="14">{{dict.describe}}</textarea>
                <div class="validation"></div>
               </div>
              </div>
             </div>
-            <button type="button" id="teacher_save" name="teacher_save" class="bouton-contact">保存</button>
+            <button type="submit" id="teacher_save" name="teacher_save" class="bouton-contact">保存</button>
            </form>
           </div>
          </div>
@@ -104,41 +97,101 @@
   </div>
   <!-- /. WRAPPER  -->
 {% include 'teacher/include/jsinclude.html' %}
+  <script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+  <script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
   <script>
-      console.log("WTF");
+      function save(){
+        var teacher_name = $("#teacher_name").val();
+        var email = $("#email").val();
+        var work_address = $("#work_address").val();
+        var password = $("#password1").val();
+        var phone = $("#phone").val();
+        var describe = $("#describe").val();
+        if(password.length>0){
+          $.post("",
+            {
+                'teacher_name':teacher_name,
+                'email':email,
+                'work_address':work_address,
+                'password':password,
+                'phone':phone,
+                'describe':describe,
+            },
+            function(ret){
+              if(ret['success'].charAt(0)=='N'){
+                $.growl.error({ title: "修改信息失败", message: ret['message'] });
+              }
+              $('#teacher_name').val(ret['teacher_name']);
+              $('#email').val(ret['email']);
+              $('#work_address').val(ret['work_address']);
+              $('#phone').val(ret['phone']);
+              $('#describe').val(ret['describe']);
+              $.growl.notice({ title: "修改成功", message: "用户信息已更新"});
+            });
+        }
+        else{
+          $.post("",
+            {
+                'teacher_name':teacher_name,
+                'email':email,
+                'work_address':work_address,
+                'phone':phone,
+                'describe':describe,
+            },
+            function(ret){
+              if(ret['success'].charAt(0)=='N'){
+                $.growl.error({ title: "修改信息失败", message: ret['message'] });
+              }
+              $('#teacher_name').val(ret['teacher_name']);
+              $('#email').val(ret['email']);
+              $('#work_address').val(ret['work_address']);
+              $('#phone').val(ret['phone']);
+              $('#describe').val(ret['describe']);
+              $.growl.notice({ title: "修改成功", message: "用户信息已更新"});
+            });
+        }
+      }
       $(document).ready(function(){
-          $('#profile').attr("href", "#");
-          console.log("Arrive here");
-          $("#teacher_save").click(function(){
-              console.log("teacher_save");
-            var teacher_name = $("#teacher_name").val();
-            var email = $("#email").val();
-            var work_address = $("#work_address").val();
-            var password1 = $("#password1").val();
-            var password2 = $("#password2").val();
-            var phone = $("#phone").val();
-            var describe = $("#describe").val();
-            if (password1 != password2){
-             alert("两次密码不一致，请重新输入");
-             return;
+        $('#profile').attr("href", "#");
+        $("#form").validate({
+          submitHandler:save,
+          debug:false,
+          rules:{
+            teacher_name:{
+              required:true
+            },
+            phone:{
+              required:true,
+              minlength:11,
+              maxlength:11,
+              digits:true
+            },
+            work_address:{
+              required:true
+            },
+            describe:{
+              required:true
+            },
+            email:{
+              email:true,
+              required:true
+            },
+            password1:{
+              legalPassword: true
+            },
+            password2:{
+              equalTo:'#password1'
             }
-            $.post("",
-                    {
-                        'teacher_name':teacher_name,
-                        'email':email,
-                        'work_address':work_address,
-                        'password1':password1,
-                        'password2':password2,
-                        'phone':phone,
-                        'describe':describe,
-                    },
-                    function(profileDict){
-                        console.log(profileDict['homephone']);
-                        for (key_i in profileDict)
-                            $("#"+key_i).val(profileDict[key_i]);
-                        alert("修改成功");
-            })
-          });
+          },
+          messages:{
+            phone:{
+              minlength:"<span style=\"color:red\">请输入有效的手机号码</span>",
+              maxlength:"<span style=\"color:red\">请输入有效的手机号码</span>",
+              digits:"<span style=\"color:red\">请输入有效的手机号码</span>",
+            }
+          }
+        });
       });
   </script>
  </body>
