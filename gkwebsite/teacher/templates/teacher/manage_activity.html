@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>管理活动问卷</title>
+    {% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
+</head>
+<body>
+    <div id="wrapper">
+          {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+
+				<div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            管理活动问卷 <small>高考招生系统教师端  您好，<span id='namefield'></span></small>
+                        </h1>
+                    </div>
+                </div>
+				<!--row-->
+				<div class = "row">
+					<div class = "col-md-12 col-lg-12">
+						<div class= "panel panel-default">
+							<div class = "panel-body">
+								<div class = "row">
+									<div class = "col-md-6">
+										<div class = "form-horizontal" >
+											<div class = "form-group">
+
+											</div>
+										</div>
+									</div>
+								</div>
+                <div class = "row">
+									<div class = "col-md-12 col-lg-10">
+                    <table class="table table-hover">
+                      <caption>全部活动
+                          <button style = "float:right" type = "button" class = "btn btn-primary" value = "add" id="add">添加新活动问卷</button>
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th>活动名称</th>
+                          <th>发起人</th>
+                          <th>开始时间</th>
+                          <th>结束时间</th>
+                          <th>已填写人数</th>
+                          <th>删除</th>
+                          <th>导出结果</th>
+                        </tr>
+                      </thead>
+                      <tbody id="ac_list">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-lg-10" style="text-align:center">
+                    <ul class="pagination pagination-lg" id="pages">
+                    </ul><br>
+                  </div>
+                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /. ROW -->
+   {% include 'teacher/include/footer.html' %}
+			</div>
+
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+     <!-- /. WRAPPER  -->
+    {% include 'teacher/include/jsinclude.html' %}
+<script>
+    var user_array = [];
+    function show_list(){
+        $('#ac_list').empty();
+        console.log('hehe');
+        var tag1, tag2, tag3;
+        var listitem = "";
+        for(var i = 0; i < user_array.length; ++i){
+            tag1 = String(i)+'_A';
+            tag1 = String(user_array[i]['activity_id'])+'_Aname';
+            var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
+            var data = user_array[i];
+            var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">填写</div></div>"
+            listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['proposer']+"</td>";
+            listitems+="<td>"+user_array[i]['start_time']+"</td><td>"+user_array[i]['end_time']+"</td><td>"+user_array[i]['number']+"</td>";
+			listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-danger btn-xs\">删除</button></td>\n";
+			listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">导出结果</button></td></tr>\n";
+            $('#ac_list').append(listitems);
+        }
+    }
+    $(document).ready(function(){
+        //CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                }
+        });
+        $.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+            $('#namefield').append(ret['name']);
+        })
+        $('#manage_activity').addClass("active-menu");
+        $('#manage_activity').attr("href", "#");
+         $('#test_list').empty();
+        $.post("/teacher/get_all_activity/", {}, function(ret){
+            user_array = ret.activity;
+            show_list();
+        });
+    });
+</script>
+</body>
+</html>
