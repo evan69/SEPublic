@@ -68,7 +68,7 @@ body a:hover,body a{
 .agileits_copyright p a:hover{
 	color:#FF0F75;
 }
-input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_left a{
+input[type="submit"],#save,.agileits_copyright p a,input[type="reset"],.w3_main_grid_left a{
 	transition:.5s ease-in;
 	-webkit-transition:.5s ease-in;
 	-moz-transition:.5s ease-in;
@@ -168,7 +168,7 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	float:right;
 	width: 30%;
 }
-.w3_main_grid_right input[type="submit"]{
+.w3_main_grid_right input[type="submit"], #save{
 	outline:none;
 	padding:10px 0;
 	width:100%;
@@ -180,7 +180,7 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	border:none;
 	cursor:pointer;
 }
-.w3_main_grid_right input[type="submit"]:hover{
+.w3_main_grid_right input[type="submit"], #save:hover{
 /*	color:#FF0F75;*/
 	color: black;
 	background:#fff;
@@ -369,7 +369,7 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	.agileits_w3layouts_main_gridr input[type="time"] {
 		width: 93.8% !important;
 	}
-	.w3_main_grid_right input[type="submit"] {
+	.w3_main_grid_right input[type="submit"], #save{
 		padding: 7px 0;
 	}
 }
