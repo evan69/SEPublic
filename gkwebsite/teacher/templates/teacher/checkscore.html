@@ -45,7 +45,7 @@
                       </thead>
                       <tbody id="test_list">
                       {% for item in dict %}
-                   <tr style="text-align: center">
+                   <tr style="text-align: center" id="{{item.ident}}">
                           <td style="text-align: center">{{item.name}}</td>
                           <td style="text-align: center">{{item.sex}}</td>
                           <td style="text-align: center">{{item.province}}</td>
@@ -82,9 +82,28 @@
 
 <script>
     function yesorno(name, sex, province, school, ident, testname, time, code) {
-        alert(name + " " + sex + " " + province + " " +
+       /* alert(name + " " + sex + " " + province + " " +
         school + " " + ident + " " + testname + " " +
-        time + " " + code);
+        time + " " + code);*/
+       var parent=document.getElementById("test_list");
+      var child=document.getElementById(ident);
+      parent.removeChild(child);
+        $.get("",
+                    {
+                        'name':name,
+                        'sex':sex,
+                        'province': province,
+                        'school':school,
+                        'ident':ident,
+                        'testname':testname,
+                        'time':time,
+                        'code':code,
+                    },
+                    function(){
+
+
+                        alert("修改成功");
+            })
     }
 </script>
 </body>

@@ -16,7 +16,7 @@ import database.volunteer_backend as vol
 import datetime
 from database.models import *
 from database.my_field import *
-
+import database.backend as back
 
 # Create your views here.
 
@@ -213,6 +213,28 @@ def get_all_activity(request):
     dic = {'activity' : [{'name':'第一次组会','proposer':'李三胖','state':'未填写','activity_id':'12'},
                          {'name':'一对一解答','proposer':'屁孩','state':'已填写','activity_id':'32'},
                          {'name':'庆功会','proposer':'王大神','state':'未填写','activity_id':'9'}]}
+
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    id = request.session.get('user_id', -1)
+    print 'vol id', id
+    ret_list = []
+    timer_list = back.getTimerbyDict({})
+    for item in timer_list:
+        tmp_dic = {}
+        info_dic = back.getTimerAllDictByObject(item)
+        tmp_dic['name'] = info_dic[Timer.NAME]
+        teacher_account = tch.idToAccountTeacher(info_dic[Timer.TEACHER_ID])
+        tmp_dic['proposer'] = tch.getTeacher(teacher_account, Teacher.REAL_NAME)
+        ret_list.append(tmp_dic)
+
+        vol_dic = info_dic[Timer.VOLUNTEER_DIC]
+        if str(id) in vol_dic.keys():
+            tmp_dic['state'] = u'已填写'
+        else:
+            tmp_dic['state'] = u'未填写'
+        tmp_dic['activity_id'] = info_dic[Timer.ID]
+    dic['activity'] = ret_list
     return JsonResponse(dic)
 
 @csrf_exempt
@@ -220,13 +242,22 @@ def get_activity_time(request):
     """
         后端应在此处根据活动的id返回该活动可选择的时间段
         然后放到下面样例写好的dic的'time'键对应的列表值中
+        'checked'键表示上次选择的结果
     """
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    vol_id = str(request.session.get('user_id', -1))
     print 'ac_id=:', request.POST.get('activity_id')
-    dic = {'time': ['2016/9/1',
-                    '2016/9/2',
-                    '2016/9/3',
-                    '2016/9/4',
-                    '2016/9/5']}
+    timer = back.getTimerbyDict({Timer.ID: int(request.POST.get('activity_id'))})[0]
+    info_dic = back.getTimerAllDictByObject(timer)
+    (time_list, checked_list) = back.date_start_to_end(info_dic[Timer.START_TIME], info_dic[Timer.END_TIME])
+    checked_list = []
+    for item in time_list:
+        checked_list.append('0')
+    if vol_id in info_dic[Timer.VOLUNTEER_DIC].keys():
+        checked_list = info_dic[Timer.VOLUNTEER_DIC][vol_id]
+    dic = {'time': time_list,
+           'checked': checked_list}
     return JsonResponse(dic)
 
 @csrf_exempt
@@ -235,12 +266,27 @@ def submit_time(request):
         后端应在此处提交本次问卷填写结果
         然后返回是否成功
     """
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    vol_id = str(request.session.get('user_id'))
+    print "vol id" + vol_id
     print request.POST
     ac_id = request.POST.get('activity_id') # 活动问卷的id
-    time_list = request.POST.get('time_list').split(',') # 列表，存储有空的时间
-    print ac_id
-    print time_list
-    return JsonResponse({'success': 'true'}) # 成功返回true否则false
+    time_list = request.POST.get('time').split(',') # 列表，存储全部可选的时间
+    checked_list = request.POST.get('checked').split(',')  # 列表，和上一个列表对应，1表示选中，0表示未选中
+    # print ac_id
+    # print time_list
+    # print checked_list
+
+    timer = back.getTimerbyDict({Timer.ID: int(ac_id)})[0]
+    info_dic = back.getTimerAllDictByObject(timer)
+    vol_dic = info_dic[Timer.VOLUNTEER_DIC]
+    vol_dic[vol_id] = checked_list
+
+    if back.setTimer(timer, Timer.VOLUNTEER_DIC, vol_dic):
+        return JsonResponse({'success': 'true'}) # 成功返回true否则false
+    else:
+        return JsonResponse({'success': 'false'})  # 成功返回true否则false
 
 @csrf_exempt
 def profile(request):
@@ -330,7 +376,4 @@ def profile(request):
                 'password': vol_dic[Volunteer.PASSWORD],
                 'studentID': vol_dic[Volunteer.STUDENT_ID],}
         dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
-
-
-
-        return render(request, 'v_userinfo.html', {'dict': dict})
+        return render(request, 'volunteer/v_userinfo.html', {'dict': dict})

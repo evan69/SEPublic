@@ -9,39 +9,7 @@
   <!--3d button-->
   <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style2.css' %}" />
   <link href="{% static 'assets/css/googleapis.css' %}" rel="stylesheet" type="text/css" />
-  <script language="javascript">
-    $(function() {
-        $("#problem_upload").change(function() {
-            var $file = $(this);
-            var fileObj = $file[0];
-            var windowURL = window.URL || window.webkitURL;
-            var dataURL;
-            var $img = $("#preview");
 
-            if(fileObj && fileObj.files && fileObj.files[0]){
-                dataURL = windowURL.createObjectURL(fileObj.files[0]);
-                $img.attr('src',dataURL);
-            }else{
-                dataURL = $file.val();
-
-                // $img.css("filter",'progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod = scale,src="' + dataURL + '")');
-
-                // var imgObj = document.getElementById("preview");
-                // imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\"" + dataURL + "\")";
-                // imgObj.style.width = "48px";
-                // imgObj.style.height = "48px";
-
-                var imgObj = document.getElementById("preview");
-                // 两个坑:
-                // 1、在设置filter属性时，元素必须已经存在在DOM树中，动态创建的Node，也需要在设置属性前加入到DOM中，先设置属性在加入，无效；
-                // 2、src属性需要像下面的方式添加，上面的两种方式添加，无效；
-                imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
-                imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
-
-            }
-        });
-    });
-    </script>
   <style>
     .image_container {
         width: auto;
@@ -221,6 +189,40 @@
   </div>
   <!-- /. PAGE WRAPPER  -->
   <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
+
+  <script language="javascript">
+    $(function() {
+        $("#problem_upload").change(function() {
+            var $file = $(this);
+            var fileObj = $file[0];
+            var windowURL = window.URL || window.webkitURL;
+            var dataURL;
+            var $img = $("#preview");
+
+            if(fileObj && fileObj.files && fileObj.files[0]){
+                dataURL = windowURL.createObjectURL(fileObj.files[0]);
+                $img.attr('src',dataURL);
+            }else{
+                dataURL = $file.val();
+
+                // $img.css("filter",'progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod = scale,src="' + dataURL + '")');
+
+                // var imgObj = document.getElementById("preview");
+                // imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\"" + dataURL + "\")";
+                // imgObj.style.width = "48px";
+                // imgObj.style.height = "48px";
+
+                var imgObj = document.getElementById("preview");
+                // 两个坑:
+                // 1、在设置filter属性时，元素必须已经存在在DOM树中，动态创建的Node，也需要在设置属性前加入到DOM中，先设置属性在加入，无效；
+                // 2、src属性需要像下面的方式添加，上面的两种方式添加，无效；
+                imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+
+            }
+        });
+    });
+    </script>
  <script>
    $(document).ready(function(){
        $('a[href="#present"]').click(function(){
@@ -248,6 +250,7 @@
              contentType:false,
             }).done(function (dict) {
               alert(dict['result'] + ' done');
+                window.location="http://localhost:8000/teacher/edit_test/" + dict['url'];
             }).fail(function (dict) {
              alert(dict['result'] + ' fail');
             });

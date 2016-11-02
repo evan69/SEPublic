@@ -85,96 +85,169 @@ def student_logout(request):
         pass
     return redirect('/login')
 
-
+@csrf_exempt
 def profile(request):
-    dict = {
-        'name': 'name',
-        'identification': 'identification',
-        'sex': 'sex',
-        'nation': 'nation',
-        'birth': 'birth',
-        'province': 'province',
-        'phone': 'phone',
-        'email': 'email',
-        'wenli': 'wenli',
-        'address': 'address',
-        'dadName': 'dadName',
-        'dadPhone': 'dadPhone',
-        'momName': 'momName',
-        'momPhone': 'momPhone',
-        'school': 'school',
-        'stu_class': 'stu_class',
-        'tutorName': 'tutorName',
-        'tutorPhone': 'tutorPhone',
-        'majorSelect1': 'majorSelect1',
-        'majorSelect2': 'majorSelect2',
-        'majorSelect3': 'majorSelect3',
-        'majorSelect4': 'majorSelect4',
-        'majorSelect5': 'majorSelect5',
-        'majorSelect6': 'majorSelect6',
-        'testScore1': 'testScore1',
-        'testScore2': 'testScore2',
-        'testScore3': 'testScore3',
-        'rank1': 'rank1',
-        'rank11': 'rank11',
-        'rank2': 'rank2',
-        'rank22': 'rank22',
-        'rank3': 'rank3',
-        'rank33': 'rank33',
-        'realScore': 'realScore',
-        'relTeacher': 'relTeacher',
-        'comment': 'comment',
-        'estimateScore': 'estimateScore',
-        'estimateRank': 'estimateRank',
-    }
+
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    account = stu.idToAccountStudent(str(id))
+    student = stu.getStudentAll(account)
 
     if request.method == 'POST':
         '''
         保存信息并返回json
         '''
+        info_dict = request.POST.copy()
+        print request.POST
+        for i in range(1, 7):
+            if info_dict['majorSelect' + str(i)].strip() == '':
+                info_dict['majorSelect' + str(i)] = '0'
+        for i in range(1, 4):
+            if info_dict['testScore' + str(i)].strip() == '':
+                info_dict['testScore' + str(i)] = '0'
+        for i in range(1, 4):
+            if info_dict['rank' + str(i)].strip() == '':
+                info_dict['rank' + str(i)] = '0'
+        for i in range(1, 4):
+            if info_dict['rank' + str(i)].strip() == '':
+                info_dict['rank' + str(i)] = '0'
+        for i in range(1, 4):
+            if info_dict['rank' + str(i) + str(i)].strip() == '':
+                info_dict['rank' + str(i) + str(i)] = '0'
+        if info_dict['realScore'].strip() == '':
+            info_dict['realScore'] = '0'
+
+        dic = {
+            'name': info_dict.get('name'),
+            'identification': info_dict.get('identification'),
+            'sex': info_dict.get('sex'),
+            'nation': info_dict.get('nation'),
+            'birth': info_dict.get('birth'),
+
+            'type': int(info_dict.get('wenli')),
+            'province': int(info_dict.get('province')),
+            'phone': info_dict.get('phone'),
+            'email': info_dict.get('email'),
+            'address': info_dict.get('address'),
+
+            'dadName': info_dict.get('dadName'),
+            'dadPhone': info_dict.get('dadPhone'),
+            'momName': info_dict.get('momName'),
+            'momPhone': info_dict.get('momPhone'),
+            'school': info_dict.get('school'),
+
+            'stu_class': info_dict.get('stu_class'),
+            'tutorName': info_dict.get('tutorName'),
+            'tutorPhone': info_dict.get('tutorPhone'),
+
+            'majorSelect1': int(info_dict.get('majorSelect1')),
+            'majorSelect2': int(info_dict.get('majorSelect2')),
+            'majorSelect3': int(info_dict.get('majorSelect3')),
+            'majorSelect4': int(info_dict.get('majorSelect4')),
+            'majorSelect5': int(info_dict.get('majorSelect5')),
+            'majorSelect6': int(info_dict.get('majorSelect6')),
+
+            'testScore1': int(info_dict.get('testScore1')),
+            'testScore2': int(info_dict.get('testScore2')),
+            'testScore3': int(info_dict.get('testScore3')),
+
+            'rank1': int(info_dict.get('rank1')),
+            'rank11': int(info_dict.get('rank11')),
+            'rank2': int(info_dict.get('rank2')),
+            'rank22': int(info_dict.get('rank22')),
+            'rank3': int(info_dict.get('rank3')),
+            'rank33': int(info_dict.get('rank33')),
+
+            'realScore': int(info_dict.get('realScore')),
+            # 'relTeacher': info_dict.get('relTeacher'),
+            'comment': info_dict.get('comment'),
+        }
+
+        birth_list = info_dict['birth'].split('/')
+        dic['birth'] = datetime.date(birth_list[2], birth_list[0], birth_list[1])
+
+        stu.setStudent(account, Student.REAL_NAME, dic['name'])
+        stu.setStudent(account, Student.ID_NUMBER, dic['identification'])
+        stu.setStudent(account, Student.SEX, dic['sex'])
+        stu.setStudent(account, Student.NATION, dic['nation'])
+        stu.setStudent(account, Student.BIRTH, dic['birth'])
+
+        stu.setStudent(account, Student.TYPE, dic['type'])
+        stu.setStudent(account, Student.PROVINCE, dic['province'])
+        stu.setStudent(account, Student.PHONE, dic['phone'])
+        stu.setStudent(account, Student.EMAIL, dic['email'])
+        stu.setStudent(account, Student.ADDRESS, dic['address'])
+
+        stu.setStudent(account, Student.MOM_NAME, dic['momName'])
+        stu.setStudent(account, Student.DAD_NAME, dic['dadName'])
+        stu.setStudent(account, Student.DAD_PHONE, dic['dadPhone'])
+        stu.setStudent(account, Student.MOM_PHONE, dic['momPhone'])
+        stu.setStudent(account, Student.SCHOOL, dic['school'])
+
+        stu.setStudent(account, Student.CLASSROOM, dic['stu_class'])
+        stu.setStudent(account, Student.TUTOR_NAME, dic['tutorName'])
+        stu.setStudent(account, Student.TUTOR_PHONE, dic['tutorPhone'])
+
+        stu.setStudent(account,
+                       Student.MAJOR,
+                       [dic['majorSelect1'],
+                        dic['majorSelect2'],
+                        dic['majorSelect3'],
+                        dic['majorSelect4'],
+                        dic['majorSelect5'],
+                        dic['majorSelect6']])
+
+        stu.setStudent(
+            account, Student.TEST_SCORE_LIST, [
+                dic['testScore1'], dic['testScore2'], dic['testScore3']])
+
+        stu.setStudent(
+            account, Student.RANK_LIST, [
+                dic['rank1'], dic['rank2'], dic['rank3']])
+
+        stu.setStudent(
+            account, Student.SUM_NUMBER_LIST, [
+                dic['rank11'], dic['rank22'], dic['rank33']])
+
+        stu.setStudent(account, Student.REAL_SCORE, dic['realScore'])
+        stu.setStudent(account, Student.COMMENT, dic['comment'])
+
+
         return JsonResponse(dict)
     else:
         '''
         获取信息并返回
         '''
-        id = request.session.get('user_id', -1)
-        if id == -1:
-            return HttpResponse('Access denied')
-        account = stu.idToAccountStudent(str(id))
-        student = stu.getStudentAll(account)
         stu_dic = stu.getStudentAllDictByAccount(account)
         dic = {
             'name': stu_dic[Student.REAL_NAME],
-            'birth': stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
             'identification': stu_dic[Student.ID_NUMBER],
-            'wenli': stu_dic[Student.TYPE],
             'sex': stu_dic[Student.SEX],
             'nation': stu_dic[Student.NATION],
-            'school': stu_dic[Student.SCHOOL],
-            'address': stu_dic[Student.ADDRESS],
+            'birth': stu_dic[Student.BIRTH],
+            'province': stu_dic[Student.PROVINCE],
             'phone': stu_dic[Student.PHONE],
             'email': stu_dic[Student.EMAIL],
-            'dadPhone': stu_dic[Student.DAD_PHONE],
-            'momPhone': stu_dic[Student.MOM_PHONE],
-
-            Student.TUTOR_NAME: stu_dic[Student.TUTOR_NAME],
-            Student.TUTOR_PHONE: stu_dic[Student.TUTOR_PHONE],
-            'province': stu_dic[Student.PROVINCE],
-            Student.MAJOR: stu_dic[Student.MAJOR],
-            Student.TEST_SCORE_LIST: stu_dic[Student.TEST_SCORE_LIST],
-
-            Student.RANK_LIST: stu_dic[Student.RANK_LIST],
-            Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
-            Student.ESTIMATE_SCORE: getStudentEstimateScore(stu.getStudentAll(account)),
-            Student.REAL_SCORE: stu_dic[Student.REAL_SCORE],
-            Student.REGISTER_CODE: stu_dic[Student.REGISTER_CODE],
-            Student.ADMISSION_STATUS: stu_dic[Student.ADMISSION_STATUS],
-            Student.TEACHER_LIST: stu_dic[Student.TEACHER_LIST],
-            Student.VOLUNTEER_ACCOUNT_LIST: stu_dic[Student.VOLUNTEER_ACCOUNT_LIST],
-            'comment': stu_dic[Student.COMMENT],
-            'momName': stu_dic[Student.MOM_NAME],
+            'wenli': stu_dic[Student.TYPE],
+            'address': stu_dic[Student.ADDRESS],
             'dadName': stu_dic[Student.DAD_NAME],
+            'dadPhone': stu_dic[Student.DAD_PHONE],
+            'momName': stu_dic[Student.MOM_NAME],
+            'momPhone': stu_dic[Student.MOM_PHONE],
+            'school': stu_dic[Student.SCHOOL],
+            'stu_class': stu_dic[Student.CLASSROOM],
+            'tutorName': stu_dic[Student.TUTOR_NAME],
+            'tutorPhone': stu_dic[Student.TUTOR_PHONE],
+             Student.MAJOR: stu_dic[Student.MAJOR],
+             Student.TEST_SCORE_LIST: stu_dic[Student.TEST_SCORE_LIST],
+             Student.RANK_LIST: stu_dic[Student.RANK_LIST],
+             Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
+            'realScore': stu_dic[Student.REAL_SCORE],
             'relTeacher': stu_dic[Student.DUIYING_TEACHER],
+            'comment': stu_dic[Student.COMMENT],
+            'estimateScore': getStudentEstimateScore(stu.getStudentAll(account)),
+            'estimateRank': stu.getStudentEstimateRank(student)
         }
         group_list = stu.getStudentGroupIDListString(student).split(' ')
         for i in range(1, 6):
@@ -182,12 +255,11 @@ def profile(request):
                 dic['group' + str(i)] = group_list[i]
             else:
                 dic['group' + str(i)] = '0'
-
         dic['grouplist'] = [' ']
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
-        return render(request, 'student/userinfo.html', {'dict': dict})
+        return render(request, 'student/userinfo.html', {'dict': dic})
 
 @csrf_exempt
 def get_all_tests(request):

@@ -30,10 +30,10 @@
     <div class="main">
      <h1 class="w3layouts_head" style="color: black">{{dict.user_name}}个人信息</h1>
      <div class="w3layouts_main_grid">
-      <form action="#" method="post" class="w3_form_post">
+      <form action="#" class="w3_form_post">
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>姓名<i>:</i></label>
-         <input id="name" type="text" name="name" placeholder="输入你的姓名" required="" />
+         <input id="name" type="text" name="name" placeholder="输入你的姓名" required="" value="{{dict.name}}"/>
         </span>
        </div>
 
@@ -50,124 +50,216 @@
 
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>身份证<i>:</i></label>
-         <input id="identification" type="text" name="name" placeholder="输入你的身份证号" required="" /> </span>
+         <input id="identification" value="{{dict.identification}}" type="text" name="name" placeholder="输入你的身份证号" required="" /> </span>
        </div>
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>性别<i>:</i></label>
-        <select id="sex" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+                        {% if dict.sex == 0 %}
+                    <select id="sex" name="sex"> <option value="0" selected="selected">男</option><option value="1">女</option> </select>
+               {% else %}
+                    <select id="sex" name="sex"> <option value="0">男</option><option value="1" selected="selected">女</option> </select>
+               {% endif %}
         </span>
        </div>
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>民族<i>:</i></label>
-        <select id="nation" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+         <select  id="nation" name="nation">
+                {% for item in dict.nation.nationlist %}
+                   {% if forloop.counter0 == dict.nation.nation %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
 
         </span>
        </div>
        <div class="agileits_w3layouts_main_grid w3ls_main_grid">
         <span class="agileinfo_grid"> <label>出生日期<i>:</i></label>
-         <input class="date" id="datepicker" name="Text" type="text" value="mm/dd/yyyy" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="" /> </span>
+         <input class="date" id="datepicker" name="Text" type="text" value="{{dict.birth}}" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>手机<i>:</i></label>
-         <input id="phone" type="text" name="Reminder" placeholder="手机" required="" />
+         <input id="phone" type="text" value="{{dict.phone}}"  placeholder="手机" required="" />
         </span>
        </div>
        <div class="agileinfo_main_grid">
         <span class="agileits_w3layouts_grid"> <label>地区<i>:</i></label> 
-         <select id="category1" name="category1" required=""> <option value="personal">北京</option> <option value="business">内蒙</option> <option value="other">湖北</option> </select> </span>
+        <select id="category1" name="province">
+                {% for item in dict.province.provincelist %}
+                   {% if forloop.counter0 == dict.province.province %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
        </div>
        <div class="wthree_main_grid">
-        <span class="agile_grid"> <label>文理<i>:</i></label> <select id="priority" required=""> <option value="high">文科</option> <option value="low">理科</option> </select> </span>
+        <span class="agile_grid"> <label>文理<i>:</i></label>
+        <select id="priority" name="priority">
+                {% for item in dict.wenli.typelist %}
+                   {% if forloop.counter0 == dict.wenli.type %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+
+        </span>
        </div>
 
 
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>邮箱<i>:</i></label>
-         <input type="text" id="email" name="Reminder" placeholder="个人常用邮箱" required="" /> </span>
+         <input type="text" id="email"  value="{{dict.email}}" placeholder="个人常用邮箱" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>地址<i>:</i></label>
-         <input type="text" id="address" name="Reminder" placeholder="家庭地址" required="" /> </span>
+         <input type="text" id="address" value="{{dict.address}}"  placeholder="家庭地址" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>学校<i>:</i></label>
-         <input type="text" id="school" name="Reminder" placeholder="高中学校名称" required="" /> </span>
+         <input type="text" id="school" value="{{dict.school}}"  placeholder="高中学校名称" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>班级<i>:</i></label>
-         <input type="text" id="stu_class" name="Reminder" placeholder="班级" required="" /> </span>
+         <input type="text" id="stu_class" value="{{dict.stu_class}}"  placeholder="班级" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>父亲姓名<i>:</i></label>
-         <input type="text" id="dadName" name="Reminder" placeholder="父亲姓名" required="" /> </span>
+         <input type="text" id="dadName" value="{{dict.dadName}}"  placeholder="父亲姓名" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>父亲手机号<i>:</i></label>
-         <input type="text" id="dadPhone" name="Reminder" placeholder="父亲手机号" required="" /> </span>
+         <input type="text" id="dadPhone" value="{{dict.dadPhone}}"  placeholder="父亲手机号" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>母亲姓名<i>:</i></label>
-         <input type="text" id="momName" name="Reminder" placeholder="母亲姓名" required="" /> </span>
+         <input type="text" id="momName" value="{{dict.momName}}"  placeholder="母亲姓名" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>母亲手机号<i>:</i></label>
-         <input type="text" id="momPhone" name="Reminder" placeholder="母亲手机号" required="" /> </span>
+         <input type="text" id="momPhone" value="{{dict.momPhone}}"  placeholder="母亲手机号" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>班主任<i>:</i></label>
-         <input type="text" id="tutorName" name="Reminder" placeholder="班主任" required="" /> </span>
+         <input type="text" id="tutorName" value="{{dict.tutorName}}"  placeholder="班主任" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>班主任手机号<i>:</i></label>
-         <input type="text" id="tutorPhone" name="Reminder" placeholder="班主任手机号" required="" /> </span>
+         <input type="text" id="tutorPhone" {{dict.tutorPhone}}  placeholder="班主任手机号" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>志愿一<i>:</i></label>
-         <select id="majorSelect1" required=""> <option value="high">男</option> <option value="low">女</option> </select>
+            <select id="majorSelect1" name="majorSelect1">
+                {% for item in dict.major.0.departmentlist %}
+                   {% if forloop.counter0 == dict.major.0.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
 
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>志愿二<i>:</i></label>
-         <select id="majorSelect2" required=""> <option value="high">男</option> <option value="low">女</option> </select>
-
+         <select id="majorSelect2" name="majorSelect2">
+                {% for item in dict.major.1.departmentlist %}
+                   {% if forloop.counter0 == dict.major.1.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>志愿三<i>:</i></label>
-        <select id="majorSelect3" required=""> <option value="high">男</option> <option value="low">女</option> </select>
-
+<select id="majorSelect3" name="majorSelect3">
+                {% for item in dict.major.2.departmentlist %}
+                   {% if forloop.counter0 == dict.major.2.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>志愿四<i>:</i></label>
-         <select id="majorSelect4" required=""> <option value="high">男</option> <option value="low">女</option> </select>
-
+<select id="majorSelect4" name="majorSelect4">
+                {% for item in dict.major.3.departmentlist %}
+                   {% if forloop.counter0 == dict.major.3.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>志愿五<i>:</i></label>
-        <select id="majorSelect5" required=""> <option value="high">男</option> <option value="low">女</option> </select>
-
+<select id="majorSelect5" name="majorSelect5">
+                {% for item in dict.major.4.departmentlist %}
+                   {% if forloop.counter0 == dict.major.4.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>志愿六<i>:</i></label>
-        <select id="majorSelect6" required=""> <option value="high">男</option> <option value="low">女</option> </select>
-
+<select id="majorSelect6" name="majorSelect6">
+                {% for item in dict.major.5.departmentlist %}
+                   {% if forloop.counter0 == dict.major.5.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>一模成绩<i>:</i></label>
-         <input type="text" id="testScore1" name="Reminder" placeholder="一模成绩" required="" />
+         <input type="text" id="testScore1" value="{{dict.testScore1}}"  placeholder="一模成绩" required="" />
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>一模排名<i>:</i></label>
-         <input type="text" id="rank1" name="Reminder" placeholder="名次" required="" style="
+         <input type="text" id="rank1" value="{{dict.rank1}}"  placeholder="名次" required="" style="
     width: 36.4%;
 "/>
-         <input type="text" id="rank11" name="Reminder" placeholder="总人数" required="" style="
+         <input type="text" id="rank11" value="{{dict.rank11}}"  placeholder="总人数" required="" style="
     width: 36.4%;
 "/>
         </span>
@@ -175,39 +267,39 @@
 
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>二模成绩<i>:</i></label>
-         <input type="text" id="testScore2" name="Reminder" placeholder="二模成绩" required="" /> </span>
+         <input type="text" id="testScore2" value="{{dict.testScore2}}"  placeholder="二模成绩" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>二模排名<i>:</i></label>
-         <input type="text" id="rank2" name="Reminder" placeholder="名次" required="" style="
+         <input type="text" id="rank2" value="{{dict.rank2}}"  placeholder="名次" required="" style="
     width: 36.4%;
 "/>
-         <input type="text" id="rank22" name="Reminder" placeholder="总人数" required="" style="
+         <input type="text" id="rank22" value="{{dict.rank22}}"  placeholder="总人数" required="" style="
     width: 36.4%;
 "/>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>三模成绩<i>:</i></label>
-         <input type="text" id="testScore3" name="Reminder" placeholder="三模成绩" required="" /> </span>
+         <input type="text" id="testScore3" value="{{dict.testScore3}}"  placeholder="三模成绩" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>三模排名<i>:</i></label>
-         <input type="text" id="rank3" name="Reminder" placeholder="名次" required="" style="
+         <input type="text" id="rank3" value="{{dict.rank3}}"  placeholder="名次" required="" style="
     width: 36.4%;
 "/>
-         <input type="text" id="rank33" name="Reminder" placeholder="总人数" required="" style="
+         <input type="text" id="rank33" value="{{dict.rank33}}"  placeholder="总人数" required="" style="
     width: 36.4%;
 "/>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>实考分<i>:</i></label>
-         <input type="text" id="realScore" name="Reminder" placeholder="实考分" required="" /> </span>
+         <input type="text" id="realScore" value="{{dict.realScore}}"  placeholder="实考分" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>对应老师<i>:</i></label>
-         <input id="relTeacher" readonly="readonly" type="text" name="Reminder" placeholder="对应老师" required="" /> </span>
+         <input id="relTeacher" readonly="readonly" value="{{dict.relTeacher}}" type="text"  placeholder="对应老师" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>修改密码<i>:</i></label>
@@ -216,7 +308,7 @@
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>密码确认<i>:</i></label>
-         <input type="password" name="password1" id="password2" /> </span>
+         <input type="password" name="password2" id="password2" /> </span>
        </div>
 
 
@@ -233,7 +325,7 @@
          <a href="#">清华欢迎你</a>
         </div>
         <div class="w3_main_grid_right">
-         <input id="save" type="submit" value="保存" />
+         <input id="save" type="button" value="保存" />
         </div>
         <div class="clear">
         </div>
