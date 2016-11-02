@@ -89,16 +89,30 @@
         $.post("/backend/set_volunteer/", {'group_id':group_id, 'student_num':student_number}, function(ret){
           if(ret['success'].charAt(0)=='N'){
             $.growl.error({ title: "设置失败", message: ret['message'] });
+              refresh(group_id);
+
           }
           else{
             $.growl.notice({ title: "设置成功", message: "信息已更新" });
+                        refresh(group_id);
+
           }
-          refresh();
         });
       }
       
     }
-    function refresh(){
+    function refresh(group_id){
+        var newNode = document.createElement("div");
+            var str = '<div class="row" id="t1vol1">'+
+'                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>'+
+'                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} （志愿者）</label>'+
+'                            <div class="col-sm-3" style="text-align: center"><button onclick="modify(\'{{value.id}}\', 0)" type="button">修改</button></div>'+
+'                           <div class="col-sm-3" style="text-align: center"><button onclick="'+"dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}vol{{value.id}}', 0)\" type=\"button\">删除</button></div>"+
+'                        </div>';
+        alert(str);
+            newNode.innerHTML = (str);
+           $(newNode).insertAfter(document.getElementById("body"+group_id));
+
     }
         function newteam() {
             data={'newteam':1};

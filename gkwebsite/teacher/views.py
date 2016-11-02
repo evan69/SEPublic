@@ -470,6 +470,7 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
+        print request.POST
         flag = False
         if 'password' not in request.POST.keys():
             flag = False

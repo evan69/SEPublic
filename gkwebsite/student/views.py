@@ -242,7 +242,7 @@ def profile(request):
         stu.setStudent(account, Student.COMMENT, dic['comment'])
 
 
-        return JsonResponse(dict)
+        return JsonResponse(dic)
     else:
         '''
         获取信息并返回
