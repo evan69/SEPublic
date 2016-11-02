@@ -321,23 +321,28 @@ def profile(request):
 
         password = request.POST.get('password', 'byr')
 
-        vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
-        vol.setVolunteer(vol_account, Volunteer.SEX, sex)
-        vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
-        vol.setVolunteer(vol_account, Volunteer.NATION, nation)
-        vol.setVolunteer(vol_account, Volunteer.PROVINCE, province)
+        student_id = request.POST.get('studentID', 'byr')
 
-        vol.setVolunteer(vol_account, Volunteer.MAJOR, department)
-        vol.setVolunteer(vol_account, Volunteer.CLASSROOM, classroom)
-        vol.setVolunteer(vol_account, Volunteer.PHONE, phone)
-        vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
-        vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
+        flag = True
+        if len(vol.getVolunteerbyField(Volunteer.STUDENT_ID, student_id)) == 0:
+            vol.setVolunteer(vol_account, Volunteer.STUDENT_ID, student_id)
+            vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
+            vol.setVolunteer(vol_account, Volunteer.SEX, sex)
+            vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
+            vol.setVolunteer(vol_account, Volunteer.NATION, nation)
+            vol.setVolunteer(vol_account, Volunteer.PROVINCE, province)
 
-        vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
+            vol.setVolunteer(vol_account, Volunteer.MAJOR, department)
+            vol.setVolunteer(vol_account, Volunteer.CLASSROOM, classroom)
+            vol.setVolunteer(vol_account, Volunteer.PHONE, phone)
+            vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
+            vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
 
-        describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
-        vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
+            vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
 
+            describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
+            vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
+            flag = False
 
         vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
         dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
@@ -354,7 +359,10 @@ def profile(request):
                 'describe': vol_dic[Volunteer.COMMENT], }
         print 'NEW', dict
 
-
+        if flag:
+            dict['success'] = 'Y'
+        else:
+            dict['success'] = 'N'
         return JsonResponse(dict)
     else:
         '''

@@ -925,7 +925,7 @@ def checkscore(request):
 
 
 
-def generateTimerXLS(timer_id, teacher_id):
+def generateTimerXLS(timer_id, teacher_id, filename):
     timer = back.getTimerbyDict({Timer.ID: int(timer_id)})[0]
     info_dic = back.getTimerAllDictByObject(timer)
     (day_list, nouse) = back.date_start_to_end(info_dic[Timer.START_TIME], info_dic[Timer.END_TIME])
@@ -947,7 +947,7 @@ def generateTimerXLS(timer_id, teacher_id):
                 this_day_list.append(' ')
 
         info.append(this_day_list)
-    outputXLS('', 'haha.xls', 'sheet1', info, ['name'] + day_list)
+    outputXLS('', filename, 'sheet1', info, ['name'] + day_list)
 
 
 def get_num_teacher_shenhe_estimate():
