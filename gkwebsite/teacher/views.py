@@ -839,7 +839,7 @@ def distribute_student(request):
 
 
             
-def download_registration_xls(request, file_name):
+def download_xls(request, file_name):
     file_path = os.path.join('files', file_name)
     response = FileResponse(open(file_path, 'rb'))
     response['Content-type'] = 'application/vnd.ms-excel'
