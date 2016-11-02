@@ -48,8 +48,8 @@
                         <tr>
                           <th>活动名称</th>
                           <th>发起人</th>
-                          <th>开始时间</th>
-                          <th>结束时间</th>
+                          <th>开始日期</th>
+                          <th>结束日期</th>
                           <th>已填写人数</th>
                           <th>删除</th>
                           <th>导出结果</th>
@@ -78,39 +78,99 @@
         </div>
          <!-- /. PAGE WRAPPER  -->
     </div>
-     <!-- /. WRAPPER  -->
+    <!-- /. WRAPPER  -->
+    <div id="dialog" title="添加新活动问卷">
+      <form id="form">
+        <fieldset style="padding:0; border:0; margin-top:25px;">
+          <label for="name" style="display:block">活动名称</label>
+          <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;"></input>
+          <label for="begindate" style="display:block">开始日期</label>
+          <input type="text" name="begindate" id="begindate" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;"></input>
+          <label for="enddate" style="display:block">结束日期</label>
+          <input type="text" name="enddate" id="enddate" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;"></input>
+          <!-- Allow form submission with keyboard without duplicating the dialog button -->
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+      </form>
+    </div>
     {% include 'teacher/include/jsinclude.html' %}
-<script>
+    <script src="{% static 'jquery-ui-1.12.1/datepicker-zh.js' %}"></script>
+    <script>
     var user_array = [];
     function show_list(){
-        $('#ac_list').empty();
-        console.log('hehe');
-        var tag1, tag2, tag3;
-        var listitem = "";
-        for(var i = 0; i < user_array.length; ++i){
-            //tag1 = String(i)+'_A';
-            tag1 = String(user_array[i]['activity_id'])+'_Aname';
-            tag2 = String(user_array[i]['activity_id'])+'_Bname';
-            var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
-            var data = user_array[i];
-            var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">填写</div></div>"
-            listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['proposer']+"</td>";
-            listitems+="<td>"+user_array[i]['start_time']+"</td><td>"+user_array[i]['end_time']+"</td><td>"+user_array[i]['number']+"</td>";
-			listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-danger btn-xs\">删除</button></td>\n";
-			listitems+="<td><button type=\"button\" id=\""+tag2+"\" class = \"btn btn-info btn-xs\">导出结果</button></td></tr>\n";
-            $('#ac_list').append(listitems);
-            $('#'+tag1).click(function(){
-                var parse = this.id.split("_");
-                var row = parse[0];
-                $.post("/teacher/delete_activity/", {'activity_id':row}, function(ret){
-                alert("成功删除");
-                $.post("/teacher/get_all_activity/", {}, function(ret){
-                    user_array = ret.activity;
-                    show_list();
-                });
-            });
-            });
+      $('#ac_list').empty();
+      var tag1, tag2, tag3;
+      var listitem = "";
+      for(var i = 0; i < user_array.length; ++i){
+        //tag1 = String(i)+'_A';
+        tag1 = String(user_array[i]['activity_id'])+'_Aname';
+        tag2 = String(user_array[i]['activity_id'])+'_Bname';
+        var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
+        var data = user_array[i];
+        var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">填写</div></div>"
+        listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['proposer']+"</td>";
+        listitems+="<td>"+user_array[i]['start_time']+"</td><td>"+user_array[i]['end_time']+"</td><td>"+user_array[i]['number']+"</td>";
+        listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-danger btn-xs\">删除</button></td>\n";
+        listitems+="<td><button type=\"button\" id=\""+tag2+"\" class = \"btn btn-info btn-xs\">导出结果</button></td></tr>\n";
+        $('#ac_list').append(listitems);
+        $('#'+tag1).click(function(){
+          var parse = this.id.split("_");
+          var row = parse[0];
+          $.post("/teacher/delete_activity/", {'activity_id':row}, function(ret){
+            if(ret["success"].charAt(0)=='N'){
+              $.growl.error({ title: "删除失败", message: ret["message"] });
+            }
+            else{
+              $.growl.notice({ title: "删除成功", message: "活动已删除" });
+              $.post("/teacher/get_all_activity/", {}, function(ret){
+                  user_array = ret.activity;
+                  show_list();
+              });
+            }
+          });
+        });
+        $('#'+tag2).click(function(){
+          var parse = this.id.split("_");
+          var id = parse[0];
+          $("button").attr("disabled", "true");
+          $.post("/backend/export_activity_result/", {'id':id}, function(ret){
+            if(ret["success"].charAt(0)=='N'){
+              $.growl.error({ title: "导出失败", message: ret["message"] });
+            }
+            else{
+              location.href="/teacher/download_xls/file"+ret['filename'];
+            }
+            $("button").removeAttr("disabled");
+          });
+        });
+      }
+    }
+    function submit_dialog(){
+      var act_name = $('#name').val();
+      var begin_date = $('#begindate').val();
+      var end_date = $('#enddate').val();
+      $("#dialog").dialog("close");
+      $.post("/backend/add_activity/", {'name':act_name, 'date_begin':begin_date, 'date_end':end_date}, function(ret){
+        if(ret['success'].charAt(0)=='N'){
+          $.growl.error({ title: "添加失败", message: ret["message"] });
         }
+        else{
+          $.growl.notice({ title: "添加成功", message: "问卷已向志愿者发放" });
+          $.post("/teacher/get_all_activity/", {}, function(ret){
+              user_array = ret.activity;
+              show_list();
+          });
+        }
+      });
+    }
+    function getDate( element ) {
+      var date;
+      try {
+        date = $.datepicker.parseDate( "yy-mm-dd", element.value );
+      } catch( error ) {
+        date = null;
+      }
+      return date;
     }
     $(document).ready(function(){
         //CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
@@ -131,6 +191,40 @@
         $.post("/teacher/get_all_activity/", {}, function(ret){
             user_array = ret.activity;
             show_list();
+        });
+        $( "#dialog" ).dialog({
+          autoOpen: false,
+          height: 400,
+          width: 350,
+          modal: true,
+          buttons: {
+            "确认":submit_dialog,
+            "取消": function() {
+              $("#dialog").dialog( "close" );
+            }
+          },
+          show: {
+            effect: "blind",
+            duration: 1000
+          },
+          close: function() {
+            $("#form")[0].reset();
+          }
+        });
+        var begin = $( "#begindate" ).datepicker({
+          })
+          .on( "change", function() {
+            end.datepicker( "option", "minDate", getDate( this ) );
+          });
+        var end = $( "#enddate" ).datepicker({
+        })
+        .on( "change", function() {
+          begin.datepicker( "option", "maxDate", getDate( this ) );
+        });
+        $("#begindate").datepicker($.datepicker.regional[ "zh-CN" ]);
+        $("#enddate").datepicker($.datepicker.regional[ "zh-CN" ]);
+        $("#add").click(function(){
+          $( "#dialog" ).dialog("open");
         });
     });
 </script>
