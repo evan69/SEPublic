@@ -876,41 +876,46 @@ def checkscore(request):
 
     后端需要从数据库获取数据补全代码
     '''
-    list = []
-    student_list = stu.getAllInStudent()
-    for student in student_list:
-        info_dic = stu.getStudentAllDictByAccount(getattr(student, Student.ACCOUNT))
-        name = info_dic[Student.REAL_NAME]
-        sex = SEX_LIST[int(info_dic[Student.SEX]['sex'])]
-        province = PROVINCE_LIST[int(info_dic[Student.PROVINCE]['province'])]
-        school = info_dic[Student.SCHOOL]
-        ident = info_dic[Student.ID_NUMBER]
-        estimate_score = info_dic[Student.ESTIMATE_SCORE]
-        try:
-            estimate_score = eval(estimate_score)
-        except:
-            estimate_score = eval('{}')
-        for key in estimate_score.keys():
-            testname = key
-            time = str(estimate_score[key]['time']) + ' s'
-            score = str(estimate_score[key]['score']) + ' points'
-            if 'shenhe' in estimate_score[key].keys():
-                continue
-            else:
-                dict = {'name':name,
-                        'sex': sex,
-                        'province': province,
-                        'school':school,
-                        'ident': ident,
-                        'testname': testname,
-                        'time': time,
-                         'score':score,
-                }
-                list.append(dict)
+    if ('name' in request.GET) and ('sex' in request.GET):
+        print 'hhh'
+        return render(request,
+                      'teacher/checkscore.html')
+    else:
+        list = []
+        student_list = stu.getAllInStudent()
+        for student in student_list:
+            info_dic = stu.getStudentAllDictByAccount(getattr(student, Student.ACCOUNT))
+            name = info_dic[Student.REAL_NAME]
+            sex = SEX_LIST[int(info_dic[Student.SEX]['sex'])]
+            province = PROVINCE_LIST[int(info_dic[Student.PROVINCE]['province'])]
+            school = info_dic[Student.SCHOOL]
+            ident = info_dic[Student.ID_NUMBER]
+            estimate_score = info_dic[Student.ESTIMATE_SCORE]
+            try:
+                estimate_score = eval(estimate_score)
+            except:
+                estimate_score = eval('{}')
+            for key in estimate_score.keys():
+                testname = key
+                time = str(estimate_score[key]['time']) + ' s'
+                score = str(estimate_score[key]['score']) + ' points'
+                if 'shenhe' in estimate_score[key].keys():
+                    continue
+                else:
+                    dict = {'name':name,
+                            'sex': sex,
+                            'province': province,
+                            'school':school,
+                            'ident': ident,
+                            'testname': testname,
+                            'time': time,
+                             'score':score,
+                    }
+                    list.append(dict)
 
-    id_ = request.session.get('user_id', -1)
-    return render(request,
-                  'teacher/checkscore.html', {'dict':list, 'id':id_})
+        id_ = request.session.get('user_id', -1)
+        return render(request,
+                      'teacher/checkscore.html', {'dict':list, 'id':id_})
 
 
 

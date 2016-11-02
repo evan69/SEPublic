@@ -85,7 +85,7 @@ def student_logout(request):
         pass
     return redirect('/login')
 
-
+@csrf_exempt
 def profile(request):
 
     id = request.session.get('user_id', -1)
@@ -99,6 +99,7 @@ def profile(request):
         保存信息并返回json
         '''
         info_dict = request.POST.copy()
+        print request.POST
         for i in range(1, 7):
             if info_dict['majorSelect' + str(i)].strip() == '':
                 info_dict['majorSelect' + str(i)] = '0'
