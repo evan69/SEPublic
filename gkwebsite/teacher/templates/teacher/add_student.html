@@ -122,7 +122,7 @@
           $('#export').click(function(){
             if(codelist.length > 0){
               $.post("/backend/export_registration_code/", {'id':{{id}}, 'length': codelist.length}, function(ret){
-                location.href="/teacher/download_registration_xls/file"+ret['filename'];
+                location.href="/teacher/download_xls/file"+ret['filename'];
               });
             }
           });
