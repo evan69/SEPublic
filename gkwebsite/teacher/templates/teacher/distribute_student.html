@@ -82,6 +82,23 @@
       $('#dialog').dialog("open");
     }
     function submit_dialog(){
+      var student_number = $('#student_id').val();
+      var group_id = $('#group_id').text();
+      $('#dialog').dialog("close");
+      if(student_number.length > 0){
+        $.post("/backend/set_volunteer/", {'group_id':group_id, 'student_num':student_number}, function(ret){
+          if(ret['success'].charAt(0)=='N'){
+            $.growl.error({ title: "设置失败", message: ret['message'] });
+          }
+          else{
+            $.growl.notice({ title: "设置成功", message: "信息已更新" });
+          }
+          refresh();
+        });
+      }
+      
+    }
+    function refresh(){
     }
         function newteam() {
             data={'newteam':1};
@@ -173,7 +190,7 @@
           
     $( "#dialog" ).dialog({
       autoOpen: false,
-      height: 200,
+      height: 300,
       width: 350,
       modal: true,
       buttons: {
