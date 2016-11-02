@@ -376,4 +376,4 @@ def profile(request):
                 'password': vol_dic[Volunteer.PASSWORD],
                 'studentID': vol_dic[Volunteer.STUDENT_ID],}
         dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
-        return render(request, 'v_userinfo.html', {'dict': dict})
+        return render(request, 'volunteer/v_userinfo.html', {'dict': dict})

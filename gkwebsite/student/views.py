@@ -187,7 +187,7 @@ def profile(request):
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
-        return render(request, 'student/userinfo.html', {'dict': dict})
+        return render(request, 'student/userinfo.html', {'dict': dic})
 
 @csrf_exempt
 def get_all_tests(request):

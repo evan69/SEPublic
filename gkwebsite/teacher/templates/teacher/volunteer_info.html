@@ -112,9 +112,9 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">分管组：</label>
                <div class="col-sm-2">
-                  <select class="form-control" id="distribute1" name="distribute1">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+                                  <select class="form-control" id="distribute1" name="distribute1">
+                {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group1 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -126,8 +126,8 @@
               </div>
               <div class="col-sm-2">
                   <select class="form-control" id="distribute2" name="distribute2">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+              {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group2 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -139,8 +139,8 @@
               </div>
                  <div class="col-sm-2">
                   <select class="form-control" id="distribute3" name="distribute3">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+                {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group3 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -152,8 +152,8 @@
               </div>
                  <div class="col-sm-2">
                   <select class="form-control" id="distribute4" name="distribute4">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+              {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group4 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -165,8 +165,8 @@
               </div>
                  <div class="col-sm-2">
                   <select class="form-control" id="distribute5" name="distribute5">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+            {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group5 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>

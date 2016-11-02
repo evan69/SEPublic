@@ -628,7 +628,7 @@ def volunteer_info(request):
 
     vol_dic = vol.getVolunteerAllDictByAccount(account)
 
-    dict = {
+    dic = {
         'id': vol_dic[Volunteer.ID],
         'user_name': vol_dic[Volunteer.ACCOUNT],
         'realName': vol_dic[Volunteer.REAL_NAME],
@@ -661,10 +661,8 @@ def volunteer_info(request):
     for item in all_group:
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
 
-
-
     id_ = request.session.get('user_id', -1)
-    return render(request, 'teacher/volunteer_info.html', {'dict': dict, 'id':id_})
+    return render(request, 'teacher/volunteer_info.html', {'dict': dic, 'id':id_})
 
 
 '''

@@ -61,9 +61,9 @@ def logincheck(request):
                         #request.session['password'] = password
                         return redirect('/student/')
                     else:
-                        return HttpResponse(u"学生界面登录失败啦")
+                        return HttpResponse(u"学生界面登录失败啦<a href='/login'>点击</a>")
                 else:
-                    return HttpResponse(u"学生界面登录失败")
+                    return HttpResponse(u"学生界面登录失败<a href='/login'>点击</a>")
             elif 'teacher' in request.POST:
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
@@ -77,9 +77,9 @@ def logincheck(request):
                         #request.session['password'] = password
                         return redirect('/teacher/')
                     else:
-                        return HttpResponse(u"教师界面登录失败")
+                        return HttpResponse(u"教师界面登录失败<a href='/login'>点击</a>")
                 else:
-                    return HttpResponse(u"教师界面登录失败")
+                    return HttpResponse(u"教师界面登录失败<a href='/login'>点击</a>")
             elif 'volunteer' in request.POST:
                 username = request.POST.get('login_username')
                 password = request.POST.get('login_password')
@@ -94,9 +94,9 @@ def logincheck(request):
                         return redirect('/volunteer')
                         #return HttpResponse(u"志愿者界面")
                     else:
-                        return HttpResponse(u"志愿者界面登录失败")
+                        return HttpResponse(u"志愿者界面登录失败<a href='/login'>点击</a>")
                 else:
-                    return HttpResponse(u'验证码不正确')
+                    return HttpResponse(u"验证码不正确<a href='/login'>点击</a>")
             else:
                 return render_to_response('src/login.html');
     else:
