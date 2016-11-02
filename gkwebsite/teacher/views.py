@@ -286,6 +286,7 @@ def student_info_edit(request):
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         id_ = request.session.get('user_id', -1)
+
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic, 'id': id_})

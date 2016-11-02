@@ -191,6 +191,7 @@ def profile(request):
             # 'relTeacher': info_dict.get('relTeacher'),
             'comment': info_dict.get('comment'),
         }
+        # print 'wocao ni mei', dic
 
         birth_list = info_dict['birth'].split('/')
         dic['birth'] = datetime.date(int(birth_list[2]), int(birth_list[0]), int(birth_list[1]))
@@ -288,6 +289,7 @@ def profile(request):
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+        print 'jiao baba', dic
         return render(request, 'student/userinfo.html', {'dict': dic})
 
 @csrf_exempt
