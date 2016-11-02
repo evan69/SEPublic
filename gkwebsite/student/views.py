@@ -17,6 +17,7 @@ import database.student_backend as stu
 import database.image_backend as pic
 import database.teacher_backend as tch
 import database.backend as back
+import database.volunteer_backend as vol
 
 
 # Create your views here.
@@ -38,10 +39,18 @@ def student_score(request):
 
 
 def student_rank(request):
-    dict = {'name':'李三胖',
-            'score':100,
-            'rank1':1,
-            'rank11':11,
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    student_dic = stu.getStudentAllDictByAccount(stu.idToAccountStudent(str(id)))
+    account = stu.idToAccountStudent(str(id))
+    student = stu.getStudentAll(account)
+    print stu.getStudentEstimateRank(student)
+    rank, sum_rank = stu.getStudentEstimateRank(student)
+    dict = {'name': student_dic[Student.REAL_NAME],
+            'score': getStudentEstimateScore(student),
+            'rank1': rank,
+            'rank11':sum_rank,
             }
     return render(request, 'student/rank.html', {'dict': dict})
 
@@ -70,6 +79,7 @@ def student_contact(request):
                 后端需要在这里改代码，从数据库读取正确的dict，并返回
     '''
     teacher_list = tch.getAllInTeacher()
+    vol_list = vol.getAllInVolunteer()
     list = []
     for teacher in teacher_list:
         account = getattr(teacher, Teacher.ACCOUNT)
@@ -77,7 +87,19 @@ def student_contact(request):
         phone = tch.getTeacher(account, Teacher.PHONE)
         email = tch.getTeacher(account, Teacher.EMAIL)
         address = tch.getTeacher(account, Teacher.AREA)
-        dict = {'profession':'laoshi','name':name, 'phone':phone,'email':email,'address':address}
+        dict = {'profession':u'老师','name':name, 'phone':phone,'email':email,'address':address}
+        list.append(dict)
+
+    for volunteer in vol_list:
+        account = getattr(volunteer, Volunteer.ACCOUNT)
+        tmp_dic = vol.getVolunteerAllDictByAccount(account)
+        name = tmp_dic[Volunteer.REAL_NAME]
+        if name.strip() == '':
+            continue
+        phone = tmp_dic[Volunteer.PHONE]
+        email = tmp_dic[Volunteer.EMAIL]
+        address = tmp_dic[Volunteer.ADDRESS]
+        dict = {'profession':u'志愿者','name':name, 'phone':phone,'email':email,'address':address}
         list.append(dict)
     return render(request,'student/contact.html', {'dict': list})
 
@@ -102,8 +124,10 @@ def profile(request):
         '''
         保存信息并返回json
         '''
+        print "wp",request.POST
+
         info_dict = request.POST.copy()
-        print request.POST
+        print info_dict
         for i in range(1, 7):
             if info_dict['majorSelect' + str(i)].strip() == '':
                 info_dict['majorSelect' + str(i)] = '0'
@@ -169,7 +193,7 @@ def profile(request):
         }
 
         birth_list = info_dict['birth'].split('/')
-        dic['birth'] = datetime.date(birth_list[2], birth_list[0], birth_list[1])
+        dic['birth'] = datetime.date(int(birth_list[2]), int(birth_list[0]), int(birth_list[1]))
 
         stu.setStudent(account, Student.REAL_NAME, dic['name'])
         stu.setStudent(account, Student.ID_NUMBER, dic['identification'])
@@ -224,12 +248,13 @@ def profile(request):
         获取信息并返回
         '''
         stu_dic = stu.getStudentAllDictByAccount(account)
+        (rank, tmp) = stu.getStudentEstimateRank(student)
         dic = {
             'name': stu_dic[Student.REAL_NAME],
             'identification': stu_dic[Student.ID_NUMBER],
             'sex': stu_dic[Student.SEX],
             'nation': stu_dic[Student.NATION],
-            'birth': stu_dic[Student.BIRTH],
+            'birth': stu_dic[Student.BIRTH].strftime("%m/%d/%Y"),
             'province': stu_dic[Student.PROVINCE],
             'phone': stu_dic[Student.PHONE],
             'email': stu_dic[Student.EMAIL],
@@ -251,7 +276,7 @@ def profile(request):
             'relTeacher': stu_dic[Student.DUIYING_TEACHER],
             'comment': stu_dic[Student.COMMENT],
             'estimateScore': getStudentEstimateScore(stu.getStudentAll(account)),
-            'estimateRank': stu.getStudentEstimateRank(student)
+            'estimateRank': rank
         }
         group_list = stu.getStudentGroupIDListString(student).split(' ')
         for i in range(1, 6):
