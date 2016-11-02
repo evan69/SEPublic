@@ -113,7 +113,7 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	color:#fff;
 	font-style:normal;
 }
-.w3layouts_main_grid input[type="text"],#category,#category1,#risk,#sex,#majorSelect1,#majorSelect2,#majorSelect3,#majorSelect4,#majorSelect5,#majorSelect6,#nation, #priority,.agileits_w3layouts_main_gridr input[type="time"], .w3layouts_main_grid input[type="email"], .w3layouts_main_grid textarea {
+.w3layouts_main_grid input[type="text"],#category,#category1,#risk,#password1,#password2,#sex,#majorSelect1,#majorSelect2,#majorSelect3,#majorSelect4,#majorSelect5,#majorSelect6,#nation, #priority,.agileits_w3layouts_main_gridr input[type="time"], .w3layouts_main_grid input[type="email"], .w3layouts_main_grid textarea {
     outline: none;
     width: 75%;
 	/*background:#a79e9e;*/
@@ -128,7 +128,7 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	/*color:#4B4B4B !important;*/
 	color:lightgrey !important;
 }
-#category,#category1,#risk,#priority,#sex,#majorSelect1,#majorSelect2,#majorSelect3,#majorSelect4,#majorSelect5,#majorSelect6,#nation{
+#category,#category1,#risk,#priority,#password1,#password2,#sex,#majorSelect1,#majorSelect2,#majorSelect3,#majorSelect4,#majorSelect5,#majorSelect6,#nation{
 /*    width: 79% !important;*/
 	width: 74.8% !important;
 }
