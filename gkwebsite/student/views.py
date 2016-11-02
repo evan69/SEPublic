@@ -38,8 +38,12 @@ def student_score(request):
 
 
 def student_rank(request):
-    t = get_template('student/rank.html')
-    return HttpResponse(t.render({}))
+    dict = {'name':'李三胖',
+            'score':100,
+            'rank1':1,
+            'rank11':11,
+            }
+    return render(request, 'student/rank.html', {'dict': dict})
 
 
 def student_admit(request):
@@ -73,7 +77,7 @@ def student_contact(request):
         phone = tch.getTeacher(account, Teacher.PHONE)
         email = tch.getTeacher(account, Teacher.EMAIL)
         address = tch.getTeacher(account, Teacher.AREA)
-        dict = {'name':name, 'phone':phone,'email':email,'address':address}
+        dict = {'profession':'laoshi','name':name, 'phone':phone,'email':email,'address':address}
         list.append(dict)
     return render(request,'student/contact.html', {'dict': list})
 
