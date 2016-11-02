@@ -33,7 +33,7 @@
       <form action="#" method="post" class="w3_form_post">
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>姓名<i>:</i></label>
-         <input id="name" type="text" name="name" placeholder="输入你的姓名" required="" />
+         <input id="name" type="text" name="name" placeholder="输入你的姓名" required="" value="{{dict.name}}"/>
         </span>
        </div>
 
@@ -50,7 +50,7 @@
 
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>身份证<i>:</i></label>
-         <input id="identification" type="text" name="name" placeholder="输入你的身份证号" required="" /> </span>
+         <input id="identification" value="{{dict.identification}}" type="text" name="name" placeholder="输入你的身份证号" required="" /> </span>
        </div>
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>性别<i>:</i></label>
@@ -65,11 +65,11 @@
        </div>
        <div class="agileits_w3layouts_main_grid w3ls_main_grid">
         <span class="agileinfo_grid"> <label>出生日期<i>:</i></label>
-         <input class="date" id="datepicker" name="Text" type="text" value="mm/dd/yyyy" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="" /> </span>
+         <input class="date" id="datepicker" name="Text" type="text" value="{{dict.birth}}" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>手机<i>:</i></label>
-         <input id="phone" type="text" name="Reminder" placeholder="手机" required="" />
+         <input id="phone" type="text" value="{{dict.phone}}" name="Reminder" placeholder="手机" required="" />
         </span>
        </div>
        <div class="agileinfo_main_grid">
@@ -83,43 +83,43 @@
 
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>邮箱<i>:</i></label>
-         <input type="text" id="email" name="Reminder" placeholder="个人常用邮箱" required="" /> </span>
+         <input type="text" id="email" name="Reminder" value="{{dict.email}}" placeholder="个人常用邮箱" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>地址<i>:</i></label>
-         <input type="text" id="address" name="Reminder" placeholder="家庭地址" required="" /> </span>
+         <input type="text" id="address" value="{{dict.address}}" name="Reminder" placeholder="家庭地址" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>学校<i>:</i></label>
-         <input type="text" id="school" name="Reminder" placeholder="高中学校名称" required="" /> </span>
+         <input type="text" id="school" value="{{dict.school}}" name="Reminder" placeholder="高中学校名称" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>班级<i>:</i></label>
-         <input type="text" id="stu_class" name="Reminder" placeholder="班级" required="" /> </span>
+         <input type="text" id="stu_class" value="{{dict.stu_class}}" name="Reminder" placeholder="班级" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>父亲姓名<i>:</i></label>
-         <input type="text" id="dadName" name="Reminder" placeholder="父亲姓名" required="" /> </span>
+         <input type="text" id="dadName" value="{{dict.dadName}}" name="Reminder" placeholder="父亲姓名" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>父亲手机号<i>:</i></label>
-         <input type="text" id="dadPhone" name="Reminder" placeholder="父亲手机号" required="" /> </span>
+         <input type="text" id="dadPhone" value="{{dict.dadPhone}}" name="Reminder" placeholder="父亲手机号" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>母亲姓名<i>:</i></label>
-         <input type="text" id="momName" name="Reminder" placeholder="母亲姓名" required="" /> </span>
+         <input type="text" id="momName" value="{{dict.momName}}" name="Reminder" placeholder="母亲姓名" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>母亲手机号<i>:</i></label>
-         <input type="text" id="momPhone" name="Reminder" placeholder="母亲手机号" required="" /> </span>
+         <input type="text" id="momPhone" value="{{dict.momPhone}}" name="Reminder" placeholder="母亲手机号" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>班主任<i>:</i></label>
-         <input type="text" id="tutorName" name="Reminder" placeholder="班主任" required="" /> </span>
+         <input type="text" id="tutorName" value="{{dict.tutorName}}" name="Reminder" placeholder="班主任" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>班主任手机号<i>:</i></label>
-         <input type="text" id="tutorPhone" name="Reminder" placeholder="班主任手机号" required="" /> </span>
+         <input type="text" id="tutorPhone" {{dict.tutorPhone}} name="Reminder" placeholder="班主任手机号" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>志愿一<i>:</i></label>
@@ -159,15 +159,15 @@
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>一模成绩<i>:</i></label>
-         <input type="text" id="testScore1" name="Reminder" placeholder="一模成绩" required="" />
+         <input type="text" id="testScore1" value="{{dict.testScore1}}" name="Reminder" placeholder="一模成绩" required="" />
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>一模排名<i>:</i></label>
-         <input type="text" id="rank1" name="Reminder" placeholder="名次" required="" style="
+         <input type="text" id="rank1" value="{{dict.rank1}}" name="Reminder" placeholder="名次" required="" style="
     width: 36.4%;
 "/>
-         <input type="text" id="rank11" name="Reminder" placeholder="总人数" required="" style="
+         <input type="text" id="rank11" value="{{dict.rank11}}" name="Reminder" placeholder="总人数" required="" style="
     width: 36.4%;
 "/>
         </span>
@@ -175,39 +175,39 @@
 
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>二模成绩<i>:</i></label>
-         <input type="text" id="testScore2" name="Reminder" placeholder="二模成绩" required="" /> </span>
+         <input type="text" id="testScore2" value="{{dict.testScore2}}" name="Reminder" placeholder="二模成绩" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>二模排名<i>:</i></label>
-         <input type="text" id="rank2" name="Reminder" placeholder="名次" required="" style="
+         <input type="text" id="rank2" value="{{dict.rank2}}" name="Reminder" placeholder="名次" required="" style="
     width: 36.4%;
 "/>
-         <input type="text" id="rank22" name="Reminder" placeholder="总人数" required="" style="
+         <input type="text" id="rank22" value="{{dict.rank22}}" name="Reminder" placeholder="总人数" required="" style="
     width: 36.4%;
 "/>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>三模成绩<i>:</i></label>
-         <input type="text" id="testScore3" name="Reminder" placeholder="三模成绩" required="" /> </span>
+         <input type="text" id="testScore3" value="{{dict.testScore3}}" name="Reminder" placeholder="三模成绩" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>三模排名<i>:</i></label>
-         <input type="text" id="rank3" name="Reminder" placeholder="名次" required="" style="
+         <input type="text" id="rank3" value="{{dict.rank3}}" name="Reminder" placeholder="名次" required="" style="
     width: 36.4%;
 "/>
-         <input type="text" id="rank33" name="Reminder" placeholder="总人数" required="" style="
+         <input type="text" id="rank33" value="{{dict.rank33}}" name="Reminder" placeholder="总人数" required="" style="
     width: 36.4%;
 "/>
         </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>实考分<i>:</i></label>
-         <input type="text" id="realScore" name="Reminder" placeholder="实考分" required="" /> </span>
+         <input type="text" id="realScore" value="{{dict.realScore}}" name="Reminder" placeholder="实考分" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>对应老师<i>:</i></label>
-         <input id="relTeacher" readonly="readonly" type="text" name="Reminder" placeholder="对应老师" required="" /> </span>
+         <input id="relTeacher" readonly="readonly" value="{{dict.relTeacher}}" type="text" name="Reminder" placeholder="对应老师" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>修改密码<i>:</i></label>
