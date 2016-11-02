@@ -133,7 +133,7 @@
           var parse = this.id.split("_");
           var id = parse[0];
           $("button").attr("disabled", "true");
-          $.post("/backend/export_activity_result/", {'id':id}, function(ret){
+          $.post("/backend/export_activity_result/", {'id':id, 'teacher_id':{{id}}}, function(ret){
             if(ret["success"].charAt(0)=='N'){
               $.growl.error({ title: "导出失败", message: ret["message"] });
             }
@@ -150,7 +150,7 @@
       var begin_date = $('#begindate').val();
       var end_date = $('#enddate').val();
       $("#dialog").dialog("close");
-      $.post("/backend/add_activity/", {'name':act_name, 'date_begin':begin_date, 'date_end':end_date}, function(ret){
+      $.post("/backend/add_activity/", {'name':act_name, 'date_begin':begin_date, 'date_end':end_date, 'teacher_id':{{id}}}, function(ret){
         if(ret['success'].charAt(0)=='N'){
           $.growl.error({ title: "添加失败", message: ret["message"] });
         }
