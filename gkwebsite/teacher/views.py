@@ -30,6 +30,42 @@ def search_student(request):
 
 
 @ensure_csrf_cookie
+def manage_activity(request):
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/manage_activity.html')
+    c = {'id': id, 'n_item': 15}
+    return HttpResponse(t.render(c))
+
+
+@ensure_csrf_cookie
+def get_all_activity(request):
+    '''
+        后端在此处返回老师可见的活动列表，放在dic字典的'acticity'键对应的值里返回给前端
+    '''
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    dic = {'activity' : [{'name':'第一次组会','proposer':'李三胖','start_time':'2016/10/1','end_time':'2016/10/10','number':'12','activity_id':'12'},
+                         {'name':'一对一解答','proposer':'屁孩','start_time':'2016/10/10','end_time':'2016/10/11','number':'99','activity_id':'32'},
+                         {'name':'庆功会','proposer':'王大神','start_time':'2016/10/10','end_time':'2016/10/19','number':'3','activity_id':'9'}]}
+    return JsonResponse(dic)
+
+
+@ensure_csrf_cookie
+def delete_activity(request):
+    '''
+        后端在此处删除某个活动，该活动的id放在POST字典的'acticity'键对应的值里，返回空字典即可
+    '''
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    print request.POST.get('activity_id')
+    return JsonResponse({})
+
+
+@ensure_csrf_cookie
 def search_volunteer(request):
     id = request.session.get('user_id', -1)
     if id == -1:
