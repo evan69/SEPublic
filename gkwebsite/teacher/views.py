@@ -82,9 +82,14 @@ def delete_activity(request):
         return HttpResponse('Access denied')
     print request.POST.get('activity_id')
     timer_id = int(request.POST.get('activity_id'))
-    back.removeTimerByDic({Timer.ID: timer_id})
 
-    return JsonResponse({})
+    try:
+        back.removeTimerByDic({Timer.ID: timer_id})
+        return JsonResponse({'success': 'Y'})
+    except:
+        return JsonResponse({'success': 'N'})
+
+
 
 
 @ensure_csrf_cookie
