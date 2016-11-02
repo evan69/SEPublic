@@ -91,10 +91,14 @@
           <!-- Allow form submission with keyboard without duplicating the dialog button -->
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
+        <button type="submit" class="btn btn-primary">确认</button>
       </form>
     </div>
     {% include 'teacher/include/jsinclude.html' %}
     <script src="{% static 'jquery-ui-1.12.1/datepicker-zh.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
     <script>
     var user_array = [];
     function show_list(){
@@ -192,17 +196,26 @@
             user_array = ret.activity;
             show_list();
         });
+        $("#form").validate({
+          submitHandler:submit_dialog,
+          debug:false,
+          rules:{
+            name:{
+              required:true
+            },
+            begindate:{
+              required:true
+            },
+            enddate:{
+              required:true
+            }
+          }
+        });
         $( "#dialog" ).dialog({
           autoOpen: false,
           height: 400,
           width: 350,
           modal: true,
-          buttons: {
-            "确认":submit_dialog,
-            "取消": function() {
-              $("#dialog").dialog( "close" );
-            }
-          },
           show: {
             effect: "blind",
             duration: 1000
