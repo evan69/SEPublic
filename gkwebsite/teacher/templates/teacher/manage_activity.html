@@ -88,16 +88,28 @@
         var tag1, tag2, tag3;
         var listitem = "";
         for(var i = 0; i < user_array.length; ++i){
-            tag1 = String(i)+'_A';
+            //tag1 = String(i)+'_A';
             tag1 = String(user_array[i]['activity_id'])+'_Aname';
+            tag2 = String(user_array[i]['activity_id'])+'_Bname';
             var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
             var data = user_array[i];
             var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">填写</div></div>"
             listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['proposer']+"</td>";
             listitems+="<td>"+user_array[i]['start_time']+"</td><td>"+user_array[i]['end_time']+"</td><td>"+user_array[i]['number']+"</td>";
 			listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-danger btn-xs\">删除</button></td>\n";
-			listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">导出结果</button></td></tr>\n";
+			listitems+="<td><button type=\"button\" id=\""+tag2+"\" class = \"btn btn-info btn-xs\">导出结果</button></td></tr>\n";
             $('#ac_list').append(listitems);
+            $('#'+tag1).click(function(){
+                var parse = this.id.split("_");
+                var row = parse[0];
+                $.post("/teacher/delete_activity/", {'activity_id':row}, function(ret){
+                alert("成功删除");
+                $.post("/teacher/get_all_activity/", {}, function(ret){
+                    user_array = ret.activity;
+                    show_list();
+                });
+            });
+            });
         }
     }
     $(document).ready(function(){

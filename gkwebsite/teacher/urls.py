@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^checkscore/$', views.checkscore, name='edit_test'),
     url(r'^manage_activity/$',views.manage_activity),
     url(r'^get_all_activity/$',views.get_all_activity),
+    url(r'^delete_activity/$',views.delete_activity),
 ]
