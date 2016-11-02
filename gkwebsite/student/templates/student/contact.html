@@ -1,118 +1,74 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Home</title>
-		{% load static from staticfiles %}
-		<!-- Bootstrap Styles-->
-		<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" />
-		<!-- FontAwesome Styles-->
-		<link href="{% static "css/font-awesome.css" %}" rel="stylesheet" />
-		<!-- Morris Chart Styles-->
-		<link href="{% static "js/morris/morris-0.4.3.min.css" %}" rel="stylesheet" />
-		<!-- Custom Styles-->
-		<link href="{% static "css/custom-styles.css" %}" rel="stylesheet" />
-		<!-- Google Fonts-->
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-
-</head>
-
-<body>
-		<div id="wrapper">
-				<nav class="navbar navbar-default top-navbar" role="navigation">
-						<div class="navbar-header">
-								<button type="button" class="navbar-toggle" id="collapse" data-toggle="collapse" data-target=".sidebar-collapse" onclick="collapseOnClick()">
-										<span class="sr-only">Toggle navigation</span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-								</button>
-								<a class="navbar-brand" href="/student"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
-						</div>
-						
-						<ul class="nav navbar-top-links navbar-right">
-								
-								<li class="dropdown">
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-												<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-										</a>
-										<ul class="dropdown-menu dropdown-user">
-												<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-												</li>
-												<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-												</li>
-												<li class="divider"></li>
-												<li><a href="/student/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-												</li>
-										</ul>
-										<!-- /.dropdown-user -->
-								</li>
-								<!-- /.dropdown -->
-						</ul>
-				</nav>
-				<!--/. NAV TOP	-->
-				<nav class="navbar-default navbar-side" role="navigation" id="nav-bar-left" style="left:0px">
-		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
-						<div class="sidebar-collapse">
-								<ul class="nav" id="main-menu">
-
-										<li>
-												<a href="/student"><i class="fa fa-dashboard"></i> Dashboard</a>
-										</li>
-										<li>
-												<a href="/student/score"><i class="fa fa-desktop"></i> 在线估分</a>
-										</li>
-										<li>
-												<a href="/student/rank"><i class="fa fa-bar-chart-o"></i> 查看排名</a>
-										</li>
-										
-										<li>
-												<a href="/student/admit"><i class="fa fa-table"></i> 录取情况</a>
-										</li>
-										<li>
-												<a class="active-menu" href="/student/contact"><i class="fa fa-edit"></i> 联系我们 </a>
-										</li>
-
-								</ul>
-
-						</div>
-
-				</nav>
-				<!-- /. NAV SIDE	-->
-				<div id="page-wrapper" style="margin-left: 260px">
-						<div id="page-inner">
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     {% load staticfiles %}
+  <!-- Bootstrap Styles-->
+  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
+  <!-- FontAwesome Styles-->
+  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
+  <!-- Custom Styles-->
+  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
+  <!-- Google Fonts-->
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+   <!-- profile-->
+  <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
+  <div id="wrapper">
+  <title>查看老师信息</title>
+ </head>
+ <body>
+ {% include 'student/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'student/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
 
 
-								<div class="row">
-										<div class="col-md-12">
-												<h1 class="page-header">
-														Contact Us
-												</h1>
-										</div>
-								</div>
-				
-				<!--			
-				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
-				-->
-						</div>
-						<!-- /. PAGE INNER	-->
-				</div>
-				<!-- /. PAGE WRAPPER	-->
-		</div>
-		<!-- /. WRAPPER	-->
-		<!-- JS Scripts-->
-		<!-- jQuery Js -->
-		<script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
-		<!-- Bootstrap Js -->
-		<script src="{% static "js/bootstrap.min.js" %}"></script>
-	 
-		<!-- Metis Menu Js -->
-		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
+   <div id="page-wrapper">
+    <div id="page-inner">
+     <!--row-->
+     <div class="row">
+      <div class="col-md-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="row">
+          <div class="col-md-12">
+           <table class="table table-hover" style="text-align: center">
+                      <thead style="text-align: center">
+                        <tr style="text-align: center">
+                          <th style="text-align: center">姓名</th>
+                          <th style="text-align: center">手机</th>
+                          <th style="text-align: center">邮箱</th>
+                          <th style="text-align: center">办公地址</th>
+                        </tr>
+                      </thead>
+                      <tbody id="test_list">
+                      {% for item in dict %}
+                   <tr style="text-align: center">
+                          <td style="text-align: center">{{item.name}}</td>
+                          <td style="text-align: center">{{item.phone}}</td>
+                          <td style="text-align: center">{{item.email}}</td>
+                          <td style="text-align: center">{{item.address}}</td>
 
-		<!-- Custom Js -->
+                        </tr>
 
-</body>
+               {% endfor %}
+                      </tbody>
+                    </table>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+       {% include 'student/include/footer.html' %}
+    </div>
+    <!-- /. PAGE INNER  -->
+   </div>
+   <!-- /. PAGE WRAPPER  -->
+  </div>
+  <!-- /. WRAPPER  -->
+{% include 'student/include/jsinclude.html' %}
 
+ </body>
 </html>

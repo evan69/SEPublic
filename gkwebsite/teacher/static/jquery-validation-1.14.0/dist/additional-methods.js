@@ -995,4 +995,9 @@ $.validator.addMethod("ziprange", function(value, element) {
 	return this.optional(element) || /^90[2-5]\d\{2\}-\d{4}$/.test(value);
 }, "Your ZIP-code must be in the range 902xx-xxxx to 905xx-xxxx");
 
+$.validator.addMethod("legalPassword", function(value, element) {   
+    var psw = /^[-a-zA-Z0-9+?!@#$%<>,\.\^&*\[\]]{4,20}$/;
+    return this.optional(element) || (psw.test(value));
+}, "密码允许数字、字母和+-?!@#$%<>,.^&*[]，长度在4-20之间");
+
 }));

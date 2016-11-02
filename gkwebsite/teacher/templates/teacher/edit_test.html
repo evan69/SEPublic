@@ -6,16 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>编辑测试</title>
 		{% load staticfiles %}
-		<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-    
-    <link href= "{% static 'css/jquery.growl.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href="{% static 'css/google-fonts.css' %}" rel='stylesheet' type='text/css' />
+		{% include 'teacher/include/cssinclude.html' %}
 </head>
 <body>
     <div id="wrapper">

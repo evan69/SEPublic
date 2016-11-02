@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>估分审核</title>
+		{% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
+</head>
+<body>
+    <div id="wrapper">
+          {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+				
+				<div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header" style="text-align: center">估分审核</h1>
+                    </div>
+                </div> 
+				<!--row-->
+				<div class = "row">
+					<div class = "col-md-12 col-lg-12">
+						<div class= "panel panel-default">
+							<div class = "panel-body">
+                <div class = "row" style="text-align: center">
+									<div class = "col-md-12" style="text-align: center">
+                    <table class="table table-hover" style="text-align: center">
+                      <caption>匹配结果</caption>
+                      <thead style="text-align: center">
+                        <tr style="text-align: center">
+                          <th style="text-align: center">姓名</th>
+                          <th style="text-align: center">性别</th>
+                          <th style="text-align: center">生源地</th>
+                          <th style="text-align: center">学校</th>
+                          <th style="text-align: center">身份证号</th>
+                          <th style="text-align: center">试题名称</th>
+                          <th style="text-align: center">所用时间</th>
+                          <th style="text-align: center">是否通过</th>
+                        </tr>
+                      </thead>
+                      <tbody id="test_list">
+                      {% for item in dict %}
+                   <tr style="text-align: center">
+                          <td style="text-align: center">{{item.name}}</td>
+                          <td style="text-align: center">{{item.sex}}</td>
+                          <td style="text-align: center">{{item.province}}</td>
+                          <td style="text-align: center">{{item.school}}</td>
+                          <td style="text-align: center">{{item.ident}}</td>
+                          <td style="text-align: center">{{item.testname}}</td>
+                          <td style="text-align: center">{{item.time}}</td>
+                          <td style="text-align: center">
+                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 1)" class = "btn btn-info btn-xs">是</button>
+                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 0)" class = "btn btn-info btn-xs">否</button>
+                          </td>
+                        </tr>
+
+               {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /. ROW -->
+   {% include 'teacher/include/footer.html' %}
+			</div>
+
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+     <!-- /. WRAPPER  -->
+    {% include 'teacher/include/jsinclude.html' %}
+
+<script>
+    function yesorno(name, sex, province, school, ident, testname, time, code) {
+        alert(name + " " + sex + " " + province + " " +
+        school + " " + ident + " " + testname + " " +
+        time + " " + code);
+    }
+</script>
+</body>
+</html>
