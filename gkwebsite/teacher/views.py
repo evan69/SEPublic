@@ -47,10 +47,29 @@ def get_all_activity(request):
     id = request.session.get('user_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
-    dic = {'activity' : [{'name':'第一次组会','proposer':'李三胖','start_time':'2016/10/1','end_time':'2016/10/10','number':'12','activity_id':'12'},
+    dict = {'activity' : [{'name':'第一次组会','proposer':'李三胖','start_time':'2016/10/1','end_time':'2016/10/10','number':'12','activity_id':'12'},
                          {'name':'一对一解答','proposer':'屁孩','start_time':'2016/10/10','end_time':'2016/10/11','number':'99','activity_id':'32'},
                          {'name':'庆功会','proposer':'王大神','start_time':'2016/10/10','end_time':'2016/10/19','number':'3','activity_id':'9'}]}
-    return JsonResponse(dic)
+
+
+    activity_list = []
+    timer_list = back.getTimerbyDict({})
+    for timer in timer_list:
+        info_dic = back.getTimerAllDictByObject(timer)
+        dic = {}
+        dic['name'] = info_dic[Timer.NAME]
+        teacher_account = tch.idToAccountTeacher(int(info_dic[Timer.TEACHER_ID]))
+        dic['proposer'] = tch.getTeacher(teacher_account, Teacher.REAL_NAME)
+        dic['start_time'] = info_dic[Timer.START_TIME].strftime("%Y/%m/%d")
+        dic['end_time'] = info_dic[Timer.END_TIME].strftime("%Y/%m/%d")
+        try:
+            dic['number'] = len(info_dic[Timer.VOLUNTEER_DIC].keys())
+        except:
+            dic['number'] = 0
+        dic['activity_id'] = info_dic[Timer.ID]
+        activity_list.append(dic)
+    dict['activity'] = activity_list
+    return JsonResponse(dict)
 
 
 @ensure_csrf_cookie
@@ -62,6 +81,9 @@ def delete_activity(request):
     if id == -1:
         return HttpResponse('Access denied')
     print request.POST.get('activity_id')
+    timer_id = int(request.POST.get('activity_id'))
+    back.removeTimerByDic({Timer.ID: timer_id})
+
     return JsonResponse({})
 
 
