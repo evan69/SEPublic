@@ -883,8 +883,30 @@ def checkscore(request):
 
     后端需要从数据库获取数据补全代码
     '''
-    if ('name' in request.GET) and ('sex' in request.GET):
-        print 'hhh'
+    if ('name' in request.GET) and ('stu_id' in request.GET):
+        # print request.GET
+        student_id = request.GET.get('stu_id')
+        testname = request.GET.get('testname')
+        code = int(request.GET.get('code'))
+        # print '****************************', student_id, testname, code
+        # try:
+        info_dic = stu.getStudentAllDictByAccount(stu.idToAccountStudent(int(student_id)))
+        estimate_dic = eval(info_dic[Student.ESTIMATE_SCORE])
+        if code == 1:
+            if testname in estimate_dic.keys():
+                estimate_dic[testname]['shenhe'] = 1
+        else:
+            tmp_dic = {}
+            for key in estimate_dic.keys():
+                if key != testname:
+                    tmp_dic[key] = estimate_dic[key]
+            estimate_dic = tmp_dic
+        stu.setStudent(stu.idToAccountStudent(int(student_id)), Student.ESTIMATE_SCORE, str(estimate_dic))
+        # except:
+        #     print '-------------------'
+        #     return render(request,
+        #                   'teacher/checkscore.html')
+        print 'sdf', estimate_dic
         return render(request,
                       'teacher/checkscore.html')
     else:
@@ -916,7 +938,8 @@ def checkscore(request):
                             'ident': ident,
                             'testname': testname,
                             'time': time,
-                             'score':score,
+                            'score':score,
+                            'stu_id': info_dic[Student.ID]
                     }
                     list.append(dict)
 
