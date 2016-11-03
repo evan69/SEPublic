@@ -52,7 +52,7 @@ def student_rank(request):
             'rank1': rank,
             'rank11':sum_rank,
             }
-    return render(request, 'student/rank.html', {'dict': dict})
+    return render(request, 'student/rank.html', {'dict': dict, 'id':id})
 
 
 def student_admit(request):
@@ -71,13 +71,16 @@ def student_admit(request):
         info = u'暂时还没有您的录取信息，请耐心等待老师添加'
     admition = info
     return render(request,
-                  'student/admit.html', {'admition': admition})
+                  'student/admit.html', {'admition': admition, 'id':id})
 
 
 def student_contact(request):
     '''
                 后端需要在这里改代码，从数据库读取正确的dict，并返回
     '''
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
     teacher_list = tch.getAllInTeacher()
     vol_list = vol.getAllInVolunteer()
     list = []
@@ -101,7 +104,7 @@ def student_contact(request):
         address = tmp_dic[Volunteer.ADDRESS]
         dict = {'profession':u'志愿者','name':name, 'phone':phone,'email':email,'address':address}
         list.append(dict)
-    return render(request,'student/contact.html', {'dict': list})
+    return render(request,'student/contact.html', {'dict': list, 'id':id})
 
 
 def student_logout(request):
@@ -290,7 +293,7 @@ def profile(request):
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         print 'jiao baba', dic
-        return render(request, 'student/userinfo.html', {'dict': dic})
+        return render(request, 'student/userinfo.html', {'dict': dic, 'id':id})
 
 @csrf_exempt
 def get_all_tests(request):
