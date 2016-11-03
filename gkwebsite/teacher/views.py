@@ -277,16 +277,16 @@ def student_info_edit(request):
         group_list = stu.getStudentGroupIDListString(student).split(' ')
         for i in range(1, 6):
             if i < len(group_list):
-                dic['group'+str(i)] = group_list[i]
+                dic['group'+str(i)] = int(group_list[i])
             else:
-                dic['group'+str(i)] = '0'
+                dic['group'+str(i)] = 0
 
         dic['grouplist'] = [' ']
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         id_ = request.session.get('user_id', -1)
-
+        print 'byr ', dic
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic, 'id': id_})
@@ -698,7 +698,7 @@ def volunteer_info_edit(request):
         vol.setVolunteer(account, Volunteer.WECHAT, weichat)
         vol.setVolunteer(account, Volunteer.COMMENT, comment)
         vol.setVolunteer(account, Volunteer.QQ, qqn)
-        vol.setVolunteerGroupbyList(volunteer, [10,9,8])
+        # vol.setVolunteerGroupbyList(volunteer, [10,9,8])
 
         return JsonResponse(request.POST)
     else:

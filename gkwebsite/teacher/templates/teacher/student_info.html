@@ -361,7 +361,8 @@
               <div class="col-sm-2">
                <select class="form-control" id="team1" name="team1">
                 {% for item in student.grouplist %}
-                   {% if forloop.counter0 == student.group1 %}
+
+                   {% ifequal forloop.counter0 student.group1 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
