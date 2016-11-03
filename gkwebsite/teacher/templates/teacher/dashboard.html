@@ -4,16 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>查看学生</title>
-		{% load staticfiles %}
-		<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <title>教师主页</title>
+    {% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
 </head>
 <body>
     <div id="wrapper">
@@ -32,54 +25,14 @@
                     </div>
                 </div> 
 				<!--row-->
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a href="/info">早睡早起</a></p></footer>
+   {% include 'teacher/include/footer.html' %}
 			</div>
              <!-- /. PAGE INNER  -->
         </div>
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
-
-
-	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
-	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
-
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
-		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
-		<script>
-		function getCookie(name) {
-				var cookieValue = null;
-				if (document.cookie && document.cookie !== '') {
-						var cookies = document.cookie.split(';');
-						for (var i = 0; i < cookies.length; i++) {
-								var cookie = jQuery.trim(cookies[i]);
-								// Does this cookie string begin with the name we want?
-								if (cookie.substring(0, name.length + 1) === (name + '=')) {
-										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-										break;
-								}
-						}
-				}
-				return cookieValue;
-		}
-		function csrfSafeMethod(method) {
-				// these HTTP methods do not require CSRF protection
-				return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-		}
-		</script>
+    {% include 'teacher/include/jsinclude.html' %}
 		<script>
 			$(document).ready(function(){
 				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
@@ -92,10 +45,11 @@
 						}
 				});
 				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
-				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
 				
+        $('#dashboard').addClass("active-menu");
+        $('#dashboard').attr("href", "#");
 			});
 		</script>
 

@@ -5,15 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>添加学生</title>
-		{% load staticfiles %}
-		<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    {% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
 </head>
 <body>
     <div id="wrapper">
@@ -68,17 +61,7 @@
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+    {% include 'teacher/include/jsinclude.html' %}
 
 		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
@@ -97,31 +80,6 @@
 				}
 			});
 		});
-		</script>
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
-		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
-		<script>
-		function getCookie(name) {
-				var cookieValue = null;
-				if (document.cookie && document.cookie !== '') {
-						var cookies = document.cookie.split(';');
-						for (var i = 0; i < cookies.length; i++) {
-								var cookie = jQuery.trim(cookies[i]);
-								// Does this cookie string begin with the name we want?
-								if (cookie.substring(0, name.length + 1) === (name + '=')) {
-										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-										break;
-								}
-						}
-				}
-				return cookieValue;
-		}
-		function csrfSafeMethod(method) {
-				// these HTTP methods do not require CSRF protection
-				return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-		}
 		</script>
 		<script>
 			var codelist = [];
@@ -146,6 +104,8 @@
 				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
 					$('#namefield').append(ret['name']);
 				});
+        $('#add_student').addClass("active-menu");
+        $('#add_student').attr("href", "#");
 				$('#account_table').hide();
 				$('#export').hide();
 			});
@@ -159,13 +119,19 @@
 					add_to_table();
 					$('#account_table').show();
 					$('#export').show();
+          $('#export').click(function(){
+            if(codelist.length > 0){
+              $.post("/backend/export_registration_code/", {'id':{{id}}, 'length': codelist.length}, function(ret){
+                location.href="/teacher/download_xls/file"+ret['filename'];
+              });
+            }
+          });
 					$('#add').removeAttr("disabled");
 					$('#add').removeClass("btn-danger");
 				$('#add').addClass("btn-success");
 				});
 			}
 		</script>
-
 
 </body>
 </html>

@@ -17,7 +17,10 @@
 </head>
 <body>
     <div id="wrapper">
-        {% include 'v_nav.html' %}
+           {% include 'volunteer/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'volunteer/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
 				
 		<div id="page-wrapper" >
             <div id="page-inner">
@@ -59,7 +62,7 @@
 										</tr>
 									</thead>
 									<tbody id="student_list">
-										<tr>
+										<!--tr>
 											<td>白云仁</td>
 											<td>男</td>
 											<td>四川</td>
@@ -106,7 +109,7 @@
 											<button type="button" class = "btn btn-success btn-xs">编辑</button>
 											<button type="button" class = "btn btn-danger btn-xs">删除</button>
 											</td>
-										</tr>
+										</tr-->
 									</tbody>
 								</table>
 							</div>
@@ -114,7 +117,7 @@
 					</div>
 				</div>
 				<!-- /. ROW -->
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
+ {% include 'teacher/include/footer.html' %}
 			</div><!-- /. PAGE INNER  -->
         </div>
          <!-- /. PAGE WRAPPER  -->
@@ -258,6 +261,7 @@
 								}
 						}
 				});
+				//alert('hhe');
 				$.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
 				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);

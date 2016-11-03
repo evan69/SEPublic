@@ -4,18 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      {% load staticfiles %}
-    <!-- Bootstrap Styles-->
-    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-    <!-- FontAwesome Styles-->
-    <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-    <!-- Custom Styles-->
-    <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-    <!-- Google Fonts-->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-
-    <title>学生分组</title></head>
-
+    <title>学生分组</title>
+    {% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
+  </head>
   <body> <div id="wrapper">
         {% include 'teacher/include/navtop.html' %}
         <!--/. NAV TOP  -->
@@ -28,54 +20,141 @@
               <h1 class="page-header" style="text-align: center">学生分组</h1></div>
           </div>
           <!--row-->
-          {% for team in dict %}
+         <div class="row" id="newteam">
+               <div class="col-md-4">
+                <button onclick="newteam()" type="button">新建一组</button>
+                   </div>
+          </div>
+         {% for team in dict %}
           <div class="row">
             <div class="col-md-12">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamname}}">{{team.teamleader}}({{team.teamname}})</a></h4>
-                  <div id="team{{team.teamname}}" class="panel-collapse collapse">
-                    <div class="panel-body" id="body{{team.teamname}}">
-                        {% for key, value in team.items %}
-                            {% if key != 'teamname' and key != 'teamleader' %}
-                        <div class="row" id="id{{value.id}}">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamleader}}">{{team.teamleader}}</a>
+                    <button class="btn btn-link" onclick="setVolunteer({{team.teamleader}})">给该组增加志愿者</button></h4>
+
+                  <div id="team{{team.teamleader}}" class="panel-collapse collapse">
+                    <div class="panel-body" id="body{{team.teamleader}}">
+                        {% for key, value in team.volunteer.items %}
+                        <div class="row" id="t{{team.teamleader}}vol{{value.id}}">
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
-                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
-                            <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}')" type="button">修改</button></div>
-                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{value.id}}','body{{team.teamname}}','id{{value.id}}')" type="button">删除</button></div>
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} (志愿者)</label>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}', 0)" type="button">修改</button></div>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}vol{{value.id}}', 0)" type="button">删除</button></div>
                         </div>
-                            {% endif %}
-
                         {% endfor %}
-
+                        {% for key, value in team.student.items %}
+                        <div class="row" id="t{{team.teamleader}}stu{{value.id}}">
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} (学生)</label>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}', 1)" type="button">修改</button></div>
+                            <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}stu{{value.id}}', 1)" type="button">删除</button></div>
+                        </div>
+                        {% endfor %}
                     </div>
                   </div>
               </div>
             </div>
-          </div></div>{% empty %}
-          <li>抱歉，列表为空</li>{% endfor %}
+          </div></div>{% empty %}{% endfor %}
 
                   {% include 'teacher/include/footer.html' %}
         </div>
         <!-- /. PAGE INNER --></div>
       <!-- /. PAGE WRAPPER --></div>
+    <div id="dialog" title="添加志愿者">
+      <form id="form">
+        <label>组号：<span id="group_id"></span></label>
+        <fieldset style="padding:0; border:0; margin-top:25px;">
+          <label for="student_id" style="display:block">学号</label>
+          <input name="student_id" id="student_id" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
+          </input>
+          <!-- Allow form submission with keyboard without duplicating the dialog button -->
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+      </form>
+    </div>
     <!-- /. WRAPPER -->{% include 'teacher/include/jsinclude.html' %}
-    <script>/*function add(id, id1) {
-        var newNode = document.createElement("div");
-        newNode.setAttribute("id", "a" + toString(newNode.childElementCount + 1));
-        var str = " <div class='form-group'>" + "              <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "              <div class='col-sm-3'>" + " <p class='form-control-static' id='account' name='account'>李三胖</p>" + "   </div>" + "    <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "   <div class='col-sm-3'>" + "   <p class='form-control-static' id='account1' name='account'>李三胖</p>" + "   </div>" + "   <label for='account' class='col-sm-1 control-label' style='text-align:left;padding-left: 2em;'>姓名: </label>" + "    <div class='col-sm-3'>" + "    <p class='form-control-static' id='account2' name='account'>李三胖</p>" + " </div>" +
 
-        "  </div>";
-        newNode.innerHTML = (str);
-
-        document.getElementById(id).insertBefore(newNode, document.getElementById(id1));
-        //   alert(document.getElementById(id).innerHTML);
-      }*/
-    function modify(user_id) {
-      window.location="/teacher/student_info_edit?id="+user_id;
+    <script>
+    function setVolunteer(team_title){
+      $('#group_id').empty();
+      $('#group_id').append(String(team_title));
+      $('#dialog').dialog("open");
     }
-    function dlt(user_id, parentid, childid) {
+    function submit_dialog(){
+      var student_number = $('#student_id').val();
+      var group_id = $('#group_id').text();
+      $('#dialog').dialog("close");
+      if(student_number.length > 0){
+        $.post("/backend/set_volunteer/", {'group_id':group_id, 'student_num':student_number}, function(ret){
+          if(ret['success'].charAt(0)=='N'){
+            $.growl.error({ title: "设置失败", message: ret['message'] });
+
+          }
+          else{
+            $.growl.notice({ title: "设置成功", message: "信息已更新" });
+            window.location="/teacher/list_group/";
+          }
+        });
+      }
+      
+    }
+        function newteam() {
+            data={'newteam':1};
+            $.ajax({
+                    type: 'GET',
+                    url: '/teacher/list_group',
+                    data: data,
+                    dataType: 'json',
+                    success: function(data) {
+                        teamnum = data['teamnum'];
+                        alert('新建分组 “' + teamnum + '” 成功');
+                        var newNode = document.createElement("div");
+                        var str = "<div class=\"row\">"+
+                            "<div class=\"col-md-12\">"+
+                              "<div class=\"panel panel-default\">"+
+                                "<div class=\"panel-heading\">"+
+                                 "<h4 class=\"panel-title\">"+
+                                    "<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#team"+teamnum+"\">"+teamnum+" </a>"+
+                                    '<button class="btn btn-link" onclick="setVolunteer(' + teamnum + ')">给该组增加志愿者</button></h4>'+
+                                        "<div id=\"team"+teamnum+"\" class=\"panel-collapse collapse\">"+
+                                    "<div class=\"panel-body\" id=\"body" + teamnum+ "\">"+
+                                            "</div>"+
+                                            "</div>"+
+                              "</div>"+
+                            "</div>"+
+                          "</div></div>";
+                        newNode.innerHTML = (str);
+                // alert(document.getElementById("page-inner").innerHTML);
+                       $(newNode).insertAfter(document.getElementById("newteam"));
+
+                    },
+                    error: function(xhr, type) {
+                        alert('新建分组失败');
+                    }
+            });
+      }
+
+
+
+
+
+
+    function modify(user_id, isor) {
+        if (isor == 1)
+      window.location="/teacher/student_info_edit?id="+user_id;
+        else
+                  window.location="/teacher/volunteer_info_edit?id="+user_id;
+
+    }
+
+
+
+
+
+
+    function dlt(team_id, user_id, parentid, childid, cl) {
       var parent=document.getElementById(parentid);
       var child=document.getElementById(childid);
       parent.removeChild(child);
@@ -96,10 +175,34 @@
             alert('删除成功');
           }
       }
-      xmlhttp.open("GET","/teacher/list_group?id=" + user_id,true);
+      xmlhttp.open("GET","/teacher/list_group?id=" + user_id + '&teamid=' + team_id + '&class='+cl,true);
       xmlhttp.send();
 
     }
+
+
+
+
+        	$(document).ready(function(){
+    $('#group_management').addClass("active-menu");
+        $('#group_management').attr("href", "#");
+        	});
+          
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "确认":submit_dialog,
+        "取消": function() {
+          $("#dialog").dialog( "close" );
+        }
+      },
+      close: function() {
+        $("#form")[0].reset();
+      }
+    });
     </script>
   </body>
 

@@ -4,8 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>查看学生</title>
- </head>
- <body>
    {% load staticfiles %}
   <!-- Bootstrap Styles-->
   <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
@@ -15,43 +13,16 @@
   <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
   <!-- Google Fonts-->
   <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+ </head>
+ <body>
+
   <div id="wrapper">
-   <nav class="navbar navbar-default top-navbar" role="navigation">
-    <div class="navbar-header">
-     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-     <a class="navbar-brand" href="/teacher"><i class="fa fa-comments"></i> <strong>TEACHER </strong></a>
-    </div>
-    <ul class="nav navbar-top-links navbar-right">
-     <!-- /.dropdown -->
-     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i> </a>
-      <ul class="dropdown-menu dropdown-alerts">
-       <li> <a href="#">
-         <div>
-          <i class="fa fa-envelope fa-fw"></i> Message Sent
-          <span class="pull-right text-muted small">4 min</span>
-         </div> </a> </li>
-       <li class="divider"></li>
-       <li> <a href="#">
-         <div>
-          <i class="fa fa-tasks fa-fw"></i> New Task
-          <span class="pull-right text-muted small">4 min</span>
-         </div> </a> </li>
-       <li class="divider"></li>
-       <li> <a class="text-center" href="#"> <strong>See All Alerts</strong> <i class="fa fa-angle-right"></i> </a> </li>
-      </ul>
-      <!-- /.dropdown-alerts --> </li>
-     <!-- /.dropdown -->
-     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i> </a>
-      <ul class="dropdown-menu dropdown-user">
-       <li><a href="/teacher/profile"><i class="fa fa-user fa-fw"></i> User Profile</a> </li>
-       <li class="divider"></li>
-       <li><a href="/teacher/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a> </li>
-      </ul>
-      <!-- /.dropdown-user --> </li>
-     <!-- /.dropdown -->
-    </ul>
-   </nav>
-   {% include 'v_nav.html' %}
+
+    {% include 'volunteer/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'volunteer/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+
    <div id="page-wrapper">
     <div id="page-inner">
      <div class="row">
@@ -81,12 +52,12 @@
                <input type="text" class="form-control" id="realName" name="realName" value="{{student.realName}}" />
               </div>
              </div>
-             <div class="form-group">
+             <!--div class="form-group">
               <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
               <div class="col-sm-10">
                <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{student.idNumber}}" />
               </div>
-             </div>
+             </div-->
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="registerCode" class="col-sm-2 control-label">注册码：</label>
               <div class="col-sm-10">
@@ -182,46 +153,112 @@
               </div>
              </div>
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="majorSelect1" class="col-sm-2 control-label">专业志愿一：</label>
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;"  class="col-sm-2 control-label">专业志愿一：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect1" name="majorSelect1" value="{{student.major.0}}" />
+               <!--input type="text" class="form-control" id="majorSelect1" name="majorSelect1" value="{{student.major.0}}" /-->
+                  <select class="form-control" id="major1" name="major1">
+                {% for item in student.major.1.departmentlist %}
+                   {% if forloop.counter0 == student.major.1.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="majorSelect2" class="col-sm-2 control-label">专业志愿二：</label>
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;"  class="col-sm-2 control-label">专业志愿二：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect2" name="majorSelect2" value="{{student.major.1}}" />
+               <!--input type="text" class="form-control" id="majorSelect2" name="majorSelect2" value="{{student.major.1}}" /-->
+                  <select class="form-control" id="major2" name="major2">
+                {% for item in student.major.2.departmentlist %}
+                   {% if forloop.counter0 == student.major.2.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
-              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿三：</label>
+              <label  style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿三：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect3" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect3" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major3" name="major3">
+                {% for item in student.major.3.departmentlist %}
+                   {% if forloop.counter0 == student.major.3.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
 
              <div class="form-group">
-              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿四：</label>
+              <label  style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿四：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect4" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect4" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major4" name="major4">
+                {% for item in student.major.4.departmentlist %}
+                   {% if forloop.counter0 == student.major.4.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
-              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿五：</label>
+              <label  style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿五：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect5" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect5" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major5" name="major5">
+                {% for item in student.major.5.departmentlist %}
+                   {% if forloop.counter0 == student.major.5.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
-              <label for="majorSelect3" style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿六：</label>
+              <label  style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">专业志愿六：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="majorSelect6" name="majorSelect3" value="{{student.major.2}}" />
+               <!--input type="text" class="form-control" id="majorSelect6" name="majorSelect3" value="{{student.major.2}}" /-->
+                  <select class="form-control" id="major6" name="major6">
+                {% for item in student.major.6.departmentlist %}
+                   {% if forloop.counter0 == student.major.6.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
 
 
 
-             <div class="form-group">
+             <!--div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="testScore1" class="col-sm-2 control-label">一模成绩：</label>
               <div class="col-sm-4">
                <input type="text" class="form-control" id="testScore1" name="testScore1" value="{{student.testSocreList.0}}" />
@@ -261,7 +298,7 @@
               <div class="col-sm-2">
                <input type="text" class="form-control" id="rank33" name="rank33" value="{{student.rankList.0}}" />
               </div>
-             </div>
+             </div-->
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="estimateScore" class="col-sm-2 control-label">估分：</label>
               <div class="col-sm-10">
@@ -277,7 +314,18 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="admissionStatus" class="col-sm-2 control-label">录取情况：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="admissionStatus" name="estimateScore" value="{{student.admissionStatus}}" />
+               <!--input type="text" class="form-control" id="admissionStatus" name="estimateScore" value="{{student.admissionStatus}}" /-->
+                  <select class="form-control" id="admissionStatus" name="admissionStatus">
+                {% for item in student.admissionStatus.admissionstatuslist %}
+                   {% if forloop.counter0 == student.admissionStatus.admissionstatus %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
@@ -311,13 +359,7 @@
        </div>
       </div>
      </div>
-     <div class="row">
-      <div class="col-md-offset-4 col-md-4">
-       <footer>
-        <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-       </footer>
-      </div>
-     </div>
+    {% include 'teacher/include/footer.html' %}
     </div>
     <!-- /. PAGE INNER  -->
    </div>

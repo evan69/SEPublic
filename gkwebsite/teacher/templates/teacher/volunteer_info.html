@@ -3,17 +3,10 @@
  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     {% load staticfiles %}
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+  {% load staticfiles %}
+  {% include 'teacher/include/cssinclude.html' %}
 
-  <title>查看志愿者</title>
+  <title>查看志愿者信息</title>
  </head>
  <body>
 <div id="wrapper">
@@ -39,10 +32,11 @@
            <form class="form-horizontal" role="form" action="#" ">
              {% csrf_token %}
              <fieldset disabled="">
+
              <div class="form-group">
               <label for="account" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
               <div class="col-sm-10">
-               <p class="form-control-static" id="account" name="account">{{dict.user_name}}</p>
+               <input type="text" class="form-control" id="account" name="account" value="{{dict.user_name}}" />
               </div>
              </div>
 
@@ -54,19 +48,19 @@
               </div>
              </div>
              <div class="form-group">
-              <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{dict.idNumber}}" />
-              </div>
-             </div>
-             <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="sex">性别：</label>
               <div class="col-sm-10">
-               {% if dict.sex == 0 %}
-                    <select class="form-control" id="sex" name="sex"> <option value="0" selected="selected">男</option><option value="1">女</option> </select>
-               {% else %}
-                    <select class="form-control" id="sex" name="sex"> <option value="0">男</option><option value="1" selected="selected">女</option> </select>
-               {% endif %}
+                   <select class="form-control" id="sex" name="sex">
+                {% for item in dict.sex.sexlist %}
+                   {% if forloop.counter0 == dict.sex.sex %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
@@ -86,13 +80,7 @@
               </div>
              </div>
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="birth" class="col-sm-2 control-label">出生日期: </label>
-              <div class="col-sm-10">
-               <p class="date" id="birth" name="birth">{{dict.birth_year}}年{{dict.birth_month}}月{{dict.birth_date}}日</p>
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">中学所在省：</label>
+              <label style="text-align:left;padding-left: 2em;" for="province" class="col-sm-2 control-label">生源地：</label>
               <div class="col-sm-10">
                <select class="form-control" id="province" name="province">
                 {% for item in dict.province.provincelist %}
@@ -128,6 +116,80 @@
               </div>
              </div>
              <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">分管组：</label>
+               <div class="col-sm-2">
+                                  <select class="form-control" id="distribute1" name="distribute1">
+                {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group1 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+              <div class="col-sm-2">
+                  <select class="form-control" id="distribute2" name="distribute2">
+              {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group2 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+                 <div class="col-sm-2">
+                  <select class="form-control" id="distribute3" name="distribute3">
+                {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group3 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+                 <div class="col-sm-2">
+                  <select class="form-control" id="distribute4" name="distribute4">
+              {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group4 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+                 <div class="col-sm-2">
+                  <select class="form-control" id="distribute5" name="distribute5">
+            {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group5 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+             </div>
+
+
+
+
+
+
+             <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="phone" class="col-sm-2 control-label">手机：</label>
               <div class="col-sm-10">
                <input type="number" class="form-control" name="phone" id="phone" value="{{dict.phone}}" />
@@ -151,18 +213,6 @@
               <input type="text" class="form-control" id="weichat" name="weichat" value="{{dict.weichat}}" />
              </div>
             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="relTeacher" class="col-sm-2 control-label">分管组：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relTeacher" name="relTeacher" value="{{dict.distribute}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="relVolunteer" class="col-sm-2 control-label">对应老师：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relVolunteer" name="relVolunteer" value="{{dict.teacher}}" />
-              </div>
-             </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
               <div class="col-sm-10">

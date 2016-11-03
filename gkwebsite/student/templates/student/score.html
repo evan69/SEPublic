@@ -1,126 +1,113 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Home</title>
-		{% load static from staticfiles %}
-		<!-- Bootstrap Styles-->
-		<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" />
-		<!-- FontAwesome Styles-->
-		<link href="{% static "css/font-awesome.css" %}" rel="stylesheet" />
-		<!-- Morris Chart Styles-->
-		<link href="{% static "js/morris/morris-0.4.3.min.css" %}" rel="stylesheet" />
-		<!-- Custom Styles-->
-		<link href="{% static "css/custom-styles.css" %}" rel="stylesheet" />
-		<!-- Google Fonts-->
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+ <head>
 
-</head>
+   {% load staticfiles %}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ {% include 'student/include/cssinclude.html' %}
+     <title>分数排名</title>
+ </head>
 
 <body>
 		<div id="wrapper">
-				<nav class="navbar navbar-default top-navbar" role="navigation">
-						<div class="navbar-header">
-								<button type="button" class="navbar-toggle" id="collapse" data-toggle="collapse" data-target=".sidebar-collapse" onclick="collapseOnClick()">
-										<span class="sr-only">Toggle navigation</span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-								</button>
-								<a class="navbar-brand" href="/student"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
-						</div>
-						
-						<ul class="nav navbar-top-links navbar-right">
-								
-								<li class="dropdown">
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-												<i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-										</a>
-										<ul class="dropdown-menu dropdown-user">
-												<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-												</li>
-												<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-												</li>
-												<li class="divider"></li>
-												<li><a href="/student/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-												</li>
-										</ul>
-										<!-- /.dropdown-user -->
-								</li>
-								<!-- /.dropdown -->
-						</ul>
-				</nav>
-				<!--/. NAV TOP	-->
-				<nav class="navbar-default navbar-side" role="navigation" id="nav-bar-left" style="left:0px">
-		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
-						<div class="sidebar-collapse">
-								<ul class="nav" id="main-menu">
-
-										<li>
-												<a href="/student"><i class="fa fa-dashboard"></i> Dashboard</a>
-										</li>
-										<li>
-												<a class="active-menu" href="/student/score"><i class="fa fa-desktop"></i> 在线估分</a>
-										</li>
-										<li>
-												<a href="/student/rank"><i class="fa fa-bar-chart-o"></i> 查看排名</a>
-										</li>
-										
-										<li>
-												<a href="/student/admit"><i class="fa fa-table"></i> 录取情况</a>
-										</li>
-										<li>
-												<a href="/student/contact"><i class="fa fa-edit"></i> 联系我们 </a>
-										</li>
-
-								</ul>
-
-						</div>
-
-				</nav>
-				<!-- /. NAV SIDE	-->
-				<div id="page-wrapper" style="margin-left: 260px">
+				  {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
+				<div id="page-wrapper">
 						<div id="page-inner">
 
 
 								<div class="row">
 										<div class="col-md-12">
 												<h1 class="page-header">
-														Online Judge <small><span id="username">Welcome, </span></small>
+														估分测试 <small><span id="username">您好，</span></small>
 												</h1>
+                        <h2 class="page-header"><small>注意：开始估分后，我们将显示并记录您每道题估分所用时间。</small></h2>
+                        <h2 class="page-header"><small>选择试题：</small></h2>
 										</div>
 								</div>
+
+                                <!--div class="row">
+                                    <include clock declaration>
+								</div-->
+                                <div class="row" id = 'test_list'>
+								</div>
 				
-				<!--			
-				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
-				-->
+			{% include 'student/include/footer.html' %}
 						</div>
 						<!-- /. PAGE INNER	-->
 				</div>
 				<!-- /. PAGE WRAPPER	-->
 		</div>
 		<!-- /. WRAPPER	-->
-		<!-- JS Scripts-->
-		<!-- jQuery Js -->
-		<script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
-		<!-- Bootstrap Js -->
-		<script src="{% static "js/bootstrap.min.js" %}"></script>
-	 
-		<!-- Metis Menu Js -->
-		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
-
+	 {% include 'student/include/jsinclude.html' %}
 		<!-- Custom Js -->
 		<script>
 			$(document).ready(function(){
-				$('#username').append({{ id }});
-				/*
-				$.post("/backend/get_user_by_id", {'id': {{ id }} }, function(data, status, xhr){
-					$('#username').append(data['username']);
+				var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $('#link_score').addClass("active-menu");
+        $('#link_score').attr("href", "#");
+				
+				$.post("/backend/get_student_name_by_id/", {'id': {{ id }} }, function(data, status, xhr){
+					$('#username').append(data['name']);
 				})
-				*/
+				
 			});
+			var user_array = [];
+			function show_list(){
+			    console.log('hehe');
+				var tag1, tag2, tag3;
+				var listitem = "";
+				//user_array = [1,2,3];
+				for(var i = 0; i < user_array.length; ++i){
+					tag1 = String(i)+'_A';
+					tag2 = String(i)+'_Aname';
+					var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
+			        var data = user_array[i];
+			        var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">开始测试</div></div>"
+			        $('#test_list').append(tt_begin + data + tt_end);
+					$('#'+tag1).click(function(){
+					    var parse = this.id.split("_");
+					    //alert(parse);
+						var row = this.id + "name";
+						//alert(row);
+					    //alert(user_array);
+					    //alert(i);
+					    //alert(user_array[i]);
+                        window.location="/student/do_test?test_name="+document.getElementById(row).innerHTML;
+                        /*
+					    $.post("/student/do_test/", {'test_name' : user_array[i]}, function(ret){
+                            alert('hehe');
+					    })
+					    */
+						//No need to examine the suffix since we are dealing with 'tag1'
+			        })
+			    }
+			}
+			$('#test_list').empty();
+			//show_list();
+
+			$.post("/student/get_all_tests/", {}, function(ret){
+			    user_array = ret.tests;
+			    //user_array = ['1','2','3'];
+			    //alert(user_array);
+				show_list();
+			})
+
+			var cur_sec = 0;
+			var ff = function()
+			{
+			    //show_time(cur_sec);
+			    cur_sec++;
+			}
+            //setInterval("ff()", 1000);
 		</script>
 
 </body>
