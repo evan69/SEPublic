@@ -14,7 +14,7 @@
   <!-- //js -->
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
   <link href="{% static 'assets/css/fontsgooleapispopins.css' %}" rel="stylesheet" type="text/css" media="all" />
-  <title>用户信息</title>
+  <title>录取信息</title>
   <!-- Bootstrap Styles-->
   <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
   <!-- FontAwesome Styles-->
@@ -55,20 +55,19 @@
 		<!-- /. WRAPPER	-->
 		<!-- JS Scripts-->
 		<!-- jQuery Js -->
-		<script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
+		<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
 		<!-- Bootstrap Js -->
-		<script src="{% static "js/bootstrap.min.js" %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 		<!-- Metis Menu Js -->
-		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
+		<script src="{% static 'js/jquery.metisMenu.js' %}"></script>
 
-
-
-
-
-		<!-- Custom Js -->
-
-
+    <script>
+    $(document).ready(function(){
+      $('#link_admit').addClass("active-menu");
+      $('#link_admit').attr("href", "#");
+    });
+  </script>
 
 </body>
 
