@@ -61,6 +61,7 @@
 				
 			});
 			var user_array = [];
+			var done_array = [];
 			function show_list(){
 			    console.log('hehe');
 				var tag1, tag2, tag3;
@@ -71,7 +72,16 @@
 					tag2 = String(i)+'_Aname';
 					var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
 			        var data = user_array[i];
-			        var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">开始测试</div></div>"
+			        var done = "";
+			        if(done_array[i] == "1")
+			        {
+                       done = "<small>（已估分）</small>";
+			        }
+			        else
+			        {
+                        done = "<small>（未估分）</small>";
+			        }
+			        var tt_end = "</label>" + done + "<div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">开始测试</div></div>"
 			        $('#test_list').append(tt_begin + data + tt_end);
 					$('#'+tag1).click(function(){
 					    var parse = this.id.split("_");
@@ -96,6 +106,7 @@
 
 			$.post("/student/get_all_tests/", {}, function(ret){
 			    user_array = ret.tests;
+			    done_array = ret.done_list;
 			    //user_array = ['1','2','3'];
 			    //alert(user_array);
 				show_list();

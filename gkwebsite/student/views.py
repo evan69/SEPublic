@@ -335,8 +335,9 @@ def get_all_tests(request):
                             str(SUBJECT_LIST[pic_dic[Picture.SUBJECT]]))
         ret_list.append(tao)
 
-
-    dic = {'tests' : ret_list}
+    dic = {'tests' : ret_list,
+           'done_list' : ['0','1','0']}
+    # 后端需要增加一个键值对，done_list存储是否估分，长度和ret_list一样
 
     return JsonResponse(dic)
 
