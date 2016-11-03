@@ -300,7 +300,7 @@ def profile(request):
             'relTeacher': stu_dic[Student.DUIYING_TEACHER],
             'comment': stu_dic[Student.COMMENT],
             'estimateScore': getStudentEstimateScore(stu.getStudentAll(account)),
-            'estimateRank': rank
+            'estimateRank': str(rank)+'/'+str(tmp)
         }
         group_list = stu.getStudentGroupIDListString(student).split(' ')
         for i in range(1, 6):

@@ -54,11 +54,17 @@
        </div>
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>性别<i>:</i></label>
-                        {% if dict.sex == 0 %}
-                    <select id="sex" name="sex"> <option value="0" selected="selected">男</option><option value="1">女</option> </select>
-               {% else %}
-                    <select id="sex" name="sex"> <option value="0">男</option><option value="1" selected="selected">女</option> </select>
-               {% endif %}
+ <select class="form-control" id="sex" name="sex">
+                {% for item in dict.sex.sexlist %}
+                   {% if forloop.counter0 == dict.sex.sex %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
         </span>
        </div>
        <div class="w3_agileits_main_grid w3l_main_grid">
