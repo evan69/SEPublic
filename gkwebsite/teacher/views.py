@@ -286,6 +286,7 @@ def student_info_edit(request):
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         id_ = request.session.get('user_id', -1)
+
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic, 'id': id_})
@@ -470,6 +471,7 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict
         '''
+        print request.POST
         flag = False
         if 'password' not in request.POST.keys():
             flag = False
@@ -969,12 +971,6 @@ def get_num_teacher_shenhe_estimate():
                 num = num + 1
 
     return num
-
-
-
-
-
-
 
 
 

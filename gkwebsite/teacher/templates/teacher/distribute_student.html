@@ -32,14 +32,14 @@
                 <div class="panel-heading">
                   <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#team{{team.teamleader}}">{{team.teamleader}}</a>
-                    <a href="#">给该组增加志愿者</a></h4>
+                    <button class="btn btn-link" onclick="setVolunteer({{team.teamleader}})">给该组增加志愿者</button></h4>
 
                   <div id="team{{team.teamleader}}" class="panel-collapse collapse">
                     <div class="panel-body" id="body{{team.teamleader}}">
                         {% for key, value in team.volunteer.items %}
                         <div class="row" id="t{{team.teamleader}}vol{{value.id}}">
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
-                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} （志愿者）</label>
                             <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}', 0)" type="button">修改</button></div>
                             <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}vol{{value.id}}', 0)" type="button">删除</button></div>
                         </div>
@@ -62,9 +62,59 @@
         </div>
         <!-- /. PAGE INNER --></div>
       <!-- /. PAGE WRAPPER --></div>
+    <div id="dialog" title="添加志愿者">
+      <form id="form">
+        <label>组号：<span id="group_id"></span></label>
+        <fieldset style="padding:0; border:0; margin-top:25px;">
+          <label for="student_id" style="display:block">学号</label>
+          <input name="student_id" id="student_id" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
+          </input>
+          <!-- Allow form submission with keyboard without duplicating the dialog button -->
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+      </form>
+    </div>
     <!-- /. WRAPPER -->{% include 'teacher/include/jsinclude.html' %}
 
     <script>
+    function setVolunteer(team_title){
+      $('#group_id').empty();
+      $('#group_id').append(String(team_title));
+      $('#dialog').dialog("open");
+    }
+    function submit_dialog(){
+      var student_number = $('#student_id').val();
+      var group_id = $('#group_id').text();
+      $('#dialog').dialog("close");
+      if(student_number.length > 0){
+        $.post("/backend/set_volunteer/", {'group_id':group_id, 'student_num':student_number}, function(ret){
+          if(ret['success'].charAt(0)=='N'){
+            $.growl.error({ title: "设置失败", message: ret['message'] });
+            refresh(group_id);
+
+          }
+          else{
+            $.growl.notice({ title: "设置成功", message: "信息已更新" });
+            refresh(group_id);
+
+          }
+        });
+      }
+      
+    }
+    function refresh(group_id){
+        var newNode = document.createElement("div");
+            var str = '<div class="row" id="t1vol1">'+
+'                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>'+
+'                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} （志愿者）</label>'+
+'                            <div class="col-sm-3" style="text-align: center"><button onclick="modify(\'{{value.id}}\', 0)" type="button">修改</button></div>'+
+'                           <div class="col-sm-3" style="text-align: center"><button onclick="'+"dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}vol{{value.id}}', 0)\" type=\"button\">删除</button></div>"+
+'                        </div>';
+        alert(str);
+            newNode.innerHTML = (str);
+           $(newNode).insertAfter(document.getElementById("body"+group_id));
+
+    }
         function newteam() {
             data={'newteam':1};
             $.ajax({
@@ -152,6 +202,22 @@
     $('#group_management').addClass("active-menu");
         $('#group_management').attr("href", "#");
         	});
+          
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "确认":submit_dialog,
+        "取消": function() {
+          $("#dialog").dialog( "close" );
+        }
+      },
+      close: function() {
+        $("#form")[0].reset();
+      }
+    });
     </script>
   </body>
 

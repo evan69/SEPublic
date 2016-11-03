@@ -250,7 +250,7 @@
              contentType:false,
             }).done(function (dict) {
               alert(dict['result'] + ' done');
-                window.location="http://localhost:8000/teacher/edit_test/" + dict['url'];
+                window.location="/teacher/edit_test/" + dict['url'];
             }).fail(function (dict) {
              alert(dict['result'] + ' fail');
             });
