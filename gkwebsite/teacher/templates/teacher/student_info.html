@@ -366,7 +366,7 @@
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
-                   {% endif %}
+                   {% endifequal %}
                {% empty %}
                    <li>抱歉，列表为空</li>
                {% endfor %}
