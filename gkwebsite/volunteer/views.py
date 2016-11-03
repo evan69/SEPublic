@@ -323,30 +323,30 @@ def profile(request):
 
         student_id = request.POST.get('studentID', 'byr')
 
-        flag = True
-        if len(vol.getVolunteerbyField(Volunteer.STUDENT_ID, student_id)) == 0:
+        flag = False
+
+        tmp_stu_list = vol.getVolunteerbyField(Volunteer.STUDENT_ID, student_id)
+        if len(tmp_stu_list) == 0 or getattr(tmp_stu_list[0], Volunteer.ACCOUNT) == vol_account:
             vol.setVolunteer(vol_account, Volunteer.STUDENT_ID, student_id)
             vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
             vol.setVolunteer(vol_account, Volunteer.SEX, sex)
             vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
             vol.setVolunteer(vol_account, Volunteer.NATION, nation)
             vol.setVolunteer(vol_account, Volunteer.PROVINCE, province)
-
             vol.setVolunteer(vol_account, Volunteer.MAJOR, department)
             vol.setVolunteer(vol_account, Volunteer.CLASSROOM, classroom)
             vol.setVolunteer(vol_account, Volunteer.PHONE, phone)
             vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
             vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
-
             vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
-
             describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
+            print 'new ', describe
             vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
-            flag = False
+            flag = True
 
         vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
         dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
-                'sex':vol_dic[Volunteer.SEX],
+                'sex': vol_dic[Volunteer.SEX],
                 'email': vol_dic[Volunteer.EMAIL],
                 'nation': vol_dic[Volunteer.NATION],
                 'province': vol_dic[Volunteer.PROVINCE],
@@ -357,8 +357,8 @@ def profile(request):
                 'weichat': vol_dic[Volunteer.WECHAT],
                 'distribute': '1 and 2',
                 'describe': vol_dic[Volunteer.COMMENT], }
-        print 'NEW', dict
-
+        # print 'NEW', dict
+        print 'final ', dict['describe']
         if flag:
             dict['success'] = 'Y'
         else:
