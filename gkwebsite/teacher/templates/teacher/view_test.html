@@ -100,7 +100,12 @@
           $('#'+edit_tag).click(function(){
             var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
-            window.location="/teacher/edit_test/"+testlist[row]['id'];
+            if(testlist[row]['released'].charAt(0)=='N'){
+              window.location="/teacher/edit_test/"+testlist[row]['id'];
+            }
+            else{
+              $.growl.error({ title: "禁止编辑", message: "您不能编辑已发布的测试" });
+            }
           });
           if(testlist[i]['released'].charAt(0)=='N'){
             $('#'+release_tag).click(function(){
@@ -110,8 +115,8 @@
                 if(ret['success'].charAt(0) == 'N'){
                   $.growl.error({ title: "发布失败", message: ret['message'] });
                 }
+                refresh();
               });
-              refresh();
             });
           }
           else{
@@ -122,8 +127,8 @@
                 if(ret['success'].charAt(0) == 'N'){
                   $.growl.error({ title: "撤回失败", message: ret['message'] });
                 }
+                refresh();
               });
-              refresh();
             });
           }
           $('#'+delete_tag).click(function(){
