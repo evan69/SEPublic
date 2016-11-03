@@ -102,7 +102,7 @@
             var problem_info = {};//当前题目的信息，存在字典里
             $.post("/student/get_problem_list/", {'test_name':ka.getAttribute("name")}, function(ret){
 			    problem_list = ret.problem_list;//获取题目id列表
-			    alert(problem_list);
+			    //alert(problem_list);
 			    //console.log('hehe' + problem_list)
                 $('#submit_test').click();
 			});
