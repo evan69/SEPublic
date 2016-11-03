@@ -231,6 +231,11 @@
   <script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
   <!-- Custom Js -->
   <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+   <script>
+   {% if dict.auth == "0" %}
+        alert('对不起，您没有浏览该内容的权限');
+   {% endif %}
+    </script>
     <script>
       console.log("WTF");
       $(document).ready(function(){
@@ -293,13 +298,16 @@
                         'password':password
                     },
                     function(profileDict){
-                        //console.log(profileDict['homephone']);
-                        alert('修改成功');
-                        //alert(String(profileDict));
-                        //console.log(profileDict);
+                        if(profileDict['success'].charAt(0)=='N'){
+                            //$.growl.error({ title: "修改信息失败", message: ret['message'] });
+                            alert('修改失败');
+                        }
+                        else
+                        {
+                            //$.growl.error({ title: "修改信息成功", message: ret['message'] });
+                            alert('修改成功');
+                        }
                         window.location="/volunteer/profile";
-                        //for (key_i in profileDict)
-                        //    $("#"+key_i).val(profileDict[key_i])
             });
             //alert('cao2');
           });

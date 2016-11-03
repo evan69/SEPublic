@@ -363,6 +363,7 @@ def profile(request):
             dict['success'] = 'Y'
         else:
             dict['success'] = 'N'
+        dict['message'] = "已更新个人信息" # 后端在此处加message
         return JsonResponse(dict)
     else:
         '''
@@ -384,4 +385,5 @@ def profile(request):
                 'password': vol_dic[Volunteer.PASSWORD],
                 'studentID': vol_dic[Volunteer.STUDENT_ID],}
         dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
+        dict['auth'] = "0" # 后端需要在这里加上权限检查，没权限为0
         return render(request, 'volunteer/v_userinfo.html', {'dict': dict})
