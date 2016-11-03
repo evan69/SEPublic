@@ -309,10 +309,12 @@ def get_all_tests(request):
 
     year = int(year) - YEAR_LIST[1] + 1
     province = int(stu_dic[Student.PROVINCE]['province'])
-    print 'pro ',province
+    print 'pro ', province
     dic = {
         Picture.YEAR: year,
         Picture.PROVINCE: province,
+        Picture.IS_TITLE: 0,
+        Picture.IS_DELEVERED: 1,
     }
     global rec_dict
     rec_dict = dic
@@ -362,6 +364,7 @@ def get_problem_list(request):
         Picture.YEAR: year,
         Picture.PROVINCE: province,
         Picture.SUBJECT: subject,
+        Picture.IS_TITLE: 0
     }
 
     if province == -1 or subject == -1:
