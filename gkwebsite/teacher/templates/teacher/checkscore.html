@@ -54,8 +54,8 @@
                           <td style="text-align: center">{{item.testname}}</td>
                           <td style="text-align: center">{{item.time}}</td>
                           <td style="text-align: center">
-                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 1)" class = "btn btn-info btn-xs">是</button>
-                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 0)" class = "btn btn-info btn-xs">否</button>
+                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 1,'{{item.stu_id}}')" class = "btn btn-info btn-xs">是</button>
+                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 0,'{{item.stu_id}}')" class = "btn btn-info btn-xs">否</button>
                           </td>
                         </tr>
 
@@ -81,7 +81,7 @@
     {% include 'teacher/include/jsinclude.html' %}
 
 <script>
-    function yesorno(name, sex, province, school, ident, testname, time, code) {
+    function yesorno(name, sex, province, school, ident, testname, time, code,stu_id) {
        /* alert(name + " " + sex + " " + province + " " +
         school + " " + ident + " " + testname + " " +
         time + " " + code);*/
@@ -91,13 +91,11 @@
         $.get("",
                     {
                         'name':name,
-                        'sex':sex,
-                        'province': province,
-                        'school':school,
-                        'ident':ident,
+
                         'testname':testname,
-                        'time':time,
+
                         'code':code,
+                        'stu_id':stu_id
                     },
                     function(){
 
