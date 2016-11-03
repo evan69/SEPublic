@@ -78,6 +78,7 @@
 
     <script>
     function setVolunteer(team_title){
+      $('#group_id').empty();
       $('#group_id').append(String(team_title));
       $('#dialog').dialog("open");
     }
@@ -89,12 +90,12 @@
         $.post("/backend/set_volunteer/", {'group_id':group_id, 'student_num':student_number}, function(ret){
           if(ret['success'].charAt(0)=='N'){
             $.growl.error({ title: "设置失败", message: ret['message'] });
-              refresh(group_id);
+            refresh(group_id);
 
           }
           else{
             $.growl.notice({ title: "设置成功", message: "信息已更新" });
-                        refresh(group_id);
+            refresh(group_id);
 
           }
         });
