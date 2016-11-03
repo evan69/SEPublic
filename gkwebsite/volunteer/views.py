@@ -344,21 +344,22 @@ def profile(request):
             vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
             flag = True
 
-        vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
-        dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
-                'sex': vol_dic[Volunteer.SEX],
-                'email': vol_dic[Volunteer.EMAIL],
-                'nation': vol_dic[Volunteer.NATION],
-                'province': vol_dic[Volunteer.PROVINCE],
-                'department': vol_dic[Volunteer.MAJOR][0],
-                'classroom': vol_dic[Volunteer.CLASSROOM],
-                'phone': vol_dic[Volunteer.PHONE],
-                'qqn': vol_dic[Volunteer.PHONE],
-                'weichat': vol_dic[Volunteer.WECHAT],
-                'distribute': '1 and 2',
-                'describe': vol_dic[Volunteer.COMMENT], }
-        # print 'NEW', dict
-        print 'final ', dict['describe']
+        # vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
+        # dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
+        #         'sex': vol_dic[Volunteer.SEX],
+        #         'email': vol_dic[Volunteer.EMAIL],
+        #         'nation': vol_dic[Volunteer.NATION],
+        #         'province': vol_dic[Volunteer.PROVINCE],
+        #         'department': vol_dic[Volunteer.MAJOR][0],
+        #         'classroom': vol_dic[Volunteer.CLASSROOM],
+        #         'phone': vol_dic[Volunteer.PHONE],
+        #         'qqn': vol_dic[Volunteer.PHONE],
+        #         'weichat': vol_dic[Volunteer.WECHAT],
+        #         # 'distribute': '1 and 2',
+        #         'describe': vol_dic[Volunteer.COMMENT], }
+        # # print 'NEW', dict
+        # print 'final ', dict['describe']
+        dict = {}
         if flag:
             dict['success'] = 'Y'
         else:
