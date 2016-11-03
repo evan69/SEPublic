@@ -4,7 +4,7 @@
 <head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Home</title>
+		<title>估分测试</title>
 		{% load static from staticfiles %}
  {% include 'student/include/cssinclude.html' %}
      <title>测试</title>
@@ -142,12 +142,20 @@
                     //已经做完题目
                     time_list.push(cur_sec);
                     score_list.push(parseInt($("#student_score").val()));
-                    alert('您已经完成本套题估分');
+                    //alert('您已经完成本套题估分');
                     var ret_info = {'test_name':ka.getAttribute("name"),"time_list":String(time_list),'score_list':String(score_list)};
                     $.post("/student/submit_test_result/", ret_info, function(ret){
-                        alert(time_list);
-                        alert(score_list);
+                        //alert(time_list);
+                        //alert(score_list);
+
                     });
+                    var i = 0;
+                    var tot_score = 0;
+                    for(i = 0;i < score_list.length;i++)
+                    {
+                        tot_score += score_list[i];
+                    }
+                    alert("估分完成，您的估分结果为" + String(tot_score) + "分");
                     window.location="/student/score";
                     return;
                  }
@@ -168,7 +176,7 @@
                      {
                             time_list.push(cur_sec);
                             score_list.push(parseInt($("#student_score").val()));
-                            alert('本题已提交，用时:' + cur_sec + "秒");
+                            //alert('本题已提交，用时:' + cur_sec + "秒");
                             var top = document.body.scrollTop || document.documentElement.scrollTop;
                             scrollBy(0,-top);//返回顶部
                             cur_sec = 0;
