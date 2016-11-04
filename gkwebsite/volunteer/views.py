@@ -203,6 +203,7 @@ def date_choose(request):
     c = {'id': id}
     return HttpResponse(t.render(c))
 
+
 @csrf_exempt
 def get_all_activity(request):
     """

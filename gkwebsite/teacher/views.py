@@ -110,12 +110,10 @@ def student_info_edit(request):
         '''
         id = request.GET.get('id')
         account = stu.idToAccountStudent(str(id))
-
         info_dict = request.POST.copy()
         for i in range(1, 7):
             if info_dict['majorSelect' + str(i)].strip() == '':
                 info_dict['majorSelect' + str(i)] = '0'
-                print i, 909090
         for i in range(1, 4):
             if info_dict['testScore' + str(i)].strip() == '':
                 info_dict['testScore' + str(i)] = '0'
@@ -234,6 +232,9 @@ def student_info_edit(request):
         account = stu.idToAccountStudent(str(id))
         student = stu.getStudentAll(account)
         stu_dic = stu.getStudentAllDictByAccount(account)
+
+
+
         dic = {
             Student.ID: stu_dic[Student.ID],
             Student.ACCOUNT: stu_dic[Student.ACCOUNT],
@@ -275,18 +276,17 @@ def student_info_edit(request):
         }
 
         group_list = stu.getStudentGroupIDListString(student).split(' ')
-        for i in range(1, 6):
+        for i in range(0, 5):
             if i < len(group_list):
-                dic['group'+str(i)] = int(group_list[i])
+                dic['group'+str(i+1)] = int(group_list[i])
             else:
-                dic['group'+str(i)] = 0
-
+                dic['group'+str(i+1)] = 0
         dic['grouplist'] = [' ']
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         id_ = request.session.get('user_id', -1)
-        print 'byr ', dic
+        print 'byr ', dic['group1'], dic['group2'], dic['group3'], dic['group4'], dic['group5']
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic, 'id': id_})
@@ -735,16 +735,19 @@ def volunteer_info_edit(request):
         }
 
         group_list = vol.getVolunteerGroupIDListString(volunteer).split(' ')
-        for i in range(1, 6):
+        for i in range(0, 5):
             if i < len(group_list):
-                dic['group' + str(i)] = group_list[i]
+                dic['group' + str(i+1)] = int(group_list[i])
             else:
-                dic['group' + str(i)] = '0'
+                dic['group' + str(i+1)] = 0
 
         dic['grouplist'] = [' ']
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+
+        print dic['group1'], dic['group2'], dic['group3'], dic['group4'], dic['group5']
+        print dic['grouplist']
 
         id_ = request.session.get('user_id', -1)
         return render(request,
