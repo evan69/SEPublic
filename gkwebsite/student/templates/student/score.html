@@ -54,7 +54,7 @@
         });
         $('#link_score').addClass("active-menu");
         $('#link_score').attr("href", "#");
-				
+
 				$.post("/backend/get_student_name_by_id/", {'id': {{ id }} }, function(data, status, xhr){
 					$('#username').append(data['name']);
 				})
@@ -63,10 +63,8 @@
 			var user_array = [];
 			var done_array = [];
 			function show_list(){
-			    console.log('hehe');
 				var tag1, tag2, tag3;
 				var listitem = "";
-				//user_array = [1,2,3];
 				for(var i = 0; i < user_array.length; ++i){
 					tag1 = String(i)+'_A';
 					tag2 = String(i)+'_Aname';
@@ -85,37 +83,23 @@
 			        $('#test_list').append(tt_begin + data + tt_end);
 					$('#'+tag1).click(function(){
 					    var parse = this.id.split("_");
-					    //alert(parse);
 						var row = this.id + "name";
-						//alert(row);
-					    //alert(user_array);
-					    //alert(i);
-					    //alert(user_array[i]);
                         window.location="/student/do_test?test_name="+document.getElementById(row).innerHTML;
-                        /*
-					    $.post("/student/do_test/", {'test_name' : user_array[i]}, function(ret){
-                            alert('hehe');
-					    })
-					    */
 						//No need to examine the suffix since we are dealing with 'tag1'
 			        })
 			    }
 			}
 			$('#test_list').empty();
-			//show_list();
 
 			$.post("/student/get_all_tests/", {}, function(ret){
 			    user_array = ret.tests;
 			    done_array = ret.done_list;
-			    //user_array = ['1','2','3'];
-			    //alert(user_array);
 				show_list();
 			})
 
 			var cur_sec = 0;
 			var ff = function()
 			{
-			    //show_time(cur_sec);
 			    cur_sec++;
 			}
             //setInterval("ff()", 1000);
