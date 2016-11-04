@@ -89,7 +89,7 @@ def volunteer_search_student_by_name(request):
 
 def volunteer_logout(request):
     try:
-        del request.session['user_id']
+        del request.session['volunteer_id']
     except KeyError:
         pass
     return redirect('/login')

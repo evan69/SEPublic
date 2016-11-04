@@ -211,9 +211,26 @@
             <div class="form-group">
              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
              <div class="col-sm-10">
-              <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
+              <textarea readonly type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
              </div>
             </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">强制禁止：</label>
+             <div class="col-sm-10">
+           <select class="form-control" id="forbid" name="forbid">
+                {% for item in dict.forbidlist %}
+                   {% if forloop.counter0 == dict.forbid %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+
             <div class="form-group">
              <div class="col-sm-offset-2 col-sm-10">
               <button id="volunteer_save" type="button" class="btn btn-primary" value="save">保存</button>
@@ -234,17 +251,15 @@
   </div>
   <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
  <script>
-      console.log("WTF");
       $(document).ready(function(){
-          console.log("Arrive here");
           $("#volunteer_save").click(function(){
-              console.log("volunteer_save");
             var volunteer_name = $("#volunteer_name").val();
             var email = $("#email").val();
             var phone = $("#phone").val();
             var qqn = $("#qqn").val();
             var weichat = $("#weichat").val();
             var describe = $("#comment").val();
+            var forbid = $("#forbid").val();
             $.post("",
                     {
                         'user_name':volunteer_name,
@@ -254,6 +269,7 @@
                         'qqn':qqn,
                         'weichat':weichat,
                         'comment':describe,
+                        'forbid' :forbid,
                     },
                     function(profileDict){
 

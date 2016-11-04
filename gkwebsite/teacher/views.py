@@ -436,7 +436,7 @@ def fake_backend(request):
 
 def teacher_logout(request):
     try:
-        del request.session['user_id']
+        del request.session['teacher_id']
     except KeyError:
         pass
     return redirect('/login')

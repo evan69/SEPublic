@@ -431,13 +431,39 @@
 
 
 
-
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
+              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">过去评论：</label>
               <div class="col-sm-10">
-               <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
+               <textarea type="text" class="form-control" id="comment" name="comment" rows="10" readonly>{{student.comment}}</textarea>
               </div>
              </div>
+
+             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">新增评论：</label>
+              <div class="col-sm-10">
+               <textarea type="text" class="form-control" id="newcomment" name="newcomment" rows="10" placeholder="备注信息"></textarea>
+              </div>
+             </div>
+
+
+                         <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">强制禁止：</label>
+             <div class="col-sm-10">
+           <select class="form-control" id="forbid" name="forbid">
+                {% for item in student.forbidlist %}
+                   {% if forloop.counter0 == student.forbid %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+
+
              <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
               <button id="student_save" type="button" class="btn btn-primary" value="save">保存</button>
@@ -470,11 +496,8 @@
 {% include 'teacher/include/jsinclude.html' %}
 
  <script>
-      console.log("WTF");
       $(document).ready(function(){
-          console.log("Arrive here");
           $("#student_save").click(function(){
-              console.log("student_save");
             var user_name = $("#account").val();
             var type = $("#type").val();
             var province = $("#province").val();
@@ -510,12 +533,13 @@
             var relTeacher = $("#relTeacher").val();
             var relVolunteer = $("#relVolunteer").val();
             var comment= $("#comment").val();
+            var newcomment= $("#newcomment").val();
             var team1= $("#team1").val();
             var team2= $("#team2").val();
             var team3= $("#team3").val();
             var team4= $("#team4").val();
             var team5= $("#team5").val();
-
+            var forbid = $("#forbid").val();
 
            /*alert(
                         'type'+type+
@@ -590,12 +614,13 @@
              'relTeacher': relTeacher,
              'relVolunteer' : relVolunteer,
              'comment': comment,
+             'newcomment' : newcomment,
              'team1': team1,
              'team2': team2,
              'team3': team3,
              'team4': team4,
              'team5': team5,
-
+             'forbid': forbid,
                     },
                     function(profileDict){
 
