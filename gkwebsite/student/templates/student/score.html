@@ -7,7 +7,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
  {% include 'student/include/cssinclude.html' %}
-     <title>分数排名</title>
+     <title>估分测试</title>
  </head>
 
 <body>
@@ -54,56 +54,56 @@
         });
         $('#link_score').addClass("active-menu");
         $('#link_score').attr("href", "#");
-				
+
 				$.post("/backend/get_student_name_by_id/", {'id': {{ id }} }, function(data, status, xhr){
 					$('#username').append(data['name']);
 				})
 				
 			});
 			var user_array = [];
+			var done_array = [];
 			function show_list(){
-			 	var tag1, tag2, tag3;
+				var tag1, tag2, tag3;
+
 				var listitem = "";
-				//user_array = [1,2,3];
 				for(var i = 0; i < user_array.length; ++i){
 					tag1 = String(i)+'_A';
 					tag2 = String(i)+'_Aname';
 					var tt_begin = "<div class=\"col-md-12\" style = \"width:100%\"><label id = \"" + tag2 + "\" style = \"font-size: 30px\">";
 			        var data = user_array[i];
-			        var tt_end = "</label><div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">开始测试</div></div>"
+			        var done = "";
+			        /*
+			        if(done_array[i] == "1")
+			        {
+                       done = "<small>（已估分）</small>";
+			        }
+			        else
+			        {
+                        done = "<small>（未估分）</small>";
+			        }
+			        */
+			        done = "<small>(" + String(done_array[i]) + ")</small>"
+			        var tt_end = "</label>" + done + "<div class=\"button blue\" style = \"margin-right: auto;text-align:right;float:right\" id = \"" + tag1 + "\">开始测试</div></div>"
 			        $('#test_list').append(tt_begin + data + tt_end);
 					$('#'+tag1).click(function(){
 					    var parse = this.id.split("_");
-					    //alert(parse);
 						var row = this.id + "name";
-						//alert(row);
-					    //alert(user_array);
-					    //alert(i);
-					    //alert(user_array[i]);
                         window.location="/student/do_test?test_name="+document.getElementById(row).innerHTML;
-                        /*
-					    $.post("/student/do_test/", {'test_name' : user_array[i]}, function(ret){
-                            alert('hehe');
-					    })
-					    */
 						//No need to examine the suffix since we are dealing with 'tag1'
 			        })
 			    }
 			}
 			$('#test_list').empty();
-			//show_list();
 
 			$.post("/student/get_all_tests/", {}, function(ret){
 			    user_array = ret.tests;
-			    //user_array = ['1','2','3'];
-			    //alert(user_array);
+			    done_array = ret.done_list;
 				show_list();
 			})
 
 			var cur_sec = 0;
 			var ff = function()
 			{
-			    //show_time(cur_sec);
 			    cur_sec++;
 			}
             //setInterval("ff()", 1000);
