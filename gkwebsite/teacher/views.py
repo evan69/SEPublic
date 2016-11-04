@@ -664,8 +664,10 @@ def volunteer_info(request):
         'comment': vol_dic[Volunteer.COMMENT],
     }
     group_list = vol.getVolunteerGroupIDListString(volunteer).split(' ')
+    if '' in group_list:
+        group_list.remove('')
     for i in range(0, 5):
-        if i < len(group_list):
+        if i < len(group_list) and group_list[i].strip() != '':
             dic['group' + str(i+1)] = int(group_list[i])
         else:
             dic['group' + str(i+1)] = 0
@@ -743,8 +745,10 @@ def volunteer_info_edit(request):
         }
 
         group_list = vol.getVolunteerGroupIDListString(volunteer).split(' ')
+        if '' in group_list:
+            group_list.remove('')
         for i in range(0, 5):
-            if i < len(group_list):
+            if i < len(group_list) and group_list[i].strip() != '':
                 dic['group' + str(i+1)] = int(group_list[i])
             else:
                 dic['group' + str(i+1)] = 0
