@@ -168,7 +168,7 @@ def student_info_edit(request):
             'admissionStatus': info_dict.get('admissionStatus', '110'),
             'relTeacher': info_dict.get('relTeacher', '110'),
             'relVolunteer': info_dict.get('relVolunteer', '110'),
-            'comment': info_dict.get('comment', '110'),
+            'comment': info_dict.get('comment', '110') + '\n' + info_dict.get('newcomment', '110'),
             'team1': info_dict.get('team1', '1'),
             'team2': info_dict.get('team2', '1'),
             'team3': info_dict.get('team3', '1'),

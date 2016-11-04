@@ -41,7 +41,7 @@ def back_to_profile(request, id):
             'studentID': vol_dic[Volunteer.STUDENT_ID], }
     dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
     dict['auth'] = "0"  # 后端需要在这里加上权限检查，没权限为0
-    print 'asdfjasdufo9789234759384759________________________'
+    # print 'asdfjasdufo9789234759384759________________________'
     return render(request, 'volunteer/v_userinfo.html', {'dict': dict})
 
 def check_identity(identity):

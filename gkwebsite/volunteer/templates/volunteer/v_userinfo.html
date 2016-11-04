@@ -234,6 +234,7 @@
    <script>
    {% if dict.auth == "0" %}
         alert('对不起，您没有浏览该内容的权限，将回到个人信息界面');
+        location.href = "/volunteer/profile/";
    {% endif %}
     </script>
      <script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
