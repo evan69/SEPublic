@@ -21,12 +21,11 @@ import database.volunteer_backend as vol
 
 
 # Create your views here.
-
 def check_identity(identity):
     def decorator(func):
         def wrapper(request, *args, **kw):
             # 下面这空白的位置填session相应的id名
-            identity_dic = {'student': '', 'volunteer': ' ', 'teacher': ' '}
+            identity_dic = {'student': '', 'volunteer': '', 'teacher': ''}
             id = int(request.session.get(identity_dic[identity]))
             if identity == 'student':
                 if stu.is_have_permission(id) == False:
