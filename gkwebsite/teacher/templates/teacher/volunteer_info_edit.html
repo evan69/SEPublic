@@ -253,6 +253,8 @@
  <script>
       $(document).ready(function(){
           $("#volunteer_save").click(function(){
+                          document.getElementById("volunteer_save").disabled = true;
+
             var volunteer_name = $("#volunteer_name").val();
             var email = $("#email").val();
             var phone = $("#phone").val();
@@ -276,6 +278,8 @@
                         for (key_i in profileDict)
                             $("#"+key_i).val(profileDict[key_i]);
                         alert("修改成功");
+                                    document.getElementById("volunteer_save").disabled = false;
+
             })
           });
       });

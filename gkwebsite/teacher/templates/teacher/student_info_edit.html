@@ -498,6 +498,7 @@
  <script>
       $(document).ready(function(){
           $("#student_save").click(function(){
+            document.getElementById("student_save").disabled = true;
             var user_name = $("#account").val();
             var type = $("#type").val();
             var province = $("#province").val();
@@ -533,7 +534,8 @@
             var relTeacher = $("#relTeacher").val();
             var relVolunteer = $("#relVolunteer").val();
             var comment= $("#comment").val();
-            var newcomment= $("#newcomment").val();
+            var myDate = new Date();
+            var newcomment= $("#newcomment").val() + "      " + myDate.toLocaleString();
             var team1= $("#team1").val();
             var team2= $("#team2").val();
             var team3= $("#team3").val();
@@ -626,6 +628,7 @@
 
                         for (key_i in profileDict)
                             $("#"+key_i).val(profileDict[key_i]);
+                                    document.getElementById("student_save").disabled = false;
                         alert("修改成功");
             })
           });
