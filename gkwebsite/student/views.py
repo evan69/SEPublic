@@ -285,11 +285,17 @@ def profile(request):
             'realScore': int(info_dict.get('realScore')),
             # 'relTeacher': info_dict.get('relTeacher'),
             'comment': info_dict.get('comment'),
+
+            'password': info_dict.get('comment'),
         }
         # print 'wocao ni mei', dic
-
-        birth_list = info_dict['birth'].split('/')
-        dic['birth'] = datetime.date(int(birth_list[2]), int(birth_list[0]), int(birth_list[1]))
+        try:
+            birth_list = info_dict['birth'].split('/')
+            dic['birth'] = datetime.date(int(birth_list[2]), int(birth_list[0]), int(birth_list[1]))
+        except:
+            dic['success'] = 'N'
+            dic['message'] = u'日期设置不正确，请重新输入'
+            return JsonResponse(dic)
 
         stu.setStudent(account, Student.REAL_NAME, dic['name'])
         stu.setStudent(account, Student.ID_NUMBER, dic['identification'])
