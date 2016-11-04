@@ -20,11 +20,55 @@ import database.backend as back
 
 # Create your views here.
 
+
+def back_to_profile(request, id):
+    vol_account = vol.idToAccountVolunteer(id)
+    vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
+    volunteer = vol.getVolunteerAll(vol_account)
+    dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
+            'sex': vol_dic[Volunteer.SEX],
+            'email': vol_dic[Volunteer.EMAIL],
+            'nation': vol_dic[Volunteer.NATION],
+            'province': vol_dic[Volunteer.PROVINCE],
+            'department': vol_dic[Volunteer.MAJOR][0],
+            'classroom': vol_dic[Volunteer.CLASSROOM],
+            'phone': vol_dic[Volunteer.PHONE],
+            'qqn': vol_dic[Volunteer.QQ],
+            'weichat': vol_dic[Volunteer.WECHAT],
+            'distribute': 'no group',
+            'describe': vol_dic[Volunteer.COMMENT],
+            'password': vol_dic[Volunteer.PASSWORD],
+            'studentID': vol_dic[Volunteer.STUDENT_ID], }
+    dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
+    dict['auth'] = "0"  # 后端需要在这里加上权限检查，没权限为0
+    print 'asdfjasdufo9789234759384759________________________'
+    return render(request, 'volunteer/v_userinfo.html', {'dict': dict})
+
+def check_identity(identity):
+    def decorator(func):
+        def wrapper(request, *args, **kw):
+            # 下面这空白的位置填session相应的id名
+            identity_dic = {'student': 'student_id', 'volunteer': 'volunteer_id', 'teacher': 'teacher_id'}
+            id = int(request.session.get(identity_dic[identity]))
+            if identity == 'student':
+                if stu.is_have_permission(id) == False:
+                    pass
+            elif identity == 'volunteer':
+                if vol.is_have_permission(id) == False:
+                    return back_to_profile(request, id)
+            else:
+                pass
+            return func(request, *args, **kw)
+        return wrapper
+    return decorator
+
+
 @ensure_csrf_cookie
+@check_identity('volunteer')
 def search_student(request):
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
-    id = request.session.get('user_id', -1)
+    id = request.session.get('volunteer_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('volunteer/v_list_student.html')
@@ -33,9 +77,9 @@ def search_student(request):
 
 
 def student_list_all(request):
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
-    vol_id = request.session.get('user_id')
+    vol_id = request.session.get('volunteer_id')
     vol_account = vol.idToAccountVolunteer(vol_id)
     vol_student_account_list = getattr(vol.getVolunteerAll(
         vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
@@ -57,7 +101,7 @@ def student_list_all(request):
 
 
 def volunteer_search_student_by_name(request):
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
     '''
         后端需要在这里改代码，根据姓名搜索学生
@@ -66,7 +110,7 @@ def volunteer_search_student_by_name(request):
     if request.is_ajax() and request.method == 'POST':
         name = request.POST.get('name')
         t = []
-        vol_id = request.session.get('user_id')
+        vol_id = request.session.get('volunteer_id')
         vol_account = vol.idToAccountVolunteer(vol_id)
         vol_student_account_list = getattr(vol.getVolunteerAll(
             vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
@@ -96,7 +140,7 @@ def volunteer_logout(request):
 
 
 def get_volunteer_name_by_id(request):
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
     # completed by evan69
     # use this if-else to block violent access
@@ -112,7 +156,7 @@ def get_volunteer_name_by_id(request):
 
 
 def dashboard(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('volunteer_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('volunteer/dashboard.html')
@@ -121,19 +165,20 @@ def dashboard(request):
 
 
 @csrf_exempt
+@check_identity('volunteer')
 def student_info_show(request):
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
     t = get_template('volunteer/student_info.html')
     id = request.GET.get('stu_id', -1)
     if id == -1:
         # 后端需要在这里加上一类条件，即另一种情况下的Access denied
-        # 根据request.session.get('user_id')获取志愿者ID，前面代码中的id变量为学生id
+        # 根据request.session.get('volunteer_id')获取志愿者ID，前面代码中的id变量为学生id
         # 要据此排除学生不是该志愿者权限范围内的情况
         return HttpResponse('Access denied')
 
     # 检查这个id是否应该让这个志愿者看到
-    vol_id = request.session.get('user_id')
+    vol_id = request.session.get('volunteer_id')
     vol_account = vol.idToAccountVolunteer(vol_id)
     vol_student_account_list = getattr(vol.getVolunteerAll(
         vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
@@ -192,11 +237,12 @@ def student_info_show(request):
     return HttpResponse(t.render({'student': dic}))
 
 
+@check_identity('volunteer')
 def date_choose(request):
     print 'date choose'
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
-    id = request.session.get('user_id', -1)
+    id = request.session.get('volunteer_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('volunteer/v_date_choose.html')
@@ -215,9 +261,9 @@ def get_all_activity(request):
                          {'name':'一对一解答','proposer':'屁孩','state':'已填写','activity_id':'32'},
                          {'name':'庆功会','proposer':'王大神','state':'未填写','activity_id':'9'}]}
 
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
-    id = request.session.get('user_id', -1)
+    id = request.session.get('volunteer_id', -1)
     print 'vol id', id
     ret_list = []
     timer_list = back.getTimerbyDict({})
@@ -245,9 +291,9 @@ def get_activity_time(request):
         然后放到下面样例写好的dic的'time'键对应的列表值中
         'checked'键表示上次选择的结果
     """
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
-    vol_id = str(request.session.get('user_id', -1))
+    vol_id = str(request.session.get('volunteer_id', -1))
     print 'ac_id=:', request.POST.get('activity_id')
     timer = back.getTimerbyDict({Timer.ID: int(request.POST.get('activity_id'))})[0]
     info_dic = back.getTimerAllDictByObject(timer)
@@ -267,9 +313,9 @@ def submit_time(request):
         后端应在此处提交本次问卷填写结果
         然后返回是否成功
     """
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
-    vol_id = str(request.session.get('user_id'))
+    vol_id = str(request.session.get('volunteer_id'))
     print "vol id" + vol_id
     print request.POST
     ac_id = request.POST.get('activity_id') # 活动问卷的id
@@ -291,9 +337,9 @@ def submit_time(request):
 
 @csrf_exempt
 def profile(request):
-    if 'user_id' not in request.session.keys():
+    if 'volunteer_id' not in request.session.keys():
         return redirect('/login/')
-    vol_id = request.session.get('user_id')
+    vol_id = request.session.get('volunteer_id')
     print "vol id" + str(vol_id)
     vol_account = vol.idToAccountVolunteer(str(vol_id))
     volunteer = vol.getVolunteerAll(vol_account)
@@ -301,7 +347,7 @@ def profile(request):
         '''
             后端需要在这里改代码，保存传进来的数据到数据库，并返回正确的dict。
             希望能够返回是否保存成功，以及哪些字段不合法的信息
-            后端可以通过request.session.get('user_id')获取id
+            后端可以通过request.session.get('volunteer_id')获取id
         '''
         volunteer_name = request.POST.get('volunteer_name', 'byr')
         sex = int(request.POST.get('sex', 'byr'))

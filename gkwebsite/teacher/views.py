@@ -21,7 +21,7 @@ from database.my_field import *
 
 @ensure_csrf_cookie
 def search_student(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/list_student.html')
@@ -31,7 +31,7 @@ def search_student(request):
 
 @ensure_csrf_cookie
 def manage_activity(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/manage_activity.html')
@@ -44,7 +44,7 @@ def get_all_activity(request):
     '''
         后端在此处返回老师可见的活动列表，放在dic字典的'acticity'键对应的值里返回给前端
     '''
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     dict = {'activity' : [{'name':'第一次组会','proposer':'李三胖','start_time':'2016/10/1','end_time':'2016/10/10','number':'12','activity_id':'12'},
@@ -77,7 +77,7 @@ def delete_activity(request):
     '''
         后端在此处删除某个活动，该活动的id放在POST字典的'acticity'键对应的值里，返回空字典即可
     '''
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     print request.POST.get('activity_id')
@@ -94,7 +94,7 @@ def delete_activity(request):
 
 @ensure_csrf_cookie
 def search_volunteer(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/list_volunteer.html')
@@ -225,7 +225,7 @@ def student_info_edit(request):
         '''
             后端需要在这里改代码，从数据库读取正确的dict，并返回
         '''
-        if 'user_id' not in request.session.keys():
+        if 'teacher_id' not in request.session.keys():
             return redirect('/login/')
         print request.GET
         id = request.GET.get('id')
@@ -285,7 +285,7 @@ def student_info_edit(request):
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
-        id_ = request.session.get('user_id', -1)
+        id_ = request.session.get('teacher_id', -1)
         print 'byr ', dic['group1'], dic['group2'], dic['group3'], dic['group4'], dic['group5']
         return render(request,
                       'teacher/student_info_edit.html',
@@ -340,7 +340,7 @@ def student_info_save(request):
         Student.DAD_NAME: stu_dic[Student.DAD_NAME],
     }
 
-    id_ = request.session.get('user_id', -1)
+    id_ = request.session.get('teacher_id', -1)
     return HttpResponse(t.render({'student': dic, 'id':id_}))
 
 
@@ -404,13 +404,13 @@ def student_info_show(request):
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
     print dic['grouplist']
 
-    id_ = request.session.get('user_id', -1)
+    id_ = request.session.get('teacher_id', -1)
     return HttpResponse(t.render({'student': dic, 'id':id_}))
 
 
 @ensure_csrf_cookie
 def add_student(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/add_student.html')
@@ -443,7 +443,7 @@ def teacher_logout(request):
 
 
 def dashboard(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/dashboard.html')
@@ -452,7 +452,7 @@ def dashboard(request):
 
 
 def add_volunteer(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/add_volunteer.html')
@@ -506,7 +506,7 @@ def profile(request):
         #   dosomething()
         # by dqn14 2016/11/1
 
-        id = (int)(request.session.get('user_id'))
+        id = (int)(request.session.get('teacher_id'))
         account = tch.idToAccountTeacher(id)
 
         if not tch.setTeacher(account, Teacher.REAL_NAME, teacher_name):
@@ -531,7 +531,7 @@ def profile(request):
         '''
             后端需要在这里改代码，从数据库读取正确的dict，并返回
         '''
-        id = (str)(request.session.get('user_id'))
+        id = (str)(request.session.get('teacher_id'))
         account = tch.idToAccountTeacher(id)
         teacher = tch.getTeacherAll(account)
         dict = {
@@ -582,7 +582,7 @@ def upload(request):
             'score': {'score': 0, 'scorelist': SCORE_LIST},
             'category': {'category': 0, 'categorylist': CATEGORY_LIST},
         }
-        id_ = request.session.get('user_id', -1)
+        id_ = request.session.get('teacher_id', -1)
         return render(request, 'teacher/uploadtest.html', {'dict': dic, 'id':id_})
     else:
         year = request.POST.get('year')
@@ -626,7 +626,7 @@ def volunteer_info(request):
     '''
     后端需要在这里获取数据并返回
     '''
-    if 'user_id' not in request.session.keys():
+    if 'teacher_id' not in request.session.keys():
         return redirect('/login/')
     id = request.GET.get('id')
     print request.GET
@@ -668,7 +668,7 @@ def volunteer_info(request):
     for item in all_group:
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
 
-    id_ = request.session.get('user_id', -1)
+    id_ = request.session.get('teacher_id', -1)
     return render(request, 'teacher/volunteer_info.html', {'dict': dic, 'id':id_})
 
 
@@ -705,7 +705,7 @@ def volunteer_info_edit(request):
         '''
             后端需要在这里改代码，从数据库读取正确的dict，并返回
         '''
-        if 'user_id' not in request.session.keys():
+        if 'teacher_id' not in request.session.keys():
             return redirect('/login/')
         print request.GET
         id = request.GET.get('id')
@@ -749,7 +749,7 @@ def volunteer_info_edit(request):
         print dic['group1'], dic['group2'], dic['group3'], dic['group4'], dic['group5']
         print dic['grouplist']
 
-        id_ = request.session.get('user_id', -1)
+        id_ = request.session.get('teacher_id', -1)
         return render(request,
                       'teacher/volunteer_info_edit.html',
                       {'dict': dic, 'id':id_})
@@ -841,7 +841,7 @@ def distribute_student(request):
             team_list.append(team)
         team_list.reverse()
 
-        id_ = request.session.get('user_id', -1)
+        id_ = request.session.get('teacher_id', -1)
         return render(request,
                       'teacher/distribute_student.html',
                       {'dict': team_list, 'id':id_})
@@ -857,7 +857,7 @@ def download_xls(request, file_name):
     return response
     
 def view_message(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/view_message.html')
@@ -865,7 +865,7 @@ def view_message(request):
     return HttpResponse(t.render(c))
     
 def manage_test(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/view_test.html')
@@ -873,7 +873,7 @@ def manage_test(request):
     return HttpResponse(t.render(c))
     
 def edit_test(request, test_id):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('teacher_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     t = get_template('teacher/edit_test.html')
@@ -946,7 +946,7 @@ def checkscore(request):
                     }
                     list.append(dict)
 
-        id_ = request.session.get('user_id', -1)
+        id_ = request.session.get('teacher_id', -1)
         return render(request,
                       'teacher/checkscore.html', {'dict':list, 'id':id_})
 
