@@ -66,10 +66,20 @@ def student_rank(request):
     student = stu.getStudentAll(account)
     print stu.getStudentEstimateRank(student)
     rank, sum_rank = stu.getStudentEstimateRank(student)
-    dict = {'name': student_dic[Student.REAL_NAME],
-            'score': getStudentEstimateScore(student),
-            'rank1': rank,
-            'rank11':sum_rank,
+    name = 'name'
+    bs = ['总成绩是', '语文成绩是']
+    rs = ['1', '2']
+    score = [bs[0]+rs[0], bs[1]+rs[1]]
+    bs1 = ['总排名是', '语文排名是']
+    rs1 = ['1', '2']
+    score1 = [bs1[0] + rs1[0], bs1[1] + rs1[1]]
+    strinfo = name + '同学你好，'
+    t = 0
+    for i in bs:
+        strinfo = strinfo + score[t] + ',' + score1[t] + ';'
+        t = t + 1
+
+    dict = {'info': strinfo,
             }
     return render(request, 'student/rank.html', {'dict': dict, 'id':id})
 
@@ -128,7 +138,7 @@ def student_contact(request):
 
 def student_logout(request):
     try:
-        del request.session['user_id']
+        del request.session['student_id']
     except KeyError:
         pass
     return redirect('/login')

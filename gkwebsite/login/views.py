@@ -56,7 +56,7 @@ def logincheck(request):
                     print ' student login'
                     (login, id) = student_backend.checkStudentPassword(username, password)
                     if login:
-                        request.session['user_id'] = int(id)
+                        request.session['student_id'] = int(id)
                         request.session['user_name'] = username
                         #request.session['password'] = password
                         return redirect('/student/')
@@ -72,7 +72,7 @@ def logincheck(request):
                     print ' teacher login'
                     (login,id) = teacher_backend.checkTeacherPassword(username, password)
                     if login:
-                        request.session['user_id'] = int(id)
+                        request.session['teacher_id'] = int(id)
                         request.session['user_name'] = username
                         #request.session['password'] = password
                         return redirect('/teacher/')
@@ -87,7 +87,7 @@ def logincheck(request):
                 if (yzmString == request.session['yzmString']):
                     (login,id) = volunteer_backend.checkVolunteerPassword(username, password)
                     if login:
-                        request.session['user_id'] = id
+                        request.session['volunteer_id'] = id
                         request.session['user_name'] = username
                         #request.session['password'] = password
                         # return render_to_response('/student')
@@ -99,9 +99,10 @@ def logincheck(request):
                     return HttpResponse(u"验证码不正确<a href='/login'>点击</a>")
             else:
                 return render_to_response('src/login.html');
+        else:
+            return render_to_response('src/login.html', {'errors': errors});
     else:
-        return render_to_response('src/login.html', {'errors': errors});
-
+        return render_to_response('src/login.html');
 
 '''
     登录界面验证码生成

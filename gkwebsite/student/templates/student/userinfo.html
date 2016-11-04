@@ -39,12 +39,12 @@
 
         <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>估计分<i>:</i></label>
-         <input readonly="readonly" id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" />
+         <input readonly id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" style="background-color: #9F9FA0" />
         </span>
        </div>
         <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>估计分排名<i>:</i></label>
-         <input readonly="readonly" id="estimateRank" type="text" value="{{dict.estimateRank}}" required="" />
+         <input readonly id="estimateRank" type="text" value="{{dict.estimateRank}}" required=""  style="background-color: #9F9FA0"/>
         </span>
        </div>
 
@@ -320,8 +320,8 @@
 
 
        <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>备注<i>:</i></label>
-        <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
+        <span class="agile_grid"> <label>老师对我的评论<i>:</i></label>
+        <textarea readonly type="text" class="form-control" id="comment" name="comment" rows="10">{{dict.comment}}</textarea>
 
         </span>
        </div>
@@ -358,7 +358,6 @@
       $(document).ready(function(){
           $('#link_profile').attr("href", "#");
           $("#save").click(function(){
-              console.log("student_save");
            var password1 = $("#password1").val();
             var password2 = $("#password2").val();
             if (password1 != password2){
@@ -492,7 +491,7 @@
            //  'admissionStatus' : admissionStatus,
              'relTeacher': relTeacher,
          //    'relVolunteer' : relVolunteer,
-             'comment': comment,
+          //   'comment': comment,
                     },
                     function(profileDict){
 
