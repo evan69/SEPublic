@@ -174,6 +174,7 @@ def student_info_edit(request):
             'team3': info_dict.get('team3', '1'),
             'team4': info_dict.get('team4', '1'),
             'team5': info_dict.get('team5', '1'),
+            'forbid': int(info_dict.get('forbid', '1')),
         }
 
         stu.setStudent(account, Student.TYPE, dic['type'])
@@ -220,6 +221,7 @@ def student_info_edit(request):
         stu.setStudentGroupbyList(stu.getStudentAll(account), [dic['team1'], dic['team2'], dic['team3'],dic['team4'],dic['team5']])
 
         stu.setStudent(account, Student.DUIYING_TEACHER, dic['relTeacher'])
+        stu.setStudent(account, Student.QUANXIAN, dic['forbid'])
         return JsonResponse(request.POST)
     else:
         '''
@@ -272,7 +274,7 @@ def student_info_edit(request):
 
             Student.MOM_NAME: stu_dic[Student.MOM_NAME],
             Student.DAD_NAME: stu_dic[Student.DAD_NAME],
-            student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
+            Student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
         }
 
         group_list = stu.getStudentGroupIDListString(student).split(' ')
@@ -286,7 +288,12 @@ def student_info_edit(request):
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         id_ = request.session.get('teacher_id', -1)
-        print 'byr ', dic['group1'], dic['group2'], dic['group3'], dic['group4'], dic['group5']
+        # print 'byr ', dic['group1'], dic['group2'], dic['group3'], dic['group4'], dic['group5']
+
+
+        dic['forbid'] = int(stu_dic[Student.QUANXIAN])
+        dic['forbidlist'] = PERMISSION_LIST
+        print 'wo ca lei', dic['forbid'], dic['forbidlist']
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic, 'id': id_})
@@ -693,6 +700,7 @@ def volunteer_info_edit(request):
         comment = request.POST.get('comment', '110')
         qqn = request.POST.get('qqn', '110')
 
+        vol.setVolunteer(account, Volunteer.QUANXIAN, int(request.POST.get('forbid', '1')))
         vol.setVolunteer(account, Volunteer.PHONE, phone)
         vol.setVolunteer(account, Volunteer.EMAIL, email)
         vol.setVolunteer(account, Volunteer.WECHAT, weichat)
@@ -748,6 +756,11 @@ def volunteer_info_edit(request):
 
         print dic['group1'], dic['group2'], dic['group3'], dic['group4'], dic['group5']
         print dic['grouplist']
+
+
+        dic['forbid'] = int(vol_dic[Volunteer.QUANXIAN])
+        dic['forbidlist'] = PERMISSION_LIST
+        print 'wo ca lei', dic['forbid'], dic['forbidlist']
 
         id_ = request.session.get('teacher_id', -1)
         return render(request,
