@@ -31,7 +31,7 @@
         <div class="panel-body">
          <div class="row">
           <div class="col-md-12">
-           <form role = "form" action="#">
+           <form id = "form" action="#">
               {% csrf_token %}
             <h1>我的信息</h1>
             <div class="contentform">
@@ -64,7 +64,7 @@
 
                  <div class="form-group">
                <p>院系<span>*</span></p>
-               <select class="form-control" id="department" name="school">
+               <select class="form-control" id="department" name="department">
                 {% for item in dict.department.departmentlist %}
                    {% if forloop.counter0 == dict.department.department %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
@@ -201,8 +201,8 @@
                <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
                 <textarea type="text" class="form-control" id="describe_add" name="describe" rows="4"></textarea>
                <div class="validation"></div>
-            </div>
-            <button type="button" id="volunteer_save" name="volunteer_save" class="bouton-contact">保存（若填写了添加个人工作日志栏，将上传一次工作日志）</button>
+            </div></div>
+            <button type="submit" id="volunteer_save" name="volunteer_save" class="bouton-contact">保存（若填写了添加个人工作日志栏，将上传一次工作日志）</button>
            </form>
           </div>
          </div>
@@ -236,81 +236,133 @@
         alert('对不起，您没有浏览该内容的权限');
    {% endif %}
     </script>
+     <script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+  <script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
     <script>
-      console.log("WTF");
+      var save1 = function (){
+        var volunteer_name = $("#volunteer_name").val();
+        var sex = $("#sex").val();
+        var department = $("#department").val();
+        var classroom = $("#classroom").val();
+        var email = $("#email").val();
+        var phone = $("#phone").val();
+        var nation = $("#nation").val();
+        var province = $("#province").val();
+        var studentID = $("#studentID").val();
+        var password = $("#password").val();
+        var confirm_password = $("#confirm_password").val();
+        var qqn = $("#qqn").val();
+        var weichat = $("#weichat").val();
+        var distribute = $("#distribute").val();
+        var describe = $("#describe_add").val();
+        var myDate = new Date();
+        if(describe.length > 0)
+        {
+            describe = '[' + myDate.toLocaleString() + '] ' + describe;
+        }
+        $.post("",
+            {
+                'volunteer_name':volunteer_name,
+                'sex':sex,
+                'department':department,
+                'classroom':classroom,
+                'email':email,
+                'phone':phone,
+                'nation':nation,
+                'province':province,
+                'qqn':qqn,
+                'weichat':weichat,
+                'distribute':distribute,
+                'describe':describe,
+                'studentID':studentID,
+                'password':password
+            },
+            function(profileDict){
+                if(profileDict['success'].charAt(0)=='N'){
+                    //$.growl.error({ title: "修改信息失败", message: ret['message'] });
+                    alert('修改失败，请重试');
+                }
+                else
+                {
+                    //$.growl.error({ title: "修改信息成功", message: ret['message'] });
+                    alert('修改成功');
+                }
+                window.location="/volunteer/profile";
+        });
+      };
       $(document).ready(function(){
-          console.log("Arrive here");
-          $("#volunteer_save").click(function(){
-              console.log("volunteer_save");
-            var volunteer_name = $("#volunteer_name").val();
-            //alert($("#volunteer_name").val());
-            var sex = $("#sex").val();
-            var department = $("#department").val();
-            var classroom = $("#classroom").val();
-            var email = $("#email").val();
-            var phone = $("#phone").val();
-            var nation = $("#nation").val();
-            var province = $("#province").val();
-            var studentID = $("#studentID").val();
-            var password = $("#password").val();
-            var confirm_password = $("#confirm_password").val();
-            if(password != confirm_password)
-            {
-                alert("本次修改请求不成功：两次输入的密码不同，请重试。");
-                return;
+        $('#profile').attr("href", "#");
+        $("#form").validate({
+          submitHandler:save1,
+          debug:false,
+          rules:{
+            volunteer_name:{
+              required:true
+            },
+            sex:{
+              min:1
+            },
+            department:{
+              min:1
+            },
+            classroom:{
+              required:true
+            },
+            email:{
+              email:true,
+              required:true
+            },
+            phone:{
+              required:true,
+              minlength:11,
+              maxlength:11,
+              digits:true
+            },
+            nation:{
+              min:1
+            },
+            province:{
+              min:1
+            },
+            weichat:{
+              required:true
+            },
+            qqn:{
+              digits:true,
+              required:true
+            },
+            studentID:{
+              digits:true,
+              required:true
+            },
+            password:{
+              legalPassword: true
+            },
+            confirm_password:{
+              equalTo:'#password'
             }
-            //var work_address = $("#work_address").val();
-            //var home_address = $("#home_address").val();
-            //var postcode = $("#postcode").val();
-            //var homephone = $("#homephone").val();
-            var qqn = $("#qqn").val();
-            var weichat = $("#weichat").val();
-            var distribute = $("#distribute").val();
-
-            var describe = $("#describe_add").val();
-            var myDate = new Date();
-            if(describe.length > 0)
-            {
-                describe = '[' + myDate.toLocaleString() + '] ' + describe;
+          },
+          messages:{
+            phone:{
+              minlength:"<span>请输入有效的手机号码</span>",
+              maxlength:"<span>请输入有效的手机号码</span>",
+              digits:"<span>请输入有效的手机号码</span>",
+            },
+            sex:{
+              min:"<span>请选择一个选项</span>",
+            },
+            department:{
+              min:"<span>请选择一个选项</span>",
+            },
+            nation:{
+              min:"<span>请选择一个选项</span>",
+            },
+            province:{
+              min:"<span>请选择一个选项</span>",
             }
-            //alert(province);
-            //console.log(department[0]);
-            //alert(describe);
-            $.post("",
-                    {
-                        'volunteer_name':volunteer_name,
-                        'sex':sex,
-                        'department':department,
-                        'classroom':classroom,
-                        'email':email,
-                        //'work_address':work_address,
-                        //'home_address':home_address,
-                        //'postcode':postcode,
-                        //'homephone':homephone,
-                        'phone':phone,
-                        'nation':nation,
-                        'province':province,
-                        'qqn':qqn,
-                        'weichat':weichat,
-                        'distribute':distribute,
-                        'describe':describe,
-                        'studentID':studentID,
-                        'password':password
-                    },
-                    function(profileDict){
-                        if(profileDict['success'].charAt(0)=='N'){
-                            //$.growl.error({ title: "修改信息失败", message: ret['message'] });
-                            alert('修改失败');
-                        }
-                        else
-                        {
-                            //$.growl.error({ title: "修改信息成功", message: ret['message'] });
-                            alert('修改成功');
-                        }
-                        window.location="/volunteer/profile";
-            });
-            //alert('cao2');
-          });
+          }
+        });
       });
   </script>
  </body>
