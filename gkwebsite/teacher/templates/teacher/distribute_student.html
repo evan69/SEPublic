@@ -39,7 +39,7 @@
                         {% for key, value in team.volunteer.items %}
                         <div class="row" id="t{{team.teamleader}}vol{{value.id}}">
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
-                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} （志愿者）</label>
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} (志愿者)</label>
                             <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}', 0)" type="button">修改</button></div>
                             <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}vol{{value.id}}', 0)" type="button">删除</button></div>
                         </div>
@@ -47,7 +47,7 @@
                         {% for key, value in team.student.items %}
                         <div class="row" id="t{{team.teamleader}}stu{{value.id}}">
                             <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">用户名: {{value.user_name}} </label>
-                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}}</label>
+                            <label class="col-sm-3 control-label" style="text-align:left;padding-left: 2em;">姓名: {{value.name}} (学生)</label>
                             <div class="col-sm-3" style="text-align: center"><button onclick="modify('{{value.id}}', 1)" type="button">修改</button></div>
                             <div class="col-sm-3" style="text-align: center"><button onclick="dlt('{{team.teamleader}}', '{{value.id}}','body{{team.teamleader}}','t{{team.teamleader}}stu{{value.id}}', 1)" type="button">删除</button></div>
                         </div>
@@ -117,7 +117,7 @@
                                 "<div class=\"panel-heading\">"+
                                  "<h4 class=\"panel-title\">"+
                                     "<a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#team"+teamnum+"\">"+teamnum+" </a>"+
-                                    "<a href=\"#\">给该组增加志愿者</a></h4>"+
+                                    '<button class="btn btn-link" onclick="setVolunteer(' + teamnum + ')">给该组增加志愿者</button></h4>'+
                                         "<div id=\"team"+teamnum+"\" class=\"panel-collapse collapse\">"+
                                     "<div class=\"panel-body\" id=\"body" + teamnum+ "\">"+
                                             "</div>"+

@@ -22,6 +22,26 @@ import database.volunteer_backend as vol
 
 # Create your views here.
 
+def check_identity(identity):
+    def decorator(func):
+        def wrapper(request, *args, **kw):
+            # 下面这空白的位置填session相应的id名
+            identity_dic = {'student': '', 'volunteer': ' ', 'teacher': ' '}
+            id = int(request.session.get(identity_dic[identity]))
+            if identity == 'student':
+                if stu.is_have_permission(id) == False:
+                    pass
+            elif identity == 'volunteer':
+                if vol.is_have_permission(id) == False:
+                    pass
+            else:
+                pass
+            return func(request, *args, **kw)
+        return wrapper
+    return decorator
+
+
+
 def student_center(request):
     t = get_template('student/center.html')
     id = request.session.get('user_id', -1)
@@ -280,7 +300,7 @@ def profile(request):
             'relTeacher': stu_dic[Student.DUIYING_TEACHER],
             'comment': stu_dic[Student.COMMENT],
             'estimateScore': getStudentEstimateScore(stu.getStudentAll(account)),
-            'estimateRank': rank
+            'estimateRank': str(rank)+'/'+str(tmp)
         }
         group_list = stu.getStudentGroupIDListString(student).split(' ')
         for i in range(1, 6):
@@ -312,10 +332,12 @@ def get_all_tests(request):
 
     year = int(year) - YEAR_LIST[1] + 1
     province = int(stu_dic[Student.PROVINCE]['province'])
-    print 'pro ',province
+    print 'pro ', province
     dic = {
         Picture.YEAR: year,
         Picture.PROVINCE: province,
+        Picture.IS_TITLE: 0,
+        Picture.IS_DELEVERED: 1,
     }
     global rec_dict
     rec_dict = dic
@@ -365,6 +387,7 @@ def get_problem_list(request):
         Picture.YEAR: year,
         Picture.PROVINCE: province,
         Picture.SUBJECT: subject,
+        Picture.IS_TITLE: 0
     }
 
     if province == -1 or subject == -1:
@@ -429,9 +452,22 @@ def submit_test_result(request):
         stu_dic = eval(tmp)
     except:
         stu_dic = {}
-    stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list)}
+    stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list), 'every_time':time_list, 'every_score':score_list}
     stu.setStudent(account, Student.ESTIMATE_SCORE, str(stu_dic))
     return JsonResponse({})
 
 
-
+def get_last_estimate_score(stu_id, test_id):
+    if type(stu_id) == str:
+        stu_id = int(stu_id)
+    stu_account = stu.idToAccountStudent(stu_id)
+    try:
+        estimate_info = stu.getStudent(stu_account, Student.ESTIMATE_SCORE)
+    except:
+        estimate_info = '{}'
+    estimate_info = eval(estimate_info)
+    try:
+        last_score = estimate_info[test_id]['score']
+    except:
+        last_score = 0
+    return last_score

@@ -277,16 +277,16 @@ def student_info_edit(request):
         group_list = stu.getStudentGroupIDListString(student).split(' ')
         for i in range(1, 6):
             if i < len(group_list):
-                dic['group'+str(i)] = group_list[i]
+                dic['group'+str(i)] = int(group_list[i])
             else:
-                dic['group'+str(i)] = '0'
+                dic['group'+str(i)] = 0
 
         dic['grouplist'] = [' ']
         all_group = back.getGroupbyDict({})
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         id_ = request.session.get('user_id', -1)
-
+        print 'byr ', dic
         return render(request,
                       'teacher/student_info_edit.html',
                       {'student': dic, 'id': id_})
@@ -698,7 +698,7 @@ def volunteer_info_edit(request):
         vol.setVolunteer(account, Volunteer.WECHAT, weichat)
         vol.setVolunteer(account, Volunteer.COMMENT, comment)
         vol.setVolunteer(account, Volunteer.QQ, qqn)
-        vol.setVolunteerGroupbyList(volunteer, [10,9,8])
+        # vol.setVolunteerGroupbyList(volunteer, [10,9,8])
 
         return JsonResponse(request.POST)
     else:
@@ -883,8 +883,30 @@ def checkscore(request):
 
     后端需要从数据库获取数据补全代码
     '''
-    if ('name' in request.GET) and ('sex' in request.GET):
-        print 'hhh'
+    if ('name' in request.GET) and ('stu_id' in request.GET):
+        # print request.GET
+        student_id = request.GET.get('stu_id')
+        testname = request.GET.get('testname')
+        code = int(request.GET.get('code'))
+        # print '****************************', student_id, testname, code
+        # try:
+        info_dic = stu.getStudentAllDictByAccount(stu.idToAccountStudent(int(student_id)))
+        estimate_dic = eval(info_dic[Student.ESTIMATE_SCORE])
+        if code == 1:
+            if testname in estimate_dic.keys():
+                estimate_dic[testname]['shenhe'] = 1
+        else:
+            tmp_dic = {}
+            for key in estimate_dic.keys():
+                if key != testname:
+                    tmp_dic[key] = estimate_dic[key]
+            estimate_dic = tmp_dic
+        stu.setStudent(stu.idToAccountStudent(int(student_id)), Student.ESTIMATE_SCORE, str(estimate_dic))
+        # except:
+        #     print '-------------------'
+        #     return render(request,
+        #                   'teacher/checkscore.html')
+        print 'sdf', estimate_dic
         return render(request,
                       'teacher/checkscore.html')
     else:
@@ -916,7 +938,8 @@ def checkscore(request):
                             'ident': ident,
                             'testname': testname,
                             'time': time,
-                             'score':score,
+                            'score':score,
+                            'stu_id': info_dic[Student.ID]
                     }
                     list.append(dict)
 
@@ -952,25 +975,7 @@ def generateTimerXLS(timer_id, teacher_id, filename):
     outputXLS('', filename, 'sheet1', info, ['name'] + day_list)
 
 
-def get_num_teacher_shenhe_estimate():
-    '''
-    获得老师应该审核的学生估分数目
-    :return:
-    '''
-    student_list = stu.getAllInStudent()
-    num = 0
-    for student in student_list:
-        account = getattr(student, Student.ACCOUNT)
-        try:
-            esti_dic = eval(stu.getStudent(account, Student.ESTIMATE_SCORE))
-        except:
-            esti_dic = {}
-        for key in esti_dic.keys():
-            info_dic = esti_dic[key]
-            if 'shenhe' not in info_dic.keys():
-                num = num + 1
 
-    return num
 
 
 
