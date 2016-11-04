@@ -77,7 +77,10 @@
       </form>
     </div>
     {% include 'teacher/include/jsinclude.html' %}
-    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'jquery-ui-1.12.1/datepicker-zh.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
 		<script>
       var testlist = [];
       function list_test(){
@@ -201,6 +204,21 @@
 				
         $('#test_management').addClass("active-menu");
         $('#test_management').attr("href", "#");
+        $("#form").validate({
+          submitHandler:submit_dialog,
+          debug:false,
+          rules:{
+            year:{
+              required:true
+            },
+            place:{
+              required:true
+            },
+            subject:{
+              required:true
+            }
+          }
+        });
         $.post("/backend/test_list_all/", {}, function(ret){
           testlist = ret;
           list_test();
@@ -214,7 +232,9 @@
       width: 350,
       modal: true,
       buttons: {
-        "确认":submit_dialog,
+        "确认":function(){
+          $('#form').submit();
+        },
         "取消": function() {
           $("#dialog").dialog( "close" );
         }
