@@ -345,26 +345,12 @@ def profile(request):
             vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
             flag = True
 
-        # vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
-        # dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
-        #         'sex': vol_dic[Volunteer.SEX],
-        #         'email': vol_dic[Volunteer.EMAIL],
-        #         'nation': vol_dic[Volunteer.NATION],
-        #         'province': vol_dic[Volunteer.PROVINCE],
-        #         'department': vol_dic[Volunteer.MAJOR][0],
-        #         'classroom': vol_dic[Volunteer.CLASSROOM],
-        #         'phone': vol_dic[Volunteer.PHONE],
-        #         'qqn': vol_dic[Volunteer.PHONE],
-        #         'weichat': vol_dic[Volunteer.WECHAT],
-        #         # 'distribute': '1 and 2',
-        #         'describe': vol_dic[Volunteer.COMMENT], }
-        # # print 'NEW', dict
-        # print 'final ', dict['describe']
         dict = {}
         if flag:
             dict['success'] = 'Y'
         else:
             dict['success'] = 'N'
+        dict['message'] = "已更新个人信息" # 后端在此处加message
         return JsonResponse(dict)
     else:
         '''
@@ -379,11 +365,12 @@ def profile(request):
                 'department': vol_dic[Volunteer.MAJOR][0],
                 'classroom': vol_dic[Volunteer.CLASSROOM],
                 'phone': vol_dic[Volunteer.PHONE],
-                'qqn': vol_dic[Volunteer.PHONE],
+                'qqn': vol_dic[Volunteer.QQ],
                 'weichat': vol_dic[Volunteer.WECHAT],
                 'distribute': 'no group',
                 'describe': vol_dic[Volunteer.COMMENT],
                 'password': vol_dic[Volunteer.PASSWORD],
                 'studentID': vol_dic[Volunteer.STUDENT_ID],}
         dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
+        dict['auth'] = "1" # 后端需要在这里加上权限检查，没权限为0
         return render(request, 'volunteer/v_userinfo.html', {'dict': dict})

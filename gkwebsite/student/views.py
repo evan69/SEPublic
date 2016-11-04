@@ -336,6 +336,7 @@ def get_all_tests(request):
         return HttpResponse('Access denied')
     print id
     account = stu.idToAccountStudent(str(id))
+    student = stu.getStudentAll(account)
     stu_dic = stu.getStudentAllDictByAccount(account)
     year = datetime.datetime.now().strftime("%Y")
 
@@ -364,8 +365,23 @@ def get_all_tests(request):
                             str(SUBJECT_LIST[pic_dic[Picture.SUBJECT]]))
         ret_list.append(tao)
 
+    done_list = []
+    for item in ret_list:
+        shenhe_fen = int(stu.getStudentEstimateScore_Every(student, item))
+        no_shenhe_fen = int(stu.getStudentEstimateScore_Every_no_shenhe(student, item))
+        print shenhe_fen, no_shenhe_fen
+        if no_shenhe_fen == 0:
+            done_list.append(u'未测试')
+        else:
+            if shenhe_fen != no_shenhe_fen:
+                done_list.append(u'测试未审核, 得分:%s'%(str(no_shenhe_fen)))
+            else:
+                done_list.append(u'已审核, 得分:%s'%(str(shenhe_fen)))
 
-    dic = {'tests' : ret_list}
+    print 'done ', done_list
+    dic = {'tests' : ret_list,
+           'done_list' : done_list}
+    # 后端需要增加一个键值对，done_list存储是否估分，长度和ret_list一样
 
     return JsonResponse(dic)
 
