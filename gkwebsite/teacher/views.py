@@ -657,11 +657,11 @@ def volunteer_info(request):
         'comment': vol_dic[Volunteer.COMMENT],
     }
     group_list = vol.getVolunteerGroupIDListString(volunteer).split(' ')
-    for i in range(1, 6):
+    for i in range(0, 5):
         if i < len(group_list):
-            dic['group' + str(i)] = group_list[i]
+            dic['group' + str(i+1)] = int(group_list[i])
         else:
-            dic['group' + str(i)] = '0'
+            dic['group' + str(i+1)] = 0
 
     dic['grouplist'] = [' ']
     all_group = back.getGroupbyDict({})
