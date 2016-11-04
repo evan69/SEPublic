@@ -81,7 +81,7 @@ def student_rank(request):
 
     dict = {'info': strinfo,
             }
-    return render(request, 'student/rank.html', {'dict': dict, 'id':id})
+    return render(request, 'student/rank.html', {'dict': dict, 'id': id})
 
 
 def student_admit(request):
