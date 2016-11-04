@@ -6,24 +6,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Home</title>
 		{% load static from staticfiles %}
-		<!-- Bootstrap Styles-->
-		<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" />
-		<!-- FontAwesome Styles-->
-		<link href="{% static "css/font-awesome.css" %}" rel="stylesheet" />
-		<!-- Morris Chart Styles-->
-		<link href="{% static "js/morris/morris-0.4.3.min.css" %}" rel="stylesheet" />
-		<!-- Custom Styles-->
-		<link href="{% static "css/custom-styles.css" %}" rel="stylesheet" />
-		<!-- Google Fonts-->
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-        <!-- rel="stylesheet" -->
+ {% include 'student/include/cssinclude.html' %}
+     <title>测试</title>
+
 </head>
 
 <body>
 		<div id="wrapper">
 
     {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
-				<div id="page-wrapper" style="margin-left: 260px">
+				<div id="page-wrapper">
 						<div id="page-inner">
 
 								<div class="row" style = "margin-left: auto;margin-right: auto;text-align:center;width:100%">
@@ -38,39 +30,44 @@
                                 </div>
 
                                 <div id = "problem_pic" class="row" style = "width:500px; margin-left: auto;margin-right: auto;margin-top:20px">
-                                    <img src="/static/images/8.jpg" style="width:100%">
+
                                 </div>
 
 
                                 <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:60px;text-align:center">
                                     <label id = "problem_full_score" style="width:100%;font-size:20px">本题满分：</label>
                                 </div>
+                                <!--div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;text-align:center">
+                                    <lebel style="font-size:20px">请输入您估的分数：</lebel><input type="text" id = "tmp_student_score" align="center">
+                                </div-->
                                 <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;text-align:center">
-                                    <lebel style="font-size:20px">请输入您估的分数：</lebel><input type="text" id = "student_score" align="center">
+                                    <lebel style="font-size:20px">请选择您估的分数：</lebel><select id="student_score" name="nation" style="width:100px" align="center">
+                                        <option value=0 selected="selected">11</option>
+                                        <option value=44>22</option>
+                                    </select>
                                 </div>
-                                <div id = "submit_test" class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
-                                    <button style="font-size:20px">提交本题估分结果</button>
+
+                                <div class="row" style = "margin-left: auto;margin-right: auto;margin-top:20px;align:center;text-align:center">
+                                    <button id = "submit_test" style="font-size:20px">提交本题估分结果</button>
                                     <!--div class="button" id = "btn1" href = "https://www.baidu.com"><div class="shine"></div>开始测试</div-->
                                 </div>
                                 <div id = 'test_name' name = {{test_name}}></div>
 				<!--
 				<footer><p>Copyright &copy; 2016.Company name All rights reserved.</p></footer>
 				-->
+                            {% include 'student/include/footer.html' %}
 						</div>
 						<!-- /. PAGE INNER	-->
 				</div>
 				<!-- /. PAGE WRAPPER	-->
 		</div>
-{% include 'student/include/footer.html' %}
+
 		<!-- /. WRAPPER	-->
 		<!-- JS Scripts-->
-		<!-- jQuery Js -->
-		<script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
-		<!-- Bootstrap Js -->
-		<script src="{% static "js/bootstrap.min.js" %}"></script>
+
 
 		<!-- Metis Menu Js -->
-		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
+
 {% include 'student/include/jsinclude.html' %}
 		<!-- Custom Js -->
 		<script>
@@ -105,7 +102,7 @@
             var problem_info = {};//当前题目的信息，存在字典里
             $.post("/student/get_problem_list/", {'test_name':ka.getAttribute("name")}, function(ret){
 			    problem_list = ret.problem_list;//获取题目id列表
-			    alert(problem_list);
+			    //alert(problem_list);
 			    //console.log('hehe' + problem_list)
                 $('#submit_test').click();
 			});
@@ -139,6 +136,7 @@
 			}
 
 			$('#submit_test').click(function(){
+			    //alert('click');
 			    if(cur_problem > problem_list.length - 1)
                  {
                     //已经做完题目
@@ -147,8 +145,8 @@
                     alert('您已经完成本套题估分');
                     var ret_info = {'test_name':ka.getAttribute("name"),"time_list":String(time_list),'score_list':String(score_list)};
                     $.post("/student/submit_test_result/", ret_info, function(ret){
-                        //alert(time_list);
-                        //alert(score_list);
+                        alert(time_list);
+                        alert(score_list);
                     });
                     window.location="/student/score";
                     return;
@@ -157,11 +155,15 @@
 			    	//alert("cur" + cur_problem);
 			    	//alert(problem_list[cur_problem]);
                      //alert(problem_list.length);
+                     /*
                      if(cur_problem > 0 && check_valid() != true)
                      {
                         alert("您填写的估分结果不合法");
                         return;
                      }
+
+                     */
+
                      if(cur_problem > 0)//用户点击
                      {
                             time_list.push(cur_sec);
@@ -183,6 +185,24 @@
                      var src = '<img src=' +  String(problem_info['problem_pic']) + ' style=\"width:100%\">';
                      console.log(src);
                      $('#problem_pic').append(src);
+                     $('#student_score').empty();
+                     //alert('heh');
+                     if(String(problem_info['problem_type']) == "主观")
+                     {
+                        //alert('heh1');
+                        var i = 1;
+                        $('#student_score').append("<option value=0 selected=\"selected\">0</option>");
+                        for(i = 1;i <= parseInt(problem_info['problem_full_score']);i++)
+                        {
+                            $('#student_score').append("<option value=" + String(i) + ">" + String(i) + "</option>");
+                        }
+                     }
+                     else
+                     {
+                        //alert('heh2');
+                        $('#student_score').append("<option value=0 selected=\"selected\">0</option>");
+                        $('#student_score').append("<option value=" + String(problem_info['problem_full_score']) + ">" + String(problem_info['problem_full_score']) + "</option>");
+                     }
                      //alert(src);
                      cur_problem++;
 				});

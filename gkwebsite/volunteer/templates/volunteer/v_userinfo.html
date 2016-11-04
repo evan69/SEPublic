@@ -18,7 +18,10 @@
    <!-- profile-->
   <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
   <div id="wrapper">
-   {% include 'v_nav.html' %}
+    {% include 'volunteer/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'volunteer/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
    <div id="page-wrapper">
     <div id="page-inner">
      <!--row-->
@@ -95,14 +98,14 @@
                  <div class="form-group">
                <p>修改密码</p>
                <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
-               <input type="password" class="form-control" id="password" name="password" value="{{dict.password}}" />
+               <input type="password" class="form-control" id="password" name="password" value="" />
                <div class="validation"></div>
               </div>
 
                 <div class="form-group">
                <p>确认修改密码</p>
                <!--span class="icon-case"><i class="fa fa-comments-o"></i></span-->
-               <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="{{dict.password}}" />
+               <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="" />
                <div class="validation"></div>
               </div>
 
@@ -207,13 +210,7 @@
        </div>
       </div>
      </div>
-        <div class="row">
-          <div class="col-md-offset-4 col-md-4">
-             <footer>
-              <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-             </footer>
-          </div>
-        </div>
+          {% include 'teacher/include/footer.html' %}
     </div>
     <!-- /. PAGE INNER  -->
    </div>

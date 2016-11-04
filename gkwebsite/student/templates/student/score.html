@@ -6,23 +6,8 @@
    {% load staticfiles %}
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-		function hideURLbar(){ window.scrollTo(0,1); } </script>
-  <!-- //for-mobile-apps -->
-  <!-- js -->
-  <script src="{% static 'assets/js/jquery-2.1.3.min.js' %}" type="text/javascript"></script>
-  <!-- //js -->
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
-  <link href="{% static 'assets/css/fontsgooleapispopins.css' %}" rel="stylesheet" type="text/css" media="all" />
-  <title>用户信息</title>
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-	 <link href="{% static "btn_css/round_btn.css" %}" rel="stylesheet" />
+ {% include 'student/include/cssinclude.html' %}
+     <title>分数排名</title>
  </head>
 
 <body>
@@ -35,10 +20,10 @@
 								<div class="row">
 										<div class="col-md-12">
 												<h1 class="page-header">
-														估分测试 <small><span id="username">Welcome, </span></small>
+														估分测试 <small><span id="username">您好，</span></small>
 												</h1>
-                                                <h2 class="page-header"><small>注意：开始估分后，我们将显示并记录您每道题估分所用时间。</small></h2>
-                                                <h2 class="page-header"><small>选择试题：</small></h2>
+                        <h2 class="page-header"><small>注意：开始估分后，我们将显示并记录您每道题估分所用时间。</small></h2>
+                        <h2 class="page-header"><small>选择试题：</small></h2>
 										</div>
 								</div>
 
@@ -55,45 +40,25 @@
 				<!-- /. PAGE WRAPPER	-->
 		</div>
 		<!-- /. WRAPPER	-->
-		<!-- JS Scripts-->
-		<!-- jQuery Js -->
-		<script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
-		<!-- Bootstrap Js -->
-		<script src="{% static "js/bootstrap.min.js" %}"></script>
 	 {% include 'student/include/jsinclude.html' %}
-		<!-- Metis Menu Js -->
-		<script src="{% static "js/jquery.metisMenu.js" %}"></script>
-
-        <script>
-		function getCookie(name) {
-				var cookieValue = null;
-				if (document.cookie && document.cookie !== '') {
-						var cookies = document.cookie.split(';');
-						for (var i = 0; i < cookies.length; i++) {
-								var cookie = jQuery.trim(cookies[i]);
-								// Does this cookie string begin with the name we want?
-								if (cookie.substring(0, name.length + 1) === (name + '=')) {
-										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-										break;
-								}
-						}
-				}
-				return cookieValue;
-		}
-		function csrfSafeMethod(method) {
-				// these HTTP methods do not require CSRF protection
-				return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-		}
-		</script>
 		<!-- Custom Js -->
 		<script>
 			$(document).ready(function(){
-				$('#username').append({{ id }});
-				/*
-				$.post("/backend/get_user_by_id", {'id': {{ id }} }, function(data, status, xhr){
-					$('#username').append(data['username']);
+				var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $('#link_score').addClass("active-menu");
+        $('#link_score').attr("href", "#");
+				
+				$.post("/backend/get_student_name_by_id/", {'id': {{ id }} }, function(data, status, xhr){
+					$('#username').append(data['name']);
 				})
-				*/
+				
 			});
 			var user_array = [];
 			function show_list(){

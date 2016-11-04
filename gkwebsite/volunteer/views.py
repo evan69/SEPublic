@@ -16,7 +16,7 @@ import database.volunteer_backend as vol
 import datetime
 from database.models import *
 from database.my_field import *
-
+import database.backend as back
 
 # Create your views here.
 
@@ -193,12 +193,100 @@ def student_info_show(request):
 
 
 def date_choose(request):
+    print 'date choose'
     if 'user_id' not in request.session.keys():
         return redirect('/login/')
+    id = request.session.get('user_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
     t = get_template('volunteer/v_date_choose.html')
-    # t = get_template('volunteer/test.html')
-    return HttpResponse(t.render({}))
+    c = {'id': id}
+    return HttpResponse(t.render(c))
 
+@csrf_exempt
+def get_all_activity(request):
+    """
+        后端应在此处返回该志愿者可以提交的时间问卷列表，包括填过未填过的
+        然后放到下面样例写好的dic的'activity'键对应的列表值中，列表里有若干字典
+    """
+    print "activity "
+    dic = {'activity' : [{'name':'第一次组会','proposer':'李三胖','state':'未填写','activity_id':'12'},
+                         {'name':'一对一解答','proposer':'屁孩','state':'已填写','activity_id':'32'},
+                         {'name':'庆功会','proposer':'王大神','state':'未填写','activity_id':'9'}]}
+
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    id = request.session.get('user_id', -1)
+    print 'vol id', id
+    ret_list = []
+    timer_list = back.getTimerbyDict({})
+    for item in timer_list:
+        tmp_dic = {}
+        info_dic = back.getTimerAllDictByObject(item)
+        tmp_dic['name'] = info_dic[Timer.NAME]
+        teacher_account = tch.idToAccountTeacher(info_dic[Timer.TEACHER_ID])
+        tmp_dic['proposer'] = tch.getTeacher(teacher_account, Teacher.REAL_NAME)
+        ret_list.append(tmp_dic)
+
+        vol_dic = info_dic[Timer.VOLUNTEER_DIC]
+        if str(id) in vol_dic.keys():
+            tmp_dic['state'] = u'已填写'
+        else:
+            tmp_dic['state'] = u'未填写'
+        tmp_dic['activity_id'] = info_dic[Timer.ID]
+    dic['activity'] = ret_list
+    return JsonResponse(dic)
+
+@csrf_exempt
+def get_activity_time(request):
+    """
+        后端应在此处根据活动的id返回该活动可选择的时间段
+        然后放到下面样例写好的dic的'time'键对应的列表值中
+        'checked'键表示上次选择的结果
+    """
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    vol_id = str(request.session.get('user_id', -1))
+    print 'ac_id=:', request.POST.get('activity_id')
+    timer = back.getTimerbyDict({Timer.ID: int(request.POST.get('activity_id'))})[0]
+    info_dic = back.getTimerAllDictByObject(timer)
+    (time_list, checked_list) = back.date_start_to_end(info_dic[Timer.START_TIME], info_dic[Timer.END_TIME])
+    checked_list = []
+    for item in time_list:
+        checked_list.append('0')
+    if vol_id in info_dic[Timer.VOLUNTEER_DIC].keys():
+        checked_list = info_dic[Timer.VOLUNTEER_DIC][vol_id]
+    dic = {'time': time_list,
+           'checked': checked_list}
+    return JsonResponse(dic)
+
+@csrf_exempt
+def submit_time(request):
+    """
+        后端应在此处提交本次问卷填写结果
+        然后返回是否成功
+    """
+    if 'user_id' not in request.session.keys():
+        return redirect('/login/')
+    vol_id = str(request.session.get('user_id'))
+    print "vol id" + vol_id
+    print request.POST
+    ac_id = request.POST.get('activity_id') # 活动问卷的id
+    time_list = request.POST.get('time').split(',') # 列表，存储全部可选的时间
+    checked_list = request.POST.get('checked').split(',')  # 列表，和上一个列表对应，1表示选中，0表示未选中
+    # print ac_id
+    # print time_list
+    # print checked_list
+
+    timer = back.getTimerbyDict({Timer.ID: int(ac_id)})[0]
+    info_dic = back.getTimerAllDictByObject(timer)
+    vol_dic = info_dic[Timer.VOLUNTEER_DIC]
+    vol_dic[vol_id] = checked_list
+
+    if back.setTimer(timer, Timer.VOLUNTEER_DIC, vol_dic):
+        return JsonResponse({'success': 'true'}) # 成功返回true否则false
+    else:
+        return JsonResponse({'success': 'false'})  # 成功返回true否则false
 
 @csrf_exempt
 def profile(request):
@@ -233,40 +321,49 @@ def profile(request):
 
         password = request.POST.get('password', 'byr')
 
-        vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
-        vol.setVolunteer(vol_account, Volunteer.SEX, sex)
-        vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
-        vol.setVolunteer(vol_account, Volunteer.NATION, nation)
-        vol.setVolunteer(vol_account, Volunteer.PROVINCE, province)
+        student_id = request.POST.get('studentID', 'byr')
 
-        vol.setVolunteer(vol_account, Volunteer.MAJOR, department)
-        vol.setVolunteer(vol_account, Volunteer.CLASSROOM, classroom)
-        vol.setVolunteer(vol_account, Volunteer.PHONE, phone)
-        vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
-        vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
+        flag = False
 
-        vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
+        tmp_stu_list = vol.getVolunteerbyField(Volunteer.STUDENT_ID, student_id)
+        if len(tmp_stu_list) == 0 or getattr(tmp_stu_list[0], Volunteer.ACCOUNT) == vol_account:
+            vol.setVolunteer(vol_account, Volunteer.STUDENT_ID, student_id)
+            vol.setVolunteer(vol_account, Volunteer.REAL_NAME, volunteer_name)
+            vol.setVolunteer(vol_account, Volunteer.SEX, sex)
+            vol.setVolunteer(vol_account, Volunteer.EMAIL, email)
+            vol.setVolunteer(vol_account, Volunteer.NATION, nation)
+            vol.setVolunteer(vol_account, Volunteer.PROVINCE, province)
+            vol.setVolunteer(vol_account, Volunteer.MAJOR, department)
+            vol.setVolunteer(vol_account, Volunteer.CLASSROOM, classroom)
+            vol.setVolunteer(vol_account, Volunteer.PHONE, phone)
+            vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
+            vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
+            vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
+            describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
+            print 'new ', describe
+            vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
+            flag = True
 
-        describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
-        vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
-
-
-        vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
-        dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
-                'sex':vol_dic[Volunteer.SEX],
-                'email': vol_dic[Volunteer.EMAIL],
-                'nation': vol_dic[Volunteer.NATION],
-                'province': vol_dic[Volunteer.PROVINCE],
-                'department': vol_dic[Volunteer.MAJOR][0],
-                'classroom': vol_dic[Volunteer.CLASSROOM],
-                'phone': vol_dic[Volunteer.PHONE],
-                'qqn': vol_dic[Volunteer.PHONE],
-                'weichat': vol_dic[Volunteer.WECHAT],
-                'distribute': '1 and 2',
-                'describe': vol_dic[Volunteer.COMMENT], }
-        print 'NEW', dict
-
-
+        # vol_dic = vol.getVolunteerAllDictByAccount(vol_account)
+        # dict = {'volunteer_name': vol_dic[Volunteer.REAL_NAME],
+        #         'sex': vol_dic[Volunteer.SEX],
+        #         'email': vol_dic[Volunteer.EMAIL],
+        #         'nation': vol_dic[Volunteer.NATION],
+        #         'province': vol_dic[Volunteer.PROVINCE],
+        #         'department': vol_dic[Volunteer.MAJOR][0],
+        #         'classroom': vol_dic[Volunteer.CLASSROOM],
+        #         'phone': vol_dic[Volunteer.PHONE],
+        #         'qqn': vol_dic[Volunteer.PHONE],
+        #         'weichat': vol_dic[Volunteer.WECHAT],
+        #         # 'distribute': '1 and 2',
+        #         'describe': vol_dic[Volunteer.COMMENT], }
+        # # print 'NEW', dict
+        # print 'final ', dict['describe']
+        dict = {}
+        if flag:
+            dict['success'] = 'Y'
+        else:
+            dict['success'] = 'N'
         return JsonResponse(dict)
     else:
         '''
@@ -288,7 +385,4 @@ def profile(request):
                 'password': vol_dic[Volunteer.PASSWORD],
                 'studentID': vol_dic[Volunteer.STUDENT_ID],}
         dict['distribute'] = vol.getVolunteerGroupIDListString(volunteer)
-
-
-
-        return render(request, 'v_userinfo.html', {'dict': dict})
+        return render(request, 'volunteer/v_userinfo.html', {'dict': dict})
