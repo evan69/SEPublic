@@ -389,7 +389,10 @@ def profile(request):
             vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
             vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
             vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
-            describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + describe + '\n'
+            if describe.strip() != '':
+                describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + describe + '\n'
+            else:
+                describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT]
             print 'new ', describe
             vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
             flag = True

@@ -68,9 +68,7 @@ def back_to_profile(request, id):
     for item in all_group:
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
     print '----------------*****--------'
-    dic['auth'] = '0'
-    # return render(request, 'student/userinfo.html', {'dict': dic, 'id': id})
-    return redirect('/student/profile/')
+    return redirect('/student/profile/?auth=0')
 
 def check_identity(identity):
     def decorator(func):
@@ -126,25 +124,23 @@ def student_rank(request):
     rank_list.append(rank + '/' + sum_rank)
 
     estimate_dic = eval(getattr(student, 'estimateScore', '{}'))
+    listall = [{'name':u'总成绩（审核通过）', 'score':score, 'rank':rank + '/' + sum_rank}]
     for item in estimate_dic.keys():
         item_score = stu.getStudentEstimateScore_Every(student, item)
         item_rank, item_sum = stu.getStudentEstimateRank_Every(student, item)
 
-        name_list.append(item)
-        score_list.append(item_score)
-        rank_list.append(item_rank + '/' + item_sum)
+#        name_list.append(item)
+#        score_list.append(item_score)
+#        rank_list.append(item_rank + '/' + item_sum)
+        listall.append({'name':item, 'score':item_score, 'rank':item_rank + '/' + item_sum})
 
-    dict = {'namelist': name_list,
-            'scorelist': score_list,
-            'ranklist': rank_list
-            }
     '''
     namelist是试题名称的列表，例如[2016_北京_理综]
     scorelist是试题得分的列表，例如[90]
     ranklist是试题的排名的列表， 例如[1/34]
     '''
 
-    return render(request, 'student/rank.html', {'dict': dict, 'id': id})
+    return render(request, 'student/rank.html', {'dict': listall, 'id': id})
 
 @check_identity('student')
 def student_admit(request):
@@ -391,6 +387,8 @@ def profile(request):
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         print 'jiao baba', dic
+        if 'auth' in request.GET:
+            dic['auth'] = '0'
         return render(request, 'student/userinfo.html', {'dict': dic, 'id':id})
 
 
