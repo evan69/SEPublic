@@ -535,7 +535,9 @@
             var relVolunteer = $("#relVolunteer").val();
             var comment= $("#comment").val();
             var myDate = new Date();
-            var newcomment= $("#newcomment").val() + "      " + myDate.toLocaleString();
+            var newcomment = '';
+            if ($("#newcomment").val() != '')
+                newcomment = "【" + myDate.toLocaleString() + "】    " + $("#newcomment").val();
             var team1= $("#team1").val();
             var team2= $("#team2").val();
             var team3= $("#team3").val();
@@ -628,6 +630,7 @@
 
                         for (key_i in profileDict)
                             $("#"+key_i).val(profileDict[key_i]);
+                            $('#newcomment').val('');
                                     document.getElementById("student_save").disabled = false;
                         alert("修改成功");
             })

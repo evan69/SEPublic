@@ -120,7 +120,7 @@
                 'describe':describe,
             },
             function(ret){
-             document.getElementById("volunteer_save").disabled = false;
+             document.getElementById("teacher_save").disabled = false;
               if(ret['success'].charAt(0)=='N'){
                 $.growl.error({ title: "修改信息失败", message: ret['message'] });
               }
@@ -142,7 +142,7 @@
                 'describe':describe,
             },
             function(ret){
-             document.getElementById("volunteer_save").disabled = false;
+             document.getElementById("teacher_save").disabled = false;
               if(ret['success'].charAt(0)=='N'){
                 $.growl.error({ title: "修改信息失败", message: ret['message'] });
               }
