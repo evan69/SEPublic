@@ -137,22 +137,21 @@
 					$('#'+tag1).click(function(){
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
-						var abs_pos=list_start_pos+row;
-						//alert("Operation:view at row #"+abs_pos+" ?id="+user_array[abs_pos]['id']);
+						var abs_pos=row;
 						window.location="/teacher/student_info?id="+user_array[abs_pos]['id'];
 					});
 					$('#'+tag2).click(function(){
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						//alert("Operation:edit at row #"+row);
-						var abs_pos=list_start_pos+row;
+						var abs_pos=row;
 						window.location="/teacher/student_info_edit?id="+user_array[abs_pos]['id'];
 					});
 					$('#'+tag3).click(function(){
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						alert("Operation:drop at row #"+row);
-						var abs_pos=list_start_pos+row;
+						var abs_pos=row;
 						$.post("/backend/remove_student_by_id/", {'id':user_array[abs_pos]['id']}, function(ret){
 						//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 							postreq($('#realName').val());

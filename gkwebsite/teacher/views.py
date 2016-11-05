@@ -168,7 +168,7 @@ def student_info_edit(request):
             'admissionStatus': info_dict.get('admissionStatus', '110'),
             'relTeacher': info_dict.get('relTeacher', '110'),
             'relVolunteer': info_dict.get('relVolunteer', '110'),
-            'comment': info_dict.get('comment', '110') + '\n' + info_dict.get('newcomment', '110'),
+            'comment': info_dict.get('comment', '110') + info_dict.get('newcomment', '110') + '\n',
             'team1': info_dict.get('team1', '1'),
             'team2': info_dict.get('team2', '1'),
             'team3': info_dict.get('team3', '1'),
@@ -278,8 +278,10 @@ def student_info_edit(request):
         }
 
         group_list = stu.getStudentGroupIDListString(student).split(' ')
+        if '' in group_list:
+            group_list.remove('')
         for i in range(0, 5):
-            if i < len(group_list):
+            if i < len(group_list) and group_list[i] != '':
                 dic['group'+str(i+1)] = int(group_list[i])
             else:
                 dic['group'+str(i+1)] = 0

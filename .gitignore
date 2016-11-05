@@ -8,7 +8,7 @@ __pycache__/
 *.xls
 # database file
 *.sqlite3
-.pic
+*.pic
 # file for test
 
 
