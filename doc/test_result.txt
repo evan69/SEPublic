@@ -6,6 +6,7 @@
 6. database/student_backend.py getStudentEstimateScore_Every, 对keyerror进行判断，确认字典有'score'这个key,已修改。
 7. database/student_backend.py getStudentEstimateScore_Every_no_shenhe, 对keyerror进行判断，已修改
 8. database/student_backend.py getStudentEstimateRank_Every, 加了key的判断，但在排名时有一些不合理的地方，建议修改返回值，返回值还未修改。
+9. database/backend.py, notice 的id可以人为设定和修改，不合要求，需要修改，测试未能通过。
 
 
 
