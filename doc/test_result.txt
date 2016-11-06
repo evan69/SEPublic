@@ -2,6 +2,7 @@
 2. database/student_backend.py getStudentbyField(field, argc), 如果field不合法，回直接炸，在一开始加入合法性检查，已改正
 3. database/student_backend.py createStudent(account, dic), 如果第一个参数的account,和传入字典的account不一样,能否创建学生账户，函数是返回true的,但我觉得应该是false,所以在函数入口处加了特判
 4. database/teacher_backend.py creatTeacher(kwarg), 如果传入的字典没有account 键值，会报错，所以在函数一开始加入has_key('account')特判
+5. database/student_backend.py getStudentEstimateRank(student), 错误太多，重写吧，有keyerror, 我试着重写了一下，我理解的情况是审核过的分数才能计入排名。
 
 
 
