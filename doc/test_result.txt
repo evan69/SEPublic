@@ -14,3 +14,5 @@
 
 
 my_field.py中未测的函数：class ListField创建数据库的类不大好测，类中的函数也没测，outputExcels和generateexcels没法测
+volunteer.py 中getVolunteerAllDictByAccount(account)这个函数字典太大，不大好测，请观察是否有问题。
+volunteer.py中的 removeVolunteerAccount未测，需要先测group和timer,之后再测
