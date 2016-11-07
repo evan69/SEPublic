@@ -25,6 +25,37 @@
                     </div>
                 </div>
 				<!--row-->
+
+				<div class= "panel panel-default">
+					<div class = "panel-body">
+						<form class="form-search" id = "form">
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label" for="pic_url">图片链接：</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text"  id="pic_url" name = "pic_url" style="width:80%"></input>
+								</div>
+							</div>
+							<div class="row"><p></div>
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label" for="message_url">图文消息链接：</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text" id="message_url" name = "message_url" style="width:80%"></input>
+								</div>
+							</div>
+              <br>
+							<div class="row">
+								<div class="col-md-1">
+									<button type="submit" class="btn btn-primary" id = "add">Add</button>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
    {% include 'teacher/include/footer.html' %}
 			</div>
              <!-- /. PAGE INNER  -->
@@ -33,7 +64,22 @@
     </div>
      <!-- /. WRAPPER  -->
     {% include 'teacher/include/jsinclude.html' %}
+    <script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
 		<script>
+      function formSubmit(){
+        var pic_link = $('#pic_url').val();
+        var msg_link = $('#message_url').val();
+        $.post("/backend/push_stack/", {'pic_url':pic_link, 'msg_url':msg_link}, function(ret){
+          if(ret['success'].charAt(0)=='Y'){
+						$.growl.notice({ title: "添加成功", message: "推送消息已更新" });
+					}
+					else{
+						$.growl.error({ title: "添加失败", message: ret['message'] });
+					}
+        });
+      }
 			$(document).ready(function(){
 				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
 				var csrftoken = getCookie('csrftoken');
@@ -50,6 +96,20 @@
 
         $('#wechat_push_stack').addClass("active-menu");
         $('#wechat_push_stack').attr("href", "#");
+        $("#form").validate({
+  				submitHandler:formSubmit,
+  				debug:false,
+  				rules:{
+  					pic_url:{
+              required:true,
+              url:true
+            },
+            message_url:{
+              required:true,
+              url:true
+            }
+  				}
+  			});
 			});
 		</script>
 
