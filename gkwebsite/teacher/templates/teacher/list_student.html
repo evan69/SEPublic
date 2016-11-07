@@ -41,7 +41,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class = "col-lg-3">
+                  <div class = "col-lg-4 col-md-5">
                     <button type = "button" class = "btn btn-primary" id="all">显示全部</button>
                     <button type = "button" class = "btn btn-primary" id="check_all">本页全选</button>
                     <button type = "button" class = "btn btn-primary" id="add_to">加入到组...</button>
@@ -91,7 +91,8 @@
          <fieldset style="padding:0; border:0; margin-top:25px;">
            <label for="group_num" style="display:block">组号</label>
            <select name="group_num" id="group_num" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
-             <option value="1">1</option>
+             <!--<option value="1">1</option>-->
+           </select>
            <!-- Allow form submission with keyboard without duplicating the dialog button -->
            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
          </fieldset>
@@ -248,6 +249,11 @@
         $.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
           $('#namefield').append(ret['name']);
         })
+        $.post("/backend/get_grouplist/", {}, function(ret){
+          for(var i = 0; i < ret.length; ++i){
+            $('#group_num').append("<option value=\""+ret[i]['value']+"\">"+ret[i]['string']+"</option>\n");
+          }
+        });
         $('#search_student').addClass("active-menu");
         $('#search_student').attr("href", "#");
         var nameinit=$('#realName').val();
@@ -269,8 +275,10 @@
         $("#form").validate({
           submitHandler:submit_dialog,
           debug:false,
-          group_num:{
-            required:true
+          rules:{
+            group_num:{
+              required:true
+            }
           }
         });
         $( "#dialog" ).dialog({
