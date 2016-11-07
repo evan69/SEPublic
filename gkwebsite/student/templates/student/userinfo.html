@@ -26,8 +26,11 @@
 
   <div id="wrapper">
     {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
+
    <div id="page-wrapper">
     <div class="main">
+ <h1 class="w3layouts_head" style="color: black">{% if dict.auth == '0' %}你已无权限访问其他页面，请联系老师{% endif %}</h1>
+
      <h1 class="w3layouts_head" style="color: black">{{dict.user_name}}个人信息</h1>
      <div class="w3layouts_main_grid">
       <form action="#" class="w3_form_post">
@@ -39,12 +42,12 @@
 
         <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>估计分<i>:</i></label>
-         <input readonly="readonly" id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" />
+         <input readonly id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" style="background-color: #9F9FA0" />
         </span>
        </div>
         <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>估计分排名<i>:</i></label>
-         <input readonly="readonly" id="estimateRank" type="text" value="{{dict.estimateRank}}" required="" />
+         <input readonly id="estimateRank" type="text" value="{{dict.estimateRank}}" required=""  style="background-color: #9F9FA0"/>
         </span>
        </div>
 
@@ -54,7 +57,7 @@
        </div>
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>性别<i>:</i></label>
- <select class="form-control" id="sex" name="sex">
+ <select  id="sex" name="sex">
                 {% for item in dict.sex.sexlist %}
                    {% if forloop.counter0 == dict.sex.sex %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
@@ -320,8 +323,8 @@
 
 
        <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>备注<i>:</i></label>
-        <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
+        <span class="agile_grid"> <label>老师对我的评论<i>:</i></label>
+        <textarea readonly type="text" class="form-control" id="comment" name="comment" rows="10">{{dict.comment}}</textarea>
 
         </span>
        </div>
@@ -358,12 +361,16 @@
       $(document).ready(function(){
           $('#link_profile').attr("href", "#");
           $("#save").click(function(){
-              console.log("student_save");
+              document.getElementById("save").disabled = true;
            var password1 = $("#password1").val();
             var password2 = $("#password2").val();
             if (password1 != password2){
              alert("密码不一致，请重新输入");
              return;
+            }
+            if (password1.length < 4 && password1.length > 0){
+                alert("密码长度必须大于4");
+                return;
             }
             var name = $("#name").val();
             var identification = $("#identification").val();
@@ -458,6 +465,7 @@
                      'sex':sex,
                      'nation':nation,
                      'birth':birth,
+                        'password':password1,
              'province' :province,
              'phone' : phone,
              'email' : email,
@@ -492,10 +500,10 @@
            //  'admissionStatus' : admissionStatus,
              'relTeacher': relTeacher,
          //    'relVolunteer' : relVolunteer,
-             'comment': comment,
+          //   'comment': comment,
                     },
                     function(profileDict){
-
+document.getElementById("save").disabled = false;
                         for (key_i in profileDict)
                             $("#"+key_i).val(profileDict[key_i]);
                         alert("修改成功");

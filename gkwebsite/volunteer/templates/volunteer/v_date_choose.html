@@ -158,7 +158,6 @@
                         }
                 }
         });
-        //alert('hhe');
         $.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
             $('#namefield').append(ret['name']);
         });
@@ -168,7 +167,6 @@
     var act_id = "";
     function show_list(){
         $('#ac_list').empty();
-        console.log('hehe');
         var tag1, tag2, tag3;
         var listitem = "";
         for(var i = 0; i < user_array.length; ++i){
@@ -183,10 +181,8 @@
             $('#'+tag1).click(function(){
                 var parse = this.id.split("_");
                 var row = parse[0];
-                //alert(row);
                 $('#time_table').empty();
                 $.post("/volunteer/get_activity_time/", {'activity_id':row}, function(ret){
-                    //$('#namefield').append(ret['name']);
                     act_id = row;
                     time_array = ret.time;
                     var index = 0;
@@ -237,9 +233,6 @@
                 ret_list.push('0');
             }
         }
-        console.log(act_id);
-        console.log(String(ret_list));
-        //alert(ret_list[0]);
         $.post("/volunteer/submit_time/", {"activity_id":act_id,'time':String(time_array),'checked':String(ret_list)}, function(ret){
             $('#dialog').dialog("close");
             if(ret.success)
