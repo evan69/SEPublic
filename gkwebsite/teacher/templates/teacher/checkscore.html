@@ -7,6 +7,9 @@
     <title>估分审核</title>
 		{% load staticfiles %}
 		{% include 'teacher/include/cssinclude.html' %}
+    <script type="text/javascript" src="{% static 'assets/js/fusioncharts/fusioncharts.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/fusioncharts/themes/fusioncharts.theme.fint.js' %}"></script>
+
 </head>
 <body>
     <div id="wrapper">
@@ -54,9 +57,9 @@
                           <td style="text-align: center">{{item.testname}}</td>
                           <td style="text-align: center">{{item.time}}</td>
                           <td style="text-align: center">
-                              <button type="button" onclick="detail('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 1,'{{item.stu_id}}')" class = "btn btn-info btn-xs">查看详情</button>
-                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 1,'{{item.stu_id}}')" class = "btn btn-info btn-xs">是</button>
-                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.sex}}', '{item.province}}', '{{item.school}}', '{{item.ident}}', '{{item.testname}}', '{{item.time}}', 0,'{{item.stu_id}}')" class = "btn btn-info btn-xs">否</button>
+                              <button type="button" onclick="detail('{{item.name}}',  '{{item.testname}}',  '{{item.stu_id}}')" class = "btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">查看详情</button>
+                              <button type="button" onclick="yesorno('{{item.name}}','{{item.ident}}', '{{item.testname}}',  1,'{{item.stu_id}}')" class = "btn btn-info btn-xs">是</button>
+                              <button type="button" onclick="yesorno('{{item.name}}', '{{item.ident}}','{{item.testname}}',  0,'{{item.stu_id}}')" class = "btn btn-info btn-xs">否</button>
                           </td>
                         </tr>
 
@@ -81,11 +84,71 @@
      <!-- /. WRAPPER  -->
     {% include 'teacher/include/jsinclude.html' %}
 
-<script>
-    function detail(name, sex, province, school, ident, testname, time, code,stu_id) {
 
+
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 801.6px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        用时详情
+                    </h4>
+                </div>
+                <div class="modal-body" id = "chart">
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+
+
+<script>
+    function detail(name, testname,stu_id) {
+        $.get("/teacher/checkscoredetail",
+                    {
+                        'name':name,
+                        'testname':testname,
+                        'stu_id':stu_id,
+                    },
+                    function(dict){
+                        console.log(dict['subject']);
+                 FusionCharts.ready(function(){
+                    var revenueChart = new FusionCharts({
+                        "type": "column2d",
+                        "renderAt": "chart",
+                        "width": "100%",
+                        "height": "600px",
+                        "dataFormat": "json",
+                        "dataSource":  {
+                          "chart": {
+                            "caption": "题目-时间柱状图",
+                            "subCaption": dict['subject'],
+                            "xAxisName": "题号",
+                            "yAxisName": "时间",
+                            "numberPrefix": "",
+                            "theme": "fint"
+                         },
+                         "data": dict['timelist'],
+                      }
+
+                  });
+                revenueChart.render();
+
+
+                });
+
+
+
+            })
     }
-    function yesorno(name, sex, province, school, ident, testname, time, code,stu_id) {
+    function yesorno(name, ident, testname,code,stu_id) {
        /* alert(name + " " + sex + " " + province + " " +
         school + " " + ident + " " + testname + " " +
         time + " " + code);*/
