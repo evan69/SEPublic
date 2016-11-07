@@ -168,7 +168,7 @@ def student_info_edit(request):
             'admissionStatus': info_dict.get('admissionStatus', '110'),
             'relTeacher': info_dict.get('relTeacher', '110'),
             'relVolunteer': info_dict.get('relVolunteer', '110'),
-            'comment': info_dict.get('comment', '110') + '\n' + info_dict.get('newcomment', '110'),
+            'comment': info_dict.get('comment', '110') + info_dict.get('newcomment', '110') + '\n',
             'team1': info_dict.get('team1', '1'),
             'team2': info_dict.get('team2', '1'),
             'team3': info_dict.get('team3', '1'),
@@ -176,6 +176,9 @@ def student_info_edit(request):
             'team5': info_dict.get('team5', '1'),
             'forbid': int(info_dict.get('forbid', '1')),
         }
+
+        if info_dict.get('newcomment', '110').strip() == '':
+            dic['comment'] = info_dict.get('comment', '110')
 
         stu.setStudent(account, Student.TYPE, dic['type'])
         stu.setStudent(account, Student.PROVINCE, dic['province'])
@@ -222,7 +225,13 @@ def student_info_edit(request):
 
         stu.setStudent(account, Student.DUIYING_TEACHER, dic['relTeacher'])
         stu.setStudent(account, Student.QUANXIAN, dic['forbid'])
-        return JsonResponse(request.POST)
+
+        ret_dic = {}
+        for key in request.POST.copy().keys():
+            ret_dic[key] = request.POST.copy().get(key)
+        ret_dic['comment'] = dic['comment']
+
+        return JsonResponse(ret_dic)
     else:
         '''
             后端需要在这里改代码，从数据库读取正确的dict，并返回
@@ -278,8 +287,10 @@ def student_info_edit(request):
         }
 
         group_list = stu.getStudentGroupIDListString(student).split(' ')
+        if '' in group_list:
+            group_list.remove('')
         for i in range(0, 5):
-            if i < len(group_list):
+            if i < len(group_list) and group_list[i] != '':
                 dic['group'+str(i+1)] = int(group_list[i])
             else:
                 dic['group'+str(i+1)] = 0
@@ -357,6 +368,7 @@ def student_info_show(request):
     if id == -1:
         return HttpResponse('Access denied')
     account = stu.idToAccountStudent(str(id))
+    student = stu.getStudentAll(account)
     stu_dic = stu.getStudentAllDictByAccount(account)
     dic = {
         Student.ID: stu_dic[Student.ID],
@@ -398,19 +410,23 @@ def student_info_show(request):
         Student.DUIYING_TEACHER: stu_dic[Student.DUIYING_TEACHER],
     }
 
-    group_list = stu.getStudentGroupIDListString(stu.getStudentAll(account)).split(' ')
-    for i in range(1, 6):
-        if i < len(group_list):
-            dic['group' + str(i)] = group_list[i]
+    group_list = stu.getStudentGroupIDListString(student).split(' ')
+    if '' in group_list:
+        group_list.remove('')
+    for i in range(0, 5):
+        if i < len(group_list) and group_list[i] != '':
+            dic['group' + str(i + 1)] = int(group_list[i])
         else:
-            dic['group' + str(i)] = '0'
+            dic['group' + str(i + 1)] = 0
 
     dic['grouplist'] = [' ']
     all_group = back.getGroupbyDict({})
     for item in all_group:
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
     print dic['grouplist']
-
+    dic['forbid'] = int(stu_dic[Student.QUANXIAN])
+    dic['forbidlist'] = PERMISSION_LIST
+    print 'byr pinwei ',dic['forbid'], dic['forbidlist']
     id_ = request.session.get('teacher_id', -1)
     return HttpResponse(t.render({'student': dic, 'id':id_}))
 
@@ -676,6 +692,10 @@ def volunteer_info(request):
     all_group = back.getGroupbyDict({})
     for item in all_group:
         dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+
+    dic['forbid'] = int(vol_dic[Volunteer.QUANXIAN])
+    dic['forbidlist'] = PERMISSION_LIST
+
 
     id_ = request.session.get('teacher_id', -1)
     return render(request, 'teacher/volunteer_info.html', {'dict': dic, 'id':id_})

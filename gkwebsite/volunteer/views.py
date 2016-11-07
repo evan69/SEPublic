@@ -81,8 +81,11 @@ def student_list_all(request):
         return redirect('/login/')
     vol_id = request.session.get('volunteer_id')
     vol_account = vol.idToAccountVolunteer(vol_id)
-    vol_student_account_list = getattr(vol.getVolunteerAll(
-        vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
+    vol_student_id_list = vol.get_can_see_students(vol_id)
+    vol_student_account_list = []
+    for item in vol_student_id_list:
+        vol_student_account_list.append(stu.idToAccountStudent(item))
+    print 'sadfasdf', vol_student_account_list
     if request.is_ajax() and request.method == 'POST':
         t = []
         for account in vol_student_account_list:
@@ -386,7 +389,10 @@ def profile(request):
             vol.setVolunteer(vol_account, Volunteer.QQ, qqn)
             vol.setVolunteer(vol_account, Volunteer.WECHAT, weichat)
             vol.setVolunteer(vol_account, Volunteer.PASSWORD, password)
-            describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + '\n' + describe
+            if describe.strip() != '':
+                describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT] + describe + '\n'
+            else:
+                describe = vol.getVolunteerAllDictByAccount(vol_account)[Volunteer.COMMENT]
             print 'new ', describe
             vol.setVolunteer(vol_account, Volunteer.COMMENT, describe)
             flag = True
