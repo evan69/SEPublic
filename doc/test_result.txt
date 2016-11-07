@@ -1,0 +1,20 @@
+1. database/student_backend.py accountToIDStudent(account), 当account不存在时，应该返回None, 而不是(str)None, 已改正
+2. database/student_backend.py getStudentbyField(field, argc), 如果field不合法，回直接炸，在一开始加入合法性检查，已改正
+3. database/student_backend.py createStudent(account, dic), 如果第一个参数的account,和传入字典的account不一样,能否创建学生账户，函数是返回true的,但我觉得应该是false,所以在函数入口处加了特判
+4. database/teacher_backend.py creatTeacher(kwarg), 如果传入的字典没有account 键值，会报错，所以在函数一开始加入has_key('account')特判
+5. database/student_backend.py getStudentEstimateRank(student), 错误太多，重写吧，有keyerror, 我试着重写了一下，我理解的情况是审核过的分数才能计入排名。
+6. database/student_backend.py getStudentEstimateScore_Every, 对keyerror进行判断，确认字典有'score'这个key,已修改。
+7. database/student_backend.py getStudentEstimateScore_Every_no_shenhe, 对keyerror进行判断，已修改
+8. database/student_backend.py getStudentEstimateRank_Every, 加了key的判断，但在排名时有一些不合理的地方，建议修改返回值，返回值还未修改。
+9. database/backend.py, notice 的id可以人为设定和修改，不合要求，需要修改，测试未能通过。
+10.datanase/volunteer.py, getVolunteerByField,没有检查键值是否有效，加了checkfield的检查，已修改
+11.datanase/volunteer.py, createrVolunteer, 对于整数的索引需要增加范围限定，已经创建时不能自己设定id值，待修改。
+
+
+
+
+
+
+my_field.py中未测的函数：class ListField创建数据库的类不大好测，类中的函数也没测，outputExcels和generateexcels没法测
+volunteer.py 中getVolunteerAllDictByAccount(account)这个函数字典太大，不大好测，请观察是否有问题。
+volunteer.py中的 removeVolunteerAccount未测，需要先测group和timer,之后再测
