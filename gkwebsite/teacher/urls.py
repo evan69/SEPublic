@@ -32,7 +32,8 @@ urlpatterns = [
     url(r'^message/$', views.view_message, name='view_message'),
     url(r'^edit_test/(.*)/$', views.edit_test, name='edit_test'),
     url(r'^checkscore/$', views.checkscore, name='edit_test'),
-    url(r'^manage_activity/$',views.manage_activity),
-    url(r'^get_all_activity/$',views.get_all_activity),
-    url(r'^delete_activity/$',views.delete_activity),
+    url(r'^manage_activity/$',views.manage_activity, name='manage_activity'),
+    url(r'^get_all_activity/$',views.get_all_activity, name='get_all_activity'),
+    url(r'^delete_activity/$',views.delete_activity, name='delete_activity'),
+    url(r'^wechat_push_stack/$', views.wechat_push_stack, name='wechat_push_stack'),
 ]
