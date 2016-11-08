@@ -570,3 +570,28 @@ def get_last_estimate_score(stu_id, test_id):
     except:
         last_score = 0
     return last_score
+
+
+@csrf_exempt
+@check_identity('student')
+def message(request):
+    t = get_template('student/message.html')
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
+
+@csrf_exempt
+def get_all_message(request):
+    """
+        后端应在此处返回某道试题的全部信息，信息应转化为字符串
+        试题id由request.POST.get('problem_id')获取，见下面样例
+        然后放到下面样例写好的dic中
+    """
+    # print request.POST
+    dic = [{'sender': '李三胖', 'title':'暖一暖', 'state':'未读'},
+            {'sender': '李三胖', 'title': '暖2暖', 'state':'已读'},
+            {'sender': '李三胖', 'title': '暖3暖', 'state':'未读'},]
+    return JsonResponse(dic, safe=False)

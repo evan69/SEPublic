@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>消息</title>
+		{% load static from staticfiles %}
+ {% include 'student/include/cssinclude.html' %}
+
+</head>
+<body>
+    <div id="wrapper">
+    {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
+		<div id="page-wrapper" >
+            <div id="page-inner">
+				<!--row-->
+				<div class = "row">
+					<div class = "col-md-12">
+						<div class= "panel panel-default">
+							<div class = "panel-body">
+								<table class="table table-hover">
+									<caption>消息列表</caption>
+									<thead>
+										<tr>
+											<th>发件人</th>
+											<th>标题</th>
+                                            <th>状态</th>
+                                            <th> </th>
+										</tr>
+									</thead>
+									<tbody id="message_list">
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /. ROW -->
+    {% include 'student/include/footer.html' %}
+			</div><!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+    {% include 'student/include/jsinclude.html' %}
+    <div id="dialog" title="消息详情">
+      <form id="form">
+        <fieldset style="padding:0; border:0; margin-top:25px;">
+          <label>标题</label>
+            <label>发件人</label>
+          <label>时间</label>
+          <label>全文</label>
+          <!-- Allow form submission with keyboard without duplicating the dialog button -->
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+        <!--button type="submit" class="btn btn-primary">确认</button-->
+      </form>
+    </div>
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    <!-- Bootstrap Js -->
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+    <!-- Metis Menu Js -->
+    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
+    <!-- Morris Chart Js -->
+    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
+
+
+	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
+	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
+
+    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+    <!-- Custom Js -->
+    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
+		<script>
+		function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie !== '') {
+						var cookies = document.cookie.split(';');
+						for (var i = 0; i < cookies.length; i++) {
+								var cookie = jQuery.trim(cookies[i]);
+								// Does this cookie string begin with the name we want?
+								if (cookie.substring(0, name.length + 1) === (name + '=')) {
+										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+										break;
+								}
+						}
+				}
+				return cookieValue;
+		}
+		function csrfSafeMethod(method) {
+				// these HTTP methods do not require CSRF protection
+				return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		</script>
+		<script>
+			var list_start_pos = 0;
+			var user_array = [];
+			function show_list(){
+				var tag1, tag2, tag3;
+				var listitem="";
+				for(var i = 0; i < user_array.length; ++i){
+					tag1 = String(i)+'_A';
+					listitems="<tr><td>"+user_array[i]['sender']+"</td><td>"+user_array[i]['title']+"</td><td>"+user_array[i]['state']+"</td>";
+					listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">查看内容</button></td></tr>\n";
+					$('#message_list').append(listitems);
+					$('#'+tag1).click(function(){
+						var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+						//No need to examine the suffix since we are dealing with 'tag1'
+						$( "#dialog" ).dialog("open");
+					});
+				}
+			}
+			$(document).ready(function(){
+				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+				var csrftoken = getCookie('csrftoken');
+				$.ajaxSetup({
+						beforeSend: function(xhr, settings) {
+								if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+									xhr.setRequestHeader("X-CSRFToken", csrftoken);
+								}
+						}
+				});
+				/*
+				$.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
+					$('#namefield').append(ret['name']);
+				})*/
+
+				var get_message = function(){
+					var namestr=$('#realName').val();
+					list_start_pos = 0;
+					$('#message_list').empty();
+					//access server and load matching records
+					$.post("/student/get_all_message/", {}, function(ret){
+						user_array = ret;
+						console.log(ret);
+						console.log(user_array.length);
+						console.log(user_array[0]['sender']);
+						show_list();
+					})
+				};
+				get_message();
+			});
+		</script>
+    <script>
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "确定": function() {
+          $("#dialog").dialog( "close" );
+        }
+      },
+      close: function() {
+        $("#form")[0].reset();
+        get_message();
+      }
+    });
+    </script>
+
+</body>
+</html>
