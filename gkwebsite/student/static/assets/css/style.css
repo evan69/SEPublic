@@ -68,7 +68,7 @@ body a:hover,body a{
 .agileits_copyright p a:hover{
 	color:#FF0F75;
 }
-input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_left a{
+input[type="submit"],#save,.agileits_copyright p a,input[type="reset"],.w3_main_grid_left a{
 	transition:.5s ease-in;
 	-webkit-transition:.5s ease-in;
 	-moz-transition:.5s ease-in;
@@ -88,7 +88,8 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	width: 35%;
     padding: 2em;
     margin: 0 auto;
-    background:rgba(0, 0, 0, 0.41);
+    /*background:rgba(0, 0, 0, 0.41);*/
+	background:#bdcdca;
     border: 5px solid #fff;
 }
 .w3layouts_main_grid span {
@@ -112,23 +113,26 @@ input[type="submit"],.agileits_copyright p a,input[type="reset"],.w3_main_grid_l
 	color:#fff;
 	font-style:normal;
 }
-.w3layouts_main_grid input[type="text"],#category,#category1,#risk,#priority,.agileits_w3layouts_main_gridr input[type="time"], .w3layouts_main_grid input[type="email"], .w3layouts_main_grid textarea {
+.w3layouts_main_grid input[type="text"],#category,#category1,#risk,#password1,#password2,#sex,#majorSelect1,#majorSelect2,#majorSelect3,#majorSelect4,#majorSelect5,#majorSelect6,#nation, #priority,.agileits_w3layouts_main_gridr input[type="time"], .w3layouts_main_grid input[type="email"], .w3layouts_main_grid textarea {
     outline: none;
     width: 75%;
-	background:#a79e9e;
+	/*background:#a79e9e;*/
 	/*    background: #fff;*/
 /*    color:#4B4B4B;*/
-color:#efe8e8;
+/*color:#efe8e8;*/
     padding: 10px;
     font-size: 14px;
     border: 1px solid #E7E7E7;
 }
 ::-webkit-input-placeholder{
-	color:#4B4B4B !important;
+	/*color:#4B4B4B !important;*/
+	color:lightgrey !important;
 }
-#category,#category1,#risk,#priority{
-    width: 79% !important;
+#category,#category1,#risk,#priority,#password1,#password2,#sex,#majorSelect1,#majorSelect2,#majorSelect3,#majorSelect4,#majorSelect5,#majorSelect6,#nation{
+/*    width: 79% !important;*/
+	width: 74.8% !important;
 }
+
 .agileits_w3layouts_main_gridl{
 	float:left;
 	width:45%;
@@ -164,7 +168,7 @@ color:#efe8e8;
 	float:right;
 	width: 30%;
 }
-.w3_main_grid_right input[type="submit"]{
+.w3_main_grid_right input[type="submit"], #save{
 	outline:none;
 	padding:10px 0;
 	width:100%;
@@ -176,7 +180,7 @@ color:#efe8e8;
 	border:none;
 	cursor:pointer;
 }
-.w3_main_grid_right input[type="submit"]:hover{
+.w3_main_grid_right input[type="submit"], #save:hover{
 /*	color:#FF0F75;*/
 	color: black;
 	background:#fff;
@@ -365,7 +369,7 @@ color:#efe8e8;
 	.agileits_w3layouts_main_gridr input[type="time"] {
 		width: 93.8% !important;
 	}
-	.w3_main_grid_right input[type="submit"] {
+	.w3_main_grid_right input[type="submit"], #save{
 		padding: 7px 0;
 	}
 }

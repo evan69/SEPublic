@@ -15,6 +15,11 @@ urlpatterns = [
         views.volunteer_search_student_by_name,
         name="search_student_by_name"),
     url(r'^date_choose/$', views.date_choose, name="date_choose"),
+    url(r'get_all_activity/$',views.get_all_activity),
+    url(r'get_activity_time/$',views.get_activity_time),
+    url(r'submit_time/$', views.submit_time),
+    # url(r'^add_student/$', views.add_student, name='add_student'),
+    # teacher 查看修改个人信息
     url(r'^profile/$', views.profile),
-    url(r'^$', views.dashboard),
+    url(r'^$', views.profile),
 ]

@@ -3,17 +3,9 @@
  <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     {% load staticfiles %}
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-
-  <title>查看学生</title>
+  {% load staticfiles %}
+  {% include 'teacher/include/cssinclude.html' %}
+  <title>查看学生信息</title>
  </head>
  <body>
 
@@ -46,19 +38,8 @@
              <div class="form-group">
               <label for="account" class="col-sm-2 control-label" style="text-align:left;padding-left: 2em;">用户名: </label>
               <div class="col-sm-10">
-               <p class="form-control-static" id="account" name="account">{{student.account}}</p>
-              </div>
-             </div>
-             <div class="form-group">
-              <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="realName" name="realName" value="{{student.realName}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{student.idNumber}}" />
+               <input type="text" class="form-control" id="account" name="account" value="{{student.account}}" />
+
               </div>
              </div>
              <div class="form-group">
@@ -67,14 +48,34 @@
                <input type="text" class="form-control" id="registerCode" name="registerCode" value="{{student.registerCode}}" />
               </div>
              </div>
+
+             <div class="form-group">
+              <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="realName" name="realName" value="{{student.realName}}" />
+              </div>
+             </div>
+
+                <div class="form-group">
+              <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{student.idNumber}}" />
+              </div>
+             </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="sex">性别：</label>
               <div class="col-sm-10">
-               {% if student.sex == 0 %}
-                    <select class="form-control" id="sex" name="sex"> <option value="0" selected="selected">男</option><option value="1">女</option> </select>
-               {% else %}
-                    <select class="form-control" id="sex" name="sex"> <option value="0">男</option><option value="1" selected="selected">女</option> </select>
-               {% endif %}
+ <select class="form-control" id="sex" name="sex">
+                {% for item in student.sex.sexlist %}
+                   {% if forloop.counter0 == student.sex.sex %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
@@ -96,13 +97,30 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="birth" class="col-sm-2 control-label">出生日期: </label>
               <div class="col-sm-10">
-               <p class="date" id="birth" name="birth">{{student.birth}}</p>
+              <input type="text" class="form-control" id="birth" name="birth" value="{{student.birth}}" />
+
+              </div>
+             </div>
+                             <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="estimateScore" class="col-sm-2 control-label">估分：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="estimateScore" name="estimateScore" value="{{student.estimateScore}}" />
               </div>
              </div>
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="type">文理科：</label>
               <div class="col-sm-10">
-               <input type="text" class="form-control" id="type" name="sex" value="{{student.type}}" />
+                <select class="form-control" id="type" name="type">
+                {% for item in student.type.typelist %}
+                   {% if forloop.counter0 == student.type.type %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
@@ -280,7 +298,8 @@
 
 
 
-             <div class="form-group">
+
+            <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" for="testScore1" class="col-sm-2 control-label">一模成绩：</label>
               <div class="col-sm-4">
                <input type="text" class="form-control" id="testScore1" name="testScore1" value="{{student.testScoreList.0}}" />
@@ -290,7 +309,7 @@
                <input type="text" class="form-control" id="rank1" name="rank1" value="{{student.rankList.0}}" />
               </div>
               <div class="col-sm-2">
-               <input type="text" class="form-control" id="rank11" name="rank11" value="{{student.rankList.0}}" />
+               <input type="text" class="form-control" id="rank11" name="rank11" value="{{student.sumNumberList.0}}" />
               </div>
 
              </div>
@@ -301,10 +320,10 @@
               </div>
               <label style="text-align:left;padding-left: 2em;" for="rank2" class="col-sm-2 control-label">排名/人数：</label>
                <div class="col-sm-2">
-               <input type="text" class="form-control" id="rank2" name="rank2" value="{{student.rankList.0}}" />
+               <input type="text" class="form-control" id="rank2" name="rank2" value="{{student.rankList.1}}" />
               </div>
               <div class="col-sm-2">
-               <input type="text" class="form-control" id="rank22" name="rank22" value="{{student.rankList.0}}" />
+               <input type="text" class="form-control" id="rank22" name="rank22" value="{{student.sumNumberList.1}}" />
               </div>
              </div>
              <div class="form-group">
@@ -314,17 +333,11 @@
               </div>
               <label style="text-align:left;padding-left: 2em;" for="rank3" class="col-sm-2 control-label">排名/人数：</label>
                <div class="col-sm-2">
-               <input type="text" class="form-control" id="rank3" name="rank3" value="{{student.rankList.0}}" />
+               <input type="text" class="form-control" id="rank3" name="rank3" value="{{student.rankList.2}}" />
               </div>
 
               <div class="col-sm-2">
-               <input type="text" class="form-control" id="rank33" name="rank33" value="{{student.rankList.0}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="estimateScore" class="col-sm-2 control-label">估分：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="estimateScore" name="estimateScore" value="{{student.estimateScore}}" />
+               <input type="text" class="form-control" id="rank33" name="rank33" value="{{student.sumNumberList.2}}" />
               </div>
              </div>
              <div class="form-group">
@@ -340,23 +353,104 @@
               </div>
              </div>
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="relTeacher" class="col-sm-2 control-label">对应老师：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relTeacher" name="relTeacher" value="{{student.relTeacher}}" />
+              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">对应组号：</label>
+              <div class="col-sm-2">
+               <select class="form-control" id="team1" name="team1">
+                {% for item in student.grouplist %}
+
+                   {% ifequal forloop.counter0 student.group1 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endifequal %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+              <div class="col-sm-2">
+               <select class="form-control" id="team2" name="team2">
+               {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group2 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+              <div class="col-sm-2">
+               <select class="form-control" id="team3" name="team3">
+               {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group3 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+              <div class="col-sm-2">
+               <select class="form-control" id="team4" name="team4">
+               {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group4 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+              <div class="col-sm-2">
+               <select class="form-control" id="team5" name="team5">
+             {% for item in student.grouplist %}
+                   {% if forloop.counter0 == student.group5 %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
+
+
+
+
+
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="relVolunteer" class="col-sm-2 control-label">对应志愿者：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relVolunteer" name="relVolunteer" value="{{student.relVolunteer}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
+              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">评论：</label>
               <div class="col-sm-10">
                <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
               </div>
              </div>
+
+                      <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">强制禁止：</label>
+             <div class="col-sm-10">
+           <select class="form-control" id="forbid" name="forbid">
+                {% for item in student.forbidlist %}
+                   {% if forloop.counter0 == student.forbid %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+
+
              </fieldset>
              <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">

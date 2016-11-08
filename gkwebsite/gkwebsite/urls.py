@@ -20,10 +20,13 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from login import views as loginViews
+from django.conf.urls.static import static
+
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-	url(r'^teacher/', include('teacher.urls')),
+    url(r'^teacher/', include('teacher.urls')),
 
     #    关联login界面
     #    by byr 161003
@@ -33,6 +36,10 @@ urlpatterns = [
     url(r'^logincheck/$', loginViews.logincheck),
     #   验证码界面
     url(r'^yzm/(\d+)/(\d+)/$', loginViews.gnrtyzm),
+    #   注册界面
+    #   by byr 161026
+    url(r'^register/$', loginViews.register),
+
 
 
     url(r'^student/', include('student.urls')),
@@ -41,8 +48,12 @@ urlpatterns = [
     #	by dqn14 Oct 12, 2016
     url(r'^backend/', include('database.urls')),
 
-		url(r'^volunteer/', include('volunteer.urls')),
-		
-		#   关联微信处理
-		url(r'^wechat/', include('wechat.urls')),
+    url(r'^volunteer/', include('volunteer.urls')),
+
+    #   关联微信处理
+    url(r'^wechat/', include('wechat.urls')),
 ]
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

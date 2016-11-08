@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>编辑测试</title>
+		{% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
+</head>
+<body>
+    <div id="wrapper">
+         {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+				
+				<div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            高考招生系统教师端 <small>您好，您正在编辑{{test_id}}</small>
+                        </h1>
+                    </div>
+                </div> 
+				<!--row-->
+        <div class = "row">
+					<div class = "col-md-12">
+						<div class= "panel panel-default">
+							<div class = "panel-body">
+                <table class="table table-hover" id = "question_table">
+                  <caption></caption>
+									<thead>
+										<tr>
+											<th>题号</th>
+											<th>类型</th>
+                      <th>分值</th>
+                      <th></th>
+										</tr>
+									</thead>
+									<tbody id="question_list">
+									</tbody>
+                </table>
+                <p style="font-family:宋体; font-size:16px; text-align:center" id="empty_msg">您还没有添加题目！</p>
+                <button type="button" id="new_question">添加题目</button>
+              </div>
+						</div>
+					</div>
+				</div>
+   {% include 'teacher/include/footer.html' %}
+			</div>
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+     <!-- /. WRAPPER  -->
+    {% include 'teacher/include/jsinclude.html' %}
+		<script>
+      var test_id = "{{test_id}}";
+      var qlist = [];
+      function print_list(){
+        var item = "";
+        var edit_tag, delete_tag;
+        $('#question_list').empty();
+        if(qlist.length == 0){
+          $('#question_table').hide();
+          $('#empty_msg').show();
+        }
+        else{
+          $('#empty_msg').hide();
+        }
+        for(var i = 0; i < qlist.length; ++i){
+          edit_tag = String(i)+"_edit";
+          delete_tag = String(i)+"_delete";
+          //up_tag = String(i)+"_up";
+          //down_tag = String(i)+"_down";
+          item = "<tr><td>"+qlist[i]['num']+"</td><td>"+qlist[i]['type']+"</td><td>"+qlist[i]['maxscore']+"</td><td>";
+          item += "<button type=\"button\" id=\""+edit_tag+"\"class=\"btn btn-info btn-xs\">编辑</button>\n";
+          item += "<button type=\"button\" id=\""+delete_tag+"\"class=\"btn btn-danger btn-xs\">删除</button>\n";
+          //item += "<button type=\"button\" id=\""+up_tag+"\"class=\"btn btn-warning btn-xs\">上移</button>\n";
+          //item += "<button type=\"button\" id=\""+down_tag+"\"class=\"btn btn-warning btn-xs\">下移</button>\n";
+          item += "</td></tr>";
+          $('#question_list').append(item);
+          $('#'+edit_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            window.location="{%url "upload_question" %}"+"?test_id="+test_id+"&num="+qlist[row]['num'];
+          });
+          $('#'+delete_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            $("button").attr("disabled", "true");
+            $.post("/backend/remove_question/", {'test_id':test_id, 'num':qlist[row]['num']}, function(ret){
+              if(ret['success'].charAt(0) == 'N'){
+                $.growl.error({ title: "删除失败", message: ret['message'] });
+              }
+              $("button").removeAttr("disabled");
+              refresh();
+            });
+          });
+          /*
+          
+          Made a compromise with backend fellows to comment this out
+          
+          
+          $('#'+up_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            $("button").attr("disabled", "true");
+            $.post("/backend/move_question_up/", {'test_id':test_id, 'num':qlist[row]['num']}, function(ret){
+              if(ret['success'].charAt(0) == 'N'){
+                $.growl.error({ title: "移动失败", message: ret['message'] });
+              }
+              $("button").removeAttr("disabled");
+              refresh();
+            });
+          });
+          $('#'+down_tag).click(function(){
+            var parse = this.id.split("_");
+						var row = parseInt(parse[0]);
+            $("button").attr("disabled", "true");
+            $.post("/backend/move_question_down/", {'test_id':test_id, 'num':qlist[row]['num']}, function(ret){
+              if(ret['success'].charAt(0) == 'N'){
+                $.growl.error({ title: "移动失败", message: ret['message'] });
+              }
+              $("button").removeAttr("disabled");
+              refresh();
+            });
+          });
+          */
+        }
+      }
+      function refresh(){
+        $.post("/backend/list_question/", {'id':test_id}, function(ret){
+          qlist = ret;
+          print_list();
+        })
+      }
+			$(document).ready(function(){
+				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+				var csrftoken = getCookie('csrftoken');
+				$.ajaxSetup({
+						beforeSend: function(xhr, settings) {
+								if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+									xhr.setRequestHeader("X-CSRFToken", csrftoken);
+								}
+						}
+				});
+        refresh();
+        $('#new_question').click(function(){
+          $.post("/backend/get_next_question_num/", {'test_id':test_id}, function(ret){
+            window.location="{%url "upload_question" %}"+"?test_id="+test_id+"&num="+ret['num'];
+          });
+        });
+			});
+		</script>
+
+
+</body>
+</html>

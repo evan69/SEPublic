@@ -6,16 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>查看学生</title>
 		{% load staticfiles %}
-		<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-    <!-- jQuert UI Styles -->
-    <link href="{% static 'jquery-ui-1.12.1/jquery-ui.min.css' %}" rel='stylesheet'/>
+		{% include 'teacher/include/cssinclude.html' %}
 </head>
 <body>
     <div id="wrapper">
@@ -61,8 +52,8 @@
 						</div>
 					</div>
 				</div>
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a href="/info">早睡早起</a></p></footer>
-			</div>
+   {% include 'teacher/include/footer.html' %}
+            </div>
              <!-- /. PAGE INNER  -->
         </div>
          <!-- /. PAGE WRAPPER  -->
@@ -73,8 +64,6 @@
       <p>发送人：白云仁</p>
     </div>
     {% include 'teacher/include/jsinclude.html' %}
-    <!--<script>console.log('A');</script>-->
-    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
     <script src="{% static 'jquery-ui-1.12.1/datepicker-zh.js' %}"></script>
 		<script>
 			$(document).ready(function(){

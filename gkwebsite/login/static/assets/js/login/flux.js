@@ -51,7 +51,7 @@ $(function() {
     })
 });
 $(function() {
-    if ($.browser.msie && $.browser.version <= 9) {
+    //if ($.browser.msie && $.browser.version <= 9) {
         $("[placeholder]").focus(function() {
             if ($(this).val() == $(this).attr("placeholder")) $(this).val("")
         }).blur(function() {
@@ -64,7 +64,7 @@ $(function() {
                 }
             })
         })
-    }
+    //}
 });
 $(document).ready(function() {
     $('.btn_register').click(function() {

@@ -4,16 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>查看学生</title>
-		{% load staticfiles %}
-		<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <title>查看志愿者</title>
+    {% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
 </head>
 <body>
     <div id="wrapper">
@@ -47,6 +40,9 @@
 											</div>
 										</div>
 									</div>
+                  <div class="col-md-4">
+                    <button type = "button" class = "btn btn-primary" id="all">显示全部</button>
+                  </div>
 								</div>
 								<table class="table table-hover">
 									<caption>匹配结果</caption>
@@ -68,8 +64,7 @@
 					</div>
 				</div>
 				<!-- /. ROW -->
-
-				 {% include 'teacher/include/footer.html' %}
+   {% include 'teacher/include/footer.html' %}
 			</div>
 
              <!-- /. PAGE INNER  -->
@@ -178,6 +173,9 @@
 					var namestr=$('#realName').val();
 					postreq(namestr);
 				});
+        $('#all').click(function(){
+          postreq("");
+        });
 			});
 		</script>
 

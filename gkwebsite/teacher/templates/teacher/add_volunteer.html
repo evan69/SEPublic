@@ -6,16 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>添加志愿者</title>
 		{% load staticfiles %}
-		<!-- Bootstrap Styles-->
-    <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href= "{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-        <!-- Custom Styles-->
-    <link href= "{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-		
-		<link href= "{% static 'css/jquery.growl.css' %}" rel="stylesheet" />
-     <!-- Google Fonts-->
-   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+		{% include 'teacher/include/cssinclude.html' %}
 </head>
 <body>
     <div id="wrapper">
@@ -31,9 +22,9 @@
                             高考招生系统教师端 <small>您好，<span id='namefield'></span></small>
                         </h1>
                     </div>
-                </div> 
+                </div>
 				<!--row-->
-				
+
 				<div class= "panel panel-default">
 					<div class = "panel-body">
 						<form class="form-search" id = "form">
@@ -41,7 +32,7 @@
 								<div class="col-md-2">
 									<label class = "control-label">预置用户名：</label>
 								</div>
-								<div class="col-md-3">								
+								<div class="col-md-3">
 									<input type="text"  id="username" name = "username"/>
 								</div>
 							</div>
@@ -50,14 +41,8 @@
 								<div class="col-md-2">
 									<label class = "control-label">预置密码：</label>
 								</div>
-								<div class="col-md-3">								
+								<div class="col-md-3">
 									<input class="password" type="password" id="psw" name = "psw"/>
-									<div class="password-meter">
-										<div class="password-meter-message"> </div>
-										<div class="password-meter-bg">
-											<div class="password-meter-bar"></div>
-										</div>
-									</div>
 								</div>
 							</div>
 							<div class="row"><p></div>
@@ -65,7 +50,7 @@
 								<div class="col-md-2">
 									<label class = "control-label">确认预置密码：</label>
 								</div>
-								<div class="col-md-3">								
+								<div class="col-md-3">
 									<input type="password" id="psw_confirm" name = "psw_confirm"/>
 								</div>
 							</div>
@@ -78,7 +63,7 @@
 									<button type="submit" class="btn btn-primary" id = "add">Add</button>
 								</div>
 							</div>
-							
+
 						</form>
 					</div>
 				</div>
@@ -89,9 +74,9 @@
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
-    
+
     {% include 'teacher/include/jsinclude.html' %}
-    <script src="{% static 'js/jquery.growl.js' %}"></script>
+
 		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
 		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
@@ -107,9 +92,8 @@
 						maxlength:20
 					},
 					psw:{
-						required:true,
-						minlength:4,
-						maxlength:20
+            required:true,
+						legalPassword:true
 					},
 					psw_confirm:{
 						required:true,
@@ -124,9 +108,6 @@
 			});
 		});
 		</script>
-
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
 		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
 		<script>
 		function getCookie(name) {
@@ -168,9 +149,9 @@
         $('#add_volunteer').attr("href", "#");
 				$('#info').hide();
 				//$('#add').click(formSubmit);
-				
+
 			});
-			
+
 			function formSubmit(){
 				var username = $('#username').val();
 				var password = $('#psw').val();

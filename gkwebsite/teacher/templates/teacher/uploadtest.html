@@ -2,21 +2,195 @@
 <html>
  <head id="Head1">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-     {% load staticfiles %}
-  <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+  {% load staticfiles %}
+  {% include 'teacher/include/cssinclude.html' %}
   <!-- profile-->
   <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
   <!--3d button-->
   <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style2.css' %}" />
   <link href="{% static 'assets/css/googleapis.css' %}" rel="stylesheet" type="text/css" />
+
+  <style>
+    .image_container {
+        width: auto;
+        height: auto;
+        position: relative;
+    }
+    div.upload {
+    width: 157px;
+    height: 57px;
+    background: url({% static 'assets/img/upload.png' %});
+    overflow: hidden;
+    }
+
+   div.upload input {
+       display: block !important;
+       width: 157px !important;
+       height: 57px !important;
+       opacity: 0 !important;
+       overflow: hidden !important;
+   }
+</style>
+   <title>编辑测试题</title>
+ </head>
+ <body>
+
+  <div id="wrapper">
+     {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+
+   <div id="page-wrapper">
+    <div id="page-inner">
+     <div class="row">
+      <div class="col-md-offset-4 col-md-4">
+       <h1 class="page-header" style="text-align: center"> 上传试题详情 </h1>
+      </div>
+     </div>
+     <!--row-->
+     <div class="row">
+      <div class="col-md-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="row">
+          <div class="col-md-6">
+           <div class="image_container" style="text-align: center">
+            <img id="preview" style="width: 600px;height: 500px;border:1px black;margin-right: 10px;margin-bottom: 10px;" />
+           </div>
+          </div>
+          <div class="col-md-6">
+           <form>
+            <fieldset disabled="">
+
+              <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >年：</label>
+             <div class="col-sm-4">
+               <select class="form-control" id="year" name="year">
+                {% for item in dict.year.yearlist %}
+                   {% if forloop.counter0 == dict.year.year %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >省份：</label>
+             <div class="col-sm-4">
+             <select class="form-control" id="province" name="province">
+                {% for item in dict.province.provincelist %}
+                   {% if forloop.counter0 == dict.province.province %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >科目：</label>
+             <div class="col-sm-10">
+              <select class="form-control" id="subject" name="subject">
+                {% for item in dict.subject.subjectlist %}
+                   {% if forloop.counter0 == dict.subject.subject %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+                   </fieldset>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >题号：</label>
+             <div class="col-sm-10">
+             <select class="form-control" id="number" name="number">
+                {% for item in dict.number.numberlist %}
+                   {% if forloop.counter0 == dict.number.number %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >最大分值：</label>
+             <div class="col-sm-10">
+             <select class="form-control" id="score" name="score">
+                {% for item in dict.score.scorelist %}
+                   {% if forloop.counter0 == dict.score.score %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+
+             </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >题型：</label>
+             <div class="col-sm-10">
+                 <select class="form-control" id="category" name="category">
+                {% for item in dict.category.categorylist %}
+                   {% if forloop.counter0 == dict.category.category %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+              </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-4 control-label" >上传题目图片</label>
+             <div class="col-md-4">
+              <div class="upload">
+               <input id="problem_upload" type="file" name="image"/>
+              </div>
+             </div>
+            </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" class="col-sm-4 control-label" >保存当前题目</label>
+             <div class="col-md-4">
+              <a href="#present" class="a_demo_two" style="display: block;height: 50px;width: 150px;font-size: larger;text-align: center"> 提交 </a>
+             </div>
+            </div>
+           </form>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+
+      {% include 'teacher/include/footer.html' %}
+
+   </div>
+   <!-- /. PAGE INNER  -->
+  </div>
+  <!-- /. PAGE WRAPPER  -->
+  <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
+
   <script language="javascript">
     $(function() {
         $("#problem_upload").change(function() {
@@ -50,146 +224,69 @@
         });
     });
     </script>
-  <style>
-    .image_container {
-        width: auto;
-        height: auto;
-        position: relative;
-    }
-    div.upload {
-    width: 157px;
-    height: 57px;
-    background: url({% static 'assets/img/upload.png' %});
-    overflow: hidden;
-    }
-
-   div.upload input {
-       display: block !important;
-       width: 157px !important;
-       height: 57px !important;
-       opacity: 0 !important;
-       overflow: hidden !important;
-   }
-</style>
-   <title>发布测试题</title>
- </head>
- <body>
-
-  <div id="wrapper">
-     {% include 'teacher/include/navtop.html' %}
-        <!--/. NAV TOP  -->
-		{% include 'teacher/include/navside.html' %}
-        <!-- /. NAV SIDE  -->
-
-   <div id="page-wrapper">
-    <div id="page-inner">
-     <div class="row">
-      <div class="col-md-offset-4 col-md-4">
-       <h1 class="page-header" style="text-align: center"> 上传试题详情 </h1>
-      </div>
-     </div>
-     <!--row-->
-     <div class="row">
-      <div class="col-md-12">
-       <div class="panel panel-default">
-        <div class="panel-body">
-         <div class="row">
-          <div class="col-md-6">
-           <div class="image_container" style="text-align: center">
-            <img id="preview" style="width: 600px;height: 500px;border:1px black;margin-right: 10px;margin-bottom: 10px;" />
-           </div>
-          </div>
-          <div class="col-md-6">
-           <form >
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >年：</label>
-             <div class="col-sm-4">
-              <select class="form-control" id="year"> <option value="2017">2017</option> <option value="2018">2018</option> <option value="2019">2019</option> <option value="2020">2020</option> <option value="2021">2021</option> <option value="2022">2022</option> <option value="2023">2023</option> <option value="2024">2024</option> <option value="2025">2025</option> <option value="2026">2026</option> <option value="2027">2027</option> <option value="2028">2028</option> <option value="2029">2029</option> </select>
-             </div>
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >省份：</label>
-             <div class="col-sm-4">
-              <select class="form-control" id="province"> <option value="beijing">北京</option> <option value="neimenggu">内蒙古</option> <option value="hubei">湖北</option> </select>
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >科目：</label>
-             <div class="col-sm-10">
-              <select class="form-control" id="subject"> <option value="chinese">语文</option> <option value="math">数学</option> <option value="physics">物理</option> <option value="chemistry">化学</option> <option value="biology">生物</option> <option value="english">英语</option> </select>
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >题号：</label>
-             <div class="col-sm-10">
-              <select class="form-control" id="number"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> <option value="6">6</option> <option value="7">7</option> <option value="8">8</option> <option value="9">9</option> <option value="10">10</option> <option value="11">11</option> <option value="12">12</option> <option value="13">13</option> <option value="14">14</option> <option value="15">15</option> <option value="16">16</option> <option value="17">17</option> <option value="18">18</option> <option value="19">19</option> <option value="20">20</option> <option value="21">21</option> <option value="22">22</option> <option value="23">23</option> <option value="24">24</option> <option value="25">25</option> <option value="26">26</option> <option value="27">27</option> <option value="28">28</option> <option value="29">29</option> <option value="30">30</option> <option value="31">31</option> <option value="32">32</option> <option value="33">33</option> <option value="34">34</option> <option value="35">35</option> <option value="36">36</option> <option value="37">37</option> <option value="38">38</option> <option value="39">39</option> <option value="40">40</option> </select>
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >最大分值：</label>
-             <div class="col-sm-10">
-              <select class="form-control" id="score"> <option value="1">1</option> <option value="2">2</option> <option value="3">3</option> <option value="4">4</option> <option value="5">5</option> <option value="6">6</option> <option value="7">7</option> <option value="8">8</option> <option value="9">9</option> <option value="10">10</option> <option value="11">11</option> <option value="12">12</option> <option value="13">13</option> <option value="14">14</option> <option value="15">15</option> <option value="16">16</option> <option value="17">17</option> <option value="18">18</option> <option value="19">19</option> <option value="20">20</option> <option value="21">21</option> <option value="22">22</option> <option value="23">23</option> <option value="24">24</option> <option value="25">25</option> <option value="26">26</option> <option value="27">27</option> <option value="28">28</option> <option value="29">29</option> <option value="30">30</option> <option value="31">31</option> <option value="32">32</option> <option value="33">33</option> <option value="34">34</option> <option value="35">35</option> <option value="36">36</option> <option value="37">37</option> <option value="38">38</option> <option value="39">39</option> <option value="40">40</option> <option value="41">41</option> <option value="42">42</option> <option value="43">43</option> <option value="44">44</option> <option value="45">45</option> <option value="46">46</option> <option value="47">47</option> <option value="48">48</option> <option value="49">49</option> <option value="50">50</option> </select>
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" >题型：</label>
-             <div class="col-sm-10">
-              <select class="form-control" id="category"> <option value="subjective">主观</option> <option value="objective">客观</option> </select>
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-4 control-label" >上传题目图片</label>
-             <div class="col-md-4">
-              <div class="upload">
-               <input id="problem_upload" type="file" name="image"/>
-              </div>
-             </div>
-            </div>
-            <div class="form-group">
-             <label style="text-align:left;padding-left: 2em;" class="col-sm-4 control-label" >保存当前题目</label>
-             <div class="col-md-4">
-              <a href="#present" class="a_demo_two" style="display: block;height: 50px;width: 150px;font-size: larger;text-align: center"> 提交 </a>
-             </div>
-            </div>
-           </form>
-          </div>
-         </div>
-        </div>
-       </div>
-      </div>
-     </div>
-    </div>
-
-      {% include 'teacher/include/footer.html' %}
-
-   </div>
-   <!-- /. PAGE INNER  -->
-  </div>
-  <!-- /. PAGE WRAPPER  -->
-  <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
  <script>
-  $(document).ready(function(){
-     $('a[href="#present"]').click(function(){
-          var year = $("#year").val();
-          var province = $('#province').val();
-          var subject = $("#subject").val();
-          var number = $("#number").val();
-          var score = $("#score").val();
-          var category = $("#category").val();
-          var problem_upload = $("#problem_upload").val();
-            $.post("",
-                    {
-                        'year':year,
-                        'province':province,
-                        'subject':subject,
-                        'number':number,
-                        'score':score,
-                        'problem_upload':problem_upload,
-                        'category':category,
-                    },
-                    function(dict){
-                        alert(dict['result']);
+   $(document).ready(function(){
+       $('a[href="#present"]').click(function(){
+            var year = $("#year").val();
+            var province = $('#province').val();
+            var subject = $("#subject").val();
+
+
+            var number = $("#number").val();
+           if (number < 1){
+               alert("请输入正确的题号");
+               return;
+           }
+            var score = $("#score").val();
+           if (score < 1){
+               alert("请输入正确的分数");
+               return;
+           }
+            var category = $("#category").val();
+           if (category < 1){
+               alert("请输入正确的题型");
+               return;
+           }
+            var problem_upload = $("#problem_upload")[0].files[0];
+            if (problem_upload === undefined){
+                alert("请上传试题图片");
+                return;
+            }
+             // 再对文件名进行截取，以取得后缀名
+            var suffixName = problem_upload.name.split(".");
+
+           // 获取截取的最后一个字符串，即为后缀名
+            var last = suffixName[suffixName.length-1];
+          // 添加需要判断的后缀名类型
+            var tp ="jpg,png,JPG,PNG";
+             // 返回符合条件的后缀名在字符串中的位置
+               var rs = tp.indexOf(last);
+            if (rs < 0){
+                alert("请上传正确的图片类型 jpg png JPG PNG");
+                return;
+            }
+
+           var formData = new FormData();
+            formData.append('year',year);
+            formData.append('province',province);
+            formData.append('subject',subject);
+            formData.append('number',number);
+            formData.append('score',score);
+            formData.append('problem_upload',problem_upload);
+            formData.append('category',category);
+            $.ajax({
+             url: '',
+             type:'POST',
+             cache:false,
+             data:formData,
+             processData: false,
+             contentType:false,
+            }).done(function (dict) {
+              alert(dict['result'] + ' done');
+                window.location="/teacher/edit_test/" + dict['url'];
+            }).fail(function (dict) {
+             alert(dict['result'] + ' fail');
             });
-
-
        });
      });
  </script>

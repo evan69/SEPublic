@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
-    {% load staticfiles %}
+
+   {% load staticfiles %}
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+  <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- //for-mobile-apps -->
-<!-- js -->
-<script src="{% static 'assets/js/jquery-2.1.3.min.js' %}" type="text/javascript"></script>
-<!-- //js -->
-<link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
-<link href="{% static 'assets/css/fontsgooleapispopins.css' %}" rel="stylesheet" type="text/css" media="all" />
-
+  <!-- //for-mobile-apps -->
+  <!-- js -->
+  <script src="{% static 'assets/js/jquery-2.1.3.min.js' %}" type="text/javascript"></script>
+  <!-- //js -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
+  <link href="{% static 'assets/css/fontsgooleapispopins.css' %}" rel="stylesheet" type="text/css" media="all" />
   <title>用户信息</title>
- </head>
- <body>
-
   <!-- Bootstrap Styles-->
   <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
   <!-- FontAwesome Styles-->
@@ -24,125 +21,473 @@
   <!-- Custom Styles-->
   <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
   <!-- Google Fonts-->
+ </head>
+ <body>
 
   <div id="wrapper">
-  {% include 'teacher/navtop.html' %}
-
-  {% include 'teacher/teachernavside.html' %}
-
+    {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
 
    <div id="page-wrapper">
+    <div class="main">
+ <h1 class="w3layouts_head" style="color: black">{% if dict.auth == '0' %}你已无权限访问其他页面，请联系老师{% endif %}</h1>
+
+     <h1 class="w3layouts_head" style="color: black">{{dict.user_name}}个人信息</h1>
+     <div class="w3layouts_main_grid">
+      <form action="#" class="w3_form_post">
+       <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>姓名<i>:</i></label>
+         <input id="name" type="text" name="name" placeholder="输入你的姓名" required="" value="{{dict.name}}"/>
+        </span>
+       </div>
+
+        <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>估计分<i>:</i></label>
+         <input readonly id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" style="background-color: #9F9FA0" />
+        </span>
+       </div>
+        <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>估计分排名<i>:</i></label>
+         <input readonly id="estimateRank" type="text" value="{{dict.estimateRank}}" required=""  style="background-color: #9F9FA0"/>
+        </span>
+       </div>
+
+       <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>身份证<i>:</i></label>
+         <input id="identification" value="{{dict.identification}}" type="text" name="name" placeholder="输入你的身份证号" required="" /> </span>
+       </div>
+       <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>性别<i>:</i></label>
+ <select  id="sex" name="sex">
+                {% for item in dict.sex.sexlist %}
+                   {% if forloop.counter0 == dict.sex.sex %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+        </span>
+       </div>
+       <div class="w3_agileits_main_grid w3l_main_grid">
+        <span class="agileits_grid"> <label>民族<i>:</i></label>
+         <select  id="nation" name="nation">
+                {% for item in dict.nation.nationlist %}
+                   {% if forloop.counter0 == dict.nation.nation %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+
+        </span>
+       </div>
+       <div class="agileits_w3layouts_main_grid w3ls_main_grid">
+        <span class="agileinfo_grid"> <label>出生日期<i>:</i></label>
+         <input class="date" id="datepicker" name="Text" type="text" value="{{dict.birth}}" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>手机<i>:</i></label>
+         <input id="phone" type="text" value="{{dict.phone}}"  placeholder="手机" required="" />
+        </span>
+       </div>
+       <div class="agileinfo_main_grid">
+        <span class="agileits_w3layouts_grid"> <label>地区<i>:</i></label> 
+        <select id="category1" name="province">
+                {% for item in dict.province.provincelist %}
+                   {% if forloop.counter0 == dict.province.province %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+       </div>
+       <div class="wthree_main_grid">
+        <span class="agile_grid"> <label>文理<i>:</i></label>
+        <select id="priority" name="priority">
+                {% for item in dict.wenli.typelist %}
+                   {% if forloop.counter0 == dict.wenli.type %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+
+        </span>
+       </div>
 
 
-         <div class="main">
-		<h1 class="w3layouts_head" style="color: black">个人信息</h1>
-		<div class="w3layouts_main_grid">
-			<form action="#" method="post" class="w3_form_post">
-				<div class="w3_agileits_main_grid w3l_main_grid">
-					<span class="agileits_grid">
-						<label>姓名<i>:</i></label>
-						<input type="text" name="name" placeholder="输入你的姓名" required="">
-					</span>
-				</div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>邮箱<i>:</i></label>
+         <input type="text" id="email"  value="{{dict.email}}" placeholder="个人常用邮箱" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>地址<i>:</i></label>
+         <input type="text" id="address" value="{{dict.address}}"  placeholder="家庭地址" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>学校<i>:</i></label>
+         <input type="text" id="school" value="{{dict.school}}"  placeholder="高中学校名称" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>班级<i>:</i></label>
+         <input type="text" id="stu_class" value="{{dict.stu_class}}"  placeholder="班级" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>父亲姓名<i>:</i></label>
+         <input type="text" id="dadName" value="{{dict.dadName}}"  placeholder="父亲姓名" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>父亲手机号<i>:</i></label>
+         <input type="text" id="dadPhone" value="{{dict.dadPhone}}"  placeholder="父亲手机号" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>母亲姓名<i>:</i></label>
+         <input type="text" id="momName" value="{{dict.momName}}"  placeholder="母亲姓名" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>母亲手机号<i>:</i></label>
+         <input type="text" id="momPhone" value="{{dict.momPhone}}"  placeholder="母亲手机号" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>班主任<i>:</i></label>
+         <input type="text" id="tutorName" value="{{dict.tutorName}}"  placeholder="班主任" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>班主任手机号<i>:</i></label>
+         <input type="text" id="tutorPhone" {{dict.tutorPhone}}  placeholder="班主任手机号" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿一<i>:</i></label>
+            <select id="majorSelect1" name="majorSelect1">
+                {% for item in dict.major.0.departmentlist %}
+                   {% if forloop.counter0 == dict.major.0.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿二<i>:</i></label>
+         <select id="majorSelect2" name="majorSelect2">
+                {% for item in dict.major.1.departmentlist %}
+                   {% if forloop.counter0 == dict.major.1.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿三<i>:</i></label>
+<select id="majorSelect3" name="majorSelect3">
+                {% for item in dict.major.2.departmentlist %}
+                   {% if forloop.counter0 == dict.major.2.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿四<i>:</i></label>
+<select id="majorSelect4" name="majorSelect4">
+                {% for item in dict.major.3.departmentlist %}
+                   {% if forloop.counter0 == dict.major.3.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿五<i>:</i></label>
+<select id="majorSelect5" name="majorSelect5">
+                {% for item in dict.major.4.departmentlist %}
+                   {% if forloop.counter0 == dict.major.4.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>志愿六<i>:</i></label>
+<select id="majorSelect6" name="majorSelect6">
+                {% for item in dict.major.5.departmentlist %}
+                   {% if forloop.counter0 == dict.major.5.department %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+        </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>实考分<i>:</i></label>
+         <input type="text" id="realScore" value="{{dict.realScore}}"  placeholder="实考分" required="" /> </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>修改密码<i>:</i></label>
+         <input type="password" name="password1" id="password1" />
+                </span>
+       </div>
+       <div class="w3_agile_main_grid">
+        <span class="agile_grid"> <label>密码确认<i>:</i></label>
+         <input type="password" name="password2" id="password2" /> </span>
+       </div>
 
 
-				<div class="agileits_w3layouts_main_grid w3ls_main_grid">
-					<span class="agileinfo_grid">
-						<label>出生日期<i>:</i></label>
-
-							<input class="date" id="datepicker" name="Text" type="text" value="mm/dd/yyyy" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="">
-
-					</span>
-				</div>
-
-				<div class="w3_agile_main_grid">
-					<span class="agile_grid">
-						<label>邮箱<i>:</i></label>
-						<input type="text" name="Reminder" placeholder="个人常用邮箱" required="">
-					</span>
-				</div>
 
 
-				<div class="w3_agile_main_grid">
-					<span class="agile_grid">
-						<label>QQ<i>:</i></label>
-						<input type="text" name="Reminder" placeholder="QQ" required="">
-					</span>
-				</div>
-
-				<div class="w3_agile_main_grid">
-					<span class="agile_grid">
-						<label>微信<i>:</i></label>
-						<input type="text" name="Reminder" placeholder="微信号或注册手机" required="">
-					</span>
-				</div>
-
-				<div class="w3_agile_main_grid">
-					<span class="agile_grid">
-						<label>手机<i>:</i></label>
-						<input type="text" name="Reminder" placeholder="手机" required="">
-					</span>
-				</div>
-
-<div class="agileinfo_main_grid">
-					<span class="agileits_w3layouts_grid">
-						<label>省份<i>:</i></label>
-						<select id="category1" name="category1" required="">
-							<option value="personal">北京</option>
-							<option value="business">内蒙</option>
-							<option value="other">湖北</option>
-						</select>
-					</span>
-				</div>
-
-
-				<div class="wthree_main_grid">
-					<span class="agile_grid">
-						<label>文理<i>:</i></label>
-						<select id="priority" name="priority" required="">
-							<option value="high">文科</option>
-							<option value="low">理科</option>
-						</select>
-					</span>
-				</div>
-
-				<div class="w3_main_grid">
-					<div class="w3_main_grid_left">
-						<a href="#">清华欢迎你</a>
-					</div>
-					<div class="w3_main_grid_right">
-						<input type="submit" value="保存">
-					</div>
-					<div class="clear"> </div>
-				</div>
-			</form>
-		</div>
-
-
-	</div>
-
-        <div class="row">
-          <div class="col-md-offset-4 col-md-4">
-             <footer>
-              <p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p>
-             </footer>
-          </div>
+       <div class="w3_main_grid">
+        <div class="w3_main_grid_left">
+         <a href="#">清华欢迎你</a>
         </div>
-    </div>
-    <!-- /. PAGE INNER  -->
+        <div class="w3_main_grid_right">
+         <input id="save" type="button" value="保存" />
+        </div>
+        <div class="clear">
+        </div>
+       </div>
+      </form>
+     </div>
+    </div> {% include 'student/include/footer.html' %}
    </div>
-   <!-- /. PAGE WRAPPER  -->
+   <!-- /. PAGE INNER  -->
   </div>
-  <!-- /. WRAPPER  -->
-{% include 'teacher/jsinclude.html' %}
-<!-- Calendar -->
-			<link rel="stylesheet" href="{% static 'assets/css/jquery-ui.css' %}" />
-			<script src="{% static 'assets/js/jquery-ui.js' %}"></script>
-			  <script>
+  <!-- /. PAGE WRAPPER  -->
+  <!-- /. WRAPPER  --> {% include 'student/include/jsinclude.html' %}
+  <!-- Calendar -->
+  <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.css' %}" />
+  <script src="{% static 'assets/js/jquery-ui.js' %}"></script>
+  <script>
 					  $(function() {
 						$( "#datepicker" ).datepicker();
 					  });
 			  </script>
-		<!-- //Calendar -->
+  <!-- //Calendar -->
+
+  <script>
+      $(document).ready(function(){
+
+          $('#link_profile').attr("href", "#");
+          $("#save").click(function(){
+              document.getElementById("save").disabled = true;
+           var password1 = $("#password1").val();
+            var password2 = $("#password2").val();
+            if (password1 != password2){
+             alert("密码不一致，请重新输入");
+             return;
+            }
+          var r = /^[0-9]*$/　　//正整数
+
+            if (password1.length < 4 && password1.length > 0){
+                alert("密码长度必须大于4");
+                return;
+            }
+            var name = $("#name").val();
+            var identification = $("#identification").val();
+              if (identification.length != 18){
+                  alert("请输入18位身份证号");
+                  return;
+              }
+            var province = $("#category1").val();
+            var sex = $("#sex").val();
+            var nation = $("#nation").val();
+            var birth = $("#datepicker").val();
+            var phone = $("#phone").val();
+              if (phone.length != 11){
+                  alert("请输入11位手机号");
+                  return;
+              }
+                if (r.test(phone) == false){
+                alert("手机号中只能包含数字");
+                  return;
+            }
+           var wenli = $("#priority").val();
+            var email = $("#email").val();
+
+
+            var address = $("#address").val();
+
+            var dadName = $("#dadName").val();
+            var dadPhone = $("#dadPhone").val();
+                            if (dadPhone.length != 11){
+                  alert("请输入11位手机号");
+                  return;
+              }
+  if (r.test(dadPhone) == false){
+                alert("手机号中只能包含数字");
+                  return;
+            }
+            var momName = $("#momName").val();
+            var momPhone = $("#momPhone").val();
+                            if (momPhone.length != 11){
+                  alert("请输入11位手机号");
+                  return;
+              }
+            //str为你要判断的字符 执行返回结果 true 或 false
+              if (r.test(momPhone) == false){
+                alert("手机号中只能包含数字");
+                  return;
+            }
+            var school = $("#school").val();
+
+            var stu_class = $("#stu_class").val();
+            var tutorName = $("#tutorName").val();
+            var tutorPhone = $("#tutorPhone").val();
+            var majorSelect1 = $("#majorSelect1").val();
+            var majorSelect2 = $("#majorSelect2").val();
+            var majorSelect3 = $("#majorSelect3").val();
+            var majorSelect4 = $("#majorSelect4").val();
+            var majorSelect5 = $("#majorSelect5").val();
+            var majorSelect6 = $("#majorSelect6").val();
+       //     var testScore1 = $("#testScore1").val();
+       //     var testScore2 = $("#testScore2").val();
+        //    var testScore3 = $("#testScore3").val();
+        //    var rank1 = $("#rank1").val();
+         //   var rank11 = $("#rank11").val();
+          //  var rank2 = $("#rank2").val();
+           // var rank22 = $("#rank22").val();
+            //var rank3 = $("#rank3").val();
+            //var rank33 = $("#rank33").val();
+            var estimateScore = $("#estimateScore").val();
+           var estimateRank = $("#estimateRank").val();
+
+            var realScore = $("#realScore").val();
+            //var admissionStatus = $("#admissionStatus").val();
+         //   var relTeacher = $("#relTeacher").val();
+       //     var relVolunteer = $("#relVolunteer").val();
+            var comment= $("#comment").val();
+/*alert(
+         name+" "+
+                        identification+" "+
+                     sex+" "+
+                  nation+" "+
+                 birth+" "+
+            province+" "+
+           phone+" "+
+          email+" "+
+         wenli+" "+
+          address+" "+
+           dadName+" "+
+          dadPhone+" "+
+           momName+" "+
+         momPhone+" "+
+             school+" "+
+            stu_class+" "+
+            tutorName+" "+
+             tutorPhone+" "+
+          majorSelect1+" "+
+        majorSelect2+" "+
+         majorSelect3+" "+
+  majorSelect4+" "+
+      majorSelect5+" "+
+        majorSelect6+" "+
+           testScore1+" "+
+            testScore2+" "+
+             testScore3+" "+
+        rank1+" "+
+          rank11+" "+
+         rank2+" "+
+         rank22+" "+
+             rank3+" "+
+        rank33+" "+
+
+            realScore+" "+
+
+            relTeacher+" "+
+
+            comment
+);*/
+            $.post("",
+                    {
+                     'name':name,
+                        'identification': identification,
+                     'sex':sex,
+                     'nation':nation,
+                     'birth':birth,
+                        'password':password1,
+             'province' :province,
+             'phone' : phone,
+             'email' : email,
+                     'wenli': wenli,
+             'address' : address,
+             'dadName' : dadName,
+             'dadPhone' : dadPhone,
+             'momName' : momName,
+             'momPhone' : momPhone,
+             'school' : school,
+             'stu_class' : stu_class,
+             'tutorName' : tutorName,
+             'tutorPhone' : tutorPhone,
+             'majorSelect1' : majorSelect1,
+             'majorSelect2' : majorSelect2,
+             'majorSelect3' : majorSelect3,
+             'majorSelect4' : majorSelect4,
+             'majorSelect5' : majorSelect5,
+             'majorSelect6' : majorSelect6,
+           //  'testScore1' : testScore1,
+            // 'testScore2' : testScore2,
+             //'testScore3' : testScore3,
+             //'rank1' : rank1,
+             //'rank11' : rank11,
+             //'rank2' : rank2,
+             //'rank22' : rank22,
+             //'rank3' : rank3,
+             //'rank33' : rank33,
+             'estimateScore' : estimateScore,
+                     'estimateRank' : estimateRank,
+             'realScore' : realScore,
+           //  'admissionStatus' : admissionStatus,
+          //   'relTeacher': relTeacher,
+         //    'relVolunteer' : relVolunteer,
+          //   'comment': comment,
+                    },
+                    function(profileDict){
+document.getElementById("save").disabled = false;
+                        for (key_i in profileDict)
+                            $("#"+key_i).val(profileDict[key_i]);
+                        alert("修改成功");
+            })
+          });
+      });
+  </script>
  </body>
 </html>

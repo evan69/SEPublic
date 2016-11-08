@@ -13,6 +13,11 @@
   <script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
   <!-- Custom Js -->
   <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
+  <!-- jQuery Growl Js-->
+  <script src="{% static 'js/jquery.growl.js' %}"></script>
+  <!-- jQuery UI Js-->
+  <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+
   <script>
   function getCookie(name) {
       var cookieValue = null;
@@ -55,6 +60,6 @@
       $('#score_text').empty();
       $('#score_text').append(score_num+"个新的估分结果");
     });
-    
+
   });
   </script>
