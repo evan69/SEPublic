@@ -9,7 +9,7 @@ __pycache__/
 *.pic
 # database file
 *.sqlite3
-
+*.pic
 # file for test
 
 

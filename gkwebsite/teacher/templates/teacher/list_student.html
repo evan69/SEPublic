@@ -6,47 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>查看学生</title>
     {% load staticfiles %}
-		{% include 'teacher/include/cssinclude.html' %}
+    {% include 'teacher/include/cssinclude.html' %}
 </head>
 <body>
     <div id="wrapper">
           {% include 'teacher/include/navtop.html' %}
         <!--/. NAV TOP  -->
-		{% include 'teacher/include/navside.html' %}
+    {% include 'teacher/include/navside.html' %}
         <!-- /. NAV SIDE  -->
-				
-				<div id="page-wrapper" >
+
+        <div id="page-wrapper" >
             <div id="page-inner">
-				<div class="row">
+        <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
                             检索学生信息 <small>高考招生系统教师端  您好，<span id='namefield'></span></small>
                         </h1>
                     </div>
-                </div> 
-				<!--row-->
-				<div class = "row">
-					<div class = "col-md-12 col-lg-12">
-						<div class= "panel panel-default">
-							<div class = "panel-body">
-								<div class = "row">
-									<div class = "col-md-6">
-										<div class = "form-horizontal" >
-											<div class = "form-group">
-												<label for = "realName" class = "col-sm-2 control-label">姓名：</label>
-												<div class = "col-sm-8">
-													<input type = "text" class = "form-control" id = "realName">
-											    </div>
-												<button type = "button" class = "btn btn-primary" value = "search" id="search">检索</button>
-											</div>
-										</div>
-									</div>
-                  <div class = "col-md-4">
-                    <button type = "button" class = "btn btn-primary" id="all">显示全部</button>
-                  </div>
-								</div>
+                </div>
+        <!--row-->
+        <div class = "row">
+          <div class = "col-md-12 col-lg-12">
+            <div class= "panel panel-default">
+              <div class = "panel-body">
                 <div class = "row">
-									<div class = "col-md-12 col-lg-10">
+                  <div class = "col-lg-5">
+                    <div class = "form-horizontal" >
+                      <div class = "form-group">
+                        <label for = "realName" class = "col-sm-2 control-label">姓名：</label>
+                        <div class = "col-lg-8">
+                          <input type = "text" class = "form-control" id = "realName">
+                        </div>
+                        <button type = "button" class = "btn btn-primary" value = "search" id="search">检索</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class = "col-lg-4 col-md-5">
+                    <button type = "button" class = "btn btn-primary" id="all">显示全部</button>
+                    <button type = "button" class = "btn btn-primary" id="check_all">本页全选</button>
+                    <button type = "button" class = "btn btn-primary" id="add_to">加入到组...</button>
+                  </div>
+                </div>
+                <div class = "row">
+                  <div class = "col-md-12 col-lg-10">
                     <table class="table table-hover">
                       <caption>匹配结果</caption>
                       <thead>
@@ -57,6 +59,7 @@
                           <th>学校</th>
                           <th>身份证号</th>
                           <th></th>
+                          <th>选中</th>
                         </tr>
                       </thead>
                       <tbody id="student_list">
@@ -70,24 +73,41 @@
                     </ul><br>
                   </div>
                 </div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /. ROW -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /. ROW -->
    {% include 'teacher/include/footer.html' %}
-			</div>
+      </div>
 
              <!-- /. PAGE INNER  -->
         </div>
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
+     <div id="dialog" title="加入到组">
+       <form id="form">
+         <fieldset style="padding:0; border:0; margin-top:25px;">
+           <label for="group_num" style="display:block">组号</label>
+           <select name="group_num" id="group_num" class="text ui-widget-content ui-corner-all" style="display:block;margin-bottom:12px; width:95%; padding: .4em;">
+             <!--<option value="1">1</option>-->
+           </select>
+           <!-- Allow form submission with keyboard without duplicating the dialog button -->
+           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+         </fieldset>
+       </form>
+     </div>
     {% include 'teacher/include/jsinclude.html' %}
-		<script>
-			var list_start_pos = 0;
+    <script src="{% static 'jquery-ui-1.12.1/datepicker-zh.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
+    <script>
+      var list_start_pos = 0;
       var item_per_list = {{n_item}};
-			var user_array = [];
+      var user_array = [];
+      var checked_list = [];
       function jump_prev(){
         if(list_start_pos - item_per_list >= 0)
           list_start_pos -= item_per_list;
@@ -106,11 +126,11 @@
           list_start_pos = user_array.length - 1;
         show_list(list_start_pos);
       }
-			function show_list(startnum){
-				var tag1, tag2, tag3;
-				var listitem="";
+      function show_list(startnum){
+        var tag1, tag2, tag3;
+        var listitem="";
+        checked_list.splice(0, checked_list.length);
         var page = Math.floor(startnum / item_per_list) + 1;
-        console.log(page);
         var n_page = Math.ceil(user_array.length / item_per_list);
         $("li").removeClass("disabled");
         $("li").removeClass("active");
@@ -122,47 +142,48 @@
         }
         $("li:nth-child("+String(page+1)+")").addClass("active");
         $('#student_list').empty();
-				for(var i = startnum; i < user_array.length && i < startnum + item_per_list; ++i){
-					tag1 = String(i)+'_A';
-					tag2 = String(i)+'_B';
-					tag3 = String(i)+'_C';
-					listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['gender']+"</td><td>"+user_array[i]['source']+"</td><td>"+user_array[i]['school']+"</td><td>"+user_array[i]['id_card']+"</td>";
-					listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">查看</button>\n";
-					listitems+="<button type=\"button\" id=\""+tag2+"\" class = \"btn btn-success btn-xs\">编辑</button>\n";
-					listitems+="<button type=\"button\" id=\""+tag3+"\" class = \"btn btn-danger btn-xs\">删除</button></td></tr>";
-					$('#student_list').append(listitems);
-					$('#'+tag1).click(function(){
-						var parse = this.id.split("_");
-						var row = parseInt(parse[0]);
-						var abs_pos=list_start_pos+row;
-						//alert("Operation:view at row #"+abs_pos+" ?id="+user_array[abs_pos]['id']);
-						window.location="/teacher/student_info?id="+user_array[abs_pos]['id'];
-					});
-					$('#'+tag2).click(function(){
-						var parse = this.id.split("_");
-						var row = parseInt(parse[0]);
-						//alert("Operation:edit at row #"+row);
-						var abs_pos=list_start_pos+row;
-						window.location="/teacher/student_info_edit?id="+user_array[abs_pos]['id'];
-					});
-					$('#'+tag3).click(function(){
-						var parse = this.id.split("_");
-						var row = parseInt(parse[0]);
-						alert("Operation:drop at row #"+row);
-						var abs_pos=list_start_pos+row;
-						$.post("/backend/remove_student_by_id/", {'id':user_array[abs_pos]['id']}, function(ret){
-						//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-							postreq($('#realName').val());
-						})
-					});
-				}
-			}
-			function postreq(namestr){
-				if(namestr.length==0){
-					list_start_pos = 0;
-					//access server and load matching records
-					$.post("/backend/student_list_all/", {}, function(ret){
-						user_array=ret;
+        for(var i = startnum; i < user_array.length && i < startnum + item_per_list; ++i){
+          tag1 = String(i)+'_A';
+          tag2 = String(i)+'_B';
+          tag3 = String(i)+'_C';
+          tag4 = String(i)+'_check';
+          listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['gender']+"</td><td>"+user_array[i]['source']+"</td><td>"+user_array[i]['school']+"</td><td>"+user_array[i]['id_card']+"</td>";
+          listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">查看</button>\n";
+          listitems+="<button type=\"button\" id=\""+tag2+"\" class = \"btn btn-success btn-xs\">编辑</button>\n";
+          listitems+="<button type=\"button\" id=\""+tag3+"\" class = \"btn btn-danger btn-xs\">删除</button></td>";
+          listitems+="<td><input type=\"checkbox\" id=\""+tag4+"\"></td></tr>";
+          $('#student_list').append(listitems);
+          $('#'+tag1).click(function(){
+            var parse = this.id.split("_");
+            var row = parseInt(parse[0]);
+            var abs_pos=row;
+            window.location="/teacher/student_info?id="+user_array[abs_pos]['id'];
+          });
+          $('#'+tag2).click(function(){
+            var parse = this.id.split("_");
+            var row = parseInt(parse[0]);
+            //alert("Operation:edit at row #"+row);
+            var abs_pos=row;
+            window.location="/teacher/student_info_edit?id="+user_array[abs_pos]['id'];
+          });
+          $('#'+tag3).click(function(){
+            var parse = this.id.split("_");
+            var row = parseInt(parse[0]);
+            alert("Operation:drop at row #"+row);
+            var abs_pos=row;
+            $.post("/backend/remove_student_by_id/", {'id':user_array[abs_pos]['id']}, function(ret){
+            //$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
+              postreq($('#realName').val());
+            })
+          });
+        }
+      }
+      function postreq(namestr){
+        if(namestr.length==0){
+          list_start_pos = 0;
+          //access server and load matching records
+          $.post("/backend/student_list_all/", {}, function(ret){
+            user_array=ret;
             $('#pages').empty();
             var n_page = Math.ceil(user_array.length / item_per_list);
             $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
@@ -170,16 +191,16 @@
               $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
             }
             $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
-            
-						show_list(list_start_pos);
-					})
-          
-				}
-				else{
-					list_start_pos = 0;
-					//access server and load matching records
-					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
-						user_array=ret;
+
+            show_list(list_start_pos);
+          })
+
+        }
+        else{
+          list_start_pos = 0;
+          //access server and load matching records
+          $.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
+            user_array=ret;
             $('#pages').empty();
             var n_page = Math.ceil(user_array.length / item_per_list);
             $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
@@ -187,37 +208,113 @@
               $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
             }
             $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
-						show_list(list_start_pos);
-					})
-				}
-			}
-			$(document).ready(function(){
-				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
-				var csrftoken = getCookie('csrftoken');
-				$.ajaxSetup({
-						beforeSend: function(xhr, settings) {
-								if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-									xhr.setRequestHeader("X-CSRFToken", csrftoken);
-								}
-						}
-				});
-				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
-					$('#namefield').append(ret['name']);
-				})
-				$('#search_student').addClass("active-menu");
+            show_list(list_start_pos);
+          })
+        }
+      }
+      function submit_dialog(){
+        var group = $('#group_num').val();
+        $('#dialog').dialog("close");
+        var dict = new Object();
+        //console.log(checked_list.length);
+        for(var i = 0; i < checked_list.length; ++i){
+          dict['student_id_'+String(i)] = checked_list[i];
+        }
+        dict['student_num'] = String(checked_list.length);
+        dict['group'] = group;
+        /*
+        for(var i = 0; i < checked_list.length; ++i){
+          dict[String(i)] = checked_list[i];
+        }
+        */
+        $.post("/backend/batch_add_to_group/", dict, function(ret){
+          if(ret['success'].charAt(0) == 'N'){
+            $.growl.error({ title: "操作失败", message: ret['message'] });
+          }
+          else{
+            $.growl.notice({ title: "操作成功", message: "学生组已更新" });
+          }
+        });
+      }
+      $(document).ready(function(){
+        //CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        $.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+          $('#namefield').append(ret['name']);
+        })
+        $.post("/backend/get_grouplist/", {}, function(ret){
+          for(var i = 0; i < ret.length; ++i){
+            $('#group_num').append("<option value=\""+ret[i]['value']+"\">"+ret[i]['string']+"</option>\n");
+          }
+        });
+        $('#search_student').addClass("active-menu");
         $('#search_student').attr("href", "#");
-				var nameinit=$('#realName').val();
-				postreq(nameinit);
-				
-				$('#search').click(function(){
-					var namestr=$('#realName').val();
+        var nameinit=$('#realName').val();
+        postreq(nameinit);
+
+        $('#search').click(function(){
+          var namestr=$('#realName').val();
           postreq(namestr);
-				});
+        });
         $('#all').click(function(){
           postreq("");
         });
-			});
-		</script>
+        $('#check_all').click(function(){
+          //console.log("all");
+          $(":checkbox").each(function(){
+            this.checked = true;
+          });
+        });
+        $("#form").validate({
+          submitHandler:submit_dialog,
+          debug:false,
+          rules:{
+            group_num:{
+              required:true
+            }
+          }
+        });
+        $( "#dialog" ).dialog({
+          autoOpen: false,
+          height: 300,
+          width: 350,
+          modal: true,
+          buttons: {
+            "确认":function(){
+              $('#form').submit();
+            },
+            "取消": function() {
+              $("#dialog").dialog( "close" );
+            }
+          },
+          close: function() {
+            $("#form")[0].reset();
+          }
+        });
+        $('#add_to').click(function(){
+          $(":checkbox").each(function(){
+            var parse = this.id.split("_");
+            var row = parseInt(parse[0]);
+            if(this.checked == true){
+              checked_list.push(user_array[row]['id']);
+            }
+          });
+          if(checked_list.length > 0){
+            $( "#dialog" ).dialog("open");
+          }
+          else {
+          	$.growl.warning({ title: "未选中", message: "请至少选中一项" });
+          }
+        });
+      });
+    </script>
 
 
 </body>

@@ -1,27 +1,16 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
+
+   {% load staticfiles %}
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     {% load staticfiles %}
-  <!-- Bootstrap Styles-->
-  <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
-  <!-- FontAwesome Styles-->
-  <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet" />
-  <!-- Custom Styles-->
-  <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet" />
-  <!-- Google Fonts-->
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
-   <!-- profile-->
-  <link href="{% static 'assets/css/profile/profile.css' %}" rel="stylesheet" type="text/css" />
-  <div id="wrapper">
-  <title>查看老师信息</title>
+  {% include 'student/include/cssinclude.html' %}
+     <title>联系方式</title>
  </head>
  <body>
- {% include 'student/include/navtop.html' %}
-        <!--/. NAV TOP  -->
-		{% include 'student/include/navside.html' %}
-        <!-- /. NAV SIDE  -->
+ <div id="wrapper">
+  {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
 
 
    <div id="page-wrapper">
@@ -36,6 +25,7 @@
            <table class="table table-hover" style="text-align: center">
                       <thead style="text-align: center">
                         <tr style="text-align: center">
+                          <th style="text-align: center">身份</th>
                           <th style="text-align: center">姓名</th>
                           <th style="text-align: center">手机</th>
                           <th style="text-align: center">邮箱</th>
@@ -45,6 +35,7 @@
                       <tbody id="test_list">
                       {% for item in dict %}
                    <tr style="text-align: center">
+                          <td style="text-align: center">{{item.profession}}</td>
                           <td style="text-align: center">{{item.name}}</td>
                           <td style="text-align: center">{{item.phone}}</td>
                           <td style="text-align: center">{{item.email}}</td>
@@ -69,6 +60,11 @@
   </div>
   <!-- /. WRAPPER  -->
 {% include 'student/include/jsinclude.html' %}
-
+  <script>
+    $(document).ready(function(){
+      $('#link_contact').addClass("active-menu");
+      $('#link_contact').attr("href", "#");
+    });
+  </script>
  </body>
 </html>

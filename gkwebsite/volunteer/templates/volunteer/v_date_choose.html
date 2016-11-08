@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>查看学生</title>
+    <title>选择日期</title>
 		{% load staticfiles %}
 		<!-- Bootstrap Styles-->
     <link href= "{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" />
@@ -20,14 +20,17 @@
 </head>
 <body>
     <div id="wrapper">
-        {% include 'v_nav.html' %}
+         {% include 'volunteer/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'volunteer/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
 
 		<div id="page-wrapper" >
             <div id="page-inner">
 				<div class="row">
                     <div class="col-md-12">
                         <h1 class="page-header">
-                            选择时间 <small>高考估分系统志愿者端  您好，<span id='namefield'></span></small>
+                            选择日期 <small>高考估分系统志愿者端  您好，<span id='namefield'></span></small>
                         </h1>
                     </div>
                 </div>
@@ -55,8 +58,8 @@
 					</div>
 				</div>
 				<!-- /. ROW -->
-				 <footer><p>Copyright &copy; 2016.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">早睡早起</a></p></footer>
-			</div><!-- /. PAGE INNER  -->
+		    {% include 'teacher/include/footer.html' %}
+				</div><!-- /. PAGE INNER  -->
         </div>
          <!-- /. PAGE WRAPPER  -->
     </div>
@@ -99,6 +102,7 @@
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset-->
       </form>
+
     </div>
 
     <!-- JS Scripts-->
@@ -154,7 +158,6 @@
                         }
                 }
         });
-        //alert('hhe');
         $.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
             $('#namefield').append(ret['name']);
         });
@@ -164,7 +167,6 @@
     var act_id = "";
     function show_list(){
         $('#ac_list').empty();
-        console.log('hehe');
         var tag1, tag2, tag3;
         var listitem = "";
         for(var i = 0; i < user_array.length; ++i){
@@ -179,17 +181,22 @@
             $('#'+tag1).click(function(){
                 var parse = this.id.split("_");
                 var row = parse[0];
-                //alert(row);
                 $('#time_table').empty();
                 $.post("/volunteer/get_activity_time/", {'activity_id':row}, function(ret){
-                    //$('#namefield').append(ret['name']);
                     act_id = row;
                     time_array = ret.time;
                     var index = 0;
                     for(index = 0;index < ret.time.length;index++)
                     {
                         var checkbox_id = String(index) + "_checkbox_id";
-                        var a = "<tr><th>" + ret.time[index] + "</th><th><input id=\"" + checkbox_id + "\" type=\"checkbox\"/></th></tr>";
+                        if(ret.checked[index] == '0')
+                        {
+                            var a = "<tr><th>" + ret.time[index] + "</th><th><input id=\"" + checkbox_id + "\" type=\"checkbox\"/></th></tr>";
+                        }
+                        else
+                        {
+                            var a = "<tr><th>" + ret.time[index] + "</th><th><input id=\"" + checkbox_id + "\" type=\"checkbox\" checked = \"checked\"/></th></tr>";
+                        }
                         $('#time_table').append(a);
                     }
                 });
@@ -219,13 +226,14 @@
             var ids = document.getElementById(checkbox_id);
             if(ids.checked)
             {
-                ret_list.push(time_array[index]);
+                ret_list.push('1');
+            }
+            else
+            {
+                ret_list.push('0');
             }
         }
-        console.log(act_id);
-        console.log(String(ret_list));
-        //alert(ret_list[0]);
-        $.post("/volunteer/submit_time/", {"activity_id":act_id,'time_list':String(ret_list)}, function(ret){
+        $.post("/volunteer/submit_time/", {"activity_id":act_id,'time':String(time_array),'checked':String(ret_list)}, function(ret){
             $('#dialog').dialog("close");
             if(ret.success)
             {

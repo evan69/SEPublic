@@ -48,11 +48,17 @@
              <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label" for="sex">性别：</label>
               <div class="col-sm-10">
-              {% if dict.sex == 0 %}
-                    <select class="form-control" id="sex" name="sex"> <option value="0" selected="selected">男</option><option value="1">女</option> </select>
-               {% else %}
-                    <select class="form-control" id="sex" name="sex"> <option value="0">男</option><option value="1" selected="selected">女</option> </select>
-               {% endif %}
+ <select class="form-control" id="sex" name="sex">
+                {% for item in dict.sex.sexlist %}
+                   {% if forloop.counter0 == dict.sex.sex %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
               </div>
              </div>
              <div class="form-group">
@@ -107,12 +113,12 @@
               <input type="text" class="form-control" id="stu_class" name="stu_class" value="{{dict.class}}" />
              </div>
             </div>
-             <div class="form-group">
+               <div class="form-group">
               <label style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">分管组：</label>
                <div class="col-sm-2">
-                  <select class="form-control" id="distribute1" name="distribute1">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+                                  <select class="form-control" id="distribute1" name="distribute1">
+                {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group1 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -124,8 +130,8 @@
               </div>
               <div class="col-sm-2">
                   <select class="form-control" id="distribute2" name="distribute2">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+              {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group2 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -137,8 +143,8 @@
               </div>
                  <div class="col-sm-2">
                   <select class="form-control" id="distribute3" name="distribute3">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+                {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group3 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -150,8 +156,8 @@
               </div>
                  <div class="col-sm-2">
                   <select class="form-control" id="distribute4" name="distribute4">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+              {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group4 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -163,8 +169,8 @@
               </div>
                  <div class="col-sm-2">
                   <select class="form-control" id="distribute5" name="distribute5">
-                {% for item in dict.department.departmentlist %}
-                   {% if forloop.counter0 == dict.department.department %}
+            {% for item in dict.grouplist %}
+                   {% if forloop.counter0 == dict.group5 %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
@@ -205,9 +211,26 @@
             <div class="form-group">
              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
              <div class="col-sm-10">
-              <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
+              <textarea readonly type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
              </div>
             </div>
+            <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">强制禁止：</label>
+             <div class="col-sm-10">
+           <select class="form-control" id="forbid" name="forbid">
+                {% for item in dict.forbidlist %}
+                   {% if forloop.counter0 == dict.forbid %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+
             <div class="form-group">
              <div class="col-sm-offset-2 col-sm-10">
               <button id="volunteer_save" type="button" class="btn btn-primary" value="save">保存</button>
@@ -228,34 +251,35 @@
   </div>
   <!-- /. WRAPPER  --> {% include 'teacher/include/jsinclude.html' %}
  <script>
-      console.log("WTF");
       $(document).ready(function(){
-          console.log("Arrive here");
           $("#volunteer_save").click(function(){
-              console.log("volunteer_save");
+                          document.getElementById("volunteer_save").disabled = true;
+
             var volunteer_name = $("#volunteer_name").val();
-            var distribute = $("#distribute").val();
             var email = $("#email").val();
             var phone = $("#phone").val();
             var qqn = $("#qqn").val();
             var weichat = $("#weichat").val();
             var describe = $("#comment").val();
+            var forbid = $("#forbid").val();
             $.post("",
                     {
                         'user_name':volunteer_name,
                         'email':email,
-                        'distribute': distribute,
 
                         'phone':phone,
                         'qqn':qqn,
                         'weichat':weichat,
                         'comment':describe,
+                        'forbid' :forbid,
                     },
                     function(profileDict){
 
                         for (key_i in profileDict)
                             $("#"+key_i).val(profileDict[key_i]);
                         alert("修改成功");
+                                    document.getElementById("volunteer_save").disabled = false;
+
             })
           });
       });
