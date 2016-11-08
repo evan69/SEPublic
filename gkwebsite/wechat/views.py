@@ -19,9 +19,8 @@ sys.setdefaultencoding('UTF-8')
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
-#Appid = "wxddbda149c7afb981"
-#Appsecret = "29473a0ef9f517ae1d1496fc707d0774"
 token_dic = {'last_time': 0, 'access_token': ""}
+server_url = "http://gaokao.northeurope.cloudapp.azure.com/"
 
 
 @csrf_exempt
@@ -126,17 +125,20 @@ def handleText(msg):
     resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
     if msg['Content'] == u'注册'or msg['Content'] == u'登录':
         # resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
-        login_url = "http://59.66.131.171/login/"
+        #login_url = "http://59.66.131.171/login/"
+        login_url = server_url + "login/"
         tmp = u'点击url进入注册/登录界面' + login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'个人信息':
-        login_url = "http://59.66.131.171/login/"
+        #login_url = "http://59.66.131.171/login/"
+        login_url = server_url + "student/profile/"
         tmp = u'点击url查看个人信息'+ login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'估分':
-        login_url = "http://59.66.131.171/login/"
+        #login_url = "http://59.66.131.171/login/"
+        login_url = server_url + "student/score/"
         tmp = u'点击url进入估分系统'+ login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
@@ -167,7 +169,7 @@ def createMenu():
                         "type": "view",
                         "name": "登录",
 
-                        "url": "http://59.66.131.171/login/"
+                        "url": "http://gaokao.northeurope.cloudapp.azure.com/login/"
 
                     },
                     {
@@ -175,7 +177,7 @@ def createMenu():
 
                         "name": "注册",
 
-                        "url": "http://59.66.131.171/login/"
+                        "url": "http://gaokao.northeurope.cloudapp.azure.com/login/"
 
                     }]
             },
@@ -184,7 +186,7 @@ def createMenu():
 
                 "name": "估分",
 
-                "url": "http://59.66.131.171/login/"
+                "url": "http://gaokao.northeurope.cloudapp.azure.com/student/score/"
 
             },
             {
@@ -192,7 +194,7 @@ def createMenu():
 
                 "name": "个人信息",
 
-                "url": "http://59.66.131.171/login/"
+                "url": "http://gaokao.northeurope.cloudapp.azure.com/student/profile/"
 
 
             }
@@ -201,24 +203,6 @@ def createMenu():
     }'''
     request = urllib2.urlopen(url, data.encode('utf-8'))
 
-# send text_msg to all users, wechat don't support this function now
-'''def send_textMsg(msg):
-    print "send_textMsg"
-    token()
-    url = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s" % token_dic['access_token']
-    data = {
-        "filter": {
-            "is_to_all": True
-        },
-        "text": {
-            "content": msg
-        },
-        "msgtype": "text"
-    }
-    r = requests.post(url=url, data=json.dumps(data, ensure_ascii=False, indent=2))
-    result = r.json()
-    print result
-'''
 
 def send_pic_text(msg):
     newshead = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType>\
