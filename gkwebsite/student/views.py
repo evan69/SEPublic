@@ -570,3 +570,37 @@ def get_last_estimate_score(stu_id, test_id):
     except:
         last_score = 0
     return last_score
+
+
+@csrf_exempt
+@check_identity('student')
+def message(request):
+    t = get_template('student/message.html')
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
+
+@csrf_exempt
+def get_all_message(request):
+    """
+        后端应在此处返回某个学生可以看见的所有消息的列表，需要的信息见下面的样例
+    """
+    # print request.POST
+    dic = [{'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'},
+            {'sender': '李三胖', 'title': '暖2暖', 'state':'已读', 'message_id':'8'},
+            {'sender': '李三胖', 'title': '暖3暖', 'state':'未读', 'message_id':'90'},]
+    return JsonResponse(dic, safe=False)
+
+
+@csrf_exempt
+def get_message_info(request):
+    """
+        后端应在此处返回某个消息的详细信息，需要的信息见下面的样例
+    """
+    # print request.POST
+    print 'message id',request.POST.get('message_id')
+    dic = {'sender': '李三胖', 'title':'暖一暖', 'time':'2016/1/20', 'text': '我们打算录取你，并让白叫猿任你的叫猿'}
+    return JsonResponse(dic)
