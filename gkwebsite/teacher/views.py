@@ -1048,3 +1048,10 @@ def checkscoredetail(request):
 
     return JsonResponse(dict)
 
+def new_message(request):
+    id = request.session.get('teacher_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/edit_message.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))

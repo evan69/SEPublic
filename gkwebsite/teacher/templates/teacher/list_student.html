@@ -299,6 +299,7 @@
           }
         });
         $('#add_to').click(function(){
+          checked_list.splice(0, checked_list.length);
           $(":checkbox").each(function(){
             var parse = this.id.split("_");
             var row = parseInt(parse[0]);
