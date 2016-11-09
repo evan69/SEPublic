@@ -12,10 +12,13 @@ import urllib2
 import json
 import time
 import sys
-import database.backend as back
 import requests
 reload(sys)
 sys.setdefaultencoding('UTF-8')
+
+sys.path.append("../")
+import database.backend as back
+from database.models import *
 
 
 Token = "zaoshuizaoqi"
@@ -223,12 +226,13 @@ def send_pic_text(msg,type):
     texturl = ""
     if type == "update":
         content = back.getLastOneWechatURL()
-        if content[0] == None :
-            picurl = ""
-            texturl = ""
+        if content == None:
+            pass
         else:
-            picurl = content[0]
-            texturl = content[1]
+            title = content[WechatURL.TITLE]
+            abstract = content[WechatURL.TEXT]
+            picurl = content[WechatURL.PICTURE_URL]
+            texturl = content[WechatURL.MESSAGE_URL]
     elif type == "login":
         picurl = index_pic
         title = u'点击进入注册或登录界面'
