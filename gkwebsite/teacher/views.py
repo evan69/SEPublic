@@ -1037,11 +1037,15 @@ def checkscoredetail(request):
             {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},
             {"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
             {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
-            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"}, ];
+            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},] ;
     dict = {
-        'timelist':timelist,
-        'subject':'语文',
+        'timelist': timelist,
+        'subject': '语文',
     }
+
+
+
+
     return JsonResponse(dict)
 
 def new_message(request):
