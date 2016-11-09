@@ -60,7 +60,7 @@
                 </tr>
               <tr>
                     <th><label>全文</label></th>
-                    <th><textarea id = "d_text" rows="10" disabled = "disabled"></textarea></th>
+                    <th><div id = "d_text" rows="10" disabled = "disabled"></div></th>
                 </tr>
         </table>
           <!-- Allow form submission with keyboard without duplicating the dialog button -->
@@ -72,6 +72,7 @@
      <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     <!-- jQuery Js -->
+    {% include 'student/include/jsinclude.html' %}
     <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
     <!-- Bootstrap Js -->
     <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
@@ -124,6 +125,7 @@
 					listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">查看内容</button></td></tr>\n";
 					$('#message_list').append(listitems);
 					$('#'+tag1).click(function(){
+					    $('#d_text').empty();
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						//No need to examine the suffix since we are dealing with 'tag1'
@@ -132,7 +134,6 @@
                             $('#d_title').attr('value',ret['title']);
                             $('#d_sender').attr('value',ret['sender']);
                             $('#d_time').attr('value',ret['time']);
-                            $('#d_text').empty();
                             $('#d_text').append(ret['text']);
                         });
 						$( "#dialog" ).dialog("open");
@@ -159,6 +160,8 @@
 								}
 						}
 				});
+				$('#link_rank').addClass("active-menu");
+                $('#link_rank').attr("href", "#");
 				get_message();
 			});
 		</script>
@@ -175,6 +178,10 @@
       },
       close: function() {
         $("#form")[0].reset();
+        $('#d_text').empty();
+        $('#d_title').attr('value','');
+        $('#d_sender').attr('value','');
+        $('#d_time').attr('value','');
         get_message();
       }
     });

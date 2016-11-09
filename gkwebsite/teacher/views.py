@@ -1029,18 +1029,39 @@ def checkscoredetail(request):
      'stu_id':stu_id,
      后端会从GET中得到上面的参数，然后完成下面的字典
     '''
-    timelist = [{"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
-            {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
-            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},
-            {"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
-            {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
-            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},
-            {"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
-            {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
-            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},] ;
+    # timelist = [{"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
+    #         {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
+    #         {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},
+    #         {"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
+    #         {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
+    #         {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},
+    #         {"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
+    #         {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
+    #         {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},] ;
+    #
+    # dict = {
+    #     'timelist': timelist,
+    #     'subject': '语文',
+    # }
+
+    timelist = []
+    dict = {}
+
+    stu_id = int(request.GET.get('stu_id'))
+    test_id = request.GET.get('testname')
+
+    info_dic = stu.getStudentAllDictByAccount(stu.idToAccountStudent(stu_id))
+
+    every_time_list = eval(info_dic[Student.ESTIMATE_SCORE])[test_id]['every_time']
+    for i in range(0, len(every_time_list)):
+        dic = {}
+        dic['label'] = str(i+1)
+        dic['value'] = '%ss'%(str(every_time_list[i]))
+        timelist.append(dic)
+
     dict = {
         'timelist': timelist,
-        'subject': '语文',
+        'subject': test_id,
     }
 
 

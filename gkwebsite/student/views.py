@@ -18,7 +18,8 @@ import database.image_backend as pic
 import database.teacher_backend as tch
 import database.backend as back
 import database.volunteer_backend as vol
-
+import time
+import pytz
 
 # Create your views here.
 
@@ -588,17 +589,39 @@ def get_all_message(request):
     """
         后端应在此处返回某个学生可以看见的所有消息的列表，需要的信息见下面的样例
     """
-    # print request.POST
-    dic = [{'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'},
-            {'sender': '李三胖', 'title': '暖2暖', 'state':'已读', 'message_id':'8'},
-            {'sender': '李三胖', 'title': '暖3暖', 'state':'未读', 'message_id':'90'},]
-
-    notice_list = back.getGroupbyDict({})
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    id = int(id)
+    dic = []
+    notice_list = back.getNoticebyDict({})
+    # print 'notice_list', len(notice_list)
     for notice in notice_list:
         info_dic = back.getNoticeAllDictByObject(notice)
-        tmp_dic = {'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'}
+        print info_dic
+        try:
+            rece_stu_list = eval(info_dic[Notice.RECEIVE_STU])
+        except:
+            print 'bug'
+            rece_stu_list = []
+
+        if id in rece_stu_list or str(id) in rece_stu_list:
+            send_tch_account = tch.idToAccountTeacher(int(info_dic[Notice.TEACHER_ID]))
+            send_tch_name = tch.getTeacher(send_tch_account, Teacher.REAL_NAME)
+            read_state = u'未读'
+            try:
+                stu_readed_list = eval(stu.getStudent(stu.idToAccountStudent(id), Student.READED))
+            except:
+                stu_readed_list = []
+            if info_dic[Notice.ID] in stu_readed_list:
+                read_state = u'已读'
 
 
+            tmp_dic = {'sender': send_tch_name,
+                       'title': info_dic[Notice.TITLE],
+                       'state': read_state,
+                       'message_id':info_dic[Notice.ID]}
+            dic.append(tmp_dic)
 
     return JsonResponse(dic, safe=False)
 
@@ -609,6 +632,30 @@ def get_message_info(request):
         后端应在此处返回某个消息的详细信息，需要的信息见下面的样例
     """
     # print request.POST
-    print 'message id',request.POST.get('message_id')
-    dic = {'sender': '李三胖', 'title':'暖一暖', 'time':'2016/1/20', 'text': '我们打算录取你，并让白叫猿任你的叫猿'}
+    # print 'message id',request.POST.get('message_id')
+    message_id = int(request.POST.get('message_id', -1))
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    id = int(id)
+
+    stu_readed_list = eval(stu.getStudent(stu.idToAccountStudent(id), Student.READED))
+    if message_id not in stu_readed_list:
+        stu_readed_list.append(message_id)
+
+    stu.setStudent(stu.idToAccountStudent(id), Student.READED, stu_readed_list)
+
+
+
+    dic = []
+    notice = back.getNoticebyDict({Notice.ID: message_id})[0]
+    info_dic = back.getNoticeAllDictByObject(notice)
+    send_tch_account = tch.idToAccountTeacher(int(info_dic[Notice.TEACHER_ID]))
+    send_tch_name = tch.getTeacher(send_tch_account, Teacher.REAL_NAME)
+    dic = {'sender': send_tch_name,
+           'title': info_dic[Notice.TITLE],
+           # 'time': info_dic[Notice.SEND_DATE].strftime("%Y-%m-%d %H:%I:%S"),
+           'time': info_dic[Notice.SEND_DATE].replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
+           'text': info_dic[Notice.TEXT]}
+    # print dic
     return JsonResponse(dic)
