@@ -48,15 +48,15 @@
           <table id = "time_table" class="table table-hover">
                 <tr>
                     <th><label style="width:50px">标题</label></th>
-                    <th><input id = "d_title" value="Submit" disabled = "disabled" /></th>
+                    <th><input id = "d_title" disabled = "disabled" /></th>
                 </tr>
                 <tr>
                     <th><label>发件人</label></th>
-                    <th><input id = "d_sender" value="Submit" disabled = "disabled" /></th>
+                    <th><input id = "d_sender" disabled = "disabled" /></th>
                 </tr>
               <tr>
                     <th><label>时间</label></th>
-                    <th><input id = "d_time" value="Submit" disabled = "disabled"/></th>
+                    <th><input id = "d_time" disabled = "disabled"/></th>
                 </tr>
               <tr>
                     <th><label>全文</label></th>
@@ -132,7 +132,6 @@
                             $('#d_title').attr('value',ret['title']);
                             $('#d_sender').attr('value',ret['sender']);
                             $('#d_time').attr('value',ret['time']);
-                            //$('#d_text').attr('innerText',ret['text']);
                             $('#d_text').empty();
                             $('#d_text').append(ret['text']);
                         });
@@ -160,12 +159,6 @@
 								}
 						}
 				});
-				/*
-				$.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
-					$('#namefield').append(ret['name']);
-				})*/
-
-
 				get_message();
 			});
 		</script>

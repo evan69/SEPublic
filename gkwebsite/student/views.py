@@ -586,7 +586,7 @@ def message(request):
 @csrf_exempt
 def get_all_message(request):
     """
-        后端应在此处返回某个学生
+        后端应在此处返回某个学生可以看见的所有消息的列表，需要的信息见下面的样例
     """
     # print request.POST
     dic = [{'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'},
@@ -598,7 +598,7 @@ def get_all_message(request):
 @csrf_exempt
 def get_message_info(request):
     """
-        后端应在此处返回某道试题的全部信息，信息应转化为字符串
+        后端应在此处返回某个消息的详细信息，需要的信息见下面的样例
     """
     # print request.POST
     print 'message id',request.POST.get('message_id')
