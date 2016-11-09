@@ -118,28 +118,31 @@ def handleText(msg):
     if msg['Content'] == u'注册'or msg['Content'] == u'登录':
         # resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
         #login_url = "http://59.66.131.171/login/"
-        login_url = we.authority("login")
+        '''login_url = we.authority("login")
         tmp = u'点击url进入注册/登录界面' + login_url
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
+        resultStr = send_pic_text(msg, "login")
     elif msg['Content'] == u'个人信息':
         #login_url = "http://59.66.131.171/login/"
-        login_url = we.authority("profile")
+        '''login_url = we.authority("profile")
         tmp = u'点击url查看个人信息'+ login_url
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
+        resultStr = send_pic_text(msg, "profile")
     elif msg['Content'] == u'估分':
         #login_url = "http://59.66.131.171/login/"
-        login_url = we.authority("score")
+        '''login_url = we.authority("score")
         tmp = u'点击url进入估分系统'+ login_url
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
+        resultStr = send_pic_text(msg, "score")
     elif msg['Content'] == u'关键词':
         tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统\n回复更新，查看最新推送"
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'更新':
-        resultStr = send_pic_text(msg)
+        resultStr = send_pic_text(msg, "update")
     else:
         tmp = u'TT暂不支持该项功能，回复关键词试试看'
         resultStr = resultStr % (
@@ -203,7 +206,7 @@ def createMenu():
     return HttpResponse(result)
 
 
-def send_pic_text(msg):
+def send_pic_text(msg,type):
     newshead = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType>\
     <ArticleCount>%s</ArticleCount><Articles>"
     newsbody = "<item><Title><![CDATA[%s]]></Title><Description><![CDATA[%s]]></Description><PicUrl><![CDATA[%s]]></PicUrl><Url><![CDATA[%s]]></Url></item>"
