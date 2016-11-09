@@ -592,6 +592,12 @@ def get_all_message(request):
     dic = [{'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'},
             {'sender': '李三胖', 'title': '暖2暖', 'state':'已读', 'message_id':'8'},
             {'sender': '李三胖', 'title': '暖3暖', 'state':'未读', 'message_id':'90'},]
+
+    notice_list = back.getGroupbyDict({})
+    for notice in notice_list:
+        info_dic = back.getNoticeAllDictByObject(notice)
+        tmp_dic = {'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'}
+
     return JsonResponse(dic, safe=False)
 
 
