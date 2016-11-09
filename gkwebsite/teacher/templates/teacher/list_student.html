@@ -135,12 +135,12 @@
         $("li").removeClass("disabled");
         $("li").removeClass("active");
         if(page == 1){
-          $("li:nth-child(1)").addClass("disabled");
+          $("#prev").addClass("disabled");
         }
         if(page == n_page){
-          $("li:nth-child("+String(n_page+2)+")").addClass("disabled");
+          $("#next").addClass("disabled");
         }
-        $("li:nth-child("+String(page+1)+")").addClass("active");
+        $("#page_"+page).addClass("active");
         $('#student_list').empty();
         for(var i = startnum; i < user_array.length && i < startnum + item_per_list; ++i){
           tag1 = String(i)+'_A';
@@ -186,11 +186,11 @@
             user_array=ret;
             $('#pages').empty();
             var n_page = Math.ceil(user_array.length / item_per_list);
-            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
+            $('#pages').append("<li id=\"prev\"><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
             for(var i = 1; i <= n_page; ++i){
-              $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
+              $('#pages').append("<li id=\"page_"+String(i)+"\"><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
             }
-            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
+            $('#pages').append("<li id=\"next\"><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
 
             show_list(list_start_pos);
           })
@@ -203,11 +203,11 @@
             user_array=ret;
             $('#pages').empty();
             var n_page = Math.ceil(user_array.length / item_per_list);
-            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
+            $('#pages').append("<li id=\"prev\"><a href=\"javascript:void(0)\" onclick=\"jump_prev()\">&laquo;</a></li>\n");
             for(var i = 1; i <= n_page; ++i){
-              $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
+              $('#pages').append("<li id=\"page_"+String(i)+"\"><a href=\"javascript:void(0)\" onclick=\"jump_page("+String(i)+")\">"+String(i)+"</a></li>\n");
             }
-            $('#pages').append("<li><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
+            $('#pages').append("<li id=\"next\"><a href=\"javascript:void(0)\" onclick=\"jump_next()\">&raquo;</a></li>\n");
             show_list(list_start_pos);
           })
         }
@@ -246,7 +246,7 @@
                 }
             }
         });
-        $.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+        $.post("/backend/get_teacher_name_by_id/", {}, function(ret){
           $('#namefield').append(ret['name']);
         })
         $.post("/backend/get_grouplist/", {}, function(ret){
@@ -299,6 +299,7 @@
           }
         });
         $('#add_to').click(function(){
+          checked_list.splice(0, checked_list.length);
           $(":checkbox").each(function(){
             var parse = this.id.split("_");
             var row = parseInt(parse[0]);

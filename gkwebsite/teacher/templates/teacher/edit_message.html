@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>发送消息</title>
+    {% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
+    <link href= "{% static 'cleditor1_4_5/jquery.cleditor.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <div id="wrapper">
+         {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+
+				<div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            发送消息 <small>您好，<span id='namefield'></span></small>
+                        </h1>
+                    </div>
+                </div>
+				<!--row-->
+        <div class= "panel panel-default">
+					<div class = "panel-body">
+						<form class="form-search" id = "form">
+							<div class="row">
+								<div class="col-lg-2">
+									<label class = "control-label">标题：</label>
+								</div>
+								<div class="col-lg-6">
+									<input type="text"  id="title" name = "title" style="width:80%"></input>
+								</div>
+							</div>
+							<br>
+              <div class="row">
+								<div class="col-lg-2">
+									<label class = "control-label">发送到组：</label>
+								</div>
+								<div class="col-lg-6">
+									<select name="group_num" id="group_num" style="width:80%">
+                 </select>
+								</div>
+							</div>
+              <br>
+							<div class="row">
+								<div class="col-lg-2">
+									<label class = "control-label">正文：</label>
+								</div>
+								<div class="col-lg-6">
+									<textarea id="main" name = "main" style="width:80%"></textarea>
+								</div>
+							</div>
+              <div class="row">
+								<div class="col-lg-2">
+									<button type="submit" class="btn btn-primary" id="send">发送</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+   {% include 'teacher/include/footer.html' %}
+			</div>
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+     <!-- /. WRAPPER  -->
+    {% include 'teacher/include/jsinclude.html' %}
+    <script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
+    <script src="{% static 'cleditor1_4_5/jquery.cleditor.min.js' %}"></script>
+    <script src="{% static 'cleditor.table1_0_4/jquery.cleditor.table.min.js' %}"></script>
+		<script>
+      function formSubmit(){
+        var title = $('#title').val();
+        var group_num = $('#group_num').val();
+        var maintext = $('#main').val();
+        $('#send').attr("disabled", "true");
+        $.post("/backend/new_message_to_group/", {'title':title,'group_val':group_num, 'maintext':maintext}, function(ret){
+          if(ret['success'].charAt(0) == 'N'){
+            $.growl.error({ title: "发送失败", message: ret['message']});
+          }
+          else{
+            $.growl.notice({ title: "发送成功", message: "消息已发送" });
+          }
+          $('#send').removeAttr("disabled", "true");
+        });
+      }
+			$(document).ready(function(){
+				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+				var csrftoken = getCookie('csrftoken');
+				$.ajaxSetup({
+						beforeSend: function(xhr, settings) {
+								if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+									xhr.setRequestHeader("X-CSRFToken", csrftoken);
+								}
+						}
+				});
+				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+					$('#namefield').append(ret['name']);
+				})
+
+        $('#new_message').addClass("active-menu");
+        $('#new_message').attr("href", "#");
+        $('#main').cleditor();
+        $.post("/backend/get_grouplist/", {}, function(ret){
+          for(var i = 0; i < ret.length; ++i){
+            $('#group_num').append("<option value=\""+ret[i]['value']+"\">"+ret[i]['string']+"</option>\n");
+          }
+        });
+        $("#form").validate({
+          submitHandler:formSubmit,
+          debug:false,
+          rules:{
+            title:{
+              required:true
+            },
+            group_num:{
+              required:true
+            }
+          }
+        });
+			});
+		</script>
+
+
+</body>
+</html>
