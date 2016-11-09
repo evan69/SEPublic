@@ -222,6 +222,10 @@
           },
           close: function() {
             $("#form")[0].reset();
+            $('#begindate').datepicker("option", "minDate", null);
+            $('#begindate').datepicker("option", "maxDate", null);
+            $('#enddate').datepicker("option", "minDate", null);
+            $('#enddate').datepicker("option", "maxDate", null);
           }
         });
         var begin = $( "#begindate" ).datepicker({
