@@ -12,6 +12,7 @@ import urllib2
 import json
 import time
 import sys
+import database.backend as back
 import requests
 reload(sys)
 sys.setdefaultencoding('UTF-8')
@@ -211,10 +212,34 @@ def send_pic_text(msg,type):
     <ArticleCount>%s</ArticleCount><Articles>"
     newsbody = "<item><Title><![CDATA[%s]]></Title><Description><![CDATA[%s]]></Description><PicUrl><![CDATA[%s]]></PicUrl><Url><![CDATA[%s]]></Url></item>"
     newstail = "</Articles></xml>"
-    picurl = "http://statics.xiumi.us/xmi/rc/azY5/i/390486cc423f22d66ac517e7267a790b-sz_66475.jpg"
-    testurl = "http://r.xiumi.us/board/v3/26Aaa/2801910"
+    index_pic = ""
+    title = ""
+    abstract = ""
+    picurl = ""
+    texturl = ""
+    if type == "update":
+        content = back.getLastOneWechatURL()
+        if content[0] == None :
+            picurl = ""
+            texturl = ""
+        else:
+            picurl = content[0]
+            texturl = content[1]
+    elif type == "login":
+        picurl = index_pic
+        title = u'点击进入注册或登录界面'
+        texturl = we.authority("login")
+    elif type == "profile":
+        picurl = index_pic
+        title = u'点击查看个人信息'
+        texturl = we.authority("profile")
+    elif type == "score" :
+        picurl = index_pic
+        title = u'点击进入估分'
+        texturl = we.authority("score")
+    #testurl = "http://r.xiumi.us/board/v3/26Aaa/2801910"
     sendhead = newshead % (msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'news', '1')
-    sendbody = newsbody % (u'五道口的面包房', u'测试图文推送功能', picurl, testurl)
+    sendbody = newsbody % (title, abstract, picurl, texturl)
     sendtail = newstail
     resStr = sendhead + sendbody + sendtail
     return resStr
