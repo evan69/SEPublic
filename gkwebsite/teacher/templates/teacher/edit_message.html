@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>教师主页</title>
+    {% load staticfiles %}
+		{% include 'teacher/include/cssinclude.html' %}
+</head>
+<body>
+    <div id="wrapper">
+         {% include 'teacher/include/navtop.html' %}
+        <!--/. NAV TOP  -->
+		{% include 'teacher/include/navside.html' %}
+        <!-- /. NAV SIDE  -->
+
+				<div id="page-wrapper" >
+            <div id="page-inner">
+				<div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            高考招生系统教师端 <small>您好，<span id='namefield'></span></small>
+                        </h1>
+                    </div>
+                </div>
+				<!--row-->
+        <div class= "panel panel-default">
+					<div class = "panel-body">
+						<form class="form-search" id = "form">
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label">预置用户名：</label>
+								</div>
+								<div class="col-md-3">
+									<input type="text"  id="username" name = "username"/>
+								</div>
+							</div>
+							<div class="row"><p></div>
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label">预置密码：</label>
+								</div>
+								<div class="col-md-3">
+									<input class="password" type="password" id="psw" name = "psw"/>
+								</div>
+							</div>
+							<div class="row"><p></div>
+							<div class="row">
+								<div class="col-md-2">
+									<label class = "control-label">确认预置密码：</label>
+								</div>
+								<div class="col-md-3">
+									<input type="password" id="psw_confirm" name = "psw_confirm"/>
+								</div>
+							</div>
+							<div class="row"><p></div>
+							<div class="row">
+								<div class="col-md-4">
+									<label>*用户名必须由四位以上的字母或数字组成</label>
+								</div>
+								<div class="col-md-1">
+									<button type="submit" class="btn btn-primary" id = "add">Add</button>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+   {% include 'teacher/include/footer.html' %}
+			</div>
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+    </div>
+     <!-- /. WRAPPER  -->
+    {% include 'teacher/include/jsinclude.html' %}
+		<script>
+			$(document).ready(function(){
+				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
+				var csrftoken = getCookie('csrftoken');
+				$.ajaxSetup({
+						beforeSend: function(xhr, settings) {
+								if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+									xhr.setRequestHeader("X-CSRFToken", csrftoken);
+								}
+						}
+				});
+				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+					$('#namefield').append(ret['name']);
+				})
+
+        $('#new_message').addClass("active-menu");
+        $('#new_message').attr("href", "#");
+			});
+		</script>
+
+
+</body>
+</html>
