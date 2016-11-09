@@ -120,6 +120,7 @@ def handleText(msg):
         # resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
         #login_url = "http://59.66.131.171/login/"
         '''login_url = we.authority("login")
+        login_url = we.authority("login")
         tmp = u'点击url进入注册/登录界面' + login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
@@ -127,6 +128,7 @@ def handleText(msg):
     elif msg['Content'] == u'个人信息':
         #login_url = "http://59.66.131.171/login/"
         '''login_url = we.authority("profile")
+        login_url = we.authority("profile")
         tmp = u'点击url查看个人信息'+ login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
@@ -134,6 +136,7 @@ def handleText(msg):
     elif msg['Content'] == u'估分':
         #login_url = "http://59.66.131.171/login/"
         '''login_url = we.authority("score")
+        login_url = we.authority("score")
         tmp = u'点击url进入估分系统'+ login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
@@ -205,6 +208,7 @@ def createMenu():
     response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
     result = response.read()
     return HttpResponse(result)
+
 
 
 def send_pic_text(msg,type):
