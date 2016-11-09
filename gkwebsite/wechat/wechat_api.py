@@ -24,7 +24,7 @@ Appsecret = "efe75bfad99903dff1ba7a783a354e71"
 server_url = "http://59.66.131.87/"
 basic_scope = "snsapi_base"
 
-# open the authority url
+# return the authority url
 def authority(type):
     re_dir = ""
     if type == "profile":
@@ -50,7 +50,7 @@ def get_code(request):
     else:
         return (False, None)
 
-
+# get the opendid by code returned from get_code
 def get_openid_byCode(_code):
     url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=%s" % (Appid, Appsecret,_code, "authorization_code")
     try:
