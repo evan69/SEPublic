@@ -43,21 +43,23 @@
               </div>
              </div>
              <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="registerCode" class="col-sm-2 control-label">注册码：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="registerCode" name="registerCode" value="{{student.registerCode}}" />
+              </div>
+             </div>
+
+             <div class="form-group">
               <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
               <div class="col-sm-10">
                <input type="text" class="form-control" id="realName" name="realName" value="{{student.realName}}" />
               </div>
              </div>
-             <div class="form-group">
+
+                <div class="form-group">
               <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
               <div class="col-sm-10">
                <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{student.idNumber}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="registerCode" class="col-sm-2 control-label">注册码：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="registerCode" name="registerCode" value="{{student.registerCode}}" />
               </div>
              </div>
              <div class="form-group">
@@ -348,12 +350,6 @@
               <label style="text-align:left;padding-left: 2em;" for="admissionStatus" class="col-sm-2 control-label">录取情况：</label>
               <div class="col-sm-10">
                <input type="text" class="form-control" id="admissionStatus" name="estimateScore" value="{{student.admissionStatus}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="relTeacher" class="col-sm-2 control-label">对应老师：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relTeacher" name="relTeacher" value="{{student.duiyingTeacher}}" />
               </div>
              </div>
              <div class="form-group">

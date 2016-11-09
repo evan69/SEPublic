@@ -101,7 +101,7 @@
 								}
 						}
 				});
-				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+				$.post("/backend/get_teacher_name_by_id/", {}, function(ret){
 					$('#namefield').append(ret['name']);
 				});
         $('#add_student').addClass("active-menu");
@@ -121,7 +121,7 @@
 					$('#export').show();
           $('#export').click(function(){
             if(codelist.length > 0){
-              $.post("/backend/export_registration_code/", {'id':{{id}}, 'length': codelist.length}, function(ret){
+              $.post("/backend/export_registration_code/", {'length': codelist.length}, function(ret){
                 location.href="/teacher/download_xls/file"+ret['filename'];
               });
             }

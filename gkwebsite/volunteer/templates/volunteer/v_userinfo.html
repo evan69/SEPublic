@@ -242,6 +242,7 @@
   <script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
     <script>
       var save1 = function (){
+        $("#volunteer_save").attr({"disabled":"disabled"});
         var volunteer_name = $("#volunteer_name").val();
         var sex = $("#sex").val();
         var department = $("#department").val();
@@ -289,6 +290,7 @@
                     //$.growl.error({ title: "修改信息成功", message: ret['message'] });
                     alert('修改成功');
                 }
+                $("#volunteer_save").removeAttr("disabled");
                 window.location="/volunteer/profile";
         });
       };
@@ -326,12 +328,8 @@
             province:{
               min:1
             },
-            weichat:{
-              required:true
-            },
             qqn:{
               digits:true,
-              required:true
             },
             studentID:{
               digits:true,

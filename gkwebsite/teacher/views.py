@@ -101,6 +101,13 @@ def search_volunteer(request):
     c = {'id': id}
     return HttpResponse(t.render(c))
 
+def wechat_push_stack(request):
+    id = request.session.get('teacher_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    t = get_template('teacher/wechat_push_stack.html')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
 
 @csrf_exempt
 def student_info_edit(request):
@@ -885,14 +892,14 @@ def distribute_student(request):
 
 
 
-            
+
 def download_xls(request, file_name):
     file_path = os.path.join('files', file_name)
     response = FileResponse(open(file_path, 'rb'))
     response['Content-type'] = 'application/vnd.ms-excel'
     response['Content-Disposition'] = 'attachment; filename="{0}"'.format(file_name)
     return response
-    
+
 def view_message(request):
     id = request.session.get('teacher_id', -1)
     if id == -1:
@@ -900,7 +907,7 @@ def view_message(request):
     t = get_template('teacher/view_message.html')
     c = {'id': id}
     return HttpResponse(t.render(c))
-    
+
 def manage_test(request):
     id = request.session.get('teacher_id', -1)
     if id == -1:
@@ -908,7 +915,7 @@ def manage_test(request):
     t = get_template('teacher/view_test.html')
     c = {'id': id}
     return HttpResponse(t.render(c))
-    
+
 def edit_test(request, test_id):
     id = request.session.get('teacher_id', -1)
     if id == -1:
@@ -1015,7 +1022,25 @@ def generateTimerXLS(timer_id, teacher_id, filename):
     outputXLS('', filename, 'sheet1', info, ['name'] + day_list)
 
 
-
-
-
+def checkscoredetail(request):
+    '''
+     'name':name,
+     'testname':testname,
+     'stu_id':stu_id,
+     后端会从GET中得到上面的参数，然后完成下面的字典
+    '''
+    timelist = [{"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
+            {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
+            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},
+            {"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
+            {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
+            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"},
+            {"label": "1", "value": "100s"}, {"label": "2", "value": "810s"}, {"label": "3", "value": "40s"},
+            {"label": "4", "value": "140s"}, {"label": "5", "value": "40s"}, {"label": "6", "value": "420s"},
+            {"label": "7", "value": "405s"}, {"label": "8", "value": "420s"}, {"label": "9", "value": "140s"}, ];
+    dict = {
+        'timelist':timelist,
+        'subject':'语文',
+    }
+    return JsonResponse(dict)
 
