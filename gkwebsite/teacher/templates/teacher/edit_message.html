@@ -7,6 +7,7 @@
     <title>教师主页</title>
     {% load staticfiles %}
 		{% include 'teacher/include/cssinclude.html' %}
+    <link href= "{% static 'cleditor1_4_5/jquery.cleditor.css' %}" rel="stylesheet" />
 </head>
 <body>
     <div id="wrapper">
@@ -29,31 +30,27 @@
 					<div class = "panel-body">
 						<form class="form-search" id = "form">
 							<div class="row">
-								<div class="col-md-2">
+								<div class="col-lg-2">
 									<label class = "control-label">标题：</label>
 								</div>
-								<div class="col-md-3">
+								<div class="col-lg-6">
 									<input type="text"  id="title" name = "title"></input>
 								</div>
 							</div>
 							<div class="row"><p></div>
 							<div class="row">
-								<div class="col-md-2">
+								<div class="col-lg-2">
 									<label class = "control-label">正文：</label>
 								</div>
-								<div class="col-md-3">
+								<div class="col-lg-6">
 									<textarea id="main" name = "main"></textarea>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-4">
-									<label>*用户名必须由四位以上的字母或数字组成</label>
-								</div>
-								<div class="col-md-1">
-									<button type="submit" class="btn btn-primary" id = "add">Add</button>
+              <div class="row">
+								<div class="col-lg-2">
+									<button type="submit" class="btn btn-primary" id="send">发送</button>
 								</div>
 							</div>
-
 						</form>
 					</div>
 				</div>
@@ -65,6 +62,8 @@
     </div>
      <!-- /. WRAPPER  -->
     {% include 'teacher/include/jsinclude.html' %}
+    <script src="{% static 'cleditor1_4_5/jquery.cleditor.min.js' %}"></script>
+    <script src="{% static 'cleditor.table1_0_4/jquery.cleditor.table.min.js' %}"></script>
 		<script>
 			$(document).ready(function(){
 				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
@@ -82,6 +81,10 @@
 
         $('#new_message').addClass("active-menu");
         $('#new_message').attr("href", "#");
+        $('#main').cleditor();
+        $('#send').click(function(){
+          alert($('#main').val());
+        });
 			});
 		</script>
 
