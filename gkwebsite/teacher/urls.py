@@ -37,4 +37,5 @@ urlpatterns = [
     url(r'^get_all_activity/$',views.get_all_activity, name='get_all_activity'),
     url(r'^delete_activity/$',views.delete_activity, name='delete_activity'),
     url(r'^wechat_push_stack/$', views.wechat_push_stack, name='wechat_push_stack'),
+    url(r'^new_message/$',views.new_message, name='new_message'),
 ]
