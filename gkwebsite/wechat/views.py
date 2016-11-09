@@ -148,7 +148,7 @@ def handleText(msg):
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
         resultStr = send_pic_text(msg, "score")
     elif msg['Content'] == u'关键词':
-        tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统\n回复更新，查看最新推送"
+        tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统\n回复更新，查看最新推送\n回复历史消息，查看近期推送"
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'更新':
