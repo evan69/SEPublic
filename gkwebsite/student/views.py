@@ -586,12 +586,21 @@ def message(request):
 @csrf_exempt
 def get_all_message(request):
     """
-        后端应在此处返回某道试题的全部信息，信息应转化为字符串
-        试题id由request.POST.get('problem_id')获取，见下面样例
-        然后放到下面样例写好的dic中
+        后端应在此处返回某个学生
     """
     # print request.POST
-    dic = [{'sender': '李三胖', 'title':'暖一暖', 'state':'未读'},
-            {'sender': '李三胖', 'title': '暖2暖', 'state':'已读'},
-            {'sender': '李三胖', 'title': '暖3暖', 'state':'未读'},]
+    dic = [{'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'},
+            {'sender': '李三胖', 'title': '暖2暖', 'state':'已读', 'message_id':'8'},
+            {'sender': '李三胖', 'title': '暖3暖', 'state':'未读', 'message_id':'90'},]
     return JsonResponse(dic, safe=False)
+
+
+@csrf_exempt
+def get_message_info(request):
+    """
+        后端应在此处返回某道试题的全部信息，信息应转化为字符串
+    """
+    # print request.POST
+    print 'message id',request.POST.get('message_id')
+    dic = {'sender': '李三胖', 'title':'暖一暖', 'time':'2016/1/20', 'text': '我们打算录取你，并让白叫猿任你的叫猿'}
+    return JsonResponse(dic)

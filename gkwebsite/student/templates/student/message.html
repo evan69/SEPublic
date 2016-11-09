@@ -43,13 +43,26 @@
          <!-- /. PAGE WRAPPER  -->
     </div>
     {% include 'student/include/jsinclude.html' %}
-    <div id="dialog" title="消息详情">
+    <div id="dialog" title="消息详情" style="height:90%;width=90%">
       <form id="form">
-        <fieldset style="padding:0; border:0; margin-top:25px;">
-          <label>标题</label>
-            <label>发件人</label>
-          <label>时间</label>
-          <label>全文</label>
+          <table id = "time_table" class="table table-hover">
+                <tr>
+                    <th><label style="width:50px">标题</label></th>
+                    <th><input id = "d_title" value="Submit" disabled = "disabled" /></th>
+                </tr>
+                <tr>
+                    <th><label>发件人</label></th>
+                    <th><input id = "d_sender" value="Submit" disabled = "disabled" /></th>
+                </tr>
+              <tr>
+                    <th><label>时间</label></th>
+                    <th><input id = "d_time" value="Submit" disabled = "disabled"/></th>
+                </tr>
+              <tr>
+                    <th><label>全文</label></th>
+                    <th><textarea id = "d_text" rows="10" disabled = "disabled"></textarea></th>
+                </tr>
+        </table>
           <!-- Allow form submission with keyboard without duplicating the dialog button -->
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
@@ -101,6 +114,7 @@
 		<script>
 			var list_start_pos = 0;
 			var user_array = [];
+			var message_info;
 			function show_list(){
 				var tag1, tag2, tag3;
 				var listitem="";
@@ -113,10 +127,29 @@
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						//No need to examine the suffix since we are dealing with 'tag1'
+						$.post("/student/get_message_info/", {'message_id':user_array[row]['message_id']}, function(ret){
+						    console.log(ret['text']);
+                            $('#d_title').attr('value',ret['title']);
+                            $('#d_sender').attr('value',ret['sender']);
+                            $('#d_time').attr('value',ret['time']);
+                            //$('#d_text').attr('innerText',ret['text']);
+                            $('#d_text').empty();
+                            $('#d_text').append(ret['text']);
+                        });
 						$( "#dialog" ).dialog("open");
 					});
 				}
 			}
+			var get_message = function(){
+                var namestr=$('#realName').val();
+                list_start_pos = 0;
+                $('#message_list').empty();
+                //access server and load matching records
+                $.post("/student/get_all_message/", {}, function(ret){
+                    user_array = ret;
+                    show_list();
+                });
+            };
 			$(document).ready(function(){
 				//CSRF token (See https://docs.djangoproject.com/en/1.9/ref/csrf/)
 				var csrftoken = getCookie('csrftoken');
@@ -132,27 +165,15 @@
 					$('#namefield').append(ret['name']);
 				})*/
 
-				var get_message = function(){
-					var namestr=$('#realName').val();
-					list_start_pos = 0;
-					$('#message_list').empty();
-					//access server and load matching records
-					$.post("/student/get_all_message/", {}, function(ret){
-						user_array = ret;
-						console.log(ret);
-						console.log(user_array.length);
-						console.log(user_array[0]['sender']);
-						show_list();
-					})
-				};
+
 				get_message();
 			});
 		</script>
     <script>
     $( "#dialog" ).dialog({
       autoOpen: false,
-      height: 300,
-      width: 350,
+      height: 500,
+      width: "90%",
       modal: true,
       buttons: {
         "确定": function() {
