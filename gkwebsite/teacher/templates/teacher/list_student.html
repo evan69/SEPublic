@@ -246,7 +246,7 @@
                 }
             }
         });
-        $.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+        $.post("/backend/get_teacher_name_by_id/", {}, function(ret){
           $('#namefield').append(ret['name']);
         })
         $.post("/backend/get_grouplist/", {}, function(ret){
