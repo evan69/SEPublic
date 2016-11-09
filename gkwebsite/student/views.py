@@ -18,7 +18,8 @@ import database.image_backend as pic
 import database.teacher_backend as tch
 import database.backend as back
 import database.volunteer_backend as vol
-
+import time
+import pytz
 
 # Create your views here.
 
@@ -633,9 +634,6 @@ def get_message_info(request):
     # print request.POST
     # print 'message id',request.POST.get('message_id')
     message_id = int(request.POST.get('message_id', -1))
-
-    dic = {'sender': '李三胖', 'title':'暖一暖', 'time':'2016/1/20', 'text': '我们打算录取你，并让白叫猿任你的叫猿'}
-    dic = {}
     id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
@@ -647,7 +645,8 @@ def get_message_info(request):
     send_tch_name = tch.getTeacher(send_tch_account, Teacher.REAL_NAME)
     dic = {'sender': send_tch_name,
            'title': info_dic[Notice.TITLE],
-           'time': info_dic[Notice.SEND_DATE].strftime('%Y/%m/%d'),
+           # 'time': info_dic[Notice.SEND_DATE].strftime("%Y-%m-%d %H:%I:%S"),
+           'time': info_dic[Notice.SEND_DATE].replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
            'text': info_dic[Notice.TEXT]}
     print dic
     return JsonResponse(dic)

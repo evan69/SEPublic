@@ -1043,8 +1043,7 @@ def checkscoredetail(request):
         'subject': '语文',
     }
 
-
-
+    
 
     return JsonResponse(dict)
 
