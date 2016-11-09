@@ -19,14 +19,23 @@ sys.setdefaultencoding('UTF-8')
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
-server_url = "https://gaokao.northeurope.cloudapp.azure.com/"
+#server_url = "https://gaokao.northeurope.cloudapp.azure.com/"
+#server_url = "https://59.66.182.75/"
+server_url = "http://59.66.131.87/"
 basic_scope = "snsapi_base"
 
 # open the authority url
-def authority(request):
-    re_dir = server_url + "login/"
+def authority(type):
+    re_dir = ""
+    if type == "profile":
+        re_dir = server_url + 'student/profile/'
+    elif type == "score":
+        re_dir = server_url + 'student/score/'
+    else:
+        re_dir = server_url + 'login/'
     url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=%s&scope=%s&state=%s#wechat_redirect"%(Appid, re_dir, "code",basic_scope, "1")
-    result = urllib2.urlopen(url)
+    #result = urllib2.urlopen(url)
+    return url
 
 
 # get code
@@ -36,6 +45,7 @@ def get_code(request):
         if code == None:
             return (False, code)
         else:
+            print code
             return (True, code)
     else:
         return (False, None)
