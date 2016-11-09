@@ -638,6 +638,15 @@ def get_message_info(request):
     if id == -1:
         return HttpResponse('Access denied')
     id = int(id)
+
+    stu_readed_list = eval(stu.getStudent(stu.idToAccountStudent(id), Student.READED))
+    if message_id not in stu_readed_list:
+        stu_readed_list.append(message_id)
+
+    stu.setStudent(stu.idToAccountStudent(id), Student.READED, stu_readed_list)
+
+
+
     dic = []
     notice = back.getNoticebyDict({Notice.ID: message_id})[0]
     info_dic = back.getNoticeAllDictByObject(notice)
@@ -648,5 +657,5 @@ def get_message_info(request):
            # 'time': info_dic[Notice.SEND_DATE].strftime("%Y-%m-%d %H:%I:%S"),
            'time': info_dic[Notice.SEND_DATE].replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
            'text': info_dic[Notice.TEXT]}
-    print dic
+    # print dic
     return JsonResponse(dic)
