@@ -13,6 +13,9 @@ import json
 import time
 import sys
 import requests
+
+#from gkwebsite.database.models import WechatURL
+
 reload(sys)
 sys.setdefaultencoding('UTF-8')
 
@@ -150,6 +153,8 @@ def handleText(msg):
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'更新':
         resultStr = send_pic_text(msg, "update")
+    elif msg['Content'] == u'历史消息':
+        resultStr = send_pic_text_many(msg)
     else:
         tmp = u'TT暂不支持该项功能，回复关键词试试看'
         resultStr = resultStr % (
@@ -165,11 +170,11 @@ def createMenu():
     data = {
         "button": [
             {
-                "name": "basic",
+                "name": "基本功能",
                 "sub_button": [
                     {
                         "type": "view",
-                        "name": "login",
+                        "name": "登录",
 
                         "url": we.authority("login")
 
@@ -177,7 +182,7 @@ def createMenu():
                     {
                         "type": "view",
 
-                        "name": "register",
+                        "name": "注册",
 
                         "url": we.authority("login")
 
@@ -186,7 +191,7 @@ def createMenu():
             {
                 "type": "view",
 
-                "name": "esitimate",
+                "name": "估分",
 
                 "url": we.authority("score")
 
@@ -194,7 +199,7 @@ def createMenu():
             {
                 "type": "view",
 
-                "name": "profile",
+                "name": "个人信息",
 
                 "url": we.authority("profile")
 
@@ -251,3 +256,32 @@ def send_pic_text(msg,type):
     sendtail = newstail
     resStr = sendhead + sendbody + sendtail
     return resStr
+
+
+def send_pic_text_many(msg):
+    newshead = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType>\
+       <ArticleCount>%s</ArticleCount><Articles>"
+    newsbody = "<item><Title><![CDATA[%s]]></Title><Description><![CDATA[%s]]></Description><PicUrl><![CDATA[%s]]></PicUrl><Url><![CDATA[%s]]></Url></item>"
+    newstail = "</Articles></xml>"
+    all_content = back.getLastTenWechatURL()
+    num = len(all_content)
+    sendhead = newshead % (msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'news', str(num))
+    if len == 0:
+        title = u'无消息'
+        abstract = ""
+        picurl = ""
+        texturl = ""
+        sendbody = newsbody % (title, abstract, picurl, texturl)
+        resStr = sendhead + sendbody + newstail
+        return resStr
+    else:
+        sendbody = ""
+        for content in all_content:
+            title = content[WechatURL.TITLE]
+            abstract = content[WechatURL.TEXT]
+            picurl = content[WechatURL.PICTURE_URL]
+            texturl = content[WechatURL.MESSAGE_URL]
+            sendbody = sendbody + newsbody % (title, abstract, picurl, texturl)
+        resStr = sendhead + sendbody + newstail
+        return resStr
+
