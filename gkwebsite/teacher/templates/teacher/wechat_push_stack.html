@@ -37,7 +37,7 @@
 									<input type="text"  id="pic_url" name = "pic_url" style="width:80%"></input>
 								</div>
 							</div>
-							<div class="row"><p></div>
+							<br>
 							<div class="row">
 								<div class="col-md-2">
 									<label class = "control-label" for="message_url">图文消息链接：</label>
@@ -47,9 +47,27 @@
 								</div>
 							</div>
               <br>
+              <div class="row">
+								<div class="col-md-2">
+									<label class = "control-label" for="title">标题：</label>
+								</div>
+								<div class="col-md-8">
+									<input type="text"  id="title" name = "title" style="width:80%"></input>
+								</div>
+							</div>
+							<br>
+              <div class="row">
+								<div class="col-md-2">
+									<label class = "control-label" for="abstract_text">摘要：</label>
+								</div>
+								<div class="col-md-8">
+									<textarea id="abstract_text" name = "abstract_text" style="width:80%"></textarea>
+								</div>
+							</div>
+							<br>
 							<div class="row">
 								<div class="col-md-1">
-									<button type="submit" class="btn btn-primary" id = "add">Add</button>
+									<button type="submit" class="btn btn-primary" id = "add">发布</button>
 								</div>
 							</div>
 
@@ -71,7 +89,9 @@
       function formSubmit(){
         var pic_link = $('#pic_url').val();
         var msg_link = $('#message_url').val();
-        $.post("/backend/push_stack/", {'pic_url':pic_link, 'msg_url':msg_link}, function(ret){
+        var title_text = $('#title').val();
+        var abstract_text = $('#abstract_text').val();
+        $.post("/backend/push_stack/", {'pic_url':pic_link, 'msg_url':msg_link, 'title':title_text, 'abstract':abstract_text}, function(ret){
           if(ret['success'].charAt(0)=='Y'){
 						$.growl.notice({ title: "添加成功", message: "推送消息已更新" });
 					}
@@ -107,6 +127,12 @@
             message_url:{
               required:true,
               url:true
+            },
+            title:{
+              maxlength:20
+            },
+            abstract_text:{
+              maxlength:50
             }
   				}
   			});
