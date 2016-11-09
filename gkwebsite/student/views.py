@@ -598,6 +598,8 @@ def get_all_message(request):
         info_dic = back.getNoticeAllDictByObject(notice)
         tmp_dic = {'sender': '李三胖', 'title':'暖一暖', 'state':'未读', 'message_id':'5'}
 
+
+
     return JsonResponse(dic, safe=False)
 
 
