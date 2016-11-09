@@ -37,7 +37,7 @@ def login(request):
         tmp_opneid = we.get_openid_byCode(tmp[1])
         if tmp_opneid[0] == True:
             openid = tmp_opneid[1]
-            print "openid: "+ openid
+            #print "openid: "+ openid
     return render(request, 'src/login.html')
 
 

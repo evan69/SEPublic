@@ -20,8 +20,8 @@ Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
 #server_url = "https://gaokao.northeurope.cloudapp.azure.com/"
-#server_url = "https://59.66.182.75/"
-server_url = "http://59.66.131.87/"
+server_url = "http://59.66.182.53/"
+#server_url = "http://59.66.131.87/"
 basic_scope = "snsapi_base"
 
 # return the authority url

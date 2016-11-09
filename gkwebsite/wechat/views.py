@@ -29,8 +29,8 @@ Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
 token_dic = {'last_time': 0, 'access_token': ""}
 #server_url = "http://gaokao.northeurope.cloudapp.azure.com/"
-#server_url = "http://59.66.182.75/"
-server_url = 'http://59.66.131.87/'
+server_url = "http://59.66.182.53/"
+#server_url = 'http://59.66.131.87/'
 
 
 @csrf_exempt
@@ -215,6 +215,7 @@ def createMenu():
     req.add_header('encoding', 'utf-8')
     response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
     result = response.read()
+    #print result
     return HttpResponse(result)
 
 
@@ -232,7 +233,8 @@ def send_pic_text(msg,type):
     if type == "update":
         content = back.getLastOneWechatURL()
         if content == None:
-            pass
+            title = u'尚无内容'
+            #texturl = server_url + 'login/'
         else:
             title = content[WechatURL.TITLE]
             abstract = content[WechatURL.TEXT]
@@ -242,6 +244,7 @@ def send_pic_text(msg,type):
         picurl = index_pic
         title = u'点击进入注册或登录界面'
         texturl = we.authority("login")
+        print texturl
     elif type == "profile":
         picurl = index_pic
         title = u'点击查看个人信息'
