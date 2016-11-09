@@ -127,12 +127,10 @@ def student_rank(request):
     estimate_dic = eval(getattr(student, 'estimateScore', '{}'))
     listall = [{'name':u'总成绩（审核通过）', 'score':score, 'rank':rank + '/' + sum_rank}]
     for item in estimate_dic.keys():
+        if 'shenhe' not in estimate_dic[item].keys():
+            continue
         item_score = stu.getStudentEstimateScore_Every(student, item)
         item_rank, item_sum = stu.getStudentEstimateRank_Every(student, item)
-
-#        name_list.append(item)
-#        score_list.append(item_score)
-#        rank_list.append(item_rank + '/' + item_sum)
         listall.append({'name':item, 'score':item_score, 'rank':item_rank + '/' + item_sum})
 
     '''
