@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from xml.etree import ElementTree as ET
 from django.utils.encoding import smart_str, smart_unicode
 import hashlib
+import wechat_api as we
 import urllib
 import urllib2
 import json
@@ -20,7 +21,9 @@ Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
 token_dic = {'last_time': 0, 'access_token': ""}
-server_url = "http://gaokao.northeurope.cloudapp.azure.com/"
+#server_url = "http://gaokao.northeurope.cloudapp.azure.com/"
+#server_url = "http://59.66.182.75/"
+server_url = 'http://59.66.131.87/'
 
 
 @csrf_exempt
@@ -69,17 +72,6 @@ def token():
     if delt > 3600:
         get_token()
 
-'''def get_ip():
-    urls = "https://api.weixin.qq.com/cgi-bin/getcallbackip"
-    para = {"access_token": token_dic["access_token"]}
-    para = urllib.urlencode(para)
-    html = urllib.urlopen(urls, para)
-    result = html.read()
-    if result.has_key("ip_list"):
-        if result["ip_list"] == ["127.0.0.1", "127.0.0.1"]:
-            return True
-    return False
-'''
 
 def xml2Dic(xmlContent):
     dic = {}
@@ -126,19 +118,19 @@ def handleText(msg):
     if msg['Content'] == u'注册'or msg['Content'] == u'登录':
         # resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
         #login_url = "http://59.66.131.171/login/"
-        login_url = server_url + "login/"
+        login_url = we.authority("login")
         tmp = u'点击url进入注册/登录界面' + login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'个人信息':
         #login_url = "http://59.66.131.171/login/"
-        login_url = server_url + "student/profile/"
+        login_url = we.authority("profile")
         tmp = u'点击url查看个人信息'+ login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'估分':
         #login_url = "http://59.66.131.171/login/"
-        login_url = server_url + "student/score/"
+        login_url = we.authority("score")
         tmp = u'点击url进入估分系统'+ login_url
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
@@ -160,48 +152,55 @@ def createMenu():
     token()
     url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s" % token_dic['access_token']
 
-    data = '''{
+    data = {
         "button": [
             {
-                "name": "基本功能",
+                "name": "basic",
                 "sub_button": [
                     {
                         "type": "view",
-                        "name": "登录",
+                        "name": "login",
 
-                        "url": "http://gaokao.northeurope.cloudapp.azure.com/login/"
+                        "url": we.authority("login")
 
                     },
                     {
                         "type": "view",
 
-                        "name": "注册",
+                        "name": "register",
 
-                        "url": "http://gaokao.northeurope.cloudapp.azure.com/login/"
+                        "url": we.authority("login")
 
                     }]
             },
             {
                 "type": "view",
 
-                "name": "估分",
+                "name": "esitimate",
 
-                "url": "http://gaokao.northeurope.cloudapp.azure.com/student/score/"
+                "url": we.authority("score")
 
             },
             {
                 "type": "view",
 
-                "name": "个人信息",
+                "name": "profile",
 
-                "url": "http://gaokao.northeurope.cloudapp.azure.com/student/profile/"
+                "url": we.authority("profile")
 
 
             }
         ]
 
-    }'''
-    request = urllib2.urlopen(url, data.encode('utf-8'))
+    }
+    #request = urllib2.urlopen(url, data.encode('utf-8'))
+    #print data
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('encoding', 'utf-8')
+    response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
+    result = response.read()
+    return HttpResponse(result)
 
 
 def send_pic_text(msg):

@@ -22,6 +22,7 @@ import database.teacher_backend as teacher_backend
 import database.volunteer_backend as volunteer_backend
 import database.student_backend as student_backend
 import database.register_backend as reg
+import wechat.wechat_api as we
 from database.models import *
 '''
     login & register 界面
@@ -30,6 +31,13 @@ from database.models import *
 
 @csrf_exempt
 def login(request):
+    tmp = we.get_code(request)
+    #print "code: "+ tmp[1]
+    if tmp[0] == True:
+        tmp_opneid = we.get_openid_byCode(tmp[1])
+        if tmp_opneid[0] == True:
+            openid = tmp_opneid[1]
+            print "openid: "+ openid
     return render(request, 'src/login.html')
 
 
