@@ -531,7 +531,7 @@
             var estimateScore = $("#estimateScore").val();
             var realScore = $("#realScore").val();
             var admissionStatus = $("#admissionStatus").val();
-         //   var relTeacher = $("#relTeacher").val();
+            var realName = $("#realName").val();
             var relVolunteer = $("#relVolunteer").val();
             var comment= $("#comment").val();
             var myDate = new Date();
@@ -586,6 +586,7 @@
                      'user_name':user_name,
                         'idNumber':idNumber,
                         'type': type,
+                        'realName':realName,
              'province' :province,
              'phone' : phone,
              'email' : email,
@@ -627,7 +628,7 @@
              'team3': team3,
              'team4': team4,
              'team5': team5,
-                        'sex':sex,
+            'sex':sex,
              'forbid': forbid,
                     },
                     function(profileDict){

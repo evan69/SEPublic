@@ -55,8 +55,8 @@
     $.post("/backend/get_teacher_alert_by_id/", {'id':session_id}, function(ret){
       message_num = parseInt(ret["message"]);
       score_num = parseInt(ret["score"]);
-      $('#message_text').empty();
-      $('#message_text').append("您有"+message_num+"条未读消息");
+      //$('#message_text').empty();
+      //$('#message_text').append("您有"+message_num+"条未读消息");
       $('#score_text').empty();
       $('#score_text').append(score_num+"个新的估分结果");
     });
