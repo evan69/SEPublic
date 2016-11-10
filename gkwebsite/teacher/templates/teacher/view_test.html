@@ -14,7 +14,7 @@
         <!--/. NAV TOP  -->
 		{% include 'teacher/include/navside.html' %}
         <!-- /. NAV SIDE  -->
-				
+
 				<div id="page-wrapper" >
             <div id="page-inner">
 				<div class="row">
@@ -23,7 +23,7 @@
                             高考招生系统教师端 <small>您好，<span id='namefield'></span></small>
                         </h1>
                     </div>
-                </div> 
+                </div>
 				<!--row-->
 				<div class = "row">
 					<div class = "col-md-12">
@@ -77,7 +77,10 @@
       </form>
     </div>
     {% include 'teacher/include/jsinclude.html' %}
-    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'jquery-ui-1.12.1/datepicker-zh.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/additional-methods.js' %}"></script>
+		<script src="{% static 'jquery-validation-1.14.0/dist/localization/messages_zh.js' %}"></script>
 		<script>
       var testlist = [];
       function list_test(){
@@ -180,7 +183,7 @@
 								}
 						}
 				});
-				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+				$.post("/backend/get_teacher_name_by_id/", {}, function(ret){
 					$('#namefield').append(ret['name']);
 				});
         $.post("/backend/get_test_yearlist/", {}, function(ret){
@@ -198,9 +201,24 @@
             $("#subject").append("<option value="+ret[i]['num']+">"+ret[i]['str']+"</option>");
           }
         });
-				
+
         $('#test_management').addClass("active-menu");
         $('#test_management').attr("href", "#");
+        $("#form").validate({
+          submitHandler:submit_dialog,
+          debug:false,
+          rules:{
+            year:{
+              required:true
+            },
+            place:{
+              required:true
+            },
+            subject:{
+              required:true
+            }
+          }
+        });
         $.post("/backend/test_list_all/", {}, function(ret){
           testlist = ret;
           list_test();
@@ -214,7 +232,9 @@
       width: 350,
       modal: true,
       buttons: {
-        "确认":submit_dialog,
+        "确认":function(){
+          $('#form').submit();
+        },
         "取消": function() {
           $("#dialog").dialog( "close" );
         }

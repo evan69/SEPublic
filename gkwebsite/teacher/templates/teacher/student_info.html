@@ -43,21 +43,23 @@
               </div>
              </div>
              <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="registerCode" class="col-sm-2 control-label">注册码：</label>
+              <div class="col-sm-10">
+               <input type="text" class="form-control" id="registerCode" name="registerCode" value="{{student.registerCode}}" />
+              </div>
+             </div>
+
+             <div class="form-group">
               <label for="realName" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">姓名：</label>
               <div class="col-sm-10">
                <input type="text" class="form-control" id="realName" name="realName" value="{{student.realName}}" />
               </div>
              </div>
-             <div class="form-group">
+
+                <div class="form-group">
               <label for="idNumber" style="text-align:left;padding-left: 2em;" class="col-sm-2 control-label">身份证号：</label>
               <div class="col-sm-10">
                <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{student.idNumber}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="registerCode" class="col-sm-2 control-label">注册码：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="registerCode" name="registerCode" value="{{student.registerCode}}" />
               </div>
              </div>
              <div class="form-group">
@@ -351,12 +353,6 @@
               </div>
              </div>
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="relTeacher" class="col-sm-2 control-label">对应老师：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relTeacher" name="relTeacher" value="{{student.duiyingTeacher}}" />
-              </div>
-             </div>
-             <div class="form-group">
               <label style="text-align:left;padding-left: 2em;padding-right: 5px;" class="col-sm-2 control-label">对应组号：</label>
               <div class="col-sm-2">
                <select class="form-control" id="team1" name="team1">
@@ -366,7 +362,7 @@
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
                    {% else %}
                          <option value="{{forloop.counter0}}">{{item}}</option>
-                   {% endif %}
+                   {% endifequal %}
                {% empty %}
                    <li>抱歉，列表为空</li>
                {% endfor %}
@@ -431,11 +427,30 @@
 
 
              <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">备注：</label>
+              <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">评论：</label>
               <div class="col-sm-10">
                <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{student.comment}}</textarea>
               </div>
              </div>
+
+                      <div class="form-group">
+             <label style="text-align:left;padding-left: 2em;" for="comment" class="col-sm-2 control-label">强制禁止：</label>
+             <div class="col-sm-10">
+           <select class="form-control" id="forbid" name="forbid">
+                {% for item in student.forbidlist %}
+                   {% if forloop.counter0 == student.forbid %}
+                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
+                   {% else %}
+                         <option value="{{forloop.counter0}}">{{item}}</option>
+                   {% endif %}
+               {% empty %}
+                   <li>抱歉，列表为空</li>
+               {% endfor %}
+               </select>
+             </div>
+            </div>
+
+
              </fieldset>
              <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">

@@ -18,49 +18,200 @@ import database.image_backend as pic
 import database.teacher_backend as tch
 import database.backend as back
 import database.volunteer_backend as vol
-
-
+import time
+import pytz
+import wechat.wechat_api as we
+import database.student_backend as student_backend
 # Create your views here.
 
+
+def check_should_log_out(request, id):
+    total_seconds = 600 # 10min
+    account = stu.idToAccountStudent(id)
+    try:
+        new_time = stu.getStudent(account, Student.LAST_LOGIN_TIME)
+        this_time = time.strptime(request.session.get['login_time'], "%Y-%m-%d %H:%M:%S")
+        time_delta = (new_time - this_time).total_seconds()
+        if time_delta > total_seconds or time_delta < -total_seconds:
+            return redirect('/login/')
+        else:
+            return False
+    except:
+        return False
+
+
+
+def back_to_profile(request, id):
+    account = stu.idToAccountStudent(id)
+    stu_dic = stu.getStudentAllDictByAccount(account)
+    student = stu.getStudentAll(account)
+    (rank, tmp) = stu.getStudentEstimateRank(student)
+    dic = {
+        'name': stu_dic[Student.REAL_NAME],
+        'identification': stu_dic[Student.ID_NUMBER],
+        'sex': stu_dic[Student.SEX],
+        'nation': stu_dic[Student.NATION],
+        'birth': stu_dic[Student.BIRTH].strftime("%m/%d/%Y"),
+        'province': stu_dic[Student.PROVINCE],
+        'phone': stu_dic[Student.PHONE],
+        'email': stu_dic[Student.EMAIL],
+        'wenli': stu_dic[Student.TYPE],
+        'address': stu_dic[Student.ADDRESS],
+        'dadName': stu_dic[Student.DAD_NAME],
+        'dadPhone': stu_dic[Student.DAD_PHONE],
+        'momName': stu_dic[Student.MOM_NAME],
+        'momPhone': stu_dic[Student.MOM_PHONE],
+        'school': stu_dic[Student.SCHOOL],
+        'stu_class': stu_dic[Student.CLASSROOM],
+        'tutorName': stu_dic[Student.TUTOR_NAME],
+        'tutorPhone': stu_dic[Student.TUTOR_PHONE],
+        Student.MAJOR: stu_dic[Student.MAJOR],
+        Student.TEST_SCORE_LIST: stu_dic[Student.TEST_SCORE_LIST],
+        Student.RANK_LIST: stu_dic[Student.RANK_LIST],
+        Student.SUM_NUMBER_LIST: stu_dic[Student.SUM_NUMBER_LIST],
+        'realScore': stu_dic[Student.REAL_SCORE],
+        'relTeacher': stu_dic[Student.DUIYING_TEACHER],
+        'comment': stu_dic[Student.COMMENT],
+        'estimateScore': getStudentEstimateScore(stu.getStudentAll(account)),
+        'estimateRank': str(rank) + '/' + str(tmp)
+    }
+    group_list = stu.getStudentGroupIDListString(student).split(' ')
+    for i in range(1, 6):
+        if i < len(group_list):
+            dic['group' + str(i)] = group_list[i]
+        else:
+            dic['group' + str(i)] = '0'
+    dic['grouplist'] = [' ']
+    all_group = back.getGroupbyDict({})
+    for item in all_group:
+        dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
+    print '----------------*****--------'
+    return redirect('/student/profile/?auth=0')
+
+'''
+    wechat login
+    by byr 161110
+'''
+def openid(request):
+    tmp = we.get_code(request)
+    #print "code: " + tmp[1]
+    if tmp[0] == True:
+        tmp_opneid = we.get_openid_byCode(tmp[1])
+        if tmp_opneid[0] == True:
+            open_id = tmp_opneid[1]
+            request.session['open_id'] = open_id
+            print "openid: " + open_id
+
+'''
+    wechat openid login
+    by byr 161110
+'''
+def weichatopenid(request):
+    if 'student_id' in request.session:
+        print "wocao-------1", request.session['student_id']
+
+    openid(request)
+    if 'student_id' in request.session:
+        print "wocao-------2", request.session['student_id']
+
+    if 'open_id' in request.session:
+        if 'student_id' in request.session:
+            print "wocao-------3", request.session['student_id']
+
+        open_id = request.session['open_id']
+        (login, id, username) = student_backend.checkStudentOpenID(open_id)
+        if 'student_id' in request.session:
+            print "wocao-------4", request.session['student_id']
+
+        if login:
+            print "$$$$$$$$$", id
+            request.session['student_id'] = int(id)
+            request.session['user_name'] = username
+
+
+def check_identity(identity):
+    def decorator(func):
+        def wrapper(request, *args, **kw):
+            # 下面这空白的位置填session相应的id名
+            print '**********'
+            if 'student_id' in request.session:
+                print "wocao-------", request.session['student_id']
+            weichatopenid(request)
+            identity_dic = {'student': 'student_id', 'volunteer': '', 'teacher': ''}
+            print identity, request.session.get(identity_dic[identity])
+            id = int(request.session.get(identity_dic[identity]))
+            if identity == 'student':
+                if stu.is_have_permission(id) == False:
+                    return back_to_profile(request, id)
+            elif identity == 'volunteer':
+                if vol.is_have_permission(id) == False:
+                    pass
+            else:
+                pass
+            return func(request, *args, **kw)
+        return wrapper
+    return decorator
+
+
+@check_identity('student')
 def student_center(request):
+    print 'zhuye#$%#$'
     t = get_template('student/center.html')
-    id = request.session.get('user_id', -1)
+    id = request.session.get('student_id', -1)
     c = {'id': id}
     return HttpResponse(t.render(c))
 
-
+@check_identity('student')
 def student_score(request):
     t = get_template('student/score.html')
-    id = request.session.get('user_id', -1)
+    id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     c = {'id': id}
     return HttpResponse(t.render(c))
 
-
+@check_identity('student')
 def student_rank(request):
-    id = request.session.get('user_id', -1)
+    id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     student_dic = stu.getStudentAllDictByAccount(stu.idToAccountStudent(str(id)))
     account = stu.idToAccountStudent(str(id))
     student = stu.getStudentAll(account)
-    print stu.getStudentEstimateRank(student)
+    name_list = []
+    score_list = []
+    rank_list = []
+    score = getStudentEstimateScore(student)
     rank, sum_rank = stu.getStudentEstimateRank(student)
-    dict = {'name': student_dic[Student.REAL_NAME],
-            'score': getStudentEstimateScore(student),
-            'rank1': rank,
-            'rank11':sum_rank,
-            }
-    return render(request, 'student/rank.html', {'dict': dict, 'id':id})
 
+    name_list.append(u'总成绩（审核通过）')
+    score_list.append(score)
+    rank_list.append(rank + '/' + sum_rank)
 
+    estimate_dic = eval(getattr(student, 'estimateScore', '{}'))
+    listall = [{'name':u'总成绩（审核通过）', 'score':score, 'rank':rank + '/' + sum_rank}]
+    for item in estimate_dic.keys():
+        if 'shenhe' not in estimate_dic[item].keys():
+            continue
+        item_score = stu.getStudentEstimateScore_Every(student, item)
+        item_rank, item_sum = stu.getStudentEstimateRank_Every(student, item)
+        listall.append({'name':item, 'score':item_score, 'rank':item_rank + '/' + item_sum})
+
+    '''
+    namelist是试题名称的列表，例如[2016_北京_理综]
+    scorelist是试题得分的列表，例如[90]
+    ranklist是试题的排名的列表， 例如[1/34]
+    '''
+
+    return render(request, 'student/rank.html', {'dict': listall, 'id': id})
+
+@check_identity('student')
 def student_admit(request):
     '''
 
     后端需要获取录取信息传给前端
     '''
-    id = request.session.get('user_id', -1)
+    id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
 
@@ -73,12 +224,12 @@ def student_admit(request):
     return render(request,
                   'student/admit.html', {'admition': admition, 'id':id})
 
-
+@check_identity('student')
 def student_contact(request):
     '''
                 后端需要在这里改代码，从数据库读取正确的dict，并返回
     '''
-    id = request.session.get('user_id', -1)
+    id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     teacher_list = tch.getAllInTeacher()
@@ -109,15 +260,15 @@ def student_contact(request):
 
 def student_logout(request):
     try:
-        del request.session['user_id']
+        del request.session['student_id']
     except KeyError:
         pass
     return redirect('/login')
 
 @csrf_exempt
 def profile(request):
-
-    id = request.session.get('user_id', -1)
+    weichatopenid(request)
+    id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     account = stu.idToAccountStudent(str(id))
@@ -193,11 +344,17 @@ def profile(request):
             'realScore': int(info_dict.get('realScore')),
             # 'relTeacher': info_dict.get('relTeacher'),
             'comment': info_dict.get('comment'),
+
+            'password': info_dict.get('comment'),
         }
         # print 'wocao ni mei', dic
-
-        birth_list = info_dict['birth'].split('/')
-        dic['birth'] = datetime.date(int(birth_list[2]), int(birth_list[0]), int(birth_list[1]))
+        try:
+            birth_list = info_dict['birth'].split('/')
+            dic['birth'] = datetime.date(int(birth_list[2]), int(birth_list[0]), int(birth_list[1]))
+        except:
+            dic['success'] = 'N'
+            dic['message'] = u'日期设置不正确，请重新输入'
+            return JsonResponse(dic)
 
         stu.setStudent(account, Student.REAL_NAME, dic['name'])
         stu.setStudent(account, Student.ID_NUMBER, dic['identification'])
@@ -293,20 +450,26 @@ def profile(request):
         for item in all_group:
             dic['grouplist'].append(back.getGroupAllDictByObject(item)['id'])
         print 'jiao baba', dic
+        if 'auth' in request.GET:
+            dic['auth'] = '0'
         return render(request, 'student/userinfo.html', {'dict': dic, 'id':id})
 
+
+
 @csrf_exempt
+@check_identity('student')
 def get_all_tests(request):
     """
         后端应在此处返回该学生全部可以做的题目名称。名称无重复
         学生id由request.session中获取，同其他函数里的写法
         然后放到下面样例写好的dic的'tests'键对应的列表值中
     """
-    id = request.session.get('user_id', -1)
+    id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     print id
     account = stu.idToAccountStudent(str(id))
+    student = stu.getStudentAll(account)
     stu_dic = stu.getStudentAllDictByAccount(account)
     year = datetime.datetime.now().strftime("%Y")
 
@@ -335,12 +498,28 @@ def get_all_tests(request):
                             str(SUBJECT_LIST[pic_dic[Picture.SUBJECT]]))
         ret_list.append(tao)
 
+    done_list = []
+    for item in ret_list:
+        shenhe_fen = int(stu.getStudentEstimateScore_Every(student, item))
+        no_shenhe_fen = int(stu.getStudentEstimateScore_Every_no_shenhe(student, item))
+        print shenhe_fen, no_shenhe_fen
+        if no_shenhe_fen == 0:
+            done_list.append(u'未测试')
+        else:
+            if shenhe_fen != no_shenhe_fen:
+                done_list.append(u'测试未审核, 得分:%s'%(str(no_shenhe_fen)))
+            else:
+                done_list.append(u'已审核, 得分:%s'%(str(shenhe_fen)))
 
-    dic = {'tests' : ret_list}
+    print 'done ', done_list
+    dic = {'tests' : ret_list,
+           'done_list' : done_list}
+    # 后端需要增加一个键值对，done_list存储是否估分，长度和ret_list一样
 
     return JsonResponse(dic)
 
 @csrf_exempt
+@check_identity('student')
 def do_test(request):
     test_name = request.GET.get('test_name')
     t = get_template('student/do_test.html')
@@ -349,6 +528,7 @@ def do_test(request):
     # return HttpResponse(t.render({}))
 
 @csrf_exempt
+@check_identity('student')
 def get_problem_list(request):
     """
         后端应在此处返回某套题内包含的题目id列表，且需要按顺序
@@ -385,6 +565,7 @@ def get_problem_list(request):
     return JsonResponse(dic)
 
 @csrf_exempt
+@check_identity('student')
 def get_problem_info(request):
     """
         后端应在此处返回某道试题的全部信息，信息应转化为字符串
@@ -409,6 +590,7 @@ def get_problem_info(request):
     return JsonResponse({'problem_info': dic})
 
 @csrf_exempt
+@check_identity('student')
 def submit_test_result(request):
     """
         后端应在此处保存这次答题的结果
@@ -416,7 +598,7 @@ def submit_test_result(request):
         时间数据、分数数据、试题名称见下面样例
         返回空Json即可
     """
-    id = request.session.get('user_id', -1)
+    id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')
     print id
@@ -432,9 +614,110 @@ def submit_test_result(request):
         stu_dic = eval(tmp)
     except:
         stu_dic = {}
-    stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list)}
+    stu_dic[test_name] = {'time': sum(time_list), 'score': sum(score_list), 'every_time':time_list, 'every_score':score_list}
     stu.setStudent(account, Student.ESTIMATE_SCORE, str(stu_dic))
     return JsonResponse({})
 
+@check_identity('student')
+def get_last_estimate_score(stu_id, test_id):
+    if type(stu_id) == str:
+        stu_id = int(stu_id)
+    stu_account = stu.idToAccountStudent(stu_id)
+    try:
+        estimate_info = stu.getStudent(stu_account, Student.ESTIMATE_SCORE)
+    except:
+        estimate_info = '{}'
+    estimate_info = eval(estimate_info)
+    try:
+        last_score = estimate_info[test_id]['score']
+    except:
+        last_score = 0
+    return last_score
 
 
+@csrf_exempt
+@check_identity('student')
+def message(request):
+    t = get_template('student/message.html')
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
+
+@csrf_exempt
+def get_all_message(request):
+    """
+        后端应在此处返回某个学生可以看见的所有消息的列表，需要的信息见下面的样例
+    """
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    id = int(id)
+    dic = []
+    notice_list = back.getNoticebyDict({})
+    # print 'notice_list', len(notice_list)
+    for notice in notice_list:
+        info_dic = back.getNoticeAllDictByObject(notice)
+        print info_dic
+        try:
+            rece_stu_list = eval(info_dic[Notice.RECEIVE_STU])
+        except:
+            print 'bug'
+            rece_stu_list = []
+
+        if id in rece_stu_list or str(id) in rece_stu_list:
+            send_tch_account = tch.idToAccountTeacher(int(info_dic[Notice.TEACHER_ID]))
+            send_tch_name = tch.getTeacher(send_tch_account, Teacher.REAL_NAME)
+            read_state = u'未读'
+            try:
+                stu_readed_list = eval(stu.getStudent(stu.idToAccountStudent(id), Student.READED))
+            except:
+                stu_readed_list = []
+            if info_dic[Notice.ID] in stu_readed_list:
+                read_state = u'已读'
+
+
+            tmp_dic = {'sender': send_tch_name,
+                       'title': info_dic[Notice.TITLE],
+                       'state': read_state,
+                       'message_id':info_dic[Notice.ID]}
+            dic.append(tmp_dic)
+    ret = list(reversed(dic))
+    return JsonResponse(ret, safe=False)
+
+
+@csrf_exempt
+def get_message_info(request):
+    """
+        后端应在此处返回某个消息的详细信息，需要的信息见下面的样例
+    """
+    # print request.POST
+    # print 'message id',request.POST.get('message_id')
+    message_id = int(request.POST.get('message_id', -1))
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    id = int(id)
+
+    stu_readed_list = eval(stu.getStudent(stu.idToAccountStudent(id), Student.READED))
+    if message_id not in stu_readed_list:
+        stu_readed_list.append(message_id)
+
+    stu.setStudent(stu.idToAccountStudent(id), Student.READED, stu_readed_list)
+
+
+
+    dic = []
+    notice = back.getNoticebyDict({Notice.ID: message_id})[0]
+    info_dic = back.getNoticeAllDictByObject(notice)
+    send_tch_account = tch.idToAccountTeacher(int(info_dic[Notice.TEACHER_ID]))
+    send_tch_name = tch.getTeacher(send_tch_account, Teacher.REAL_NAME)
+    dic = {'sender': send_tch_name,
+           'title': info_dic[Notice.TITLE],
+           # 'time': info_dic[Notice.SEND_DATE].strftime("%Y-%m-%d %H:%I:%S"),
+           'time': info_dic[Notice.SEND_DATE].replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
+           'text': info_dic[Notice.TEXT]}
+    # print dic
+    return JsonResponse(dic)

@@ -6,9 +6,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.xls
+*.pic
 # database file
 *.sqlite3
-
+*.pic
 # file for test
 
 

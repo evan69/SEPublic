@@ -26,8 +26,11 @@
 
   <div id="wrapper">
     {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
+
    <div id="page-wrapper">
     <div class="main">
+ <h1 class="w3layouts_head" style="color: black">{% if dict.auth == '0' %}你已无权限访问其他页面，请联系老师{% endif %}</h1>
+
      <h1 class="w3layouts_head" style="color: black">{{dict.user_name}}个人信息</h1>
      <div class="w3layouts_main_grid">
       <form action="#" class="w3_form_post">
@@ -39,12 +42,12 @@
 
         <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>估计分<i>:</i></label>
-         <input readonly="readonly" id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" />
+         <input readonly id="estimateScore" type="text" value="{{dict.estimateScore}}" required="" style="background-color: #9F9FA0" />
         </span>
        </div>
         <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>估计分排名<i>:</i></label>
-         <input readonly="readonly" id="estimateRank" type="text" value="{{dict.estimateRank}}" required="" />
+         <input readonly id="estimateRank" type="text" value="{{dict.estimateRank}}" required=""  style="background-color: #9F9FA0"/>
         </span>
        </div>
 
@@ -54,7 +57,7 @@
        </div>
        <div class="w3_agileits_main_grid w3l_main_grid">
         <span class="agileits_grid"> <label>性别<i>:</i></label>
- <select class="form-control" id="sex" name="sex">
+ <select  id="sex" name="sex">
                 {% for item in dict.sex.sexlist %}
                    {% if forloop.counter0 == dict.sex.sex %}
                          <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
@@ -256,56 +259,8 @@
         </span>
        </div>
        <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>一模成绩<i>:</i></label>
-         <input type="text" id="testScore1" value="{{dict.testScoreList.0}}"  placeholder="一模成绩" required="" />
-        </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>一模排名<i>:</i></label>
-         <input type="text" id="rank1" value="{{dict.rankList.0}}"  placeholder="名次" required="" style="
-    width: 36.4%;
-"/>
-         <input type="text" id="rank11" value="{{dict.sumNumberList.0}}"  placeholder="总人数" required="" style="
-    width: 36.4%;
-"/>
-        </span>
-       </div>
-
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>二模成绩<i>:</i></label>
-         <input type="text" id="testScore2" value="{{dict.testScoreList.1}}"  placeholder="二模成绩" required="" /> </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>二模排名<i>:</i></label>
-         <input type="text" id="rank2" value="{{dict.rankList.1}}"  placeholder="名次" required="" style="
-    width: 36.4%;
-"/>
-         <input type="text" id="rank22" value="{{dict.sumNumberList.1}}"  placeholder="总人数" required="" style="
-    width: 36.4%;
-"/>
-        </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>三模成绩<i>:</i></label>
-         <input type="text" id="testScore3" value="{{dict.testScoreList.2}}"  placeholder="三模成绩" required="" /> </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>三模排名<i>:</i></label>
-         <input type="text" id="rank3" value="{{dict.rankList.2}}"  placeholder="名次" required="" style="
-    width: 36.4%;
-"/>
-         <input type="text" id="rank33" value="{{dict.sumNumberList.2}}"  placeholder="总人数" required="" style="
-    width: 36.4%;
-"/>
-        </span>
-       </div>
-       <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>实考分<i>:</i></label>
          <input type="text" id="realScore" value="{{dict.realScore}}"  placeholder="实考分" required="" /> </span>
-       </div>
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>对应老师<i>:</i></label>
-         <input id="relTeacher" readonly="readonly" value="{{dict.relTeacher}}" type="text"  placeholder="对应老师" required="" /> </span>
        </div>
        <div class="w3_agile_main_grid">
         <span class="agile_grid"> <label>修改密码<i>:</i></label>
@@ -319,12 +274,6 @@
 
 
 
-       <div class="w3_agile_main_grid">
-        <span class="agile_grid"> <label>备注<i>:</i></label>
-        <textarea type="text" class="form-control" id="comment" name="comment" rows="10" placeholder="备注信息">{{dict.comment}}</textarea>
-
-        </span>
-       </div>
 
        <div class="w3_main_grid">
         <div class="w3_main_grid_left">
@@ -356,22 +305,41 @@
 
   <script>
       $(document).ready(function(){
+
           $('#link_profile').attr("href", "#");
           $("#save").click(function(){
-              console.log("student_save");
+              document.getElementById("save").disabled = true;
            var password1 = $("#password1").val();
             var password2 = $("#password2").val();
             if (password1 != password2){
              alert("密码不一致，请重新输入");
              return;
             }
+          var r = /^[0-9]*$/　　//正整数
+
+            if (password1.length < 4 && password1.length > 0){
+                alert("密码长度必须大于4");
+                return;
+            }
             var name = $("#name").val();
             var identification = $("#identification").val();
+              if (identification.length != 18){
+                  alert("请输入18位身份证号");
+                  return;
+              }
             var province = $("#category1").val();
             var sex = $("#sex").val();
             var nation = $("#nation").val();
             var birth = $("#datepicker").val();
             var phone = $("#phone").val();
+              if (phone.length != 11){
+                  alert("请输入11位手机号");
+                  return;
+              }
+                if (r.test(phone) == false){
+                alert("手机号中只能包含数字");
+                  return;
+            }
            var wenli = $("#priority").val();
             var email = $("#email").val();
 
@@ -380,8 +348,25 @@
 
             var dadName = $("#dadName").val();
             var dadPhone = $("#dadPhone").val();
+                            if (dadPhone.length != 11){
+                  alert("请输入11位手机号");
+                  return;
+              }
+  if (r.test(dadPhone) == false){
+                alert("手机号中只能包含数字");
+                  return;
+            }
             var momName = $("#momName").val();
             var momPhone = $("#momPhone").val();
+                            if (momPhone.length != 11){
+                  alert("请输入11位手机号");
+                  return;
+              }
+            //str为你要判断的字符 执行返回结果 true 或 false
+              if (r.test(momPhone) == false){
+                alert("手机号中只能包含数字");
+                  return;
+            }
             var school = $("#school").val();
 
             var stu_class = $("#stu_class").val();
@@ -393,21 +378,21 @@
             var majorSelect4 = $("#majorSelect4").val();
             var majorSelect5 = $("#majorSelect5").val();
             var majorSelect6 = $("#majorSelect6").val();
-            var testScore1 = $("#testScore1").val();
-            var testScore2 = $("#testScore2").val();
-            var testScore3 = $("#testScore3").val();
-            var rank1 = $("#rank1").val();
-            var rank11 = $("#rank11").val();
-            var rank2 = $("#rank2").val();
-            var rank22 = $("#rank22").val();
-            var rank3 = $("#rank3").val();
-            var rank33 = $("#rank33").val();
+       //     var testScore1 = $("#testScore1").val();
+       //     var testScore2 = $("#testScore2").val();
+        //    var testScore3 = $("#testScore3").val();
+        //    var rank1 = $("#rank1").val();
+         //   var rank11 = $("#rank11").val();
+          //  var rank2 = $("#rank2").val();
+           // var rank22 = $("#rank22").val();
+            //var rank3 = $("#rank3").val();
+            //var rank33 = $("#rank33").val();
             var estimateScore = $("#estimateScore").val();
            var estimateRank = $("#estimateRank").val();
 
             var realScore = $("#realScore").val();
             //var admissionStatus = $("#admissionStatus").val();
-            var relTeacher = $("#relTeacher").val();
+         //   var relTeacher = $("#relTeacher").val();
        //     var relVolunteer = $("#relVolunteer").val();
             var comment= $("#comment").val();
 /*alert(
@@ -458,6 +443,7 @@
                      'sex':sex,
                      'nation':nation,
                      'birth':birth,
+                        'password':password1,
              'province' :province,
              'phone' : phone,
              'email' : email,
@@ -477,25 +463,25 @@
              'majorSelect4' : majorSelect4,
              'majorSelect5' : majorSelect5,
              'majorSelect6' : majorSelect6,
-             'testScore1' : testScore1,
-             'testScore2' : testScore2,
-             'testScore3' : testScore3,
-             'rank1' : rank1,
-             'rank11' : rank11,
-             'rank2' : rank2,
-             'rank22' : rank22,
-             'rank3' : rank3,
-             'rank33' : rank33,
+           //  'testScore1' : testScore1,
+            // 'testScore2' : testScore2,
+             //'testScore3' : testScore3,
+             //'rank1' : rank1,
+             //'rank11' : rank11,
+             //'rank2' : rank2,
+             //'rank22' : rank22,
+             //'rank3' : rank3,
+             //'rank33' : rank33,
              'estimateScore' : estimateScore,
                      'estimateRank' : estimateRank,
              'realScore' : realScore,
            //  'admissionStatus' : admissionStatus,
-             'relTeacher': relTeacher,
+          //   'relTeacher': relTeacher,
          //    'relVolunteer' : relVolunteer,
-             'comment': comment,
+          //   'comment': comment,
                     },
                     function(profileDict){
-
+document.getElementById("save").disabled = false;
                         for (key_i in profileDict)
                             $("#"+key_i).val(profileDict[key_i]);
                         alert("修改成功");

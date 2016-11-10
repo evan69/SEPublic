@@ -22,9 +22,9 @@
                             高考招生系统教师端 <small>您好，<span id='namefield'></span></small>
                         </h1>
                     </div>
-                </div> 
+                </div>
 				<!--row-->
-				
+
 				<div class= "panel panel-default">
 					<div class = "panel-body">
 						<form class="form-search" id = "form">
@@ -32,7 +32,7 @@
 								<div class="col-md-2">
 									<label class = "control-label">预置用户名：</label>
 								</div>
-								<div class="col-md-3">								
+								<div class="col-md-3">
 									<input type="text"  id="username" name = "username"/>
 								</div>
 							</div>
@@ -41,14 +41,8 @@
 								<div class="col-md-2">
 									<label class = "control-label">预置密码：</label>
 								</div>
-								<div class="col-md-3">								
+								<div class="col-md-3">
 									<input class="password" type="password" id="psw" name = "psw"/>
-									<div class="password-meter">
-										<div class="password-meter-message"> </div>
-										<div class="password-meter-bg">
-											<div class="password-meter-bar"></div>
-										</div>
-									</div>
 								</div>
 							</div>
 							<div class="row"><p></div>
@@ -56,7 +50,7 @@
 								<div class="col-md-2">
 									<label class = "control-label">确认预置密码：</label>
 								</div>
-								<div class="col-md-3">								
+								<div class="col-md-3">
 									<input type="password" id="psw_confirm" name = "psw_confirm"/>
 								</div>
 							</div>
@@ -66,10 +60,10 @@
 									<label>*用户名必须由四位以上的字母或数字组成</label>
 								</div>
 								<div class="col-md-1">
-									<button type="submit" class="btn btn-primary" id = "add">Add</button>
+									<button type="submit" class="btn btn-primary" id = "add">添加</button>
 								</div>
 							</div>
-							
+
 						</form>
 					</div>
 				</div>
@@ -80,7 +74,7 @@
          <!-- /. PAGE WRAPPER  -->
     </div>
      <!-- /. WRAPPER  -->
-    
+
     {% include 'teacher/include/jsinclude.html' %}
 
 		<script src="{% static 'jquery-validation-1.14.0/dist/jquery.validate.min.js' %}"></script>
@@ -147,7 +141,7 @@
 								}
 						}
 				});
-				$.post("/backend/get_teacher_name_by_id/", {'id':{{id}}}, function(ret){
+				$.post("/backend/get_teacher_name_by_id/", {}, function(ret){
 				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
@@ -155,9 +149,9 @@
         $('#add_volunteer').attr("href", "#");
 				$('#info').hide();
 				//$('#add').click(formSubmit);
-				
+
 			});
-			
+
 			function formSubmit(){
 				var username = $('#username').val();
 				var password = $('#psw').val();

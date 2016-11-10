@@ -6,22 +6,31 @@ from django.views.decorators.csrf import csrf_exempt
 from xml.etree import ElementTree as ET
 from django.utils.encoding import smart_str, smart_unicode
 import hashlib
+import wechat_api as we
 import urllib
 import urllib2
 import json
 import time
 import sys
 import requests
+
+#from gkwebsite.database.models import WechatURL
+
 reload(sys)
 sys.setdefaultencoding('UTF-8')
+
+sys.path.append("../")
+import database.backend as back
+from database.models import *
 
 
 Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
-#Appid = "wxddbda149c7afb981"
-#Appsecret = "29473a0ef9f517ae1d1496fc707d0774"
 token_dic = {'last_time': 0, 'access_token': ""}
+#server_url = "http://gaokao.northeurope.cloudapp.azure.com/"
+server_url = "http://59.66.131.171/"
+#server_url = 'http://59.66.131.87/'
 
 
 @csrf_exempt
@@ -70,17 +79,6 @@ def token():
     if delt > 3600:
         get_token()
 
-'''def get_ip():
-    urls = "https://api.weixin.qq.com/cgi-bin/getcallbackip"
-    para = {"access_token": token_dic["access_token"]}
-    para = urllib.urlencode(para)
-    html = urllib.urlopen(urls, para)
-    result = html.read()
-    if result.has_key("ip_list"):
-        if result["ip_list"] == ["127.0.0.1", "127.0.0.1"]:
-            return True
-    return False
-'''
 
 def xml2Dic(xmlContent):
     dic = {}
@@ -126,26 +124,37 @@ def handleText(msg):
     resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
     if msg['Content'] == u'注册'or msg['Content'] == u'登录':
         # resultStr = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
-        login_url = "http://59.66.131.171/login/"
+        #login_url = "http://59.66.131.171/login/"
+        '''login_url = we.authority("login")
+        login_url = we.authority("login")
         tmp = u'点击url进入注册/登录界面' + login_url
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
+        resultStr = send_pic_text(msg, "login")
     elif msg['Content'] == u'个人信息':
-        login_url = "http://59.66.131.171/login/"
+        #login_url = "http://59.66.131.171/login/"
+        '''login_url = we.authority("profile")
+        login_url = we.authority("profile")
         tmp = u'点击url查看个人信息'+ login_url
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
+        resultStr = send_pic_text(msg, "profile")
     elif msg['Content'] == u'估分':
-        login_url = "http://59.66.131.171/login/"
+        #login_url = "http://59.66.131.171/login/"
+        '''login_url = we.authority("score")
+        login_url = we.authority("score")
         tmp = u'点击url进入估分系统'+ login_url
         resultStr = resultStr % (
-            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
+            msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)'''
+        resultStr = send_pic_text(msg, "score")
     elif msg['Content'] == u'关键词':
-        tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统\n回复更新，查看最新推送"
+        tmp = u"回复关键词查看相应关键词\n回复注册，进入注册界面\n回复登录，进入登录界面\n回复个人信息，查看个人资料\n回复估分，进入估分系统\n回复更新，查看最新推送\n回复历史消息，查看近期推送"
         resultStr = resultStr % (
             msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'text', tmp)
     elif msg['Content'] == u'更新':
-        resultStr = send_pic_text(msg)
+        resultStr = send_pic_text(msg, "update")
+    elif msg['Content'] == u'历史消息':
+        resultStr = send_pic_text_many(msg)
     else:
         tmp = u'TT暂不支持该项功能，回复关键词试试看'
         resultStr = resultStr % (
@@ -158,7 +167,7 @@ def createMenu():
     token()
     url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s" % token_dic['access_token']
 
-    data = '''{
+    data = {
         "button": [
             {
                 "name": "基本功能",
@@ -167,7 +176,7 @@ def createMenu():
                         "type": "view",
                         "name": "登录",
 
-                        "url": "http://59.66.131.171/login/"
+                        "url": we.authority("login")
 
                     },
                     {
@@ -175,7 +184,7 @@ def createMenu():
 
                         "name": "注册",
 
-                        "url": "http://59.66.131.171/login/"
+                        "url": we.authority("login")
 
                     }]
             },
@@ -184,7 +193,7 @@ def createMenu():
 
                 "name": "估分",
 
-                "url": "http://59.66.131.171/login/"
+                "url": we.authority("score")
 
             },
             {
@@ -192,43 +201,90 @@ def createMenu():
 
                 "name": "个人信息",
 
-                "url": "http://59.66.131.171/login/"
+                "url": we.authority("profile")
 
 
             }
         ]
 
-    }'''
-    request = urllib2.urlopen(url, data.encode('utf-8'))
-
-# send text_msg to all users, wechat don't support this function now
-'''def send_textMsg(msg):
-    print "send_textMsg"
-    token()
-    url = "https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s" % token_dic['access_token']
-    data = {
-        "filter": {
-            "is_to_all": True
-        },
-        "text": {
-            "content": msg
-        },
-        "msgtype": "text"
     }
-    r = requests.post(url=url, data=json.dumps(data, ensure_ascii=False, indent=2))
-    result = r.json()
-    print result
-'''
+    #request = urllib2.urlopen(url, data.encode('utf-8'))
+    #print data
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('encoding', 'utf-8')
+    response = urllib2.urlopen(req, json.dumps(data, ensure_ascii=False))
+    result = response.read()
+    #print result
+    return HttpResponse(result)
 
-def send_pic_text(msg):
+
+
+def send_pic_text(msg,type):
     newshead = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType>\
     <ArticleCount>%s</ArticleCount><Articles>"
     newsbody = "<item><Title><![CDATA[%s]]></Title><Description><![CDATA[%s]]></Description><PicUrl><![CDATA[%s]]></PicUrl><Url><![CDATA[%s]]></Url></item>"
     newstail = "</Articles></xml>"
-    picurl = "http://statics.xiumi.us/xmi/rc/azY5/i/390486cc423f22d66ac517e7267a790b-sz_66475.jpg"
-    testurl = "http://r.xiumi.us/board/v3/26Aaa/2801910"
+    index_pic = ""
+    title = ""
+    abstract = ""
+    picurl = ""
+    texturl = ""
+    if type == "update":
+        content = back.getLastOneWechatURL()
+        if content == None:
+            title = u'尚无内容'
+            #texturl = server_url + 'login/'
+        else:
+            title = content[WechatURL.TITLE]
+            abstract = content[WechatURL.TEXT]
+            picurl = content[WechatURL.PICTURE_URL]
+            texturl = content[WechatURL.MESSAGE_URL]
+    elif type == "login":
+        picurl = index_pic
+        title = u'点击进入注册或登录界面'
+        texturl = we.authority("login")
+        print texturl
+    elif type == "profile":
+        picurl = index_pic
+        title = u'点击查看个人信息'
+        texturl = we.authority("profile")
+    elif type == "score" :
+        picurl = index_pic
+        title = u'点击进入估分'
+        texturl = we.authority("score")
+    #testurl = "http://r.xiumi.us/board/v3/26Aaa/2801910"
     sendhead = newshead % (msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'news', '1')
-    sendbody = newsbody % (u'五道口的面包房', u'测试图文推送功能', picurl, testurl)
+    sendbody = newsbody % (title, abstract, picurl, texturl)
     sendtail = newstail
     resStr = sendhead + sendbody + sendtail
     return resStr
+
+
+def send_pic_text_many(msg):
+    newshead = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType>\
+       <ArticleCount>%s</ArticleCount><Articles>"
+    newsbody = "<item><Title><![CDATA[%s]]></Title><Description><![CDATA[%s]]></Description><PicUrl><![CDATA[%s]]></PicUrl><Url><![CDATA[%s]]></Url></item>"
+    newstail = "</Articles></xml>"
+    all_content = back.getLastTenWechatURL()
+    num = len(all_content)
+    sendhead = newshead % (msg['FromUserName'], msg['ToUserName'], str(int(time.time())), 'news', str(num))
+    if len == 0:
+        title = u'无消息'
+        abstract = ""
+        picurl = ""
+        texturl = ""
+        sendbody = newsbody % (title, abstract, picurl, texturl)
+        resStr = sendhead + sendbody + newstail
+        return resStr
+    else:
+        sendbody = ""
+        for content in all_content:
+            title = content[WechatURL.TITLE]
+            abstract = content[WechatURL.TEXT]
+            picurl = content[WechatURL.PICTURE_URL]
+            texturl = content[WechatURL.MESSAGE_URL]
+            sendbody = sendbody + newsbody % (title, abstract, picurl, texturl)
+        resStr = sendhead + sendbody + newstail
+        return resStr
+

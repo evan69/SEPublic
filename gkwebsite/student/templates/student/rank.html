@@ -18,7 +18,27 @@
 
 								<div class="row">
 										<div class="col-md-12">
-												<h1 class="page-header">{{dict.name}}同学你的成绩是{{dict.score}}，排名是{{dict.rank1}}/{{dict.rank11}}</h1>
+											<table class="table table-hover" style="text-align: center">
+                      <thead style="text-align: center">
+                        <tr style="text-align: center">
+                          <th style="text-align: center">科目</th>
+                          <th style="text-align: center">分数</th>
+                          <th style="text-align: center">排名</th>
+                        </tr>
+                      </thead>
+                      <tbody id="test_list">
+                      {% for item in dict %}
+                   <tr style="text-align: center">
+
+                          <td style="text-align: center">{{item.name}}</td>
+                          <td style="text-align: center">{{item.score}}</td>
+                          <td style="text-align: center">{{item.rank}}</td>
+                        </tr>
+
+               {% endfor %}
+                      </tbody>
+                    </table>
+
 										</div>
 								</div>
 				

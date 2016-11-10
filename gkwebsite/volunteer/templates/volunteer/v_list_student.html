@@ -62,54 +62,6 @@
 										</tr>
 									</thead>
 									<tbody id="student_list">
-										<!--tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td>白云仁</td>
-											<td>男</td>
-											<td>四川</td>
-											<td>绵阳南山中学</td>
-											<td>410203199512301230</td>
-											<td>
-											<button type="button" class = "btn btn-info btn-xs">查看</button>
-											<button type="button" class = "btn btn-success btn-xs">编辑</button>
-											<button type="button" class = "btn btn-danger btn-xs">删除</button>
-											</td>
-										</tr-->
 									</tbody>
 								</table>
 							</div>
@@ -167,88 +119,22 @@
 		<script>
 			var list_start_pos = 0;
 			var user_array = [];
-			//console.log('hehe');
-			function show_list(startnum){
-			    console.log('hehe');
+			function show_list(){
 				var tag1, tag2, tag3;
 				var listitem="";
-				for(var i = startnum; i < user_array.length; ++i){
+				for(var i = 0; i < user_array.length; ++i){
 					tag1 = String(i)+'_A';
 					tag2 = String(i)+'_B';
 					tag3 = String(i)+'_C';
 					listitems="<tr><td>"+user_array[i]['name']+"</td><td>"+user_array[i]['gender']+"</td><td>"+user_array[i]['source']+"</td><td>"+user_array[i]['school']+"</td><td>"+user_array[i]['id_card']+"</td>";
 					listitems+="<td><button type=\"button\" id=\""+tag1+"\" class = \"btn btn-info btn-xs\">查看详情</button>\n";
-					//listitems+="<button type=\"button\" id=\""+tag2+"\" class = \"btn btn-success btn-xs\">编辑</button>\n";
-					//listitems+="<button type=\"button\" id=\""+tag3+"\" class = \"btn btn-danger btn-xs\">删除</button></td></tr>";
 					$('#student_list').append(listitems);
 					$('#'+tag1).click(function(){
-					    console.log('hehe###2');
-					    //alert('cao');
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						//No need to examine the suffix since we are dealing with 'tag1'
-						/*
-						var type = parse[1];
-						switch(type.charAt(0)){
-							case 'A':
-								alert("Operation A at row #"+row);
-								break;
-							case 'B':
-								alert("Operation B at row #"+row);
-								break;
-							case 'C':
-								alert("Operation C at row #"+row);
-								break;
-						}
-						*/
-						var abs_pos=list_start_pos+row;
-						//alert("Operation:view at row #"+abs_pos+" ?id="+user_array[abs_pos]['id']);
-						//console.log('hehe$$$2');
-						window.location="/volunteer/student_info?stu_id="+user_array[abs_pos]['id'];
-						//$.post("/volunteer/student_info/", {'stu_id':user_array[abs_pos]['id']});
+						window.location="/volunteer/student_info?stu_id="+user_array[row]['id'];
 					});
-					/*
-					$('#'+tag2).click(function(){
-						var parse = this.id.split("_");
-						var row = parseInt(parse[0]);
-						//alert("Operation:edit at row #"+row);
-						var abs_pos=list_start_pos+row;
-						window.location="/teacher/student_info_edit?id="+user_array[abs_pos]['id'];
-					});
-					$('#'+tag3).click(function(){
-						var parse = this.id.split("_");
-						var row = parseInt(parse[0]);
-						alert("Operation:drop at row #"+row);
-						var abs_pos=list_start_pos+row;
-						$.post("/backend/remove_student_by_id/", {'id':user_array[abs_pos]['id']}, function(ret){
-						//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-							postreq($('#realName').val());
-						})
-					});
-					*/
-				}
-			}
-			function postreq(namestr){
-				if(namestr.length==0){
-					//TODO: request all
-					list_start_pos = 0;
-					$('#student_list').empty();
-					//access server and load matching records
-					$.post("/volunteer/student_list_all/", {}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-						user_array=ret;
-						show_list(list_start_pos);
-					})
-				}
-				else{
-					list_start_pos = 0;
-					$('#student_list').empty();
-					//access server and load matching records
-					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-						user_array=ret;
-						show_list(list_start_pos);
-					})
 				}
 			}
 			$(document).ready(function(){
@@ -261,14 +147,10 @@
 								}
 						}
 				});
-				//alert('hhe');
 				$.post("/volunteer/get_volunteer_name_by_id/", {'id':{{id}}}, function(ret){
 				//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 					$('#namefield').append(ret['name']);
 				})
-
-				var nameinit=$('#realName').val();
-				postreq(nameinit);
 
 				$('#search').click(function(){
 					var namestr=$('#realName').val();
@@ -276,11 +158,11 @@
 					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/volunteer/search_student_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
-						show_list(list_start_pos);
+						show_list();
 					})
 				});
+				$('#search').click();
 			});
 		</script>
 
