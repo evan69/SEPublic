@@ -212,6 +212,8 @@ def student_info_show(request):
         Student.EMAIL: stu_dic[Student.EMAIL],
         Student.DAD_PHONE: stu_dic[Student.DAD_PHONE],
         Student.MOM_PHONE: stu_dic[Student.MOM_PHONE],
+        Student.DAD_NAME: stu_dic[Student.DAD_NAME],
+        Student.MOM_NAME: stu_dic[Student.MOM_NAME],
 
         Student.TUTOR_NAME: stu_dic[Student.TUTOR_NAME],
         Student.TUTOR_PHONE: stu_dic[Student.TUTOR_PHONE],
