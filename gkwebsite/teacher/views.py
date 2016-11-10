@@ -182,11 +182,27 @@ def student_info_edit(request):
             'team4': info_dict.get('team4', '1'),
             'team5': info_dict.get('team5', '1'),
             'forbid': int(info_dict.get('forbid', '1')),
+
+            'name': info_dict.get('realName'),
+            'id_card': info_dict.get('idNumber'),
+            'sex': int(info_dict.get('sex')),
+            'nation': int(info_dict.get('nation')),
+            'birth':info_dict.get('birth'),
         }
 
         if info_dict.get('newcomment', '110').strip() == '':
             dic['comment'] = info_dict.get('comment', '110')
 
+        stu.setStudent(account, Student.REAL_NAME, dic['name'])
+        stu.setStudent(account, Student.ID_NUMBER, dic['id_card'])
+        stu.setStudent(account, Student.SEX, dic['sex'])
+        stu.setStudent(account, Student.NATION, dic['nation'])
+        try:
+            tmp = dic['birth'].split('-')
+            stu.setStudent(account, Student.BIRTH, datetime.date(int(tmp[0]),int(tmp[1]),int(tmp[2])))
+        except:
+            pass
+        print 'asdfasdfasdf-----'
         stu.setStudent(account, Student.TYPE, dic['type'])
         stu.setStudent(account, Student.PROVINCE, dic['province'])
         stu.setStudent(account, Student.PHONE, dic['phone'])
