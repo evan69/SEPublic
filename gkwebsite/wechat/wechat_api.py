@@ -20,7 +20,7 @@ Token = "zaoshuizaoqi"
 Appid = "wxd1c16a4667e24faf"
 Appsecret = "efe75bfad99903dff1ba7a783a354e71"
 #server_url = "https://gaokao.northeurope.cloudapp.azure.com/"
-server_url = "http://59.66.182.53/"
+server_url = "http://59.66.131.171/"
 #server_url = "http://59.66.131.87/"
 basic_scope = "snsapi_base"
 
@@ -37,6 +37,11 @@ def authority(type):
     #result = urllib2.urlopen(url)
     return url
 
+
+def add_authority(ret_url):
+    url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=%s&scope=%s&state=%s#wechat_redirect" % (
+    Appid, ret_url, "code", basic_scope, "1")
+    return url
 
 # get code
 def get_code(request):

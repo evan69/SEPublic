@@ -20,7 +20,8 @@ import database.backend as back
 import database.volunteer_backend as vol
 import time
 import pytz
-
+import wechat.wechat_api as we
+import database.student_backend as student_backend
 # Create your views here.
 
 
@@ -71,11 +72,57 @@ def back_to_profile(request, id):
     print '----------------*****--------'
     return redirect('/student/profile/?auth=0')
 
+'''
+    wechat login
+    by byr 161110
+'''
+def openid(request):
+    tmp = we.get_code(request)
+    #print "code: " + tmp[1]
+    if tmp[0] == True:
+        tmp_opneid = we.get_openid_byCode(tmp[1])
+        if tmp_opneid[0] == True:
+            open_id = tmp_opneid[1]
+            request.session['open_id'] = open_id
+            print "openid: " + open_id
+
+'''
+    wechat openid login
+    by byr 161110
+'''
+def weichatopenid(request):
+    if 'student_id' in request.session:
+        print "wocao-------1", request.session['student_id']
+
+    openid(request)
+    if 'student_id' in request.session:
+        print "wocao-------2", request.session['student_id']
+
+    if 'open_id' in request.session:
+        if 'student_id' in request.session:
+            print "wocao-------3", request.session['student_id']
+
+        open_id = request.session['open_id']
+        (login, id, username) = student_backend.checkStudentOpenID(open_id)
+        if 'student_id' in request.session:
+            print "wocao-------4", request.session['student_id']
+
+        if login:
+            print "$$$$$$$$$", id
+            request.session['student_id'] = int(id)
+            request.session['user_name'] = username
+
+
 def check_identity(identity):
     def decorator(func):
         def wrapper(request, *args, **kw):
             # 下面这空白的位置填session相应的id名
+            print '**********'
+            if 'student_id' in request.session:
+                print "wocao-------", request.session['student_id']
+            weichatopenid(request)
             identity_dic = {'student': 'student_id', 'volunteer': '', 'teacher': ''}
+            print identity, request.session.get(identity_dic[identity])
             id = int(request.session.get(identity_dic[identity]))
             if identity == 'student':
                 if stu.is_have_permission(id) == False:
@@ -92,6 +139,7 @@ def check_identity(identity):
 
 @check_identity('student')
 def student_center(request):
+    print 'zhuye#$%#$'
     t = get_template('student/center.html')
     id = request.session.get('student_id', -1)
     c = {'id': id}
@@ -203,7 +251,7 @@ def student_logout(request):
 
 @csrf_exempt
 def profile(request):
-
+    weichatopenid(request)
     id = request.session.get('student_id', -1)
     if id == -1:
         return HttpResponse('Access denied')

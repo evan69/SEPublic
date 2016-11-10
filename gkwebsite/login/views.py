@@ -24,21 +24,30 @@ import database.student_backend as student_backend
 import database.register_backend as reg
 import wechat.wechat_api as we
 from database.models import *
+
+'''
+    wechat login
+    by byr 161110
+'''
+def openid(request):
+    tmp = we.get_code(request)
+    #print "code: " + tmp[1]
+    if tmp[0] == True:
+        tmp_opneid = we.get_openid_byCode(tmp[1])
+        if tmp_opneid[0] == True:
+            open_id = tmp_opneid[1]
+            request.session['open_id'] = open_id
+            print "openid: " + open_id
+
 '''
     login & register 界面
     by byr 161003
 '''
-
 @csrf_exempt
 def login(request):
-    tmp = we.get_code(request)
-    #print "code: "+ tmp[1]
-    if tmp[0] == True:
-        tmp_opneid = we.get_openid_byCode(tmp[1])
-        if tmp_opneid[0] == True:
-            openid = tmp_opneid[1]
-            #print "openid: "+ openid
+    openid(request)
     return render(request, 'src/login.html')
+
 
 
 '''
@@ -64,7 +73,13 @@ def logincheck(request):
                     print ' student login'
                     (login, id) = student_backend.checkStudentPassword(username, password)
                     if login:
+                        if 'open_id' in request.session:
+                            stu_id = id
+                            account = student_backend.idToAccountStudent(stu_id)
+                            student_backend.setStudent(account, 'openid', request.session['open_id'])
+                            print "#############"
                         request.session['student_id'] = int(id)
+                        print 'student_id', id
                         request.session['user_name'] = username
                         #request.session['password'] = password
                         return redirect('/student/')
