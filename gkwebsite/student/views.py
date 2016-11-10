@@ -25,6 +25,22 @@ import database.student_backend as student_backend
 # Create your views here.
 
 
+def check_should_log_out(request, id):
+    total_seconds = 600 # 10min
+    account = stu.idToAccountStudent(id)
+    try:
+        new_time = stu.getStudent(account, Student.LAST_LOGIN_TIME)
+        this_time = time.strptime(request.session.get['login_time'], "%Y-%m-%d %H:%M:%S")
+        time_delta = (new_time - this_time).total_seconds()
+        if time_delta > total_seconds or time_delta < -total_seconds:
+            return redirect('/login/')
+        else:
+            return False
+    except:
+        return False
+
+
+
 def back_to_profile(request, id):
     account = stu.idToAccountStudent(id)
     stu_dic = stu.getStudentAllDictByAccount(account)
