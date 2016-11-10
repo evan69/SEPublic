@@ -76,31 +76,32 @@ def search_student(request):
     return HttpResponse(t.render(c))
 
 
-def student_list_all(request):
-    if 'volunteer_id' not in request.session.keys():
-        return redirect('/login/')
-    vol_id = request.session.get('volunteer_id')
-    vol_account = vol.idToAccountVolunteer(vol_id)
-    vol_student_id_list = vol.get_can_see_students(vol_id)
-    vol_student_account_list = []
-    for item in vol_student_id_list:
-        vol_student_account_list.append(stu.idToAccountStudent(item))
-    print 'sadfasdf', vol_student_account_list
-    if request.is_ajax() and request.method == 'POST':
-        t = []
-        for account in vol_student_account_list:
-            item = stu.getStudentAll(account)
-            stu_dic = stu.getStudentAllDictByAccount(account)
-            dic = {'id': stu_dic[Student.ID],
-                   'name': stu_dic[Student.REAL_NAME],
-                   'gender': stu_dic[Student.SEX]['sexlist'][stu_dic[Student.SEX]['sex']],
-                   'source': stu_dic[Student.PROVINCE]['provincelist'][stu_dic[Student.PROVINCE]['province']],
-                   'school': stu_dic[Student.SCHOOL],
-                   'id_card': stu_dic[Student.ID_NUMBER]}
-            t.append(dic)
-        return JsonResponse(t, safe=False)  # must use 'safe=False'
-    else:
-        return HttpResponse('Access denied.')
+# def student_list_all(request):
+#     if 'volunteer_id' not in request.session.keys():
+#         return redirect('/login/')
+#     vol_id = request.session.get('volunteer_id')
+#     vol_account = vol.idToAccountVolunteer(vol_id)
+#     vol_student_id_list = vol.get_can_see_students(vol_id)
+#     vol_student_account_list = []
+#     for item in vol_student_id_list:
+#         vol_student_account_list.append(stu.idToAccountStudent(item))
+#     # print 'sadfasdf--------------------------', vol_student_account_list
+#     if request.is_ajax() and request.method == 'POST':
+#         t = []
+#         for account in vol_student_account_list:
+#             item = stu.getStudentAll(account)
+#             stu_dic = stu.getStudentAllDictByAccount(account)
+#             dic = {'id': stu_dic[Student.ID],
+#                    'name': stu_dic[Student.REAL_NAME],
+#                    'gender': stu_dic[Student.SEX]['sexlist'][stu_dic[Student.SEX]['sex']],
+#                    'source': stu_dic[Student.PROVINCE]['provincelist'][stu_dic[Student.PROVINCE]['province']],
+#                    'school': stu_dic[Student.SCHOOL],
+#                    'id_card': stu_dic[Student.ID_NUMBER]}
+#             t.append(dic)
+#         print 'wocao', t
+#         return JsonResponse(t, safe=False)  # must use 'safe=False'
+#     else:
+#         return HttpResponse('Access denied.')
 
 
 def volunteer_search_student_by_name(request):
@@ -113,22 +114,29 @@ def volunteer_search_student_by_name(request):
     if request.is_ajax() and request.method == 'POST':
         name = request.POST.get('name')
         t = []
+
         vol_id = request.session.get('volunteer_id')
-        vol_account = vol.idToAccountVolunteer(vol_id)
-        vol_student_account_list = getattr(vol.getVolunteerAll(
-            vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
-        for account in vol_student_account_list:
-            item = stu.getStudentAll(account)
-            stu_dic = stu.getStudentAllDictByAccount(account)
-            dic = {'id': stu_dic[Student.ID],
-                   'name': stu_dic[Student.REAL_NAME],
-                   'gender': stu_dic[Student.SEX]['sexlist'][stu_dic[Student.SEX]['sex']],
-                   'source': stu_dic[Student.PROVINCE]['provincelist'][stu_dic[Student.PROVINCE]['province']],
-                   'school': stu_dic[Student.SCHOOL],
-                   'id_card': stu_dic[Student.ID_NUMBER]}
-            # 在名字为查询的名字或者什么没输的情况下才加
-            if (dic['name'] == name or name == ''):
+        vol_student_id_list = vol.get_can_see_students(vol_id)
+        vol_student_account_list = []
+        for item in vol_student_id_list:
+            vol_student_account_list.append(stu.idToAccountStudent(item))
+        # print 'sadfasdf--------------------------', vol_student_account_list
+        if request.is_ajax() and request.method == 'POST':
+            t = []
+            for account in vol_student_account_list:
+                item = stu.getStudentAll(account)
+                stu_dic = stu.getStudentAllDictByAccount(account)
+                if name.strip() != '' and name != stu_dic[Student.REAL_NAME]:
+                    continue
+                dic = {'id': stu_dic[Student.ID],
+                       'name': stu_dic[Student.REAL_NAME],
+                       'gender': stu_dic[Student.SEX]['sexlist'][stu_dic[Student.SEX]['sex']],
+                       'source': stu_dic[Student.PROVINCE]['provincelist'][stu_dic[Student.PROVINCE]['province']],
+                       'school': stu_dic[Student.SCHOOL],
+                       'id_card': stu_dic[Student.ID_NUMBER]}
                 t.append(dic)
+
+
         return JsonResponse(t, safe=False)  # must use 'safe=False'
     else:
         return HttpResponse('Access denied.')
@@ -183,11 +191,6 @@ def student_info_show(request):
     # 检查这个id是否应该让这个志愿者看到
     vol_id = request.session.get('volunteer_id')
     vol_account = vol.idToAccountVolunteer(vol_id)
-    vol_student_account_list = getattr(vol.getVolunteerAll(
-        vol_account), Volunteer.STUDENT_ACCOUNT_LIST)
-    if (stu.idToAccountStudent(str(id)) not in vol_student_account_list):
-        return HttpResponse('Access denied')
-
     account = stu.idToAccountStudent(str(id))
     student = stu.getStudentAll(account)
     stu_dic = stu.getStudentAllDictByAccount(account)
@@ -198,8 +201,7 @@ def student_info_show(request):
         Student.BIRTH: stu_dic[Student.BIRTH].strftime("%Y-%m-%d"),
         Student.ID_NUMBER: stu_dic[Student.ID_NUMBER],
 
-        # Student.TYPE:
-        # stu_dic[Student.NATION]['typelist'][stu_dic[Student.NATION]['type']],
+        Student.TYPE: stu_dic[Student.TYPE]['typelist'][stu_dic[Student.TYPE]['type']],
         Student.SEX: stu_dic[Student.SEX]['sexlist'][stu_dic[Student.SEX]['sex']],
         Student.NATION: stu_dic[Student.NATION]['nationlist'][stu_dic[Student.NATION]['nation']],
         Student.SCHOOL: stu_dic[Student.SCHOOL],

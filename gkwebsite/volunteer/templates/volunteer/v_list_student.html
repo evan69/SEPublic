@@ -119,10 +119,10 @@
 		<script>
 			var list_start_pos = 0;
 			var user_array = [];
-			function show_list(startnum){
+			function show_list(){
 				var tag1, tag2, tag3;
 				var listitem="";
-				for(var i = startnum; i < user_array.length; ++i){
+				for(var i = 0; i < user_array.length; ++i){
 					tag1 = String(i)+'_A';
 					tag2 = String(i)+'_B';
 					tag3 = String(i)+'_C';
@@ -133,32 +133,8 @@
 						var parse = this.id.split("_");
 						var row = parseInt(parse[0]);
 						//No need to examine the suffix since we are dealing with 'tag1'
-						var abs_pos=list_start_pos+row;
-						window.location="/volunteer/student_info?stu_id="+user_array[abs_pos]['id'];
+						window.location="/volunteer/student_info?stu_id="+user_array[row]['id'];
 					});
-				}
-			}
-			function postreq(namestr){
-				if(namestr.length==0){
-					//TODO: request all
-					list_start_pos = 0;
-					$('#student_list').empty();
-					//access server and load matching records
-					$.post("/volunteer/student_list_all/", {}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-						user_array=ret;
-						show_list(list_start_pos);
-					})
-				}
-				else{
-					list_start_pos = 0;
-					$('#student_list').empty();
-					//access server and load matching records
-					$.post("/backend/search_student_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
-						user_array=ret;
-						show_list(list_start_pos);
-					})
 				}
 			}
 			$(document).ready(function(){
@@ -176,18 +152,14 @@
 					$('#namefield').append(ret['name']);
 				})
 
-				var nameinit=$('#realName').val();
-				postreq(nameinit);
-
 				$('#search').click(function(){
 					var namestr=$('#realName').val();
 					list_start_pos = 0;
 					$('#student_list').empty();
 					//access server and load matching records
 					$.post("/volunteer/search_student_by_name/", {'name':namestr}, function(ret){
-					//$.post("/teacher/fake_backend/", {'name':namestr}, function(ret){
 						user_array=ret;
-						show_list(list_start_pos);
+						show_list();
 					})
 				});
 				$('#search').click();
