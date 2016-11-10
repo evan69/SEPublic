@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>消息</title>
-		{% load static from staticfiles %}
- {% include 'student/include/cssinclude.html' %}
+ <head>
 
-</head>
+   {% load staticfiles %}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> {% include 'student/include/cssinclude.html' %}
+     <title>消息</title>
+ </head>
+
 <body>
     <div id="wrapper">
-    {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
-		<div id="page-wrapper" >
+  {% include 'student/include/navtop.html' %} {% include 'student/include/navside.html' %}
+        <div id="page-wrapper">
             <div id="page-inner">
-				<!--row-->
-				<div class = "row">
+                <div class = "row">
 					<div class = "col-md-12">
 						<div class= "panel panel-default">
 							<div class = "panel-body">
@@ -36,14 +35,16 @@
 						</div>
 					</div>
 				</div>
-				<!-- /. ROW -->
-    {% include 'student/include/footer.html' %}
-			</div><!-- /. PAGE INNER  -->
-        </div>
-         <!-- /. PAGE WRAPPER  -->
-    </div>
-    {% include 'student/include/jsinclude.html' %}
-    <div id="dialog" title="消息详情" style="height:90%;width=90%">
+                        {% include 'student/include/footer.html' %}
+                </div>
+                <!-- /. PAGE INNER	-->
+            </div>
+			<!-- /. PAGE WRAPPER	-->
+		</div>
+		<!-- /. WRAPPER	-->
+		<!-- JS Scripts-->
+		<!-- jQuery Js -->
+        <div id="dialog" title="消息详情" style="height:90%;width=90%">
       <form id="form">
           <table id = "time_table" class="table table-hover">
                 <tr>
@@ -69,29 +70,14 @@
         <!--button type="submit" class="btn btn-primary">确认</button-->
       </form>
     </div>
-     <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    {% include 'student/include/jsinclude.html' %}
-    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-    <!-- Bootstrap Js -->
-    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+		<!-- Bootstrap Js -->
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
-    <!-- Metis Menu Js -->
-    <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
-    <!-- Morris Chart Js -->
-    <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/morris/morris.js' %}"></script>
-
-
-	<script src="{% static 'assets/js/easypiechart.js' %}"></script>
-	<script src="{% static 'assets/js/easypiechart-data.js' %}"></script>
-
-    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
-    <!-- Custom Js -->
-    <script src="{% static 'assets/js/custom-scripts.js' %}"></script>
-		<!-- Two JS functions to ensure CSRF token. (See https://docs.djangoproject.com/en/1.9/ref/csrf/)-->
-		<script>
+		<!-- Metis Menu Js -->
+		<script src="{% static 'js/jquery.metisMenu.js' %}"></script>
+        <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+	<script>
 		function getCookie(name) {
 				var cookieValue = null;
 				if (document.cookie && document.cookie !== '') {
@@ -186,6 +172,5 @@
       }
     });
     </script>
-
 </body>
 </html>
