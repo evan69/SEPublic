@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^logout/$', views.volunteer_logout),
     url(r'^search_student/$', views.search_student,
         name='search_student_volunteer'),
-    url(r'^student_list_all/$', views.student_list_all, name="student_list_all"),
+    # url(r'^student_list_all/$', views.student_list_all, name="student_list_all"),
     url(r'^get_volunteer_name_by_id/$',
         views.get_volunteer_name_by_id,
         name="get_volunteer_name_by_id"),

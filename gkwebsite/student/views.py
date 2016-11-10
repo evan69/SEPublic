@@ -18,7 +18,8 @@ import database.image_backend as pic
 import database.teacher_backend as tch
 import database.backend as back
 import database.volunteer_backend as vol
-
+import time
+import pytz
 
 # Create your views here.
 
@@ -126,12 +127,10 @@ def student_rank(request):
     estimate_dic = eval(getattr(student, 'estimateScore', '{}'))
     listall = [{'name':u'总成绩（审核通过）', 'score':score, 'rank':rank + '/' + sum_rank}]
     for item in estimate_dic.keys():
+        if 'shenhe' not in estimate_dic[item].keys():
+            continue
         item_score = stu.getStudentEstimateScore_Every(student, item)
         item_rank, item_sum = stu.getStudentEstimateRank_Every(student, item)
-
-#        name_list.append(item)
-#        score_list.append(item_score)
-#        rank_list.append(item_rank + '/' + item_sum)
         listall.append({'name':item, 'score':item_score, 'rank':item_rank + '/' + item_sum})
 
     '''
@@ -570,3 +569,91 @@ def get_last_estimate_score(stu_id, test_id):
     except:
         last_score = 0
     return last_score
+
+
+@csrf_exempt
+@check_identity('student')
+def message(request):
+    t = get_template('student/message.html')
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    c = {'id': id}
+    return HttpResponse(t.render(c))
+
+
+@csrf_exempt
+def get_all_message(request):
+    """
+        后端应在此处返回某个学生可以看见的所有消息的列表，需要的信息见下面的样例
+    """
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    id = int(id)
+    dic = []
+    notice_list = back.getNoticebyDict({})
+    # print 'notice_list', len(notice_list)
+    for notice in notice_list:
+        info_dic = back.getNoticeAllDictByObject(notice)
+        print info_dic
+        try:
+            rece_stu_list = eval(info_dic[Notice.RECEIVE_STU])
+        except:
+            print 'bug'
+            rece_stu_list = []
+
+        if id in rece_stu_list or str(id) in rece_stu_list:
+            send_tch_account = tch.idToAccountTeacher(int(info_dic[Notice.TEACHER_ID]))
+            send_tch_name = tch.getTeacher(send_tch_account, Teacher.REAL_NAME)
+            read_state = u'未读'
+            try:
+                stu_readed_list = eval(stu.getStudent(stu.idToAccountStudent(id), Student.READED))
+            except:
+                stu_readed_list = []
+            if info_dic[Notice.ID] in stu_readed_list:
+                read_state = u'已读'
+
+
+            tmp_dic = {'sender': send_tch_name,
+                       'title': info_dic[Notice.TITLE],
+                       'state': read_state,
+                       'message_id':info_dic[Notice.ID]}
+            dic.append(tmp_dic)
+    ret = list(reversed(dic))
+    return JsonResponse(ret, safe=False)
+
+
+@csrf_exempt
+def get_message_info(request):
+    """
+        后端应在此处返回某个消息的详细信息，需要的信息见下面的样例
+    """
+    # print request.POST
+    # print 'message id',request.POST.get('message_id')
+    message_id = int(request.POST.get('message_id', -1))
+    id = request.session.get('student_id', -1)
+    if id == -1:
+        return HttpResponse('Access denied')
+    id = int(id)
+
+    stu_readed_list = eval(stu.getStudent(stu.idToAccountStudent(id), Student.READED))
+    if message_id not in stu_readed_list:
+        stu_readed_list.append(message_id)
+
+    stu.setStudent(stu.idToAccountStudent(id), Student.READED, stu_readed_list)
+
+
+
+    dic = []
+    notice = back.getNoticebyDict({Notice.ID: message_id})[0]
+    info_dic = back.getNoticeAllDictByObject(notice)
+    send_tch_account = tch.idToAccountTeacher(int(info_dic[Notice.TEACHER_ID]))
+    send_tch_name = tch.getTeacher(send_tch_account, Teacher.REAL_NAME)
+    dic = {'sender': send_tch_name,
+           'title': info_dic[Notice.TITLE],
+           # 'time': info_dic[Notice.SEND_DATE].strftime("%Y-%m-%d %H:%I:%S"),
+           'time': info_dic[Notice.SEND_DATE].replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S"),
+           'text': info_dic[Notice.TEXT]}
+    # print dic
+    return JsonResponse(dic)
