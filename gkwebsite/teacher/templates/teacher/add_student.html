@@ -118,8 +118,10 @@
 				$.post("/backend/add_student/", {'num':num}, function(ret){
 					codelist = ret;
 					add_to_table();
-					$('#account_table').show();
-					$('#export').show();
+          if(codelist.length > 0){
+            $('#account_table').show();
+            $('#export').show();
+          }
           $('#export').click(function(){
             if(codelist.length > 0){
               $.post("/backend/export_registration_code/", {'length': codelist.length}, function(ret){

@@ -311,33 +311,10 @@
                <input type="text" class="form-control" id="realScore" name="realScore" value="{{student.realScore}}" />
               </div>
              </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="admissionStatus" class="col-sm-2 control-label">录取情况：</label>
+                <div class="form-group">
+              <label style="text-align:left;padding-left: 2em;" for="realScore" class="col-sm-2 control-label">实考分：</label>
               <div class="col-sm-10">
-               <!--input type="text" class="form-control" id="admissionStatus" name="estimateScore" value="{{student.admissionStatus}}" /-->
-                  <select class="form-control" id="admissionStatus" name="admissionStatus">
-                {% for item in student.admissionStatus.admissionstatuslist %}
-                   {% if forloop.counter0 == student.admissionStatus.admissionstatus %}
-                         <option value="{{forloop.counter0}}" selected="selected">{{item}}</option>
-                   {% else %}
-                         <option value="{{forloop.counter0}}">{{item}}</option>
-                   {% endif %}
-               {% empty %}
-                   <li>抱歉，列表为空</li>
-               {% endfor %}
-               </select>
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;" for="relTeacher" class="col-sm-2 control-label">对应老师：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relTeacher" name="relTeacher" value="{{student.relTeacher}}" />
-              </div>
-             </div>
-             <div class="form-group">
-              <label style="text-align:left;padding-left: 2em;padding-right: 5px;" for="relVolunteer" class="col-sm-2 control-label">对应志愿者：</label>
-              <div class="col-sm-10">
-               <input type="text" class="form-control" id="relVolunteer" name="relVolunteer" value="{{student.relVolunteer}}" />
+               <input type="text" class="form-control" id="admissionStatus" name="admissionStatus" value="{{student.admissionStatus}}" />
               </div>
              </div>
              <div class="form-group">
@@ -347,9 +324,6 @@
               </div>
              </div>
              <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
-               <button type="submit" class="btn btn-primary" value="save">编辑</button>
-              </div>
              </div>
             </fieldset>
            </form>
