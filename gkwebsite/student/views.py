@@ -620,8 +620,8 @@ def get_all_message(request):
                        'state': read_state,
                        'message_id':info_dic[Notice.ID]}
             dic.append(tmp_dic)
-
-    return JsonResponse(dic, safe=False)
+    ret = list(reversed(dic))
+    return JsonResponse(ret, safe=False)
 
 
 @csrf_exempt
