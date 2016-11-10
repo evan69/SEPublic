@@ -123,11 +123,15 @@ def volunteer_search_student_by_name(request):
         # print 'sadfasdf--------------------------', vol_student_account_list
         if request.is_ajax() and request.method == 'POST':
             t = []
+            record_id = []
             for account in vol_student_account_list:
                 item = stu.getStudentAll(account)
                 stu_dic = stu.getStudentAllDictByAccount(account)
                 if name.strip() != '' and name != stu_dic[Student.REAL_NAME]:
                     continue
+                if stu_dic[Student.ID] in record_id:
+                    continue
+                record_id.append(stu_dic[Student.ID])
                 dic = {'id': stu_dic[Student.ID],
                        'name': stu_dic[Student.REAL_NAME],
                        'gender': stu_dic[Student.SEX]['sexlist'][stu_dic[Student.SEX]['sex']],
